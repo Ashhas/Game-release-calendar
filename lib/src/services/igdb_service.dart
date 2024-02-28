@@ -1,31 +1,36 @@
 import 'package:dio/dio.dart';
 import 'package:game_release_calendar/src/models/game.dart';
-import 'package:game_release_calendar/src/services/dio_interceptor.dart';
 import 'package:game_release_calendar/src/services/twitch_service.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class IGDBService {
   final String clientId;
-  final Dio dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.igdb.com/v4',
-    ),
-  );
+  final String igdbBaseUrl;
+
+  late final Dio dio;
 
   factory IGDBService({
     required String clientId,
+    required String authTokenURL,
   }) =>
       _instance = IGDBService._internal(
         clientId: clientId,
+        igdbBaseUrl: authTokenURL,
       );
 
   IGDBService._internal({
     required this.clientId,
+    required this.igdbBaseUrl,
   }) {
+    dio = Dio(
+      BaseOptions(
+        baseUrl: igdbBaseUrl,
+      ),
+    );
+
     _addAuthHeaders();
   }
 
-  /// the one and only instance of this singleton
   static late IGDBService _instance;
 
   static IGDBService get instance {
@@ -33,7 +38,7 @@ class IGDBService {
   }
 
   Future<void> _addAuthHeaders() async {
-    final accessToken = await TwitchAuthService().getStoredToken();
+    final accessToken = await TwitchAuthService.instance.getStoredToken();
 
     dio.options.headers = {
       'Client-ID': clientId,

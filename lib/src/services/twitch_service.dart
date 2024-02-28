@@ -2,11 +2,34 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TwitchAuthService {
-  final String clientId = '';
-  final String clientSecret = '';
-  final String twitchOauthTokenURL = 'https://id.twitch.tv/oauth2/token';
+  final String clientId;
+  final String clientSecret;
+  final String twitchOauthTokenURL;
   final storage = const FlutterSecureStorage(); // Secure storage instance
   final Dio dio = Dio(); // Dio instance
+
+  factory TwitchAuthService({
+    required String clientId,
+    required String clientSecret,
+    required String twitchOauthTokenURL,
+  }) =>
+      _instance = TwitchAuthService._internal(
+        clientId: clientId,
+        clientSecret: clientSecret,
+        twitchOauthTokenURL: twitchOauthTokenURL,
+      );
+
+  TwitchAuthService._internal({
+    required this.clientId,
+    required this.clientSecret,
+    required this.twitchOauthTokenURL,
+  });
+
+  static late TwitchAuthService _instance;
+
+  static TwitchAuthService get instance {
+    return _instance;
+  }
 
   // Method to authenticate and store token
   Future<void> requestTokenAndStore() async {

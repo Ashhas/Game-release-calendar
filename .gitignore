@@ -496,4 +496,7 @@ obj/
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+# Local configuration file (environment path, etc)
+assets/env.json
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij,androidstudio,android,macos,flutter,dart,kotlin,swift
