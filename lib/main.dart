@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:game_release_calendar/presentation/home.dart';
+import 'package:game_release_calendar/src/presentation/home.dart';
+import 'package:game_release_calendar/src/services/igdb_service.dart';
+import 'package:game_release_calendar/src/services/twitch_service.dart';
 
-void main() {
-  runApp(const App());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await TwitchAuthService().requestTokenAndStore();
+
+  IGDBService(
+    clientId: '',
+  );
+
+  runApp(
+    const App(),
+  );
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({
+    super.key,
+  });
 
-  static const appName = 'Shinbun';
+  static const appName = 'Game Release';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +30,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       home: const Home(),
     );
   }
