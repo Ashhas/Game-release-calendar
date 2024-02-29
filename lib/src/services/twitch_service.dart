@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -47,14 +49,14 @@ class TwitchAuthService {
         String accessToken = response.data['access_token'];
         // Store access token securely
         await storage.write(key: 'twitch_token', value: accessToken);
-        print('Token stored successfully');
+        log('Token stored successfully');
       } else {
-        print('Failed to authenticate with Twitch: ${response.statusCode}');
+        log('Failed to authenticate with Twitch: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      print('DioError while authenticating with Twitch: $e');
+      log('DioError while authenticating with Twitch: $e');
     } catch (e) {
-      print('Error while authenticating with Twitch: $e');
+      log('Error while authenticating with Twitch: $e');
     }
   }
 
@@ -64,7 +66,7 @@ class TwitchAuthService {
       final accessToken = await storage.read(key: 'twitch_token');
       return accessToken;
     } catch (e) {
-      print('Error retrieving token: $e');
+      log('Error retrieving token: $e');
       return null;
     }
   }

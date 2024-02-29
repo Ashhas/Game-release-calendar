@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_release_calendar/main.dart';
-import 'package:game_release_calendar/src/models/game.dart';
-import 'package:game_release_calendar/src/presentation/month_view.dart';
-import 'package:game_release_calendar/src/services/igdb_service.dart';
+import 'package:game_release_calendar/src/presentation/oncoming_month_view.dart';
+import 'package:game_release_calendar/src/presentation/this_month_view.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -25,16 +24,16 @@ class _HomeState extends State<Home> {
             isScrollable: true,
             tabAlignment: TabAlignment.start,
             tabs: [
-              Tab(text: 'THIS MONTH'),
-              Tab(text: 'COMING 3 MONTHS'),
+              Tab(text: 'ONCOMING'),
+              Tab(text: 'THIS MONTH VIEW'),
               Tab(text: 'THIS YEAR'),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            MonthView(),
-            Icon(Icons.directions_transit),
+            OncomingMonthView(),
+            ThisMonthView(),
             Icon(Icons.directions_bike),
           ],
         ),

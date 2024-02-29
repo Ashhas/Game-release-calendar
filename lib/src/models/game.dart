@@ -1,15 +1,23 @@
+import 'package:game_release_calendar/src/models/cover.dart';
+import 'package:game_release_calendar/src/models/platform.dart';
+
 class Game {
   final int id;
+  final int createdAt;
+  final String name;
+  final int updatedAt;
+  final String url;
+  final String checksum;
+
+  // Nullable fields
   final List<int>? ageRatings;
   final List<int>? artworks;
   final int? category;
-  final int? cover;
-  final int createdAt;
+  final Cover? cover;
   final List<int>? externalGames;
   final int? firstReleaseDate;
   final List<int>? genres;
-  final String name;
-  final List<int>? platforms;
+  final List<Platform>? platforms;
   final List<int>? releaseDates;
   final List<int>? screenshots;
   final List<int>? similarGames;
@@ -17,10 +25,7 @@ class Game {
   final String? description;
   final List<int>? tags;
   final List<int>? themes;
-  final int updatedAt;
-  final String url;
   final List<int>? websites;
-  final String checksum;
   final List<int>? languageSupports;
   final List<int>? gameModes;
   final int? status;
@@ -31,15 +36,18 @@ class Game {
 
   Game({
     required this.id,
+    required this.createdAt,
+    required this.name,
+    required this.updatedAt,
+    required this.url,
+    required this.checksum,
     this.ageRatings,
     this.artworks,
     this.category,
     this.cover,
-    required this.createdAt,
     this.externalGames,
     this.firstReleaseDate,
     this.genres,
-    required this.name,
     this.platforms,
     this.releaseDates,
     this.screenshots,
@@ -48,10 +56,7 @@ class Game {
     this.description,
     this.tags,
     this.themes,
-    required this.updatedAt,
-    required this.url,
     this.websites,
-    required this.checksum,
     this.languageSupports,
     this.gameModes,
     this.status,
@@ -67,19 +72,22 @@ class Game {
       ageRatings: json['age_ratings']?.cast<int>(),
       artworks: json['artworks']?.cast<int>(),
       category: json['category'],
-      cover: json['cover'],
+      cover: json['cover'] != null ? Cover.fromJson(json['cover']) : null,
       createdAt: json['created_at'],
       externalGames: json['external_games']?.cast<int>(),
       firstReleaseDate: json['first_release_date'],
       genres: json['genres']?.cast<int>(),
       name: json['name'],
-      platforms: json['platforms']?.cast<int>(),
+      platforms: json['platforms'] != null
+          ? (json['platforms'] as List)
+              .map((e) => Platform.fromJson(e))
+              .toList()
+          : null,
       releaseDates: json['release_dates']?.cast<int>(),
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),
       slug: json['slug'],
       description: json['description'],
-      // Adjust based on actual key for the description
       tags: json['tags']?.cast<int>(),
       themes: json['themes']?.cast<int>(),
       updatedAt: json['updated_at'],
