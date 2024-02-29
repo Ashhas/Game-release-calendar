@@ -22,7 +22,9 @@ class GameTile extends StatelessWidget {
         : '-';
 
     return ListTile(
-      leading: Image(
+      leading: FadeInImage(
+        placeholder: const AssetImage('assets/images/placeholder_210_284.png'),
+        fadeInDuration: const Duration(milliseconds: 100),
         image: NetworkImage(
           game.cover?.imageId != null
               ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg'
@@ -41,8 +43,9 @@ class GameTile extends StatelessWidget {
             children: game.platforms!
                 .map(
                   (platform) => Chip(
-                    label:
-                        Text(platform.abbreviation ?? platform.name ?? 'N/A'),
+                    label: Text(
+                      platform.abbreviation ?? platform.name ?? 'N/A',
+                    ),
                     visualDensity: VisualDensity.compact,
                     padding: EdgeInsets.zero,
                   ),
