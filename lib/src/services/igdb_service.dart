@@ -70,7 +70,7 @@ class IGDBService {
     try {
       final response = await dio.post(
         '/games',
-        data: 'fields *, platforms.*, cover.url; '
+        data: 'fields *, platforms.*, cover.*; '
             'where status = null & first_release_date >= $currentTimeStamp & first_release_date < $endOfMonthTimestamp; '
             'limit 500; '
             'sort first_release_date asc;',
@@ -114,7 +114,7 @@ class IGDBService {
     try {
       final response = await dio.post(
         '/games',
-        data: 'fields *, platforms.*, cover.url; '
+        data: 'fields *, platforms.*, cover.*; '
             'where status = null & first_release_date >= $startOfMonthTimestamp & first_release_date < $endOfMonthTimestamp; '
             'limit 500; '
             'sort first_release_date asc;',

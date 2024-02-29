@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_release_calendar/src/models/game.dart';
+import 'package:game_release_calendar/src/presentation/game_detail_view.dart';
 import 'package:intl/intl.dart';
 
 class GameTile extends StatelessWidget {
@@ -23,7 +24,9 @@ class GameTile extends StatelessWidget {
     return ListTile(
       leading: Image(
         image: NetworkImage(
-          game.cover?.url ?? 'https://via.placeholder.com/150',
+          game.cover?.imageId != null
+              ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg'
+              : 'https://via.placeholder.com/150',
         ),
       ),
       title: Text(game.name),
@@ -38,7 +41,8 @@ class GameTile extends StatelessWidget {
             children: game.platforms!
                 .map(
                   (platform) => Chip(
-                    label: Text(platform.abbreviation ?? ''),
+                    label:
+                        Text(platform.abbreviation ?? platform.name ?? 'N/A'),
                     visualDensity: VisualDensity.compact,
                     padding: EdgeInsets.zero,
                   ),
@@ -47,6 +51,16 @@ class GameTile extends StatelessWidget {
           ),
         ],
       ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GameDetailView(
+              game: game,
+            ),
+          ),
+        );
+      },
     );
   }
 }

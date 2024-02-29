@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_release_calendar/src/presentation/widgets/game_tile.dart';
 import 'package:game_release_calendar/src/services/igdb_service.dart';
-import 'package:intl/intl.dart';
 
 class ThisMonthView extends StatefulWidget {
   const ThisMonthView({
