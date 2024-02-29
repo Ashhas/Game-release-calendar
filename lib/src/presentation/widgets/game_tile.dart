@@ -32,6 +32,9 @@ class GameTile extends StatelessWidget {
               ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg'
               : 'https://via.placeholder.com/150',
         ),
+        imageErrorBuilder: (_, __, ___) {
+          return Image.asset('assets/images/placeholder_210_284.png');
+        },
       ),
       title: Text(game.name),
       subtitle: Column(

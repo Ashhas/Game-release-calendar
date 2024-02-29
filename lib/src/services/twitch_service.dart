@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:game_release_calendar/src/models/twitch_token.dart';
 
 class TwitchAuthService {
   final String clientId;
@@ -46,9 +47,11 @@ class TwitchAuthService {
       );
 
       if (response.statusCode == 200) {
-        String accessToken = response.data['access_token'];
-        // Store access token securely
-        await storage.write(key: 'twitch_token', value: accessToken);
+        final twitchToken = TwitchToken.fromJson(response.data);
+        await storage.write(
+          key: 'twitch_access_token',
+          value: twitchToken.accessToken,
+        );
         log('Token stored successfully');
       } else {
         log('Failed to authenticate with Twitch: ${response.statusCode}');
@@ -63,7 +66,7 @@ class TwitchAuthService {
   // Method to retrieve the stored token
   Future<String?> getStoredToken() async {
     try {
-      final accessToken = await storage.read(key: 'twitch_token');
+      final accessToken = await storage.read(key: 'twitch_access_token');
       return accessToken;
     } catch (e) {
       log('Error retrieving token: $e');
