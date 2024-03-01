@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/main.dart';
-import 'package:game_release_calendar/src/presentation/home/tabs/next_month_view.dart';
-import 'package:game_release_calendar/src/presentation/home/tabs/oncoming_month_view.dart';
-import 'package:game_release_calendar/src/presentation/home/tabs/this_month_view.dart';
+import 'package:game_release_calendar/src/presentation/home/tabs/next_month_tab.dart';
+import 'package:game_release_calendar/src/presentation/home/tabs/oncoming_month_tab.dart';
+import 'package:game_release_calendar/src/presentation/home/tabs/this_month_tab.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -27,16 +27,16 @@ class _HomeState extends State<Home> {
             tabAlignment: TabAlignment.start,
             tabs: [
               Tab(text: 'ONCOMING'),
-              Tab(text: 'THIS MONTH VIEW'),
-              Tab(text: 'THIS YEAR'),
+              Tab(text: 'THIS MONTH'),
+              Tab(text: 'NEXT MONTH'),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            OncomingMonthView(),
-            ThisMonthView(),
-            NextMonthView(),
+            OncomingMonthTab(),
+            ThisMonthTab(),
+            NextMonthTab(),
           ],
         ),
       ),

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/data/igdb_service.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/home/widgets/section/day_section.dart';
+import 'package:game_release_calendar/src/utils/filter_functions.dart';
 
-class NextMonthView extends StatefulWidget {
-  const NextMonthView({
+class ThisMonthTab extends StatefulWidget {
+  const ThisMonthTab({
     super.key,
   });
 
   @override
-  State<NextMonthView> createState() => _NextMonthViewState();
+  State<ThisMonthTab> createState() => _ThisMonthTabState();
 }
 
-class _NextMonthViewState extends State<NextMonthView> {
+class _ThisMonthTabState extends State<ThisMonthTab> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: IGDBService.instance.getGamesThisMonth(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final groupedGames = _groupGamesByDay(snapshot.data!);
+          final groupedGames = FilterFunctions.groupGamesByDay(
+            snapshot.data!,
+          );
 
           return ListView.builder(
             itemCount: groupedGames.length,
@@ -46,33 +48,5 @@ class _NextMonthViewState extends State<NextMonthView> {
         );
       },
     );
-  }
-
-  Map<DateTime, List<Game>> _groupGamesByDay(List<Game> games) {
-    Map<DateTime, List<Game>> groupedGames = {};
-
-    for (final game in games) {
-      if (game.firstReleaseDate != null) {
-        final releaseDate = DateTime.fromMillisecondsSinceEpoch(
-          game.firstReleaseDate! * 1000,
-        );
-
-        final dateWithoutTime = DateTime(
-          releaseDate.year,
-          releaseDate.month,
-          releaseDate.day,
-        );
-
-        // If the date is not in the map, add new entry for it
-        if (!groupedGames.containsKey(dateWithoutTime)) {
-          groupedGames[dateWithoutTime] = [];
-        }
-
-        // Add the game to the list of games for that day
-        groupedGames[dateWithoutTime]?.add(game);
-      }
-    }
-
-    return groupedGames;
   }
 }
