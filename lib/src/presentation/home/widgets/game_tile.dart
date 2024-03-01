@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/presentation/home/widgets/game_detail_view.dart';
 
 import 'package:intl/intl.dart';
-
-import 'package:game_release_calendar/src/models/game.dart';
-import 'package:game_release_calendar/src/presentation/game_detail_view.dart';
 
 class GameTile extends StatelessWidget {
   final Game game;

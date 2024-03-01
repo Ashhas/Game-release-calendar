@@ -1,5 +1,5 @@
-import 'package:game_release_calendar/src/models/cover.dart';
-import 'package:game_release_calendar/src/models/platform.dart';
+import 'package:game_release_calendar/src/domain/models/cover.dart';
+import 'package:game_release_calendar/src/domain/models/platform.dart';
 
 class Game {
   final int id;

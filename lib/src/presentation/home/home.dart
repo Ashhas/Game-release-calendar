@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/main.dart';
-import 'package:game_release_calendar/src/presentation/oncoming_month_view.dart';
-import 'package:game_release_calendar/src/presentation/this_month_view.dart';
+import 'package:game_release_calendar/src/presentation/home/tabs/next_month_view.dart';
+import 'package:game_release_calendar/src/presentation/home/tabs/oncoming_month_view.dart';
+import 'package:game_release_calendar/src/presentation/home/tabs/this_month_view.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -35,7 +36,7 @@ class _HomeState extends State<Home> {
           children: [
             OncomingMonthView(),
             ThisMonthView(),
-            Icon(Icons.directions_bike),
+            NextMonthView(),
           ],
         ),
       ),

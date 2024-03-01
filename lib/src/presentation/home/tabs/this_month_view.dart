@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:game_release_calendar/src/data/igdb_service.dart';
+import 'package:game_release_calendar/src/presentation/home/widgets/game_tile.dart';
 
-import 'package:game_release_calendar/src/presentation/widgets/game_tile.dart';
-import 'package:game_release_calendar/src/services/igdb_service.dart';
-
-class OncomingMonthView extends StatefulWidget {
-  const OncomingMonthView({
+class ThisMonthView extends StatefulWidget {
+  const ThisMonthView({
     super.key,
   });
 
   @override
-  State<OncomingMonthView> createState() => _OncomingMonthViewState();
+  State<ThisMonthView> createState() => _ThisMonthViewState();
 }
 
-class _OncomingMonthViewState extends State<OncomingMonthView> {
+class _ThisMonthViewState extends State<ThisMonthView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: IGDBService.instance.getOncomingGamesThisMonth(),
+      future: IGDBService.instance.getGamesThisMonth(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final gamesList = snapshot.data!;

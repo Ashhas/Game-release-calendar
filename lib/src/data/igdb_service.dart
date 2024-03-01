@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:game_release_calendar/src/data/twitch_service.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import 'package:game_release_calendar/src/models/game.dart';
-import 'package:game_release_calendar/src/services/twitch_service.dart';
 
 class IGDBService {
   final String clientId;

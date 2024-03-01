@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:game_release_calendar/src/data/igdb_service.dart';
+import 'package:game_release_calendar/src/data/twitch_service.dart';
 
-import 'package:game_release_calendar/src/presentation/home.dart';
-import 'package:game_release_calendar/src/services/igdb_service.dart';
-import 'package:game_release_calendar/src/services/twitch_service.dart';
+import 'package:game_release_calendar/src/presentation/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
