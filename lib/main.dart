@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:game_release_calendar/src/data/igdb_service.dart';
 import 'package:game_release_calendar/src/data/twitch_service.dart';
 import 'package:game_release_calendar/src/presentation/home/home.dart';
+import 'package:game_release_calendar/src/theme/custom_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,10 +45,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appName,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      themeMode: ThemeMode.light,
+      theme: CustomTheme.lightTheme(),
+      darkTheme: CustomTheme.darkTheme(),
+      themeMode: ThemeMode.dark,
       home: const Home(),
     );
   }

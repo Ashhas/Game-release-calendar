@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:game_release_calendar/src/theme/context_extensions.dart';
+
 class SectionHeader extends StatelessWidget {
   final DateTime date;
 
@@ -11,7 +13,7 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(context.spacings.xs),
       child: Text(
         '${date.day}/${date.month}/${date.year}',
         style: const TextStyle(
