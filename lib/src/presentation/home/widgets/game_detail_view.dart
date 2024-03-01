@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
 
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:game_release_calendar/src/domain/models/game.dart';
 
 class GameDetailView extends StatefulWidget {
   final Game game;

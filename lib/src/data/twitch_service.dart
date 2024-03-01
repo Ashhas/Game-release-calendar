@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:game_release_calendar/src/domain/models/twitch_token.dart';
 
 class TwitchAuthService {

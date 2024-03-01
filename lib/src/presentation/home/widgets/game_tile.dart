@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/presentation/home/widgets/game_detail_view.dart';
 
 import 'package:intl/intl.dart';
+
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/presentation/home/widgets/game_detail_view.dart';
 
 class GameTile extends StatelessWidget {
   final Game game;
@@ -26,11 +27,12 @@ class GameTile extends StatelessWidget {
       leading: FadeInImage(
         placeholder: const AssetImage('assets/images/placeholder_210_284.png'),
         fadeInDuration: const Duration(milliseconds: 100),
-        image: NetworkImage(
-          game.cover?.imageId != null
-              ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg'
-              : 'https://via.placeholder.com/150',
-        ),
+        image: game.cover?.imageId != null
+            ? NetworkImage(
+                'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg',
+              ) as ImageProvider
+            : const AssetImage('assets/images/placeholder_210_284.png')
+                as ImageProvider,
         imageErrorBuilder: (_, __, ___) {
           return Image.asset('assets/images/placeholder_210_284.png');
         },

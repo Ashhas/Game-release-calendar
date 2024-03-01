@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:game_release_calendar/src/data/igdb_service.dart';
 import 'package:game_release_calendar/src/presentation/home/widgets/game_tile.dart';
 
