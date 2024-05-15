@@ -2,26 +2,16 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
-import 'package:game_release_calendar/src/data/twitch_service.dart';
+import 'package:game_release_calendar/src/data/services/twitch_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'igdb_repository.dart';
 
-class IGDBService {
+class IGDBRepositoryImpl implements IGDBRepository {
   final String clientId;
   final String igdbBaseUrl;
-
   late final Dio dio;
 
-  factory IGDBService({
-    required String clientId,
-    required String authTokenURL,
-  }) =>
-      _instance = IGDBService._internal(
-        clientId: clientId,
-        igdbBaseUrl: authTokenURL,
-      );
-
-  IGDBService._internal({
+  IGDBRepositoryImpl({
     required this.clientId,
     required this.igdbBaseUrl,
   }) {
@@ -30,14 +20,7 @@ class IGDBService {
         baseUrl: igdbBaseUrl,
       ),
     );
-
     _addAuthHeaders();
-  }
-
-  static late IGDBService _instance;
-
-  static IGDBService get instance {
-    return _instance;
   }
 
   Future<void> _addAuthHeaders() async {
@@ -60,13 +43,11 @@ class IGDBService {
     );
   }
 
+  @override
   Future<List<Game>> getOncomingGamesThisMonth() async {
-    final currentTimeStamp = _getCurrentTimestamp(
-      DateTime.now().toUtc(),
-    );
-    final endOfMonthTimestamp = _getLastMinuteOfMonthTimestamp(
-      DateTime.now().toUtc(),
-    );
+    final currentTimeStamp = _getCurrentTimestamp(DateTime.now().toUtc());
+    final endOfMonthTimestamp =
+        _getLastMinuteOfMonthTimestamp(DateTime.now().toUtc());
 
     try {
       final response = await dio.post(
@@ -104,13 +85,12 @@ class IGDBService {
     }
   }
 
+  @override
   Future<List<Game>> getGamesThisMonth() async {
-    final startOfMonthTimestamp = _getFirstMinuteOfMonthTimestamp(
-      DateTime.now().toUtc(),
-    );
-    final endOfMonthTimestamp = _getLastMinuteOfMonthTimestamp(
-      DateTime.now().toUtc(),
-    );
+    final startOfMonthTimestamp =
+        _getFirstMinuteOfMonthTimestamp(DateTime.now().toUtc());
+    final endOfMonthTimestamp =
+        _getLastMinuteOfMonthTimestamp(DateTime.now().toUtc());
 
     try {
       final response = await dio.post(
@@ -148,13 +128,12 @@ class IGDBService {
     }
   }
 
+  @override
   Future<List<Game>> getGamesNextMonth() async {
-    final startOfMonthTimestamp = _getFirstMinuteOfNextMonthTimestamp(
-      DateTime.now().toUtc(),
-    );
-    final endOfMonthTimestamp = _getLastMinuteOfNextMonthTimestamp(
-      DateTime.now().toUtc(),
-    );
+    final startOfMonthTimestamp =
+        _getFirstMinuteOfNextMonthTimestamp(DateTime.now().toUtc());
+    final endOfMonthTimestamp =
+        _getLastMinuteOfNextMonthTimestamp(DateTime.now().toUtc());
 
     try {
       final response = await dio.post(
