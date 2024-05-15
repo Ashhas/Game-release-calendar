@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:game_release_calendar/src/data/igdb_service.dart';
 import 'package:game_release_calendar/src/data/twitch_service.dart';
 import 'package:game_release_calendar/src/presentation/home/home.dart';
+import 'package:game_release_calendar/src/presentation/home/state/home_cubit.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
 
 Future<void> main() async {
@@ -48,7 +50,16 @@ class App extends StatelessWidget {
       theme: CustomTheme.lightTheme(),
       darkTheme: CustomTheme.darkTheme(),
       themeMode: ThemeMode.dark,
-      home: const Home(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<HomeCubit>(
+            create: (BuildContext context) => HomeCubit(
+              igdbService: IGDBService.instance,
+            ),
+          ),
+        ],
+        child: const Home(),
+      ),
     );
   }
 }
