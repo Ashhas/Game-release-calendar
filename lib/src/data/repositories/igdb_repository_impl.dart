@@ -171,6 +171,49 @@ class IGDBRepositoryImpl implements IGDBRepository {
     }
   }
 
+  @override
+  Future<List<Game>> getGamesThisAndNextTwoMonths() async {
+    final startOfMonthTimestamp =
+        _getFirstMinuteOfMonthTimestamp(DateTime.now().toUtc());
+    final endOfMonthTimestamp =
+        _getLastMinuteOfMonthAfter2Timestamp(DateTime.now().toUtc());
+
+    try {
+      final response = await dio.post(
+        '/games',
+        data: 'fields *, platforms.*, cover.*; '
+            'where status = null & first_release_date >= $startOfMonthTimestamp & first_release_date < $endOfMonthTimestamp; '
+            'limit 500; '
+            'sort first_release_date asc;',
+      );
+
+      if (response.statusCode == 200) {
+        List<Game> list = [];
+
+        if (response.data is List) {
+          list = List<Game>.from(
+            response.data.map(
+              (gameJson) => Game.fromJson(
+                gameJson as Map<String, dynamic>,
+              ),
+            ),
+          );
+        }
+
+        return list;
+      } else {
+        log('Failed to retrieve games: ${response.statusCode}');
+        return [];
+      }
+    } on DioException catch (e) {
+      log('DioError while retrieving games: $e');
+      return [];
+    } catch (e) {
+      log('Error while retrieving games: $e');
+      return [];
+    }
+  }
+
   int _getCurrentTimestamp(DateTime now) =>
       DateTime.utc(now.year, now.month, now.day).millisecondsSinceEpoch ~/ 1000;
 
@@ -197,6 +240,16 @@ class IGDBRepositoryImpl implements IGDBRepository {
         firstDayOfMonthAfterNext.subtract(const Duration(days: 1));
     DateTime lastMinuteOfTheMonth = DateTime.utc(lastDayOfNextMonth.year,
         lastDayOfNextMonth.month, lastDayOfNextMonth.day, 23, 59);
+
+    return lastMinuteOfTheMonth.millisecondsSinceEpoch ~/ 1000;
+  }
+
+  int _getLastMinuteOfMonthAfter2Timestamp(DateTime now) {
+    DateTime firstDayOfMonthAfterTwo = DateTime.utc(now.year, now.month + 3, 1);
+    DateTime lastDayOfNext2Month =
+        firstDayOfMonthAfterTwo.subtract(const Duration(days: 1));
+    DateTime lastMinuteOfTheMonth = DateTime.utc(lastDayOfNext2Month.year,
+        lastDayOfNext2Month.month, lastDayOfNext2Month.day, 23, 59);
 
     return lastMinuteOfTheMonth.millisecondsSinceEpoch ~/ 1000;
   }

@@ -11,7 +11,7 @@ class HomeCubit extends Cubit<List<Game>> {
   final IGDBService _igdbService;
 
   void getGames() async {
-    final games = await _igdbService.getGamesThisMonth();
+    final games = await _igdbService.getGamesThisAndNextTwoMonths();
     emit(games);
   }
 }

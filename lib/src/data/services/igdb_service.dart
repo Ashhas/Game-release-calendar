@@ -33,4 +33,8 @@ class IGDBService {
   Future<List<Game>> getGamesNextMonth() {
     return _repository.getGamesNextMonth();
   }
+
+  Future<List<Game>> getGamesThisAndNextTwoMonths() {
+    return _repository.getGamesThisAndNextTwoMonths();
+  }
 }
