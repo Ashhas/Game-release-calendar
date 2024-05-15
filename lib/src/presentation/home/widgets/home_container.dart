@@ -6,16 +6,16 @@ import 'package:game_release_calendar/src/presentation/home/state/home_cubit.dar
 import 'package:game_release_calendar/src/presentation/home/widgets/section/day_section.dart';
 import 'package:game_release_calendar/src/utils/filter_functions.dart';
 
-class OncomingMonthTab extends StatefulWidget {
-  const OncomingMonthTab({
+class HomeContainer extends StatefulWidget {
+  const HomeContainer({
     super.key,
   });
 
   @override
-  State<OncomingMonthTab> createState() => _OncomingMonthTabState();
+  State<HomeContainer> createState() => _HomeContainerState();
 }
 
-class _OncomingMonthTabState extends State<OncomingMonthTab> {
+class _HomeContainerState extends State<HomeContainer> {
   @override
   void initState() {
     context.read<HomeCubit>().getGames();

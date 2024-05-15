@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:game_release_calendar/src/data/igdb_service.dart';
 import 'package:game_release_calendar/src/data/twitch_service.dart';
-import 'package:game_release_calendar/src/presentation/home/home.dart';
+import 'package:game_release_calendar/src/presentation/home/home_screen.dart';
 import 'package:game_release_calendar/src/presentation/home/state/home_cubit.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
 
