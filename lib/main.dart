@@ -11,9 +11,11 @@ import 'package:game_release_calendar/src/data/services/twitch_service.dart';
 import 'package:game_release_calendar/src/presentation/home/home_screen.dart';
 import 'package:game_release_calendar/src/presentation/home/state/home_cubit.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
+import 'package:get_it/get_it.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await loadEnvVariables();
   await _initializeServices();
 
@@ -36,7 +38,7 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider<HomeCubit>(
             create: (BuildContext context) => HomeCubit(
-              igdbService: IGDBService.instance,
+              igdbService: GetIt.instance.get<IGDBService>(),
             ),
           ),
         ],
@@ -50,22 +52,32 @@ Future<void> loadEnvVariables() async {
   final jsonString = await rootBundle.loadString('assets/env.json');
   final mapString = jsonDecode(jsonString);
 
-  EnvConfig().setEnv(mapString);
+  final getIt = GetIt.instance;
+  getIt.registerSingleton<EnvConfig>(EnvConfig());
+
+  getIt.get<EnvConfig>().setEnv(mapString);
 }
 
 Future<void> _initializeServices() async {
-  final envConfig = EnvConfig().envMap;
+  final getIt = GetIt.instance;
+  final envConfig = getIt.get<EnvConfig>().envMap;
 
-  await TwitchAuthService(
-    clientId: envConfig['twitchClientId'] ?? '',
-    clientSecret: envConfig['twitchClientSecret'] ?? '',
-    twitchOauthTokenURL: envConfig['igdbAuthTokenURL'] ?? '',
-  ).requestTokenAndStore();
-
-  IGDBService(
-    repository: IGDBRepositoryImpl(
+  getIt.registerSingleton<TwitchAuthService>(
+    TwitchAuthService(
       clientId: envConfig['twitchClientId'] ?? '',
-      igdbBaseUrl: envConfig['igdbBaseUrl'] ?? '',
+      clientSecret: envConfig['twitchClientSecret'] ?? '',
+      twitchOauthTokenURL: envConfig['igdbAuthTokenURL'] ?? '',
+    ),
+  );
+  await getIt.get<TwitchAuthService>().requestTokenAndStore();
+
+  getIt.registerSingleton<IGDBService>(
+    IGDBService(
+      repository: IGDBRepositoryImpl(
+        clientId: envConfig['twitchClientId'] ?? '',
+        igdbBaseUrl: envConfig['igdbBaseUrl'] ?? '',
+        accessToken: await getIt.get<TwitchAuthService>().getStoredToken(),
+      ),
     ),
   );
 }

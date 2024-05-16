@@ -2,39 +2,25 @@ import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart
 import 'package:game_release_calendar/src/domain/models/game.dart';
 
 class IGDBService {
-  final IGDBRepository _repository;
+  final IGDBRepository repository;
 
-  IGDBService._internal(this._repository);
-
-  static IGDBService? _instance;
-
-  factory IGDBService({required IGDBRepository repository}) {
-    _instance ??= IGDBService._internal(repository);
-    return _instance!;
-  }
-
-  // Static getter to provide the singleton instance
-  static IGDBService get instance {
-    if (_instance == null) {
-      throw Exception(
-          "IGDBService has not been initialized. Call the constructor first.");
-    }
-    return _instance!;
-  }
+  IGDBService({
+    required this.repository,
+  });
 
   Future<List<Game>> getOncomingGamesThisMonth() {
-    return _repository.getOncomingGamesThisMonth();
+    return repository.getOncomingGamesThisMonth();
   }
 
   Future<List<Game>> getGamesThisMonth() {
-    return _repository.getGamesThisMonth();
+    return repository.getGamesThisMonth();
   }
 
   Future<List<Game>> getGamesNextMonth() {
-    return _repository.getGamesNextMonth();
+    return repository.getGamesNextMonth();
   }
 
   Future<List<Game>> getGamesThisAndNextTwoMonths() {
-    return _repository.getGamesThisAndNextTwoMonths();
+    return repository.getGamesThisAndNextTwoMonths();
   }
 }

@@ -6,36 +6,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game_release_calendar/src/domain/models/twitch_token.dart';
 
 class TwitchAuthService {
-  final String clientId;
-  final String clientSecret;
-  final String twitchOauthTokenURL;
-  final storage = const FlutterSecureStorage(); // Secure storage instance
-  final Dio dio = Dio(); // Dio instance
-
-  factory TwitchAuthService({
-    required String clientId,
-    required String clientSecret,
-    required String twitchOauthTokenURL,
-  }) =>
-      _instance = TwitchAuthService._internal(
-        clientId: clientId,
-        clientSecret: clientSecret,
-        twitchOauthTokenURL: twitchOauthTokenURL,
-      );
-
-  TwitchAuthService._internal({
+  TwitchAuthService({
     required this.clientId,
     required this.clientSecret,
     required this.twitchOauthTokenURL,
   });
 
-  static late TwitchAuthService _instance;
+  final String clientId;
+  final String clientSecret;
+  final String twitchOauthTokenURL;
+  final storage = const FlutterSecureStorage(); // Secure storage instance
+  final Dio dio = Dio();
 
-  static TwitchAuthService get instance {
-    return _instance;
-  }
-
-  // Method to authenticate and store token
+  /// Authenticate and store token
   Future<void> requestTokenAndStore() async {
     try {
       final response = await dio.post(
@@ -67,7 +50,7 @@ class TwitchAuthService {
   // Method to retrieve the stored token
   Future<String?> getStoredToken() async {
     try {
-      final accessToken = await storage.read(key: 'twitch_access_token');
+      final accessToken = await storage.read(key: 'twitch_access_token') ?? '';
       return accessToken;
     } catch (e) {
       log('Error retrieving token: $e');
