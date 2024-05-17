@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:game_release_calendar/src/theme/context_extensions.dart';
 import 'package:intl/intl.dart';
+
+import 'package:game_release_calendar/src/theme/context_extensions.dart';
 
 class SectionHeader extends StatelessWidget {
   final DateTime date;

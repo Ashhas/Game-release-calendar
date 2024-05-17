@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/presentation/home/widgets/game_detail_view.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/game_detail_view.dart';
 
 class GameTile extends StatelessWidget {
   final Game game;

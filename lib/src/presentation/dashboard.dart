@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:game_release_calendar/src/presentation/home/home_container.dart';
+
+import 'package:game_release_calendar/src/presentation/upcoming_games/upcoming_container.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -34,7 +35,7 @@ class _DashboardState extends State<Dashboard> {
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
       body: [
-        const HomeContainer(),
+        const UpcomingGamesContainer(),
         Container(),
       ][currentPageIndex],
     );

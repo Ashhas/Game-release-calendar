@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'igdb_repository.dart';
 

@@ -1,17 +1,18 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:game_release_calendar/src/app.dart';
-import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
-import 'package:game_release_calendar/src/utils/env_config.dart';
-import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 
-import 'package:game_release_calendar/src/data/services/igdb_service.dart';
-import 'package:game_release_calendar/src/data/services/twitch_service.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+import 'package:game_release_calendar/src/app.dart';
+import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
+import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
+import 'package:game_release_calendar/src/data/services/igdb_service.dart';
+import 'package:game_release_calendar/src/data/services/twitch_service.dart';
+import 'package:game_release_calendar/src/utils/env_config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
