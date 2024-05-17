@@ -5,6 +5,7 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/section/day_section.dart';
+import 'package:game_release_calendar/src/theme/context_extensions.dart';
 import 'package:game_release_calendar/src/utils/filter_functions.dart';
 
 part '../upcoming_games/widgets/tabs/this_month_tab.dart';
@@ -22,7 +23,13 @@ class UpcomingGamesContainer extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Upcoming Games'),
+          title: Row(
+            children: [
+              const Icon(Icons.event),
+              SizedBox(width: context.spacings.xs),
+              const Text('Upcoming Games'),
+            ],
+          ),
           bottom: const TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.start,
