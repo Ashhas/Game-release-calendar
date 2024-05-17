@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:game_release_calendar/src/presentation/upcoming_games/upcoming_container.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/upcoming_games_container.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -11,6 +12,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int currentPageIndex = 0;
+
+  @override
+  void initState() {
+    context.read<UpcomingGamesCubit>().getGames();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
