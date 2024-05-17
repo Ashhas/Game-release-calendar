@@ -1,83 +1,93 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/app.dart';
+import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/utils/env_config.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
-import 'package:game_release_calendar/src/presentation/home/home_screen.dart';
-import 'package:game_release_calendar/src/presentation/home/state/home_cubit.dart';
-import 'package:game_release_calendar/src/theme/custom_theme.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await loadEnvVariables();
-  await _initializeServices();
+  final getIt = GetIt.instance;
+
+  await _loadEnvVariables(getIt);
+  await _initializeTwitchAuthService(getIt);
+  await _initializeDio(getIt);
+  await _initializeRepositories(getIt);
+  await _initializeServices(getIt);
 
   runApp(
     const App(),
   );
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Game Release Calendar',
-      theme: CustomTheme.lightTheme(),
-      darkTheme: CustomTheme.darkTheme(),
-      themeMode: ThemeMode.dark,
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<HomeCubit>(
-            create: (BuildContext context) => HomeCubit(
-              igdbService: GetIt.instance.get<IGDBService>(),
-            ),
-          ),
-        ],
-        child: const Home(),
-      ),
-    );
-  }
-}
-
-Future<void> loadEnvVariables() async {
+Future<void> _loadEnvVariables(GetIt getIt) async {
   final jsonString = await rootBundle.loadString('assets/env.json');
   final mapString = jsonDecode(jsonString);
 
-  final getIt = GetIt.instance;
-  getIt.registerSingleton<EnvConfig>(EnvConfig());
-
-  getIt.get<EnvConfig>().setEnv(mapString);
+  getIt.registerSingleton<EnvConfig>(EnvConfig(mapString));
 }
 
-Future<void> _initializeServices() async {
-  final getIt = GetIt.instance;
-  final envConfig = getIt.get<EnvConfig>().envMap;
+Future<void> _initializeTwitchAuthService(GetIt getIt) async {
+  final envConfig = getIt.get<EnvConfig>();
 
   getIt.registerSingleton<TwitchAuthService>(
     TwitchAuthService(
-      clientId: envConfig['twitchClientId'] ?? '',
-      clientSecret: envConfig['twitchClientSecret'] ?? '',
-      twitchOauthTokenURL: envConfig['igdbAuthTokenURL'] ?? '',
+      clientId: envConfig.twitchClientId,
+      clientSecret: envConfig.twitchClientSecret,
+      twitchOauthTokenURL: envConfig.igdbAuthTokenURL,
     ),
   );
   await getIt.get<TwitchAuthService>().requestTokenAndStore();
+}
 
+Future<void> _initializeDio(GetIt getIt) async {
+  final envConfig = getIt.get<EnvConfig>();
+
+  final igdbAccessToken = await getIt.get<TwitchAuthService>().getStoredToken();
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: envConfig.igdbBaseUrl,
+      headers: {
+        'Client-ID': envConfig.twitchClientId,
+        'Authorization': 'Bearer $igdbAccessToken',
+      },
+    ),
+  );
+  dio.interceptors.add(
+    PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: false,
+      responseHeader: true,
+      error: true,
+      compact: true,
+      maxWidth: 100,
+    ),
+  );
+  getIt.registerSingleton<Dio>(dio);
+}
+
+Future<void> _initializeRepositories(GetIt getIt) async {
+  getIt.registerSingleton<IGDBRepository>(
+    IGDBRepositoryImpl(
+      dio: getIt.get<Dio>(),
+    ),
+  );
+}
+
+Future<void> _initializeServices(GetIt getIt) async {
   getIt.registerSingleton<IGDBService>(
     IGDBService(
-      repository: IGDBRepositoryImpl(
-        clientId: envConfig['twitchClientId'] ?? '',
-        igdbBaseUrl: envConfig['igdbBaseUrl'] ?? '',
-        accessToken: await getIt.get<TwitchAuthService>().getStoredToken(),
-      ),
+      repository: getIt.get<IGDBRepository>(),
     ),
   );
 }

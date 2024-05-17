@@ -1,15 +1,11 @@
 class EnvConfig {
-  late Map<String, dynamic> _envMap;
+  final Map<String, dynamic> map;
 
-  EnvConfig();
+  EnvConfig(this.map);
 
-  void setEnv(Map<String, dynamic> envMap) {
-    _envMap = envMap;
-  }
-
-  Map<String, dynamic> get envMap => _envMap;
-  String get twitchClientId => _envMap['twitchClientId'] ?? '';
-  String get twitchClientSecret => _envMap['twitchClientSecret'] ?? '';
-  String get igdbAuthTokenURL => _envMap['igdbAuthTokenURL'] ?? '';
-  String get igdbBaseUrl => _envMap['igdbBaseUrl'] ?? '';
+  Map<String, dynamic> get envMap => map;
+  String get twitchClientId => map['twitchClientId'] ?? '';
+  String get twitchClientSecret => map['twitchClientSecret'] ?? '';
+  String get igdbAuthTokenURL => map['igdbAuthTokenURL'] ?? '';
+  String get igdbBaseUrl => map['igdbBaseUrl'] ?? '';
 }

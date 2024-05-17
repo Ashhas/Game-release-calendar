@@ -1,42 +1,16 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:get_it/get_it.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'igdb_repository.dart';
 
 class IGDBRepositoryImpl implements IGDBRepository {
-  final String clientId;
-  final String igdbBaseUrl;
-  final String? accessToken;
-  late final Dio dio;
+  final Dio dio;
 
   IGDBRepositoryImpl({
-    required this.clientId,
-    required this.igdbBaseUrl,
-    required this.accessToken,
-  }) {
-    dio = Dio(
-      BaseOptions(
-        baseUrl: igdbBaseUrl,
-      ),
-    );
-    dio.options.headers = {
-      'Client-ID': clientId,
-      'Authorization': 'Bearer $accessToken',
-    };
-    dio.interceptors.add(
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseBody: false,
-        responseHeader: true,
-        error: true,
-        compact: true,
-        maxWidth: 100,
-      ),
-    );
-  }
+    required this.dio,
+  });
 
   @override
   Future<List<Game>> getOncomingGamesThisMonth() async {
