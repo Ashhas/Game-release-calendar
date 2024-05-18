@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:game_release_calendar/src/theme/context_extensions.dart';
+part of '../menu_container.dart';
 
 class PrivacyPolicy extends StatelessWidget {
   const PrivacyPolicy({super.key});

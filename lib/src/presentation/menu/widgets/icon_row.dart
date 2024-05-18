@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:url_launcher/url_launcher.dart';
+part of '../menu_container.dart';
 
 class IconRow extends StatelessWidget {
   const IconRow({super.key});

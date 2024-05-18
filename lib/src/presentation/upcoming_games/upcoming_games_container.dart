@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/section/day_section.dart';
-import 'package:game_release_calendar/src/theme/context_extensions.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/filter_functions.dart';
 
 part '../upcoming_games/widgets/tabs/this_month_tab.dart';
