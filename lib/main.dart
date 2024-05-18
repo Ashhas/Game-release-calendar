@@ -5,6 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'package:game_release_calendar/src/app.dart';
@@ -90,5 +91,10 @@ Future<void> _initializeServices(GetIt getIt) async {
     IGDBService(
       repository: getIt.get<IGDBRepository>(),
     ),
+  );
+
+  final packageInfo = await PackageInfo.fromPlatform();
+  getIt.registerSingleton<PackageInfo>(
+    packageInfo,
   );
 }

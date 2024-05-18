@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:game_release_calendar/src/presentation/settings/menu_container.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/upcoming_games_container.dart';
 
@@ -36,14 +39,14 @@ class _DashboardState extends State<Dashboard> {
           ),
           NavigationDestination(
             icon: Icon(Icons.menu),
-            label: 'Menu',
+            label: 'About',
           ),
         ],
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
       body: [
         const UpcomingGamesContainer(),
-        Container(),
+        const MenuContainer(),
       ][currentPageIndex],
     );
   }
