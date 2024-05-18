@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -32,7 +33,7 @@ Future<void> main() async {
 }
 
 Future<void> _loadEnvVariables(GetIt getIt) async {
-  final jsonString = await rootBundle.loadString('assets/env.json');
+  final jsonString = await rootBundle.loadString('env/env.json');
   final mapString = jsonDecode(jsonString);
 
   getIt.registerSingleton<EnvConfig>(EnvConfig(mapString));
