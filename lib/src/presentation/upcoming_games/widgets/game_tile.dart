@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:intl/intl.dart';
+import 'package:game_release_calendar/src/utils/convert_functions.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/game_detail/game_detail_view.dart';
@@ -16,11 +15,7 @@ class GameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedDate = game.firstReleaseDate != null
-        ? DateFormat('dd-MM-yyyy').format(
-            DateTime.fromMillisecondsSinceEpoch(
-              game.firstReleaseDate! * 1000,
-            ),
-          )
+        ? ConvertFunctions.secondSinceEpochToDateTime(game.firstReleaseDate!)
         : '-';
 
     return ListTile(
