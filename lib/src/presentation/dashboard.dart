@@ -38,8 +38,8 @@ class _DashboardState extends State<Dashboard> {
             label: 'Upcoming',
           ),
           NavigationDestination(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
+            icon: Icon(Icons.more_horiz),
+            label: 'More',
           ),
         ],
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
