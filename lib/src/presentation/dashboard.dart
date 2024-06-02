@@ -42,7 +42,7 @@ class _DashboardState extends State<Dashboard> {
             label: 'More',
           ),
         ],
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       ),
       body: [
         const UpcomingGamesContainer(),
