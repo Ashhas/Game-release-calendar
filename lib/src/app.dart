@@ -21,7 +21,7 @@ class App extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider<UpcomingGamesCubit>(
-            create: (BuildContext context) => UpcomingGamesCubit(
+            create: (_) => UpcomingGamesCubit(
               igdbService: GetIt.instance.get<IGDBService>(),
             ),
           ),

@@ -14,22 +14,22 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int currentPageIndex = 0;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
-    context.read<UpcomingGamesCubit>().getGames();
     super.initState();
+    context.read<UpcomingGamesCubit>().getGames();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
-        selectedIndex: currentPageIndex,
+        selectedIndex: _currentPageIndex,
         onDestinationSelected: (int index) {
           setState(() {
-            currentPageIndex = index;
+            _currentPageIndex = index;
           });
         },
         destinations: const [
@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
       body: [
         const UpcomingGamesContainer(),
         const MoreContainer(),
-      ][currentPageIndex],
+      ][_currentPageIndex],
     );
   }
 }

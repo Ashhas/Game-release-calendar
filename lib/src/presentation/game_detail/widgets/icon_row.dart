@@ -15,6 +15,7 @@ class IconRow extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {},
+
           child: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -8,7 +8,7 @@ class TwitchToken {
   final int expiresIn;
   final String tokenType;
 
-  TwitchToken({
+  const TwitchToken({
     required this.accessToken,
     required this.expiresIn,
     required this.tokenType,

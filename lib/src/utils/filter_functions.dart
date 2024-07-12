@@ -39,6 +39,7 @@ class FilterFunctions {
     final endOfMonth = DateTime(now.year, now.month + 1, 0, 23, 59, 59, 999);
 
     for (final game in games) {
+      // ignore: avoid_nested_if
       if (game.firstReleaseDate != null) {
         final releaseDate = DateTime.fromMillisecondsSinceEpoch(
           game.firstReleaseDate! * 1000,
@@ -75,6 +76,7 @@ class FilterFunctions {
         DateTime(now.year, now.month + 2, 0, 23, 59, 59, 999);
 
     for (final game in games) {
+      // ignore: avoid_nested_if
       if (game.firstReleaseDate != null) {
         final releaseDate = DateTime.fromMillisecondsSinceEpoch(
           game.firstReleaseDate! * 1000,

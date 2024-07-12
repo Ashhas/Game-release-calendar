@@ -4,7 +4,7 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 class IGDBService {
   final IGDBRepository repository;
 
-  IGDBService({
+  const IGDBService({
     required this.repository,
   });
 

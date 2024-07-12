@@ -5,18 +5,13 @@ class IconRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        Column(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.mail),
-              onPressed: _openMailApp,
-            ),
-            const Text('Questions? Email us!'),
-          ],
+        IconButton(
+          icon: const Icon(Icons.mail),
+          onPressed: _openMailApp,
         ),
+        const Text('Questions? Email us!'),
       ],
     );
   }

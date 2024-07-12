@@ -1,7 +1,7 @@
 class EnvConfig {
   final Map<String, dynamic> map;
 
-  EnvConfig(this.map);
+  const EnvConfig(this.map);
 
   Map<String, dynamic> get envMap => map;
   String get twitchClientId => map['twitchClientId'] ?? '';

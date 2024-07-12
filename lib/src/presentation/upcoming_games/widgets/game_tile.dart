@@ -59,7 +59,7 @@ class GameTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => GameDetailView(
+            builder: (_) => GameDetailView(
               game: game,
             ),
           ),

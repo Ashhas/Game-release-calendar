@@ -23,7 +23,7 @@ class UpcomingGamesContainer extends StatelessWidget {
       length: 3,
       child: Scaffold(
         body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          headerSliverBuilder: (BuildContext context, _) {
             return [
               SliverAppBar(
                 title: Row(

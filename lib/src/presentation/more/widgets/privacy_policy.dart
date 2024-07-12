@@ -14,8 +14,8 @@ class PrivacyPolicy extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.spacings.m),
-        child: RichText(
-          text: TextSpan(
+        child: Text.rich(
+          TextSpan(
             style: const TextStyle(color: Colors.white, fontSize: 16),
             children: [
               WidgetSpan(child: SizedBox(height: context.spacings.m)),

@@ -28,10 +28,7 @@ class GameInfo extends StatelessWidget {
         Flexible(
             flex: 2,
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.spacings.xs,
-                vertical: context.spacings.xs,
-              ),
+              padding: EdgeInsets.all(context.spacings.xs),
               child: SpacedColumn(
                 spacing: context.spacings.xxs,
                 mainAxisAlignment: MainAxisAlignment.start,

@@ -34,7 +34,7 @@ class Game {
   final int? versionParent;
   final String? versionTitle;
 
-  Game({
+  const Game({
     required this.id,
     required this.createdAt,
     required this.name,

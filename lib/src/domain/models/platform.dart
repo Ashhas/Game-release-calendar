@@ -4,7 +4,7 @@ class Platform {
   final String? name;
   final String? url;
 
-  Platform({
+  const Platform({
     required this.id,
     required this.abbreviation,
     required this.name,

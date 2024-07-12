@@ -6,7 +6,7 @@ class NextMonthTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UpcomingGamesCubit, List<Game>>(
-      builder: (context, state) {
+      builder: (_, state) {
         final groupedGames = FilterFunctions.filterGamesForNextMonth(
           state,
         );

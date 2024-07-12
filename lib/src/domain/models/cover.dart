@@ -3,7 +3,7 @@ class Cover {
   final String? url;
   final String? imageId;
 
-  Cover({
+  const Cover({
     required this.id,
     required this.url,
     required this.imageId,

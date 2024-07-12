@@ -1,3 +1,4 @@
+// ignore: prefer_library_prefixes
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game_release_calendar/src/domain/models/twitch_token.dart';
 
 class TwitchAuthService {
+  // ignore: prefer_const_constructor_declarations
   TwitchAuthService({
     required this.clientId,
     required this.clientSecret,

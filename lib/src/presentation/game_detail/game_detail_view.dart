@@ -28,10 +28,7 @@ class _GameDetailViewState extends State<GameDetailView> {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: context.spacings.m,
-          vertical: context.spacings.m,
-        ),
+        padding: EdgeInsets.all(context.spacings.m),
         child: SpacedColumn(
           spacing: context.spacings.m,
           mainAxisAlignment: MainAxisAlignment.start,

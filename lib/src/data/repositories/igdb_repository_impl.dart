@@ -1,3 +1,4 @@
+// ignore: prefer_library_prefixes
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -8,7 +9,7 @@ import 'igdb_repository.dart';
 class IGDBRepositoryImpl implements IGDBRepository {
   final Dio dio;
 
-  IGDBRepositoryImpl({
+  const IGDBRepositoryImpl({
     required this.dio,
   });
 
