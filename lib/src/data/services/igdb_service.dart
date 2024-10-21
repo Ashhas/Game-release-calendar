@@ -1,4 +1,5 @@
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
+import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 
 class IGDBService {
@@ -8,19 +9,40 @@ class IGDBService {
     required this.repository,
   });
 
-  Future<List<Game>> getOncomingGamesThisMonth() {
-    return repository.getOncomingGamesThisMonth();
+  Future<List<Game>> getGames(GameFilter filter) {
+    return repository.getGames(_buildQueryParameters(filter));
   }
 
-  Future<List<Game>> getGamesThisMonth() {
-    return repository.getGamesThisMonth();
-  }
+  String _buildQueryParameters(GameFilter filter) {
+    List<String> filterConditions = [];
 
-  Future<List<Game>> getGamesNextMonth() {
-    return repository.getGamesNextMonth();
-  }
+    if (filter.platform != null) {
+      filterConditions.add('platforms = ${filter.platform}');
+    }
 
-  Future<List<Game>> getGamesThisAndNextTwoMonths() {
-    return repository.getGamesThisAndNextTwoMonths();
+    if (filter.releaseDateRange?.start != null) {
+      final fromTimestamp =
+          filter.releaseDateRange!.start.millisecondsSinceEpoch ~/ 1000;
+      filterConditions.add('first_release_date >= $fromTimestamp');
+    }
+
+    if (filter.releaseDateRange?.end != null) {
+      final toTimestamp =
+          filter.releaseDateRange!.end.millisecondsSinceEpoch ~/ 1000;
+      filterConditions.add('first_release_date < $toTimestamp');
+    }
+
+    // Create a where clause with the filter conditions.
+    // Default value is current date.
+    String whereClause = filterConditions.isNotEmpty
+        ? 'where ${filterConditions.join(' & ')};'
+        : 'where first_release_date >= ${DateTime.now().millisecondsSinceEpoch ~/ 1000};';
+
+    String query = 'fields *, platforms.*, cover.*; '
+        '$whereClause '
+        'limit 500; '
+        'sort first_release_date asc;';
+
+    return query;
   }
 }

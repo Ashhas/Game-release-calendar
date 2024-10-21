@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/game_tile.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/section/section_header.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_tile/game_tile.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/section/section_header.dart';
+
 
 class DaySection extends StatelessWidget {
   final MapEntry<DateTime, List<Game>> groupedGames;

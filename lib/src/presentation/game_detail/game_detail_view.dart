@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/convert_functions.dart';
 import 'package:game_release_calendar/src/utils/url_launch_functions.dart';
 
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:spaced_flex/spaced_flex.dart';
 
 part 'widgets/game_info.dart';
