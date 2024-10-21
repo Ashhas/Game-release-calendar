@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_tile/game_tile.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/section/section_header.dart';
-
+part of '../game_list.dart';
 
 class DaySection extends StatelessWidget {
   final MapEntry<DateTime, List<Game>> groupedGames;
@@ -19,15 +14,11 @@ class DaySection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(date: groupedGames.key),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: groupedGames.value
-              .map(
-                (game) => GameTile(
-                  game: game,
-                ),
-              )
-              .toList(),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: groupedGames.value.length,
+          itemBuilder: (_, index) => GameTile(game: groupedGames.value[index]),
         ),
       ],
     );

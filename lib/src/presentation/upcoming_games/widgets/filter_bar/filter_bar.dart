@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_bar/popups/date_filter_bottom_sheet.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+import 'package:game_release_calendar/src/utils/date_helper.dart';
 
-class FilterBar extends StatefulWidget {
+part 'popups/date_filter_bottom_sheet.dart';
+
+class FilterBar extends StatelessWidget {
   const FilterBar({super.key});
 
-  @override
-  State<FilterBar> createState() => _FilterBarState();
-}
-
-class _FilterBarState extends State<FilterBar> {
   @override
   Widget build(BuildContext context) {
     final isSelected = context.select(
       (UpcomingGamesCubit cubit) =>
           cubit.state.selectedFilters.releaseDateChoice != null,
     );
+
+    void _showBottomSheet() => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (_) => BlocProvider.value(
+            value: BlocProvider.of<UpcomingGamesCubit>(context),
+            child: DateFilterBottomSheet(),
+          ),
+        );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -29,7 +37,6 @@ class _FilterBarState extends State<FilterBar> {
           ).copyWith(
             bottom: context.spacings.xs,
           ),
-          // ignore: avoid_single_child_in_flex
           child: Row(
             children: [
               FilterChip(
@@ -42,19 +49,7 @@ class _FilterBarState extends State<FilterBar> {
                   ),
                 ),
                 selected: isSelected,
-                onSelected: (_) {
-                  _showBottomSheet();
-
-                  print(
-                    "Selected: " +
-                        context
-                            .read<UpcomingGamesCubit>()
-                            .state
-                            .selectedFilters
-                            .releaseDateChoice
-                            .toString(),
-                  );
-                },
+                onSelected: (_) => _showBottomSheet(),
               ),
             ],
           ),
@@ -63,16 +58,4 @@ class _FilterBarState extends State<FilterBar> {
       ],
     );
   }
-
-  void _showBottomSheet() =>
-      // ignore: prefer_async_await
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => BlocProvider.value(
-          value: BlocProvider.of<UpcomingGamesCubit>(context),
-          child: DateFilterBottomSheet(),
-        ),
-      );
 }

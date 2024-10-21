@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
-import 'package:game_release_calendar/src/utils/convert_functions.dart';
-
-import 'package:game_release_calendar/src/domain/models/game.dart';
+part of '../game_list.dart';
 
 class GameTile extends StatelessWidget {
   final Game game;
@@ -19,18 +15,14 @@ class GameTile extends StatelessWidget {
         : '-';
 
     return ListTile(
-      leading: FadeInImage(
-        placeholder: const AssetImage('assets/images/placeholder_210_284.png'),
-        fadeInDuration: const Duration(milliseconds: 100),
+      leading: FadeInImage.assetNetwork(
+        placeholder: 'assets/images/placeholder_210_284.png',
         image: game.cover?.imageId != null
-            ? NetworkImage(
-                'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg',
-              ) as ImageProvider
-            : const AssetImage('assets/images/placeholder_210_284.png')
-                as ImageProvider,
-        imageErrorBuilder: (_, __, ___) {
-          return Image.asset('assets/images/placeholder_210_284.png');
-        },
+            ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover!.imageId}.jpg'
+            : 'assets/images/placeholder_210_284.png',
+        fadeInDuration: const Duration(milliseconds: 100),
+        imageErrorBuilder: (_, __, ___) =>
+            Image.asset('assets/images/placeholder_210_284.png'),
       ),
       title: Text(game.name),
       subtitle: Column(
@@ -38,33 +30,29 @@ class GameTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Release date: $formattedDate'),
-          Wrap(
-            spacing: 4.0,
-            runSpacing: 0,
-            children: game.platforms!
-                .map(
-                  (platform) => Chip(
-                    label: Text(
-                      platform.abbreviation ?? platform.name ?? 'N/A',
+          if (game.platforms != null)
+            Wrap(
+              spacing: 4.0,
+              children: game.platforms!
+                  .map(
+                    (platform) => Chip(
+                      label: Text(
+                        platform.abbreviation ?? platform.name ?? 'N/A',
+                      ),
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
                     ),
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
-                  ),
-                )
-                .toList(),
-          ),
+                  )
+                  .toList(),
+            ),
         ],
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => GameDetailView(
-              game: game,
-            ),
-          ),
-        );
-      },
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => GameDetailView(game: game),
+        ),
+      ),
     );
   }
 }

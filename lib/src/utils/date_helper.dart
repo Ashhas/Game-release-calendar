@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
+
 class DateHelper {
   /// Returns the start of the current week (Monday).
   static DateTime getStartOfThisWeek() {
@@ -40,5 +43,25 @@ class DateHelper {
         ? DateTime(startOfNextMonth.year, startOfNextMonth.month + 1, 1)
         : DateTime(startOfNextMonth.year + 1, 1, 1);
     return startOfFollowingMonth.subtract(Duration(days: 1));
+  }
+
+  static DateTimeRange getDateRangeForChoice(DateFilterChoice choice) {
+    switch (choice) {
+      case DateFilterChoice.thisWeek:
+        return DateTimeRange(
+          start: DateHelper.getStartOfThisWeek(),
+          end: DateHelper.getEndOfThisWeek(),
+        );
+      case DateFilterChoice.thisMonth:
+        return DateTimeRange(
+          start: DateHelper.getStartOfThisMonth(),
+          end: DateHelper.getEndOfThisMonth(),
+        );
+      case DateFilterChoice.nextMonth:
+        return DateTimeRange(
+          start: DateHelper.getStartOfNextMonth(),
+          end: DateHelper.getEndOfNextMonth(),
+        );
+    }
   }
 }

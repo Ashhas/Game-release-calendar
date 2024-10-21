@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:intl/intl.dart';
-
-import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+part of '../game_list.dart';
 
 class SectionHeader extends StatelessWidget {
   final DateTime date;
