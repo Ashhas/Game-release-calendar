@@ -34,7 +34,7 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Filter by Date',
+                'Filter by Platform',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               IconButton(
@@ -46,30 +46,26 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
             ],
           ),
           SizedBox(height: context.spacings.m),
-          RadioListTile<PlatformFilterChoice>(
-            title: Text(PlatformFilterChoice.ps5.fullName),
-            value: PlatformFilterChoice.ps5,
-            groupValue: _selectedPlatformFilterOption,
-            onChanged: (PlatformFilterChoice? value) {
-              setState(() {
-                if (value != null) {
-                  _selectedPlatformFilterOption = value;
-                }
-              });
-            },
+          // Add a ListView to make the RadioListTiles scrollable
+          Expanded(
+            child: ListView(
+              children: PlatformFilterChoice.values.map((platform) {
+                return RadioListTile<PlatformFilterChoice>(
+                  title: Text(platform.fullName),
+                  value: platform,
+                  groupValue: _selectedPlatformFilterOption,
+                  onChanged: (PlatformFilterChoice? value) {
+                    setState(() {
+                      if (value != null) {
+                        _selectedPlatformFilterOption = value;
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
           ),
-          RadioListTile<PlatformFilterChoice>(
-            title: Text(PlatformFilterChoice.pc.fullName),
-            value: PlatformFilterChoice.pc,
-            groupValue: _selectedPlatformFilterOption,
-            onChanged: (PlatformFilterChoice? value) {
-              setState(() {
-                if (value != null) {
-                  _selectedPlatformFilterOption = value;
-                }
-              });
-            },
-          ),
+
           SizedBox(height: context.spacings.m),
           SizedBox(
             width: double.infinity,
