@@ -11,32 +11,30 @@ part 'widgets/game_info.dart';
 
 part 'widgets/icon_row.dart';
 
-class GameDetailView extends StatefulWidget {
-  final Game game;
-
+class GameDetailView extends StatelessWidget {
   const GameDetailView({
     required this.game,
     super.key,
   });
 
-  @override
-  State<GameDetailView> createState() => _GameDetailViewState();
-}
+  final Game game;
 
-class _GameDetailViewState extends State<GameDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: EdgeInsets.all(context.spacings.m),
         child: SpacedColumn(
           spacing: context.spacings.m,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            GameInfo(game: widget.game),
+            GameInfo(game: game),
             const Divider(),
-            IconRow(game: widget.game),
+            IconRow(game: game),
           ],
         ),
       ),

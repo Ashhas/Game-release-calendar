@@ -10,7 +10,7 @@ part 'game_filter.freezed.dart';
 @freezed
 class GameFilter with _$GameFilter {
   const factory GameFilter({
-    PlatformFilterChoice? platformChoice,
+    required Set<PlatformFilterChoice> platformChoices,
     DateFilterChoice? releaseDateChoice,
     DateTimeRange? releaseDateRange,
   }) = _GameFilter;

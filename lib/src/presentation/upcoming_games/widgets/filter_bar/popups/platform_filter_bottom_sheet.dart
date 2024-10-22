@@ -9,13 +9,14 @@ class PlatformFilterBottomSheet extends StatefulWidget {
 }
 
 class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
-  late PlatformFilterChoice? _selectedPlatformFilterOption;
+  late Set<PlatformFilterChoice> _selectedPlatformFilterOptions;
 
   @override
   void initState() {
     super.initState();
-    _selectedPlatformFilterOption =
-        context.read<UpcomingGamesCubit>().state.selectedFilters.platformChoice;
+    _selectedPlatformFilterOptions = Set.of(
+      context.read<UpcomingGamesCubit>().state.selectedFilters.platformChoices,
+    );
   }
 
   @override
@@ -49,14 +50,18 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
           Expanded(
             child: ListView(
               children: PlatformFilterChoice.values.map((platform) {
-                return RadioListTile<PlatformFilterChoice>(
+                return CheckboxListTile(
                   title: Text(platform.fullName),
-                  value: platform,
-                  groupValue: _selectedPlatformFilterOption,
-                  onChanged: (PlatformFilterChoice? value) {
+                  value: _selectedPlatformFilterOptions.contains(platform),
+                  onChanged: (bool? isChecked) {
                     setState(() {
-                      if (value != null) {
-                        _selectedPlatformFilterOption = value;
+                      if (isChecked == true) {
+                        if (!_selectedPlatformFilterOptions
+                            .contains(platform)) {
+                          _selectedPlatformFilterOptions.add(platform);
+                        }
+                      } else {
+                        _selectedPlatformFilterOptions.remove(platform);
                       }
                     });
                   },
@@ -70,9 +75,7 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
             child: ElevatedButton(
               child: const Text('Apply Filter'),
               onPressed: () {
-                _selectedPlatformFilterOption != null
-                    ? _applyFilter(context)
-                    : null;
+                _applyFilter(context);
               },
             ),
           ),
@@ -93,14 +96,14 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
 
   Future<void> _applyFilter(BuildContext context) async {
     await context.read<UpcomingGamesCubit>().updatePlatformFilter(
-          choice: _selectedPlatformFilterOption,
+          choices: _selectedPlatformFilterOptions,
         );
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
   }
 
   Future<void> _cleanFilter(BuildContext context) async {
-    await context.read<UpcomingGamesCubit>().updatePlatformFilter(choice: null);
+    await context.read<UpcomingGamesCubit>().updatePlatformFilter(choices: {});
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
   }

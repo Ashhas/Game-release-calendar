@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GameFilter {
-  PlatformFilterChoice? get platformChoice =>
+  Set<PlatformFilterChoice> get platformChoices =>
       throw _privateConstructorUsedError;
   DateFilterChoice? get releaseDateChoice => throw _privateConstructorUsedError;
   DateTimeRange? get releaseDateRange => throw _privateConstructorUsedError;
@@ -33,7 +33,7 @@ abstract class $GameFilterCopyWith<$Res> {
       _$GameFilterCopyWithImpl<$Res, GameFilter>;
   @useResult
   $Res call(
-      {PlatformFilterChoice? platformChoice,
+      {Set<PlatformFilterChoice> platformChoices,
       DateFilterChoice? releaseDateChoice,
       DateTimeRange? releaseDateRange});
 }
@@ -51,15 +51,15 @@ class _$GameFilterCopyWithImpl<$Res, $Val extends GameFilter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? platformChoice = freezed,
+    Object? platformChoices = null,
     Object? releaseDateChoice = freezed,
     Object? releaseDateRange = freezed,
   }) {
     return _then(_value.copyWith(
-      platformChoice: freezed == platformChoice
-          ? _value.platformChoice
-          : platformChoice // ignore: cast_nullable_to_non_nullable
-              as PlatformFilterChoice?,
+      platformChoices: null == platformChoices
+          ? _value.platformChoices
+          : platformChoices // ignore: cast_nullable_to_non_nullable
+              as Set<PlatformFilterChoice>,
       releaseDateChoice: freezed == releaseDateChoice
           ? _value.releaseDateChoice
           : releaseDateChoice // ignore: cast_nullable_to_non_nullable
@@ -81,7 +81,7 @@ abstract class _$$GameFilterImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {PlatformFilterChoice? platformChoice,
+      {Set<PlatformFilterChoice> platformChoices,
       DateFilterChoice? releaseDateChoice,
       DateTimeRange? releaseDateRange});
 }
@@ -97,15 +97,15 @@ class __$$GameFilterImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? platformChoice = freezed,
+    Object? platformChoices = null,
     Object? releaseDateChoice = freezed,
     Object? releaseDateRange = freezed,
   }) {
     return _then(_$GameFilterImpl(
-      platformChoice: freezed == platformChoice
-          ? _value.platformChoice
-          : platformChoice // ignore: cast_nullable_to_non_nullable
-              as PlatformFilterChoice?,
+      platformChoices: null == platformChoices
+          ? _value._platformChoices
+          : platformChoices // ignore: cast_nullable_to_non_nullable
+              as Set<PlatformFilterChoice>,
       releaseDateChoice: freezed == releaseDateChoice
           ? _value.releaseDateChoice
           : releaseDateChoice // ignore: cast_nullable_to_non_nullable
@@ -122,10 +122,19 @@ class __$$GameFilterImplCopyWithImpl<$Res>
 
 class _$GameFilterImpl implements _GameFilter {
   const _$GameFilterImpl(
-      {this.platformChoice, this.releaseDateChoice, this.releaseDateRange});
+      {required final Set<PlatformFilterChoice> platformChoices,
+      this.releaseDateChoice,
+      this.releaseDateRange})
+      : _platformChoices = platformChoices;
 
+  final Set<PlatformFilterChoice> _platformChoices;
   @override
-  final PlatformFilterChoice? platformChoice;
+  Set<PlatformFilterChoice> get platformChoices {
+    if (_platformChoices is EqualUnmodifiableSetView) return _platformChoices;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_platformChoices);
+  }
+
   @override
   final DateFilterChoice? releaseDateChoice;
   @override
@@ -133,7 +142,7 @@ class _$GameFilterImpl implements _GameFilter {
 
   @override
   String toString() {
-    return 'GameFilter(platformChoice: $platformChoice, releaseDateChoice: $releaseDateChoice, releaseDateRange: $releaseDateRange)';
+    return 'GameFilter(platformChoices: $platformChoices, releaseDateChoice: $releaseDateChoice, releaseDateRange: $releaseDateRange)';
   }
 
   @override
@@ -141,8 +150,8 @@ class _$GameFilterImpl implements _GameFilter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GameFilterImpl &&
-            (identical(other.platformChoice, platformChoice) ||
-                other.platformChoice == platformChoice) &&
+            const DeepCollectionEquality()
+                .equals(other._platformChoices, _platformChoices) &&
             (identical(other.releaseDateChoice, releaseDateChoice) ||
                 other.releaseDateChoice == releaseDateChoice) &&
             (identical(other.releaseDateRange, releaseDateRange) ||
@@ -151,7 +160,10 @@ class _$GameFilterImpl implements _GameFilter {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, platformChoice, releaseDateChoice, releaseDateRange);
+      runtimeType,
+      const DeepCollectionEquality().hash(_platformChoices),
+      releaseDateChoice,
+      releaseDateRange);
 
   @JsonKey(ignore: true)
   @override
@@ -162,12 +174,12 @@ class _$GameFilterImpl implements _GameFilter {
 
 abstract class _GameFilter implements GameFilter {
   const factory _GameFilter(
-      {final PlatformFilterChoice? platformChoice,
+      {required final Set<PlatformFilterChoice> platformChoices,
       final DateFilterChoice? releaseDateChoice,
       final DateTimeRange? releaseDateRange}) = _$GameFilterImpl;
 
   @override
-  PlatformFilterChoice? get platformChoice;
+  Set<PlatformFilterChoice> get platformChoices;
   @override
   DateFilterChoice? get releaseDateChoice;
   @override

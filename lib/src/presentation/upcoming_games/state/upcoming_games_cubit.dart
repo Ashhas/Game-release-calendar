@@ -44,12 +44,12 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   }
 
   Future<void> updatePlatformFilter({
-    required PlatformFilterChoice? choice,
+    required Set<PlatformFilterChoice> choices,
   }) async {
     emit(
       state.copyWith(
         selectedFilters: state.selectedFilters.copyWith(
-          platformChoice: choice,
+          platformChoices: choices,
         ),
       ),
     );

@@ -10,7 +10,7 @@ class UpcomingGamesState {
   UpcomingGamesState({
     this.games = const AsyncValue.data({}),
     GameFilter? selectedFilters,
-  }) : selectedFilters = selectedFilters ?? GameFilter();
+  }) : selectedFilters = selectedFilters ?? GameFilter(platformChoices: {});
 
   UpcomingGamesState copyWith({
     AsyncValue<Map<DateTime, List<Game>>>? games,

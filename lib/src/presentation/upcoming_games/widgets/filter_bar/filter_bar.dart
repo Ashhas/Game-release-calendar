@@ -22,8 +22,10 @@ class FilterBar extends StatelessWidget {
           cubit.state.selectedFilters.releaseDateChoice != null,
     );
     final isPlatformFilterSelected = context.select(
-      (UpcomingGamesCubit cubit) =>
-          cubit.state.selectedFilters.platformChoice != null,
+      (UpcomingGamesCubit cubit) {
+        final platformChoices = cubit.state.selectedFilters.platformChoices;
+        return platformChoices.isNotEmpty;
+      },
     );
 
     void _showBottomSheet(Widget widget) => showModalBottomSheet(
