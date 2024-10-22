@@ -72,6 +72,30 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
               });
             },
           ),
+          RadioListTile<DateFilterChoice>(
+            title: const Text('Next Month'),
+            value: DateFilterChoice.nextMonth,
+            groupValue: _selectedDateFilterOption,
+            onChanged: (DateFilterChoice? value) {
+              setState(() {
+                if (value != null) {
+                  _selectedDateFilterOption = value;
+                }
+              });
+            },
+          ),
+          RadioListTile<DateFilterChoice>(
+            title: const Text('Next 3 Month'),
+            value: DateFilterChoice.next3Months,
+            groupValue: _selectedDateFilterOption,
+            onChanged: (DateFilterChoice? value) {
+              setState(() {
+                if (value != null) {
+                  _selectedDateFilterOption = value;
+                }
+              });
+            },
+          ),
           SizedBox(height: context.spacings.m),
           SizedBox(
             width: double.infinity,

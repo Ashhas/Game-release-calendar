@@ -46,6 +46,24 @@ class DateHelper {
     return startOfFollowingMonth.subtract(Duration(days: 1));
   }
 
+  /// Returns the start of the next 3 months (current date to 3 months ahead).
+  static DateTime getStartOfNext3Months() {
+    DateTime now = DateTime.now();
+    return DateTime(
+        now.year, now.month, 1); // Start from the 1st of the current month
+  }
+
+  /// Returns the end of the next 3 months (3 months after the current month).
+  static DateTime getEndOfNext3Months() {
+    DateTime now = DateTime.now();
+    DateTime threeMonthsAhead = (now.month + 3 <= 12)
+        ? DateTime(now.year, now.month + 3, 1)
+        : DateTime(now.year + 1, (now.month + 3) % 12,
+            1); // Handle year transition if needed
+    return threeMonthsAhead
+        .subtract(Duration(days: 1)); // Last day of the third month
+  }
+
   static DateTimeRange getDateRangeForChoice(DateFilterChoice choice) {
     switch (choice) {
       case DateFilterChoice.thisWeek:
@@ -62,6 +80,11 @@ class DateHelper {
         return DateTimeRange(
           start: DateHelper.getStartOfNextMonth(),
           end: DateHelper.getEndOfNextMonth(),
+        );
+      case DateFilterChoice.next3Months:
+        return DateTimeRange(
+          start: DateHelper.getStartOfNext3Months(),
+          end: DateHelper.getEndOfNext3Months(),
         );
     }
   }
