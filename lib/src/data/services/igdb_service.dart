@@ -17,7 +17,7 @@ class IGDBService {
     List<String> filterConditions = [];
 
     if (filter.platform != null) {
-      filterConditions.add('platforms = ${filter.platform}');
+      filterConditions.add('platforms = (${filter.platform!.id.toString()})');
     }
 
     if (filter.releaseDateRange?.start != null) {

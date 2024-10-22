@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
+
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/platform_filter_choice.dart';
 
-class GameFilter {
-  String? platform;
-  DateFilterChoice? releaseDateChoice;
-  DateTimeRange? releaseDateRange;
+part 'game_filter.freezed.dart';
 
-  GameFilter({
-    this.platform,
-    this.releaseDateChoice,
-    this.releaseDateRange,
-  });
-
-  GameFilter copyWith({
-    String? platform,
+@freezed
+class GameFilter with _$GameFilter {
+  const factory GameFilter({
+    PlatformFilterChoice? platform,
     DateFilterChoice? releaseDateChoice,
     DateTimeRange? releaseDateRange,
-  }) {
-    return GameFilter(
-      platform: platform,
-      releaseDateChoice: releaseDateChoice,
-      releaseDateRange: releaseDateRange,
-    );
-  }
+  }) = _GameFilter;
 }

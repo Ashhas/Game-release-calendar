@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_bar/filter_bar.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';

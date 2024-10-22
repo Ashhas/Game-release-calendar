@@ -1,23 +1,21 @@
 part of '../filter_bar.dart';
 
-class DateFilterBottomSheet extends StatefulWidget {
-  const DateFilterBottomSheet({super.key});
+class PlatformFilterBottomSheet extends StatefulWidget {
+  const PlatformFilterBottomSheet({super.key});
 
   @override
-  State<DateFilterBottomSheet> createState() => _DateFilterBottomSheetState();
+  State<PlatformFilterBottomSheet> createState() =>
+      _PlatformFilterBottomSheetState();
 }
 
-class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
-  late DateFilterChoice? _selectedDateFilterOption;
+class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
+  late PlatformFilterChoice? _selectedPlatformFilterOption;
 
   @override
   void initState() {
     super.initState();
-    _selectedDateFilterOption = context
-        .read<UpcomingGamesCubit>()
-        .state
-        .selectedFilters
-        .releaseDateChoice;
+    _selectedPlatformFilterOption =
+        context.read<UpcomingGamesCubit>().state.selectedFilters.platform;
   }
 
   @override
@@ -48,26 +46,26 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
             ],
           ),
           SizedBox(height: context.spacings.m),
-          RadioListTile<DateFilterChoice>(
-            title: const Text('This Week'),
-            value: DateFilterChoice.thisWeek,
-            groupValue: _selectedDateFilterOption,
-            onChanged: (DateFilterChoice? value) {
+          RadioListTile<PlatformFilterChoice>(
+            title: Text(PlatformFilterChoice.ps5.fullName),
+            value: PlatformFilterChoice.ps5,
+            groupValue: _selectedPlatformFilterOption,
+            onChanged: (PlatformFilterChoice? value) {
               setState(() {
                 if (value != null) {
-                  _selectedDateFilterOption = value;
+                  _selectedPlatformFilterOption = value;
                 }
               });
             },
           ),
-          RadioListTile<DateFilterChoice>(
-            title: const Text('This Month'),
-            value: DateFilterChoice.thisMonth,
-            groupValue: _selectedDateFilterOption,
-            onChanged: (DateFilterChoice? value) {
+          RadioListTile<PlatformFilterChoice>(
+            title: Text(PlatformFilterChoice.pc.fullName),
+            value: PlatformFilterChoice.pc,
+            groupValue: _selectedPlatformFilterOption,
+            onChanged: (PlatformFilterChoice? value) {
               setState(() {
                 if (value != null) {
-                  _selectedDateFilterOption = value;
+                  _selectedPlatformFilterOption = value;
                 }
               });
             },
@@ -78,7 +76,7 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
             child: ElevatedButton(
               child: const Text('Apply Filter'),
               onPressed: () {
-                _selectedDateFilterOption != null
+                _selectedPlatformFilterOption != null
                     ? _applyFilter(context)
                     : null;
               },
@@ -100,20 +98,15 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
   }
 
   Future<void> _applyFilter(BuildContext context) async {
-    final releaseDateRange =
-        DateHelper.getDateRangeForChoice(_selectedDateFilterOption!);
-    await context.read<UpcomingGamesCubit>().updateDateFilter(
-          choice: _selectedDateFilterOption!,
-          range: releaseDateRange,
+    await context.read<UpcomingGamesCubit>().updatePlatformFilter(
+          choice: _selectedPlatformFilterOption,
         );
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
   }
 
   Future<void> _cleanFilter(BuildContext context) async {
-    await context
-        .read<UpcomingGamesCubit>()
-        .updateDateFilter(choice: null, range: null);
+    await context.read<UpcomingGamesCubit>().updatePlatformFilter(choice: null);
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
   }

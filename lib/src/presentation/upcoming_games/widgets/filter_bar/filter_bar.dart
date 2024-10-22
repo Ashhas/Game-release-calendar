@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/platform_filter_choice.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_helper.dart';
 
 part 'popups/date_filter_bottom_sheet.dart';
 
+part 'popups/platform_filter_bottom_sheet.dart';
+
 class FilterBar extends StatelessWidget {
   const FilterBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = context.select(
+    final isDateFilterSelected = context.select(
       (UpcomingGamesCubit cubit) =>
           cubit.state.selectedFilters.releaseDateChoice != null,
     );
+    final isPlatformFilterSelected = context.select(
+      (UpcomingGamesCubit cubit) =>
+          cubit.state.selectedFilters.platform != null,
+    );
 
-    void _showBottomSheet() => showModalBottomSheet(
+    void _showBottomSheet(Widget widget) => showModalBottomSheet(
           context: context,
           isScrollControlled: true,
           useSafeArea: true,
-          builder: (_) => BlocProvider.value(
-            value: BlocProvider.of<UpcomingGamesCubit>(context),
-            child: DateFilterBottomSheet(),
-          ),
+          builder: (_) => widget,
         );
 
     return Column(
@@ -48,8 +54,31 @@ class FilterBar extends StatelessWidget {
                     Radius.circular(8),
                   ),
                 ),
-                selected: isSelected,
-                onSelected: (_) => _showBottomSheet(),
+                selected: isDateFilterSelected,
+                onSelected: (_) => _showBottomSheet(
+                  BlocProvider.value(
+                    value: BlocProvider.of<UpcomingGamesCubit>(context),
+                    child: DateFilterBottomSheet(),
+                  ),
+                ),
+              ),
+              SizedBox(width: context.spacings.xs),
+              FilterChip(
+                label: Center(
+                  child: const Text('Platform'),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
+                selected: isPlatformFilterSelected,
+                onSelected: (_) => _showBottomSheet(
+                  BlocProvider.value(
+                    value: BlocProvider.of<UpcomingGamesCubit>(context),
+                    child: PlatformFilterBottomSheet(),
+                  ),
+                ),
               ),
             ],
           ),
