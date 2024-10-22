@@ -16,8 +16,9 @@ class IGDBService {
   String _buildQueryParameters(GameFilter filter) {
     List<String> filterConditions = [];
 
-    if (filter.platform != null) {
-      filterConditions.add('platforms = (${filter.platform!.id.toString()})');
+    if (filter.platformChoice != null) {
+      filterConditions
+          .add('platforms = (${filter.platformChoice!.id.toString()})');
     }
 
     if (filter.releaseDateRange?.start != null) {

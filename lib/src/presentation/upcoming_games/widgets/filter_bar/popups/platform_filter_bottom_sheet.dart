@@ -15,7 +15,7 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
   void initState() {
     super.initState();
     _selectedPlatformFilterOption =
-        context.read<UpcomingGamesCubit>().state.selectedFilters.platform;
+        context.read<UpcomingGamesCubit>().state.selectedFilters.platformChoice;
   }
 
   @override
@@ -46,7 +46,6 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
             ],
           ),
           SizedBox(height: context.spacings.m),
-          // Add a ListView to make the RadioListTiles scrollable
           Expanded(
             child: ListView(
               children: PlatformFilterChoice.values.map((platform) {
@@ -65,7 +64,6 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
               }).toList(),
             ),
           ),
-
           SizedBox(height: context.spacings.m),
           SizedBox(
             width: double.infinity,

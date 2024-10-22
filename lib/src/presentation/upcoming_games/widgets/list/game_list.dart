@@ -26,14 +26,16 @@ class GameList extends StatelessWidget {
       child: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
         builder: (_, state) {
           return state.games.when(
-            data: (games) => ListView.separated(
-              itemCount: games.length,
-              separatorBuilder: (_, __) => const Divider(thickness: 1),
-              itemBuilder: (_, index) => DaySection(
-                groupedGames: games.entries.elementAt(index),
-                key: ValueKey(games.entries.elementAt(index).key),
-              ),
-            ),
+            data: (games) => games.isEmpty
+                ? Center(child: Text('No games found'))
+                : ListView.separated(
+                    itemCount: games.length,
+                    separatorBuilder: (_, __) => const Divider(thickness: 1),
+                    itemBuilder: (_, index) => DaySection(
+                      groupedGames: games.entries.elementAt(index),
+                      key: ValueKey(games.entries.elementAt(index).key),
+                    ),
+                  ),
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, _) => Center(child: Text('Error: $error')),
           );

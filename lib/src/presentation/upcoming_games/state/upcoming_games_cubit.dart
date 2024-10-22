@@ -49,7 +49,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
     emit(
       state.copyWith(
         selectedFilters: state.selectedFilters.copyWith(
-          platform: choice,
+          platformChoice: choice,
         ),
       ),
     );
