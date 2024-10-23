@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'package:game_release_calendar/src/app.dart';
@@ -25,6 +29,7 @@ Future<void> main() async {
   await _initializeDio(getIt);
   await _initializeRepositories(getIt);
   await _initializeServices(getIt);
+  await _initializeHive(getIt);
 
   runApp(
     const App(),
@@ -96,5 +101,16 @@ Future<void> _initializeServices(GetIt getIt) async {
   final packageInfo = await PackageInfo.fromPlatform();
   getIt.registerSingleton<PackageInfo>(
     packageInfo,
+  );
+}
+
+Future<void> _initializeHive(GetIt getIt) async {
+  Directory directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(GameAdapter());
+
+  final box = await Hive.openBox('game_bookmark_box');
+  getIt.registerSingleton<Box>(
+    box,
   );
 }

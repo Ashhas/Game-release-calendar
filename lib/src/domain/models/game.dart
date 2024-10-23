@@ -1,37 +1,97 @@
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
+import 'package:hive/hive.dart';
 
+part 'game.g.dart';
+
+@HiveType(typeId: 0)
 class Game {
+  @HiveField(0)
   final int id;
+
+  @HiveField(1)
   final int createdAt;
+
+  @HiveField(2)
   final String name;
+
+  @HiveField(3)
   final int updatedAt;
+
+  @HiveField(4)
   final String url;
+
+  @HiveField(5)
   final String checksum;
 
   // Nullable fields
+  @HiveField(6)
   final List<int>? ageRatings;
+
+  @HiveField(7)
   final List<int>? artworks;
+
+  @HiveField(8)
   final int? category;
+
+  @HiveField(9)
   final Cover? cover;
+
+  @HiveField(10)
   final List<int>? externalGames;
+
+  @HiveField(11)
   final int? firstReleaseDate;
+
+  @HiveField(12)
   final List<int>? genres;
+
+  @HiveField(13)
   final List<Platform>? platforms;
+
+  @HiveField(14)
   final List<int>? releaseDates;
+
+  @HiveField(15)
   final List<int>? screenshots;
+
+  @HiveField(16)
   final List<int>? similarGames;
+
+  @HiveField(17)
   final String? slug;
+
+  @HiveField(18)
   final String? description;
+
+  @HiveField(19)
   final List<int>? tags;
+
+  @HiveField(20)
   final List<int>? themes;
+
+  @HiveField(21)
   final List<int>? websites;
+
+  @HiveField(22)
   final List<int>? languageSupports;
+
+  @HiveField(23)
   final List<int>? gameModes;
+
+  @HiveField(24)
   final int? status;
+
+  @HiveField(25)
   final List<int>? multiplayerModes;
+
+  @HiveField(26)
   final List<int>? videos;
+
+  @HiveField(27)
   final int? versionParent;
+
+  @HiveField(28)
   final String? versionTitle;
 
   const Game({
