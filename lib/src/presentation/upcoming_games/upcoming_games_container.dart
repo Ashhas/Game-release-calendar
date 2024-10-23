@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_bar/filter_bar.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+import 'package:riverpod/riverpod.dart';
 
 class UpcomingGamesContainer extends StatelessWidget {
   const UpcomingGamesContainer({super.key});
@@ -24,9 +28,24 @@ class UpcomingGamesContainer extends StatelessWidget {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
+        children: [
           FilterBar(),
-          GameList(),
+          Expanded(
+            child: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
+              builder: (_, state) {
+                return state.games.when(
+                  data: (games) => games.isEmpty
+                      ? Center(child: Text('No games found'))
+                      : GameList(
+                          games: games,
+                        ),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => Center(child: Text('Error: $error')),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

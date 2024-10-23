@@ -13,7 +13,19 @@ class IGDBService {
     return repository.getGames(_buildQueryParameters(filter));
   }
 
-  String _buildQueryParameters(GameFilter filter) {
+  Future<List<Game>> getGamesWithOffset({
+    required GameFilter filter,
+    required int offset,
+  }) {
+    return repository.getGames(
+      _buildQueryParameters(
+        filter,
+        offset: offset,
+      ),
+    );
+  }
+
+  String _buildQueryParameters(GameFilter filter, {int offset = 0}) {
     List<String> filterConditions = [];
 
     if (filter.platformChoices.isNotEmpty) {
@@ -48,6 +60,7 @@ class IGDBService {
     String query = 'fields *, platforms.*, cover.*; '
         '$whereClause '
         'limit 500; '
+        'offset $offset; '
         'sort first_release_date asc;';
 
     return query;

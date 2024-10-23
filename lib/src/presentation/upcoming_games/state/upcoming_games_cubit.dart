@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
@@ -26,6 +27,20 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
       emit(state.copyWith(games: AsyncValue.data(filteredList)));
     } catch (e) {
       emit(state.copyWith(games: AsyncValue.error(e, StackTrace.current)));
+    }
+  }
+
+  /// Method to extend the games list with the same filters
+  Future<List<Game>> getGamesWithOffset(int offset) async {
+    try {
+      final games = await _igdbService.getGamesWithOffset(
+        filter: state.selectedFilters,
+        offset: offset,
+      );
+
+      return games;
+    } catch (e) {
+      return [];
     }
   }
 
