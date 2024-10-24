@@ -1,6 +1,6 @@
 part of '../game_detail_view.dart';
 
-class IconRow extends StatelessWidget {
+class IconRow extends StatefulWidget {
   const IconRow({
     required this.game,
     super.key,
@@ -9,13 +9,19 @@ class IconRow extends StatelessWidget {
   final Game game;
 
   @override
+  State<IconRow> createState() => _IconRowState();
+}
+
+class _IconRowState extends State<IconRow> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () {},
-
+          onTap: () {
+            context.read<GameDetailCubit>().saveGame(widget.game);
+          },
           child: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -32,7 +38,7 @@ class IconRow extends StatelessWidget {
         SizedBox(width: context.spacings.l),
         InkWell(
           onTap: () => UrlLaunchFunctions.openUrl(
-            game.url,
+            widget.game.url,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -42,7 +48,6 @@ class IconRow extends StatelessWidget {
                 size: 28,
               ),
               SizedBox(height: context.spacings.xxs),
-              // Optional: Add some space between the icon and the text
               const Text('Website'),
             ],
           ),

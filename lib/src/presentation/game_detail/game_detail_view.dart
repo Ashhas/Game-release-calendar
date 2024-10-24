@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 
 import 'package:spaced_flex/spaced_flex.dart';
 
