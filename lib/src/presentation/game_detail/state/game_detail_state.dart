@@ -1,0 +1,3 @@
+class GameDetailState {
+  GameDetailState();
+}
