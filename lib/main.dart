@@ -109,8 +109,8 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.init(directory.path);
   Hive.registerAdapter(GameAdapter());
 
-  final box = await Hive.openBox('game_bookmark_box');
-  getIt.registerSingleton<Box>(
+  final Box<Game> box = await Hive.openBox<Game>('game_bookmark_box');
+  getIt.registerSingleton<Box<Game>>(
     box,
   );
 }
