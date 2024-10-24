@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:game_release_calendar/src/presentation/more/more_container.dart';
+import 'package:game_release_calendar/src/presentation/reminders/reminders_container.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/upcoming_games_container.dart';
 
@@ -41,6 +42,10 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
             label: 'Upcoming',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Reminders',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz),
             label: 'More',
           ),
@@ -48,6 +53,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       ),
       body: [
         const UpcomingGamesContainer(),
+        const RemindersContainer(),
         const MoreContainer(),
       ][_currentPageIndex],
     );
