@@ -1,4 +1,4 @@
-enum PlatformFilterChoice {
+enum PlatformFilter {
   android(34, "Android", "Android"),
   ios(39, "iOS", "iOS"),
   linux(3, "Linux", "Linux"),
@@ -24,5 +24,5 @@ enum PlatformFilterChoice {
   final String abbreviation;
   final String fullName;
 
-  const PlatformFilterChoice(this.id, this.abbreviation, this.fullName);
+  const PlatformFilter(this.id, this.abbreviation, this.fullName);
 }

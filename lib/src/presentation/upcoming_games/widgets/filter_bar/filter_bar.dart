@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
-import 'package:game_release_calendar/src/domain/enums/platform_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_helper.dart';

@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_state.dart';
-import 'package:hive/hive.dart';
 
 class GameDetailCubit extends Cubit<GameDetailState> {
   GameDetailCubit({

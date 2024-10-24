@@ -31,7 +31,7 @@ class GameAdapter extends TypeAdapter<Game> {
       firstReleaseDate: fields[11] as int?,
       genres: (fields[12] as List?)?.cast<int>(),
       platforms: (fields[13] as List?)?.cast<Platform>(),
-      releaseDates: (fields[14] as List?)?.cast<int>(),
+      releaseDates: (fields[14] as List?)?.cast<ReleaseDate>(),
       screenshots: (fields[15] as List?)?.cast<int>(),
       similarGames: (fields[16] as List?)?.cast<int>(),
       slug: fields[17] as String?,

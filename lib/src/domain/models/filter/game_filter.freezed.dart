@@ -16,12 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GameFilter {
-  Set<PlatformFilterChoice> get platformChoices =>
-      throw _privateConstructorUsedError;
+  Set<PlatformFilter> get platformChoices => throw _privateConstructorUsedError;
   DateFilterChoice? get releaseDateChoice => throw _privateConstructorUsedError;
   DateTimeRange? get releaseDateRange => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameFilter
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GameFilterCopyWith<GameFilter> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -33,7 +34,7 @@ abstract class $GameFilterCopyWith<$Res> {
       _$GameFilterCopyWithImpl<$Res, GameFilter>;
   @useResult
   $Res call(
-      {Set<PlatformFilterChoice> platformChoices,
+      {Set<PlatformFilter> platformChoices,
       DateFilterChoice? releaseDateChoice,
       DateTimeRange? releaseDateRange});
 }
@@ -48,6 +49,8 @@ class _$GameFilterCopyWithImpl<$Res, $Val extends GameFilter>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GameFilter
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -59,7 +62,7 @@ class _$GameFilterCopyWithImpl<$Res, $Val extends GameFilter>
       platformChoices: null == platformChoices
           ? _value.platformChoices
           : platformChoices // ignore: cast_nullable_to_non_nullable
-              as Set<PlatformFilterChoice>,
+              as Set<PlatformFilter>,
       releaseDateChoice: freezed == releaseDateChoice
           ? _value.releaseDateChoice
           : releaseDateChoice // ignore: cast_nullable_to_non_nullable
@@ -81,7 +84,7 @@ abstract class _$$GameFilterImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Set<PlatformFilterChoice> platformChoices,
+      {Set<PlatformFilter> platformChoices,
       DateFilterChoice? releaseDateChoice,
       DateTimeRange? releaseDateRange});
 }
@@ -94,6 +97,8 @@ class __$$GameFilterImplCopyWithImpl<$Res>
       _$GameFilterImpl _value, $Res Function(_$GameFilterImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameFilter
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -105,7 +110,7 @@ class __$$GameFilterImplCopyWithImpl<$Res>
       platformChoices: null == platformChoices
           ? _value._platformChoices
           : platformChoices // ignore: cast_nullable_to_non_nullable
-              as Set<PlatformFilterChoice>,
+              as Set<PlatformFilter>,
       releaseDateChoice: freezed == releaseDateChoice
           ? _value.releaseDateChoice
           : releaseDateChoice // ignore: cast_nullable_to_non_nullable
@@ -122,14 +127,14 @@ class __$$GameFilterImplCopyWithImpl<$Res>
 
 class _$GameFilterImpl implements _GameFilter {
   const _$GameFilterImpl(
-      {required final Set<PlatformFilterChoice> platformChoices,
+      {required final Set<PlatformFilter> platformChoices,
       this.releaseDateChoice,
       this.releaseDateRange})
       : _platformChoices = platformChoices;
 
-  final Set<PlatformFilterChoice> _platformChoices;
+  final Set<PlatformFilter> _platformChoices;
   @override
-  Set<PlatformFilterChoice> get platformChoices {
+  Set<PlatformFilter> get platformChoices {
     if (_platformChoices is EqualUnmodifiableSetView) return _platformChoices;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableSetView(_platformChoices);
@@ -165,7 +170,9 @@ class _$GameFilterImpl implements _GameFilter {
       releaseDateChoice,
       releaseDateRange);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameFilter
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GameFilterImplCopyWith<_$GameFilterImpl> get copyWith =>
@@ -174,18 +181,21 @@ class _$GameFilterImpl implements _GameFilter {
 
 abstract class _GameFilter implements GameFilter {
   const factory _GameFilter(
-      {required final Set<PlatformFilterChoice> platformChoices,
+      {required final Set<PlatformFilter> platformChoices,
       final DateFilterChoice? releaseDateChoice,
       final DateTimeRange? releaseDateRange}) = _$GameFilterImpl;
 
   @override
-  Set<PlatformFilterChoice> get platformChoices;
+  Set<PlatformFilter> get platformChoices;
   @override
   DateFilterChoice? get releaseDateChoice;
   @override
   DateTimeRange? get releaseDateRange;
+
+  /// Create a copy of GameFilter
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GameFilterImplCopyWith<_$GameFilterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

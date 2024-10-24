@@ -1,6 +1,16 @@
+import 'package:hive/hive.dart';
+
+part 'cover.g.dart';
+
+@HiveType(typeId: 2)
 class Cover {
+  @HiveField(0)
   final int? id;
+
+  @HiveField(1)
   final String? url;
+
+  @HiveField(2)
   final String? imageId;
 
   const Cover({
@@ -13,7 +23,7 @@ class Cover {
     return Cover(
       id: json['id'],
       url:
-          json['url'].startsWith('http') ? json['url'] : 'https:${json['url']}',
+      json['url'].startsWith('http') ? json['url'] : 'https:${json['url']}',
       imageId: json['image_id'],
     );
   }

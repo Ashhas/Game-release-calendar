@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
-import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
-import 'package:game_release_calendar/src/domain/enums/platform_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/utils/filter_functions.dart';
 
@@ -59,7 +59,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   }
 
   Future<void> updatePlatformFilter({
-    required Set<PlatformFilterChoice> choices,
+    required Set<PlatformFilter> choices,
   }) async {
     emit(
       state.copyWith(

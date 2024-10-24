@@ -48,16 +48,14 @@ class IGDBService {
       filterConditions.add('first_release_date < $toTimestamp');
     }
 
-    // If filterConditions is empty or no start date is provided, use the current date
     if (filterConditions.isEmpty || filter.releaseDateRange?.start == null) {
       filterConditions.add(
           'first_release_date >= ${DateTime.now().millisecondsSinceEpoch ~/ 1000}');
     }
 
-    // Create a where clause with the filter conditions.
     String whereClause = 'where ${filterConditions.join(' & ')};';
 
-    String query = 'fields *, platforms.*, cover.*; '
+    String query = 'fields *, platforms.*, cover.*, release_dates.*; '
         '$whereClause '
         'limit 500; '
         'offset $offset; '

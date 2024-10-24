@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:game_release_calendar/src/domain/enums/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
 
 class DateHelper {
   /// Returns the start of the current week (Monday).

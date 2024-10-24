@@ -24,20 +24,13 @@ class CustomTheme {
             secondary: Color(0xFF686868),
             onSecondary: Colors.white,
 
-            // Background color
-            background: Color(0xFF262626),
-            onBackground: Colors.white,
-
-            // Surface colors (used for cards, menus, etc.)
-            surface: Color(0xFF575757),
+            // Surface colors (used for cards, menus, background.)
+            surface: Color(0xFF262626),
             onSurface: Colors.white,
 
             // Other colors, Searchbar background
             primaryContainer: Color(0xFF222222),
             onPrimaryContainer: Colors.white,
-
-            // Text/icons on searchbar
-            surfaceVariant: Color(0xFF3D3D3D),
 
             // Appbar scroll
             surfaceTint: Color(0xFF262626),

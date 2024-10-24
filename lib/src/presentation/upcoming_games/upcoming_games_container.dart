@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riverpod/riverpod.dart';
+
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
-
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_bar/filter_bar.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-import 'package:riverpod/riverpod.dart';
 
 class UpcomingGamesContainer extends StatelessWidget {
   const UpcomingGamesContainer({super.key});
@@ -15,7 +16,7 @@ class UpcomingGamesContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Row(
           children: [
             const Icon(Icons.event),
@@ -24,7 +25,7 @@ class UpcomingGamesContainer extends StatelessWidget {
           ],
         ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -17,6 +16,9 @@ import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
+import 'package:game_release_calendar/src/domain/models/cover.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/utils/env_config.dart';
 
 Future<void> main() async {
@@ -108,6 +110,8 @@ Future<void> _initializeHive(GetIt getIt) async {
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(GameAdapter());
+  Hive.registerAdapter(PlatformAdapter());
+  Hive.registerAdapter(CoverAdapter());
 
   final Box<Game> box = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(

@@ -9,7 +9,7 @@ class PlatformFilterBottomSheet extends StatefulWidget {
 }
 
 class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
-  late Set<PlatformFilterChoice> _selectedPlatformFilterOptions;
+  late Set<PlatformFilter> _selectedPlatformFilterOptions;
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _PlatformFilterBottomSheetState extends State<PlatformFilterBottomSheet> {
           SizedBox(height: context.spacings.m),
           Expanded(
             child: ListView(
-              children: PlatformFilterChoice.values.map((platform) {
+              children: PlatformFilter.values.map((platform) {
                 return CheckboxListTile(
                   title: Text(platform.fullName),
                   value: _selectedPlatformFilterOptions.contains(platform),

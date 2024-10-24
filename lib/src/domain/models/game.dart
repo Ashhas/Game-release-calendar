@@ -1,6 +1,8 @@
+import 'package:hive/hive.dart';
+
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
-import 'package:hive/hive.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
 
 part 'game.g.dart';
 
@@ -50,7 +52,7 @@ class Game {
   final List<Platform>? platforms;
 
   @HiveField(14)
-  final List<int>? releaseDates;
+  final List<ReleaseDate>? releaseDates;
 
   @HiveField(15)
   final List<int>? screenshots;
@@ -143,7 +145,11 @@ class Game {
               .map((e) => Platform.fromJson(e))
               .toList()
           : null,
-      releaseDates: json['release_dates']?.cast<int>(),
+      releaseDates: json['release_dates'] != null
+          ? (json['release_dates'] as List)
+              .map((e) => ReleaseDate.fromJson(e))
+              .toList()
+          : null,
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),
       slug: json['slug'],

@@ -1,7 +1,19 @@
+import 'package:hive/hive.dart';
+
+part 'platform.g.dart';
+
+@HiveType(typeId: 1)
 class Platform {
+  @HiveField(0)
   final int? id;
+
+  @HiveField(1)
   final String? abbreviation;
+
+  @HiveField(2)
   final String? name;
+
+  @HiveField(3)
   final String? url;
 
   const Platform({
@@ -18,5 +30,14 @@ class Platform {
       name: json['name'],
       url: json['url'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'abbreviation': abbreviation,
+      'name': name,
+      'url': url,
+    };
   }
 }
