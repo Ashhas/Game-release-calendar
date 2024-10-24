@@ -8,12 +8,20 @@ class GameTile extends StatelessWidget {
     super.key,
   });
 
+  DateTime _fromEpochToDateTime(int? timestamp) {
+    return timestamp != null
+        ? ConvertFunctions.secondSinceEpochToDateTime(
+            timestamp,
+          )
+        : DateTime.now();
+  }
+
+  String _convertDateTimeDay(DateTime dateTime) {
+    return DateFormat('dd-MM-yyyy').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formattedDate = game.firstReleaseDate != null
-        ? ConvertFunctions.secondSinceEpochToDateTime(game.firstReleaseDate!)
-        : '-';
-
     return ListTile(
       leading: FadeInImage.assetNetwork(
         placeholder: 'assets/images/placeholder_210_284.png',
@@ -29,7 +37,8 @@ class GameTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Release date: $formattedDate'),
+          Text(
+              'Release date: ${_convertDateTimeDay(_fromEpochToDateTime(game.firstReleaseDate))}'),
           if (game.platforms != null)
             Wrap(
               spacing: 4.0,

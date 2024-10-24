@@ -6,6 +6,7 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/utils/convert_functions.dart';
+import 'package:intl/intl.dart';
 
 part 'widgets/game_tile.dart';
 
@@ -26,6 +27,22 @@ class _RemindersContainerState extends State<RemindersContainer> {
     savedGames = context.read<RemindersCubit>().getGames();
   }
 
+  DateTime _fromEpochToDateTime(int? timestamp) {
+    return timestamp != null
+        ? ConvertFunctions.secondSinceEpochToDateTime(
+            timestamp,
+          )
+        : DateTime.now();
+  }
+
+  String _convertDateTimeDay(DateTime dateTime) {
+    return DateFormat('dd').format(dateTime);
+  }
+
+  String _convertDateTimeMonth(DateTime dateTime) {
+    return DateFormat('MMMM').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,24 +54,39 @@ class _RemindersContainerState extends State<RemindersContainer> {
         itemCount: savedGames.length,
         itemBuilder: (_, int index) {
           return ListTile(
-            title: Text(savedGames[index].name),
-            subtitle: savedGames[index].platforms != null
-                ? Wrap(
-                    spacing: 4.0,
-                    children: savedGames[index]
-                        .platforms!
-                        .map(
-                          (platform) => Chip(
-                            label: Text(
-                              platform.abbreviation ?? platform.name ?? 'N/A',
-                            ),
-                            visualDensity: VisualDensity.compact,
-                            padding: EdgeInsets.zero,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _convertDateTimeDay(
+                          _fromEpochToDateTime(
+                            savedGames[index].firstReleaseDate,
                           ),
-                        )
-                        .toList(),
-                  )
-                : null,
+                        ),
+                      ),
+                      Text(
+                        _convertDateTimeMonth(
+                          _fromEpochToDateTime(
+                            savedGames[index].firstReleaseDate,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Flexible(
+                  flex: 6,
+                  child: Text(
+                    savedGames[index].name,
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),

@@ -1,11 +1,10 @@
-import 'package:intl/intl.dart';
-
 class ConvertFunctions {
-  static String secondSinceEpochToDateTime(int value) {
-    return DateFormat('dd-MM-yyyy').format(
-      DateTime.fromMillisecondsSinceEpoch(
-        value * 1000,
-      ),
+  static DateTime secondSinceEpochToDateTime(int value) {
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(value * 1000);
+    return DateTime(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
     );
   }
 }
