@@ -1,20 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
-import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:riverpod/riverpod.dart';
 
 class RemindersCubit extends Cubit<RemindersState> {
   RemindersCubit({
-    required Box<Game> remindersBox,
-  })  : _remindersBox = remindersBox,
+    required NotificationClient notificationClient,
+  })  : _notificationClient = notificationClient,
         super(RemindersState());
 
-  final Box<Game> _remindersBox;
+  final NotificationClient _notificationClient;
 
-  List<Game> getGames() {
-    List<Game> reminders = _remindersBox.values.toList();
+  Future<void> retrievePendingNotifications() async {
+    final pendingNotifications =
+        await _notificationClient.retrievePendingNotifications();
 
-    return reminders;
+    emit(
+      state.copyWith(
+        reminders: AsyncValue.data(pendingNotifications),
+      ),
+    );
   }
 }

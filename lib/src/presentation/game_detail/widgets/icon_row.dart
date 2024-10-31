@@ -20,7 +20,7 @@ class _IconRowState extends State<IconRow> {
       children: [
         InkWell(
           onTap: () {
-            context.read<GameDetailCubit>().saveGame(widget.game);
+            context.read<GameDetailCubit>().scheduleNotification(widget.game);
           },
           child: const Column(
             mainAxisSize: MainAxisSize.min,
@@ -30,7 +30,6 @@ class _IconRowState extends State<IconRow> {
                 size: 28,
               ),
               SizedBox(height: 4),
-              // Optional: Add some space between the icon and the text
               Text('Reminder'),
             ],
           ),

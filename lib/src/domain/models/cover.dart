@@ -22,9 +22,18 @@ class Cover {
   factory Cover.fromJson(Map<String, dynamic> json) {
     return Cover(
       id: json['id'],
-      url:
-      json['url'].startsWith('http') ? json['url'] : 'https:${json['url']}',
+      url: json['url'] != null && json['url'].startsWith('http')
+          ? json['url']
+          : 'https:${json['url']}',
       imageId: json['image_id'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'url': url,
+      'image_id': imageId,
+    };
   }
 }

@@ -26,7 +26,6 @@ class Game {
   @HiveField(5)
   final String checksum;
 
-  // Nullable fields
   @HiveField(6)
   final List<int>? ageRatings;
 
@@ -168,5 +167,39 @@ class Game {
       versionParent: json['version_parent'],
       versionTitle: json['version_title'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'created_at': createdAt,
+      'name': name,
+      'updated_at': updatedAt,
+      'url': url,
+      'checksum': checksum,
+      'age_ratings': ageRatings,
+      'artworks': artworks,
+      'category': category,
+      'cover': cover?.toJson(),
+      'external_games': externalGames,
+      'first_release_date': firstReleaseDate,
+      'genres': genres,
+      'platforms': platforms?.map((e) => e.toJson()).toList(),
+      'release_dates': releaseDates?.map((e) => e.toJson()).toList(),
+      'screenshots': screenshots,
+      'similar_games': similarGames,
+      'slug': slug,
+      'description': description,
+      'tags': tags,
+      'themes': themes,
+      'websites': websites,
+      'language_supports': languageSupports,
+      'game_modes': gameModes,
+      'status': status,
+      'multiplayer_modes': multiplayerModes,
+      'videos': videos,
+      'version_parent': versionParent,
+      'version_title': versionTitle,
+    };
   }
 }

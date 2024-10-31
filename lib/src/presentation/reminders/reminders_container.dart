@@ -1,14 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification.dart';
 
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
-import 'package:game_release_calendar/src/utils/convert_functions.dart';
-import 'package:intl/intl.dart';
+import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+import 'package:riverpod/riverpod.dart';
 
-part 'widgets/game_tile.dart';
+part 'widgets/game_reminder_tile.dart';
 
 class RemindersContainer extends StatefulWidget {
   const RemindersContainer({super.key});
@@ -18,29 +23,10 @@ class RemindersContainer extends StatefulWidget {
 }
 
 class _RemindersContainerState extends State<RemindersContainer> {
-  late final List<Game> savedGames;
-
   @override
   void initState() {
     super.initState();
-
-    savedGames = context.read<RemindersCubit>().getGames();
-  }
-
-  DateTime _fromEpochToDateTime(int? timestamp) {
-    return timestamp != null
-        ? ConvertFunctions.secondSinceEpochToDateTime(
-            timestamp,
-          )
-        : DateTime.now();
-  }
-
-  String _convertDateTimeDay(DateTime dateTime) {
-    return DateFormat('dd').format(dateTime);
-  }
-
-  String _convertDateTimeMonth(DateTime dateTime) {
-    return DateFormat('MMMM').format(dateTime);
+    context.read<RemindersCubit>().retrievePendingNotifications();
   }
 
   @override
@@ -48,45 +34,35 @@ class _RemindersContainerState extends State<RemindersContainer> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
+        title: const Text('Reminders'),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: ListView.builder(
-        itemCount: savedGames.length,
-        itemBuilder: (_, int index) {
-          return ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _convertDateTimeDay(
-                          _fromEpochToDateTime(
-                            savedGames[index].firstReleaseDate,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        _convertDateTimeMonth(
-                          _fromEpochToDateTime(
-                            savedGames[index].firstReleaseDate,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Flexible(
-                  flex: 6,
+      body: BlocBuilder<RemindersCubit, RemindersState>(
+        builder: (_, state) {
+          return state.reminders.when(
+            data: (remindersList) {
+              if (remindersList.isEmpty) {
+                return Center(
                   child: Text(
-                    savedGames[index].name,
+                    'No reminders set',
                   ),
-                ),
-              ],
+                );
+              }
+
+              return ListView.builder(
+                itemCount: remindersList.length,
+                itemBuilder: (_, index) {
+                  final reminder = remindersList[index];
+                  return GameReminderTile(reminder: reminder);
+                },
+              );
+            },
+            error: (err, _) => Center(
+              child: Text(
+                'Error: $err',
+              ),
             ),
+            loading: () => CircularProgressIndicator(),
           );
         },
       ),

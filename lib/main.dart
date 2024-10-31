@@ -5,21 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import 'package:game_release_calendar/src/app.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
+import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
+import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
+import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/utils/env_config.dart';
+import 'package:game_release_calendar/src/utils/location_helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +41,8 @@ Future<void> main() async {
   await _initializeRepositories(getIt);
   await _initializeServices(getIt);
   await _initializeHive(getIt);
+  await _initializeTimeZoneSettings(getIt);
+  await _initializeNotificationService(getIt);
 
   runApp(
     const App(),
@@ -112,9 +123,56 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(GameAdapter());
   Hive.registerAdapter(PlatformAdapter());
   Hive.registerAdapter(CoverAdapter());
+  Hive.registerAdapter(ReleaseDateAdapter());
+  Hive.registerAdapter(ReleaseDateCategoryAdapter());
+  Hive.registerAdapter(SupportedGamePlatformAdapter());
 
   final Box<Game> box = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(
     box,
   );
+}
+
+Future<void> _initializeNotificationService(GetIt getIt) async {
+  const notificationIconSource = 'ic_game_pad';
+  final notificationsPluginInstance = FlutterLocalNotificationsPlugin();
+
+  const initializationSettingsAndroid = AndroidInitializationSettings(
+    notificationIconSource,
+  );
+  const initializationSettingsIOS = DarwinInitializationSettings(
+    requestSoundPermission: false,
+    requestBadgePermission: false,
+    requestAlertPermission: false,
+  );
+  const initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+  );
+
+  await notificationsPluginInstance.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: (response) {},
+  );
+
+  // Request permissions for Android
+  notificationsPluginInstance
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
+
+  getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
+    notificationsPluginInstance,
+  );
+  getIt.registerSingleton<NotificationClient>(
+    NotificationClient(),
+  );
+}
+
+Future<void> _initializeTimeZoneSettings(GetIt getIt) async {
+  final currentTimeZone = await FlutterTimezone.getLocalTimezone();
+  final timeZoneName = LocationHelper.getTzLocation(currentTimeZone);
+
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
 }

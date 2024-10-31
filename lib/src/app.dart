@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
+import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/app_navigation_bar.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
@@ -26,12 +27,13 @@ class App extends StatelessWidget {
         ),
         BlocProvider<RemindersCubit>(
           create: (_) => RemindersCubit(
-            remindersBox: GetIt.instance.get<Box<Game>>(),
+            notificationClient: GetIt.instance.get<NotificationClient>(),
           ),
         ),
         BlocProvider<GameDetailCubit>(
           create: (_) => GameDetailCubit(
             remindersBox: GetIt.instance.get<Box<Game>>(),
+            notificationClient: GetIt.instance.get<NotificationClient>(),
           ),
         ),
       ],
@@ -40,26 +42,7 @@ class App extends StatelessWidget {
         theme: CustomTheme.lightTheme(),
         darkTheme: CustomTheme.darkTheme(),
         themeMode: ThemeMode.dark,
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<UpcomingGamesCubit>(
-              create: (_) => UpcomingGamesCubit(
-                igdbService: GetIt.instance.get<IGDBService>(),
-              ),
-            ),
-            BlocProvider<RemindersCubit>(
-              create: (_) => RemindersCubit(
-                remindersBox: GetIt.instance.get<Box<Game>>(),
-              ),
-            ),
-            BlocProvider<GameDetailCubit>(
-              create: (_) => GameDetailCubit(
-                remindersBox: GetIt.instance.get<Box<Game>>(),
-              ),
-            ),
-          ],
-          child: AppNavigationBar(),
-        ),
+        home: AppNavigationBar(),
       ),
     );
   }
