@@ -10,6 +10,42 @@ class OptionsList extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          leading: const Icon(Icons.notifications_none_outlined),
+          title: const Text('Notifications'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Notifications(),
+              ),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.color_lens_outlined),
+          title: const Text('Theme'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Container(),
+              ),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.description_outlined),
+          title: const Text('Privacy Policy'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const PrivacyPolicy(),
+              ),
+            );
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.info_outline),
           title: const Text('Open-source licenses'),
           onTap: () {
@@ -21,15 +57,18 @@ class OptionsList extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.info_outline),
-          title: const Text('Privacy Policy'),
+          leading: const Icon(Icons.mail_outline),
+          title: const Text('Support'),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const PrivacyPolicy(),
-              ),
+            final emailLaunchUri = Uri(
+              scheme: 'mailto',
+              path: 'ashhas.studio@gmail.com',
+              queryParameters: {
+                'subject': 'GameWatch\tSupport',
+              },
             );
+
+            launchUrl(emailLaunchUri);
           },
         ),
       ],

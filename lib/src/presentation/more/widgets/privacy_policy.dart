@@ -12,6 +12,7 @@ class PrivacyPolicy extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.spacings.m),
         child: Text.rich(

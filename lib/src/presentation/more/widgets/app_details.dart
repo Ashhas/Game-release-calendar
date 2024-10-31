@@ -5,7 +5,7 @@ class AppDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appVersion = GetIt.instance.get<PackageInfo>().version;
+    final appInfo = GetIt.instance.get<PackageInfo>();
 
     return Column(
       children: [
@@ -18,12 +18,12 @@ class AppDetails extends StatelessWidget {
             ),
           ),
         ),
-        const Text(
-          'Version',
+        Text(
+          '${appInfo.appName}',
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
         Text(
-          'v$appVersion',
+          'v${appInfo.version}',
           style: const TextStyle(fontSize: 16.0, color: Colors.grey),
         ),
       ],

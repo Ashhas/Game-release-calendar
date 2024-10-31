@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
@@ -12,7 +13,7 @@ part 'widgets/privacy_policy.dart';
 
 part 'widgets/options_list.dart';
 
-part 'widgets/icon_row.dart';
+part 'widgets/notifications.dart';
 
 class MoreContainer extends StatelessWidget {
   const MoreContainer({super.key});
@@ -31,7 +32,6 @@ class MoreContainer extends StatelessWidget {
           SizedBox(height: context.spacings.l),
           const OptionsList(),
           const Spacer(),
-          const IconRow(),
           SizedBox(height: context.spacings.l),
         ],
       ),
