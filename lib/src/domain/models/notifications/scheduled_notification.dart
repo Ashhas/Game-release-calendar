@@ -1,13 +1,15 @@
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:hive/hive.dart';
 import 'package:timezone/timezone.dart';
 
+import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+
 part 'scheduled_notification.g.dart';
 
-@HiveType(typeId: 5) // Ensure the typeId is unique
+@HiveType(typeId: 5)
 class ScheduledNotification {
   @HiveField(0)
-  final int id; // Notification ID
+  final int id;
 
   @HiveField(1)
   final int gameId;
@@ -21,12 +23,16 @@ class ScheduledNotification {
   @HiveField(4)
   final TZDateTime scheduledDateTime;
 
+  @HiveField(5)
+  final ReleaseDateCategory releaseDateCategory;
+
   ScheduledNotification({
     required this.id,
     required this.gameId,
     required this.gameName,
     required this.game,
     required this.scheduledDateTime,
+    required this.releaseDateCategory,
   });
 
   Map<String, dynamic> toJson() {
@@ -39,6 +45,7 @@ class ScheduledNotification {
         'millisecondsSinceEpoch': scheduledDateTime.millisecondsSinceEpoch,
         'location': scheduledDateTime.location.name,
       },
+      'releaseDateCategory': releaseDateCategory.toValue(),
     };
   }
 
@@ -52,6 +59,8 @@ class ScheduledNotification {
         getLocation(json['scheduledDateTime']['location']),
         json['scheduledDateTime']['millisecondsSinceEpoch'],
       ),
+      releaseDateCategory:
+          ReleaseDateCategory.fromValue(json['releaseDateCategory']),
     );
   }
 
@@ -59,6 +68,7 @@ class ScheduledNotification {
   factory ScheduledNotification.fromGame({
     required Game game,
     required TZDateTime scheduledReleaseDate,
+    required ReleaseDateCategory releaseDateCategory,
   }) {
     return ScheduledNotification(
       id: game.id,
@@ -66,6 +76,7 @@ class ScheduledNotification {
       gameName: game.name,
       game: game,
       scheduledDateTime: scheduledReleaseDate,
+      releaseDateCategory: releaseDateCategory,
     );
   }
 }

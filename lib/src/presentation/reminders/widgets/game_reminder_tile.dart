@@ -14,7 +14,7 @@ class GameReminderTile extends StatefulWidget {
 
 class _GameReminderTileState extends State<GameReminderTile> {
   late ScheduledNotification notification;
-  late DateTime releaseDate;
+  late tz.TZDateTime releaseDate;
   late ReleaseDateCategory releaseDateCategory;
 
   @override
@@ -24,6 +24,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
       jsonDecode(widget.reminder.payload!),
     );
     releaseDate = notification.scheduledDateTime;
+    releaseDateCategory = notification.releaseDateCategory;
   }
 
   @override

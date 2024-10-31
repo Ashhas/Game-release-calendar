@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:hive/hive.dart';
 
+import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_state.dart';
 

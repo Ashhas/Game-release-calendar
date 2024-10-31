@@ -22,13 +22,14 @@ class ScheduledNotificationAdapter extends TypeAdapter<ScheduledNotification> {
       gameName: fields[2] as String,
       game: fields[3] as Game,
       scheduledDateTime: fields[4] as TZDateTime,
+      releaseDateCategory: fields[5] as ReleaseDateCategory,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduledNotification obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class ScheduledNotificationAdapter extends TypeAdapter<ScheduledNotification> {
       ..writeByte(3)
       ..write(obj.game)
       ..writeByte(4)
-      ..write(obj.scheduledDateTime);
+      ..write(obj.scheduledDateTime)
+      ..writeByte(5)
+      ..write(obj.releaseDateCategory);
   }
 
   @override
