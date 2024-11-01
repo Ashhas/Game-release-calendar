@@ -8,18 +8,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game_release_calendar/src/domain/models/twitch_token.dart';
 
 class TwitchAuthService {
-  // ignore: prefer_const_constructor_declarations
   TwitchAuthService({
+    required this.dio,
     required this.clientId,
     required this.clientSecret,
     required this.twitchOauthTokenURL,
   });
 
+  final Dio dio;
   final String clientId;
   final String clientSecret;
   final String twitchOauthTokenURL;
   final storage = const FlutterSecureStorage(); // Secure storage instance
-  final Dio dio = Dio();
 
   /// Authenticate and store token
   Future<void> requestTokenAndStore() async {
@@ -50,7 +50,6 @@ class TwitchAuthService {
     }
   }
 
-  // Method to retrieve the stored token
   Future<String?> getStoredToken() async {
     try {
       final accessToken = await storage.read(key: 'twitch_access_token') ?? '';

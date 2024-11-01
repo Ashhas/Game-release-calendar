@@ -28,7 +28,7 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/utils/env_config.dart';
-import 'package:game_release_calendar/src/utils/location_helper.dart';
+import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +61,7 @@ Future<void> _initializeTwitchAuthService(GetIt getIt) async {
 
   getIt.registerSingleton<TwitchAuthService>(
     TwitchAuthService(
+      dio: getIt.get<Dio>(),
       clientId: envConfig.twitchClientId,
       clientSecret: envConfig.twitchClientSecret,
       twitchOauthTokenURL: envConfig.igdbAuthTokenURL,
@@ -171,7 +172,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
 
 Future<void> _initializeTimeZoneSettings(GetIt getIt) async {
   final currentTimeZone = await FlutterTimezone.getLocalTimezone();
-  final timeZoneName = LocationHelper.getTzLocation(currentTimeZone);
+  final timeZoneName = TimeZoneMapper.getTzLocation(currentTimeZone);
 
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation(timeZoneName));

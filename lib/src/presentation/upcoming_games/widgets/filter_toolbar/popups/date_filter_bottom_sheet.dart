@@ -1,4 +1,4 @@
-part of '../filter_bar.dart';
+part of '../filter_toolbar.dart';
 
 class DateFilterBottomSheet extends StatefulWidget {
   const DateFilterBottomSheet({super.key});
@@ -125,7 +125,7 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
 
   Future<void> _applyFilter(BuildContext context) async {
     final releaseDateRange =
-        DateHelper.getDateRangeForChoice(_selectedDateFilterOption!);
+        DateRangeUtility.getDateRangeForChoice(_selectedDateFilterOption!);
     await context.read<UpcomingGamesCubit>().updateDateFilter(
           choice: _selectedDateFilterOption!,
           range: releaseDateRange,

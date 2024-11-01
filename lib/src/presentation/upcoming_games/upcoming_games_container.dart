@@ -5,7 +5,7 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_bar/filter_bar.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_toolbar/filter_toolbar.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
@@ -30,7 +30,7 @@ class UpcomingGamesContainer extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          FilterBar(),
+          FilterToolbar(),
           Expanded(
             child: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
               builder: (_, state) {
@@ -40,9 +40,12 @@ class UpcomingGamesContainer extends StatelessWidget {
                       : GameList(
                           games: games,
                         ),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, _) => Center(child: Text('Error: $error')),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  error: (error, _) => Center(
+                    child: Text('Error: $error'),
+                  ),
                 );
               },
             ),

@@ -12,7 +12,7 @@ class GameInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final formattedDate = game.firstReleaseDate != null
         ? DateFormat('dd-MM-yyyy').format(
-            ConvertFunctions.secondSinceEpochToDateTime(
+            DateTimeConverter.secondSinceEpochToDateTime(
               game.firstReleaseDate!,
             ),
           )

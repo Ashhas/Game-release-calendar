@@ -6,14 +6,14 @@ import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice
 import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-import 'package:game_release_calendar/src/utils/date_helper.dart';
+import 'package:game_release_calendar/src/utils/date_range_utility.dart';
 
 part 'popups/date_filter_bottom_sheet.dart';
 
 part 'popups/platform_filter_bottom_sheet.dart';
 
-class FilterBar extends StatelessWidget {
-  const FilterBar({super.key});
+class FilterToolbar extends StatelessWidget {
+  const FilterToolbar({super.key});
 
   @override
   Widget build(BuildContext context) {

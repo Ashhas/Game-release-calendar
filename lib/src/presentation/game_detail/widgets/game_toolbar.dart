@@ -1,7 +1,7 @@
 part of '../game_detail_view.dart';
 
-class IconRow extends StatefulWidget {
-  const IconRow({
+class GameToolbar extends StatelessWidget {
+  const GameToolbar({
     required this.game,
     super.key,
   });
@@ -9,18 +9,13 @@ class IconRow extends StatefulWidget {
   final Game game;
 
   @override
-  State<IconRow> createState() => _IconRowState();
-}
-
-class _IconRowState extends State<IconRow> {
-  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: () {
-            context.read<GameDetailCubit>().scheduleNotification(widget.game);
+            context.read<GameDetailCubit>().scheduleNotification(game);
           },
           child: const Column(
             mainAxisSize: MainAxisSize.min,
@@ -36,8 +31,8 @@ class _IconRowState extends State<IconRow> {
         ),
         SizedBox(width: context.spacings.l),
         InkWell(
-          onTap: () => UrlLaunchFunctions.openUrl(
-            widget.game.url,
+          onTap: () => UrlHelper.openUrl(
+            game.url,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

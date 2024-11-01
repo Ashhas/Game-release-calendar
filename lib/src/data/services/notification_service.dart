@@ -8,7 +8,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
 
 class NotificationClient {
   NotificationClient() {
@@ -70,11 +69,10 @@ class NotificationClient {
   /// For now, we'll by default take the earliest release date and set the
   /// notification time to 10:00 AM.
   (DateTime?, ReleaseDateCategory?) computeNotificationDate(Game game) {
-    List<ReleaseDate>? sortedReleaseDates;
     DateTime? earliestReleaseDate;
     ReleaseDateCategory? earliestReleaseCategory;
 
-    sortedReleaseDates = game.releaseDates?.sortedBy(
+    final sortedReleaseDates = game.releaseDates?.sortedBy(
           (releaseDate) => releaseDate.date!,
         ) ??
         null;
@@ -91,8 +89,6 @@ class NotificationClient {
           earliestReleaseDate.month,
           earliestReleaseDate.day,
           10,
-          0,
-          0,
         );
       }
     }

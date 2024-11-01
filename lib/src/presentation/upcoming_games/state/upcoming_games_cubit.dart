@@ -8,7 +8,7 @@ import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice
 import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
-import 'package:game_release_calendar/src/utils/filter_functions.dart';
+import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 
 class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   UpcomingGamesCubit({
@@ -23,7 +23,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
 
     try {
       final games = await _igdbService.getGames(state.selectedFilters);
-      final filteredList = FilterFunctions.groupGamesByReleaseDate(games);
+      final filteredList = GameDateGrouper.groupGamesByReleaseDate(games);
       emit(state.copyWith(games: AsyncValue.data(filteredList)));
     } catch (e) {
       emit(state.copyWith(games: AsyncValue.error(e, StackTrace.current)));

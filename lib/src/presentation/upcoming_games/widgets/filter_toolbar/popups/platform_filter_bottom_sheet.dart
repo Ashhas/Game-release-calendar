@@ -1,4 +1,4 @@
-part of '../filter_bar.dart';
+part of '../filter_toolbar.dart';
 
 class PlatformFilterBottomSheet extends StatefulWidget {
   const PlatformFilterBottomSheet({super.key});

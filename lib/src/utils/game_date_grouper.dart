@@ -1,7 +1,7 @@
 import 'package:game_release_calendar/src/domain/models/game.dart';
 
 /// Holds filter functions to be used throughout the app
-class FilterFunctions {
+class GameDateGrouper {
   static Map<DateTime, List<Game>> groupGamesByReleaseDate(List<Game> games) {
     Map<DateTime, List<Game>> groupedGames = {};
 

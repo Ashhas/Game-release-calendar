@@ -67,8 +67,7 @@ class OptionsList extends StatelessWidget {
                 'subject': 'GameWatch\tSupport',
               },
             );
-
-            launchUrl(emailLaunchUri);
+            UrlHelper.launchUri(emailLaunchUri);
           },
         ),
       ],

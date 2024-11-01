@@ -1,16 +1,16 @@
 part of '../game_list.dart';
 
 class GameTile extends StatelessWidget {
-  final Game game;
-
   const GameTile({
     required this.game,
     super.key,
   });
 
+  final Game game;
+
   DateTime _fromEpochToDateTime(int? timestamp) {
     return timestamp != null
-        ? ConvertFunctions.secondSinceEpochToDateTime(
+        ? DateTimeConverter.secondSinceEpochToDateTime(
             timestamp,
           )
         : DateTime.now();

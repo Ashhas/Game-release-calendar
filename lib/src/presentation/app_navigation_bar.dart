@@ -38,15 +38,18 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.event),
+            icon: Icon(Icons.event_outlined),
+            activeIcon: Icon(Icons.event),
             label: 'Upcoming',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
+            icon: Icon(Icons.bookmark_outline_outlined),
+            activeIcon: Icon(Icons.bookmark),
             label: 'Reminders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
+            icon: Icon(Icons.more_horiz_outlined),
+            activeIcon: Icon(Icons.more_horiz),
             label: 'More',
           ),
         ],

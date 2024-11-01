@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
@@ -38,7 +39,7 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Game Release Calendar',
+        title: GetIt.instance.get<PackageInfo>().appName,
         theme: CustomTheme.lightTheme(),
         darkTheme: CustomTheme.darkTheme(),
         themeMode: ThemeMode.dark,

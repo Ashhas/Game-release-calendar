@@ -14,6 +14,7 @@ class IGDBRepositoryImpl implements IGDBRepository {
     required this.dio,
   });
 
+  @override
   Future<List<Game>> getGames(String query) async {
     try {
       final response = await dio.post(
@@ -21,20 +22,14 @@ class IGDBRepositoryImpl implements IGDBRepository {
         data: query,
       );
 
-      if (response.statusCode == 200) {
-        List<Game> list = [];
-
-        if (response.data is List) {
-          list = List<Game>.from(
-            response.data.map(
-              (gameJson) => Game.fromJson(
-                gameJson as Map<String, dynamic>,
-              ),
+      if (response.statusCode == 200 && response.data is List) {
+        return List<Game>.from(
+          response.data.map(
+            (gameJson) => Game.fromJson(
+              gameJson as Map<String, dynamic>,
             ),
-          );
-        }
-
-        return list;
+          ),
+        );
       } else {
         log('Failed to retrieve games: ${response.statusCode}');
         return [];
