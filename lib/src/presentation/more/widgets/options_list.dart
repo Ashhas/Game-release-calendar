@@ -28,7 +28,7 @@ class OptionsList extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => Container(),
+                builder: (_) => AppTheme(),
               ),
             );
           },

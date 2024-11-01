@@ -15,6 +15,8 @@ part 'widgets/options_list.dart';
 
 part 'widgets/notifications.dart';
 
+part 'widgets/app_theme.dart';
+
 class MoreContainer extends StatelessWidget {
   const MoreContainer({super.key});
 
