@@ -36,8 +36,8 @@ Future<void> main() async {
   final getIt = GetIt.instance;
 
   await _loadEnvVariables(getIt);
-  await _initializeTwitchAuthService(getIt);
   await _initializeDio(getIt);
+  await _initializeTwitchAuthService(getIt);
   await _initializeRepositories(getIt);
   await _initializeServices(getIt);
   await _initializeHive(getIt);
@@ -60,26 +60,23 @@ Future<void> _initializeTwitchAuthService(GetIt getIt) async {
   final envConfig = getIt.get<EnvConfig>();
 
   getIt.registerSingleton<TwitchAuthService>(
-    TwitchAuthService(
+    await TwitchAuthService.create(
       dio: getIt.get<Dio>(),
       clientId: envConfig.twitchClientId,
       clientSecret: envConfig.twitchClientSecret,
       twitchOauthTokenURL: envConfig.igdbAuthTokenURL,
     ),
   );
-  await getIt.get<TwitchAuthService>().requestTokenAndStore();
 }
 
 Future<void> _initializeDio(GetIt getIt) async {
   final envConfig = getIt.get<EnvConfig>();
 
-  final igdbAccessToken = await getIt.get<TwitchAuthService>().getStoredToken();
   final dio = Dio(
     BaseOptions(
       baseUrl: envConfig.igdbBaseUrl,
       headers: {
         'Client-ID': envConfig.twitchClientId,
-        'Authorization': 'Bearer $igdbAccessToken',
       },
     ),
   );
