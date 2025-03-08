@@ -7,7 +7,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification_payload.dart';
 
 class NotificationClient {
   NotificationClient() {
@@ -49,7 +49,7 @@ class NotificationClient {
         ),
       ),
       payload: jsonEncode(
-        ScheduledNotification.fromGame(
+        ScheduledNotificationPayload.fromGame(
           game: game,
           scheduledReleaseDate: notificationTime,
           releaseDateCategory: releaseCategory ?? ReleaseDateCategory.exactDate,

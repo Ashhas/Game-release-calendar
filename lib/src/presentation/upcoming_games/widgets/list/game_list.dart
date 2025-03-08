@@ -30,29 +30,29 @@ class GameList extends StatefulWidget {
 }
 
 class _GameListState extends State<GameList> {
-  late Map<DateTime, List<Game>> activeList = {};
-  late int requestLimit;
-  late int offset;
-  late bool isLastPage;
+  late Map<DateTime, List<Game>> _activeList = {};
+  late int _requestLimit;
+  late int _offset;
+  late bool _isLastPage;
   late bool _isLoading;
 
   @override
   void initState() {
     super.initState();
-    requestLimit = 500;
-    offset = requestLimit;
-    isLastPage = false;
+    _requestLimit = 500;
+    _offset = _requestLimit;
+    _isLastPage = false;
     _isLoading = false;
-    activeList = Map.of(widget.games);
+    _activeList = Map.of(widget.games);
   }
 
   int _getTotalItems() {
-    return activeList.values.fold(0, (sum, games) => sum + games.length);
+    return _activeList.values.fold(0, (sum, games) => sum + games.length);
   }
 
   void _updateGameList(List<Game> newGames) {
     final newGroupedGames = GameDateGrouper.groupGamesByReleaseDate(newGames);
-    final updatedList = {...activeList};
+    final updatedList = {..._activeList};
 
     newGroupedGames.forEach((date, games) {
       updatedList.update(
@@ -63,12 +63,12 @@ class _GameListState extends State<GameList> {
     });
 
     setState(() {
-      activeList = updatedList;
+      _activeList = updatedList;
     });
   }
 
   void _fetchData() async {
-    if (isLastPage || _getTotalItems() < requestLimit) {
+    if (_isLastPage || _getTotalItems() < _requestLimit) {
       print('Last page reached or max items fetched!');
       return;
     }
@@ -77,15 +77,15 @@ class _GameListState extends State<GameList> {
 
     try {
       final newGames =
-          await context.read<UpcomingGamesCubit>().getGamesWithOffset(offset);
+          await context.read<UpcomingGamesCubit>().getGamesWithOffset(_offset);
 
       if (newGames.isNotEmpty) {
         _updateGameList(newGames);
-        setState(() => offset += requestLimit);
+        setState(() => _offset += _requestLimit);
       }
 
-      if (newGames.length < requestLimit) {
-        setState(() => isLastPage = true);
+      if (newGames.length < _requestLimit) {
+        setState(() => _isLastPage = true);
       }
     } finally {
       setState(() => _isLoading = false);
@@ -95,16 +95,16 @@ class _GameListState extends State<GameList> {
   @override
   Widget build(BuildContext context) {
     return InfiniteList(
-      itemCount: activeList.length,
+      itemCount: _activeList.length,
       isLoading: _isLoading,
       onFetchData: _fetchData,
-      separatorBuilder: (context, index) => const Divider(),
+      separatorBuilder: (_, __) => const Divider(),
       itemBuilder: (_, index) {
-        if (activeList.isEmpty) {
+        if (_activeList.isEmpty) {
           return const Center(child: Text('No games found'));
         }
 
-        final entry = activeList.entries.elementAt(index);
+        final entry = _activeList.entries.elementAt(index);
 
         return DaySection(
           groupedGames: entry,

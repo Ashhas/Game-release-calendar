@@ -1,6 +1,6 @@
 part of '../game_detail_view.dart';
 
-class GameToolbar extends StatelessWidget {
+class GameToolbar extends StatefulWidget {
   const GameToolbar({
     required this.game,
     super.key,
@@ -9,21 +9,46 @@ class GameToolbar extends StatelessWidget {
   final Game game;
 
   @override
+  State<GameToolbar> createState() => _GameToolbarState();
+}
+
+class _GameToolbarState extends State<GameToolbar> {
+  bool _isScheduled = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _isScheduled = context.read<RemindersCubit>().isGameScheduled(
+          widget.game.id,
+        );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: () {
-            context.read<GameDetailCubit>().scheduleNotification(game);
+            if (_isScheduled) {
+              context.read<RemindersCubit>().cancelNotification(widget.game.id);
+              setState(() {
+                _isScheduled = false;
+              });
+            } else {
+              context.read<RemindersCubit>().scheduleNotification(widget.game);
+              setState(() {
+                _isScheduled = true;
+              });
+            }
           },
-          child: const Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.notification_add_outlined,
-                size: 28,
-              ),
+              _isScheduled
+                  ? const Icon(Icons.notifications_active)
+                  : const Icon(Icons.notifications_outlined),
               SizedBox(height: 4),
               Text('Reminder'),
             ],
@@ -32,7 +57,7 @@ class GameToolbar extends StatelessWidget {
         SizedBox(width: context.spacings.l),
         InkWell(
           onTap: () => UrlHelper.openUrl(
-            game.url,
+            widget.game.url,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

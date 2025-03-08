@@ -4,10 +4,10 @@ import 'package:timezone/timezone.dart';
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 
-part 'scheduled_notification.g.dart';
+part 'scheduled_notification_payload.g.dart';
 
 @HiveType(typeId: 5)
-class ScheduledNotification {
+class ScheduledNotificationPayload {
   @HiveField(0)
   final int id;
 
@@ -26,7 +26,7 @@ class ScheduledNotification {
   @HiveField(5)
   final ReleaseDateCategory releaseDateCategory;
 
-  ScheduledNotification({
+  const ScheduledNotificationPayload({
     required this.id,
     required this.gameId,
     required this.gameName,
@@ -49,8 +49,8 @@ class ScheduledNotification {
     };
   }
 
-  factory ScheduledNotification.fromJson(Map<String, dynamic> json) {
-    return ScheduledNotification(
+  factory ScheduledNotificationPayload.fromJson(Map<String, dynamic> json) {
+    return ScheduledNotificationPayload(
       id: json['id'],
       gameId: json['gameId'],
       gameName: json['gameName'],
@@ -65,12 +65,12 @@ class ScheduledNotification {
   }
 
   /// Creates a ScheduledNotification instance from a Game object.
-  factory ScheduledNotification.fromGame({
+  factory ScheduledNotificationPayload.fromGame({
     required Game game,
     required TZDateTime scheduledReleaseDate,
     required ReleaseDateCategory releaseDateCategory,
   }) {
-    return ScheduledNotification(
+    return ScheduledNotificationPayload(
       id: game.id,
       gameId: game.id,
       gameName: game.name,

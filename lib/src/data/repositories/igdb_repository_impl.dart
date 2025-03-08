@@ -1,6 +1,4 @@
-// ignore: prefer_library_prefixes
-
-import 'dart:developer';
+import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
 
@@ -31,14 +29,14 @@ class IGDBRepositoryImpl implements IGDBRepository {
           ),
         );
       } else {
-        log('Failed to retrieve games: ${response.statusCode}');
+        developer.log('Failed to retrieve games: ${response.statusCode}');
         return [];
       }
     } on DioException catch (e) {
-      log('DioError while retrieving games: $e');
+      developer.log('DioError while retrieving games: $e');
       return [];
     } catch (e) {
-      log('Error while retrieving games: $e');
+      developer.log('Error while retrieving games: $e');
       return [];
     }
   }

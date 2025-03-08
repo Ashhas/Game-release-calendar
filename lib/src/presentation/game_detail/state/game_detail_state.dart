@@ -1,3 +1,3 @@
 class GameDetailState {
-  GameDetailState();
+  const GameDetailState();
 }

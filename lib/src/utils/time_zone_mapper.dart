@@ -1,12 +1,12 @@
 class TimeZoneMapper {
   /// Maps a time zone abbreviation to a corresponding location string for use with `tz.getLocation()`.
   ///
-  /// This function accepts a time zone abbreviation (e.g., "EST", "PDT") and returns a
+  /// This function accepts a time zone abbreviation ("EST", "PDT") and returns a
   /// `Continent/City` formatted location string compatible with the `timezone` package's
   /// `tz.getLocation()` method, taking into account both standard and daylight saving times
   /// for applicable time zones. - Generated with ChatGPT
   ///
-  /// - [timeZoneAbbreviation]: The abbreviation of the time zone (e.g., "EST", "PST", "EDT").
+  /// - [timeZoneAbbreviation]: The abbreviation of the time zone ("EST", "PST", "EDT").
   ///
   /// Returns a `String` representing the location compatible with `tz.getLocation()`.
   static String getTzLocation(String timeZoneAbbreviation) {

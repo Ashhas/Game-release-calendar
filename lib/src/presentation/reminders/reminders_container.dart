@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:timezone/timezone.dart' as tz;
 
-import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification_payload.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
@@ -27,7 +25,11 @@ class _RemindersContainerState extends State<RemindersContainer> {
   @override
   void initState() {
     super.initState();
-    context.read<RemindersCubit>().retrievePendingNotifications();
+    _retrievePendingNotifications();
+  }
+
+  Future<void> _retrievePendingNotifications() async {
+    await context.read<RemindersCubit>().retrievePendingNotifications();
   }
 
   @override

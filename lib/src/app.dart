@@ -34,7 +34,6 @@ class App extends StatelessWidget {
         BlocProvider<GameDetailCubit>(
           create: (_) => GameDetailCubit(
             remindersBox: GetIt.instance.get<Box<Game>>(),
-            notificationClient: GetIt.instance.get<NotificationClient>(),
           ),
         ),
       ],

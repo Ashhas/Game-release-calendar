@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:game_release_calendar/src/presentation/more/more_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/reminders_container.dart';
+import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/upcoming_games_container.dart';
 
@@ -23,6 +24,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UpcomingGamesCubit>().getGames();
+      context.read<RemindersCubit>().retrievePendingNotifications();
     });
   }
 

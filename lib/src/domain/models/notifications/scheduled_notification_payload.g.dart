@@ -1,22 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'scheduled_notification.dart';
+part of 'scheduled_notification_payload.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ScheduledNotificationAdapter extends TypeAdapter<ScheduledNotification> {
+class ScheduledNotificationPayloadAdapter
+    extends TypeAdapter<ScheduledNotificationPayload> {
   @override
   final int typeId = 5;
 
   @override
-  ScheduledNotification read(BinaryReader reader) {
+  ScheduledNotificationPayload read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ScheduledNotification(
+    return ScheduledNotificationPayload(
       id: fields[0] as int,
       gameId: fields[1] as int,
       gameName: fields[2] as String,
@@ -27,7 +28,7 @@ class ScheduledNotificationAdapter extends TypeAdapter<ScheduledNotification> {
   }
 
   @override
-  void write(BinaryWriter writer, ScheduledNotification obj) {
+  void write(BinaryWriter writer, ScheduledNotificationPayload obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -50,7 +51,7 @@ class ScheduledNotificationAdapter extends TypeAdapter<ScheduledNotification> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ScheduledNotificationAdapter &&
+      other is ScheduledNotificationPayloadAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

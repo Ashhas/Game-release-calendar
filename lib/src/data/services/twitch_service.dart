@@ -1,6 +1,4 @@
-// ignore: prefer_library_prefixes
-
-import 'dart:developer';
+import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -66,14 +64,15 @@ class TwitchAuthService {
           key: 'twitch_access_token',
           value: twitchToken.accessToken,
         );
-        log('Token stored successfully');
+        developer.log('Token stored successfully');
       } else {
-        log('Failed to authenticate with Twitch: ${response.statusCode}');
+        developer
+            .log('Failed to authenticate with Twitch: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      log('DioError while authenticating with Twitch: $e');
+      developer.log('DioError while authenticating with Twitch: $e');
     } catch (e) {
-      log('Error while authenticating with Twitch: $e');
+      developer.log('Error while authenticating with Twitch: $e');
     }
   }
 
@@ -82,7 +81,7 @@ class TwitchAuthService {
       final accessToken = await _storage.read(key: 'twitch_access_token') ?? '';
       return accessToken;
     } catch (e) {
-      log('Error retrieving token: $e');
+      developer.log('Error retrieving token: $e');
       return null;
     }
   }

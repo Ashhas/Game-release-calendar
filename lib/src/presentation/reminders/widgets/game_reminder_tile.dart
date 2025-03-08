@@ -13,18 +13,14 @@ class GameReminderTile extends StatefulWidget {
 }
 
 class _GameReminderTileState extends State<GameReminderTile> {
-  late ScheduledNotification notification;
-  late tz.TZDateTime releaseDate;
-  late ReleaseDateCategory releaseDateCategory;
+  late ScheduledNotificationPayload _notification;
 
   @override
   void initState() {
     super.initState();
-    notification = ScheduledNotification.fromJson(
+    _notification = ScheduledNotificationPayload.fromJson(
       jsonDecode(widget.reminder.payload!),
     );
-    releaseDate = notification.scheduledDateTime;
-    releaseDateCategory = notification.releaseDateCategory;
   }
 
   @override
@@ -36,7 +32,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
           Flexible(
             flex: 1,
             child: Text(
-              notification.game.releaseDates!.first.human.toString(),
+              _notification.game.releaseDates!.first.human.toString(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
@@ -44,7 +40,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
           Flexible(
             flex: 3,
             child: Text(
-              notification.gameName,
+              _notification.gameName,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.end,
               maxLines: 2,
@@ -56,7 +52,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => GameDetailView(game: notification.game),
+          builder: (_) => GameDetailView(game: _notification.game),
         ),
       ),
     );

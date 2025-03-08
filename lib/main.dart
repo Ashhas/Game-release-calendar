@@ -41,7 +41,7 @@ Future<void> main() async {
   await _initializeRepositories(getIt);
   await _initializeServices(getIt);
   await _initializeHive(getIt);
-  await _initializeTimeZoneSettings(getIt);
+  await _initializeTimeZoneSettings();
   await _initializeNotificationService(getIt);
 
   runApp(
@@ -150,7 +150,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
 
   await notificationsPluginInstance.initialize(
     initializationSettings,
-    onDidReceiveNotificationResponse: (response) {},
+    onDidReceiveNotificationResponse: (_) {},
   );
 
   // Request permissions for Android
@@ -167,7 +167,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
   );
 }
 
-Future<void> _initializeTimeZoneSettings(GetIt getIt) async {
+Future<void> _initializeTimeZoneSettings() async {
   final currentTimeZone = await FlutterTimezone.getLocalTimezone();
   final timeZoneName = TimeZoneMapper.getTzLocation(currentTimeZone);
 
