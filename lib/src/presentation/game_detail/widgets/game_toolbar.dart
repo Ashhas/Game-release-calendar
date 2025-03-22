@@ -30,15 +30,19 @@ class _GameToolbarState extends State<GameToolbar> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () {
+          onTap: () async {
             if (_isScheduled) {
-              context.read<RemindersCubit>().cancelNotification(widget.game.id);
               setState(() {
+                context
+                    .read<RemindersCubit>()
+                    .cancelNotification(widget.game.id);
                 _isScheduled = false;
               });
             } else {
-              context.read<RemindersCubit>().scheduleNotification(widget.game);
               setState(() {
+                context
+                    .read<RemindersCubit>()
+                    .scheduleNotification(widget.game);
                 _isScheduled = true;
               });
             }

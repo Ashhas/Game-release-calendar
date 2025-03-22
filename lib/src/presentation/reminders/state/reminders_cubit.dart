@@ -18,8 +18,8 @@ class RemindersCubit extends Cubit<RemindersState> {
 
   final NotificationClient _notificationClient;
 
-  void scheduleNotification(Game game) {
-    _notificationClient.scheduleNotification(game);
+  Future<void> scheduleNotification(Game game) async {
+    await _notificationClient.scheduleNotification(game);
   }
 
   Future<void> retrievePendingNotifications() async {
@@ -46,17 +46,37 @@ class RemindersCubit extends Cubit<RemindersState> {
     );
   }
 
-  void cancelNotification(int gameId) {
+  Future<void> cancelNotification(int gameId) async {
+    // Fetch all notifications from the state
     final reminders = state.reminders.asData?.valueOrNull;
 
-    final notificationToCancel = reminders?.firstOrNullWhere(
-      (notification) =>
-          _parseScheduledNotificationPayload(notification).gameId == gameId,
-    );
+    // Emit loading state
+    emit(state.copyWith(reminders: AsyncValue.loading()));
 
-    if (notificationToCancel != null) {
-      _notificationClient.cancelNotification(notificationToCancel.id);
+    if (reminders != null && reminders.isNotEmpty) {
+      // Find the notification to cancel
+      final notificationToCancel = reminders.firstOrNullWhere(
+        (notification) =>
+            _parseScheduledNotificationPayload(notification).gameId == gameId,
+      );
+
+      if (notificationToCancel != null) {
+        // Create a new list without the notification to be deleted
+        final updatedReminders = reminders
+            .where((notification) => notification != notificationToCancel)
+            .toList();
+
+        // Cancel the notification
+        await _notificationClient.cancelNotification(notificationToCancel.id);
+
+        // Emit data state with the updated list
+        emit(state.copyWith(reminders: AsyncValue.data(updatedReminders)));
+        return;
+      }
     }
+
+    // If reminders are null or empty, emit the original list
+    emit(state.copyWith(reminders: AsyncValue.data(reminders ?? [])));
   }
 
   bool isGameScheduled(int gameId) {

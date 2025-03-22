@@ -27,6 +27,7 @@ class App extends StatelessWidget {
           ),
         ),
         BlocProvider<RemindersCubit>(
+          lazy: false,
           create: (_) => RemindersCubit(
             notificationClient: GetIt.instance.get<NotificationClient>(),
           ),

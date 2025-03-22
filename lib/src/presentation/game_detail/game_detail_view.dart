@@ -14,7 +14,7 @@ part 'widgets/game_info.dart';
 
 part 'widgets/game_toolbar.dart';
 
-class GameDetailView extends StatelessWidget {
+class GameDetailView extends StatefulWidget {
   const GameDetailView({
     required this.game,
     super.key,
@@ -22,6 +22,14 @@ class GameDetailView extends StatelessWidget {
 
   final Game game;
 
+  @override
+  State<GameDetailView> createState() => _GameDetailViewState();
+}
+
+class _GameDetailViewState extends State<GameDetailView> {
+  bool _isScheduled = context.read<RemindersCubit>().isGameScheduled(
+    widget.game.id,
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +43,9 @@ class GameDetailView extends StatelessWidget {
           spacing: context.spacings.m,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            GameInfo(game: game),
+            GameInfo(game: widget.game),
             const Divider(),
-            GameToolbar(game: game),
+            GameToolbar(game: widget.game),
           ],
         ),
       ),
