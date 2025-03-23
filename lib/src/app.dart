@@ -40,9 +40,9 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: GetIt.instance.get<PackageInfo>().appName,
-        theme: CustomTheme.lightTheme(),
-        darkTheme: CustomTheme.darkTheme(),
-        themeMode: ThemeMode.dark,
+        theme: CustomTheme.lightTheme,
+        darkTheme: CustomTheme.darkTheme,
+        themeMode: ThemeMode.light,
         home: AppNavigationBar(),
       ),
     );

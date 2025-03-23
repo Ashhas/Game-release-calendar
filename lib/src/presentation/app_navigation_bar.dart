@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 import 'package:game_release_calendar/src/presentation/more/more_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/reminders_container.dart';
@@ -40,27 +41,28 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.event_outlined),
-            activeIcon: Icon(Icons.event),
+            icon: Icon(LucideIcons.gamepad_2),
             label: 'Upcoming',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_outline_outlined),
-            activeIcon: Icon(Icons.bookmark),
+            icon: Icon(LucideIcons.bell),
+            activeIcon: Icon(LucideIcons.bell_ring),
             label: 'Reminders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz_outlined),
-            activeIcon: Icon(Icons.more_horiz),
+            icon: Icon(LucideIcons.ellipsis),
             label: 'More',
           ),
         ],
       ),
-      body: [
-        const UpcomingGamesContainer(),
-        const RemindersContainer(),
-        const MoreContainer(),
-      ][_currentPageIndex],
+      body: IndexedStack(
+        index: _currentPageIndex,
+        children: [
+          const UpcomingGamesContainer(),
+          const RemindersContainer(),
+          const MoreContainer(),
+        ],
+      ),
     );
   }
 }

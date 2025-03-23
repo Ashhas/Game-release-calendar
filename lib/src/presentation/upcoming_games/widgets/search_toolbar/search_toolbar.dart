@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
 import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_range_utility.dart';
+import 'package:moon_design/moon_design.dart';
 
 part 'popups/date_filter_bottom_sheet.dart';
 
 part 'popups/platform_filter_bottom_sheet.dart';
 
-class FilterToolbar extends StatelessWidget {
-  const FilterToolbar({super.key});
+class SearchToolbar extends StatelessWidget {
+  const SearchToolbar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,40 +49,18 @@ class FilterToolbar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              FilterChip(
-                label: Center(
-                  child: const Text('Date'),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                ),
-                selected: isDateFilterSelected,
-                onSelected: (_) => _showBottomSheet(
-                  BlocProvider.value(
-                    value: BlocProvider.of<UpcomingGamesCubit>(context),
-                    child: DateFilterBottomSheet(),
-                  ),
-                ),
-              ),
-              SizedBox(width: context.spacings.xs),
-              FilterChip(
-                label: Center(
-                  child: const Text('Platform'),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                ),
-                selected: isPlatformFilterSelected,
-                onSelected: (_) => _showBottomSheet(
-                  BlocProvider.value(
-                    value: BlocProvider.of<UpcomingGamesCubit>(context),
-                    child: PlatformFilterBottomSheet(),
-                  ),
-                ),
+              Expanded(
+                  child: MoonTextInput(
+                leading: Icon(LucideIcons.search),
+                hintText: 'Search for games',
+              )),
+              const SizedBox(width: 8),
+              MoonButton.icon(
+                buttonSize: MoonButtonSize.sm,
+                onTap: () {},
+                icon: const Icon(LucideIcons.filter),
+                backgroundColor: Colors.white,
+                showBorder: true,
               ),
             ],
           ),

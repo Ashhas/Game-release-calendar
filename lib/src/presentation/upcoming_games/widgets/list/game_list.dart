@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
+import 'package:game_release_calendar/src/utils/date_range_utility.dart';
+import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:intl/intl.dart';
-import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
+import 'package:moon_design/moon_design.dart';
 
 part 'section/day_section.dart';
 
@@ -30,48 +30,43 @@ class GameList extends StatefulWidget {
 }
 
 class _GameListState extends State<GameList> {
-  late Map<DateTime, List<Game>> _activeList = {};
-  late int _requestLimit;
-  late int _offset;
-  late bool _isLastPage;
-  late bool _isLoading;
+  final ScrollController _scrollController = ScrollController();
+
+  late Map<DateTime, List<Game>> _activeList;
+  int _requestLimit = 500;
+  int _offset = 500;
+  bool _isLastPage = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _requestLimit = 500;
-    _offset = _requestLimit;
-    _isLastPage = false;
-    _isLoading = false;
     _activeList = Map.of(widget.games);
+    _scrollController.addListener(_onScroll);
   }
 
-  int _getTotalItems() {
-    return _activeList.values.fold(0, (sum, games) => sum + games.length);
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _updateGameList(List<Game> newGames) {
     final newGroupedGames = GameDateGrouper.groupGamesByReleaseDate(newGames);
-    final updatedList = {..._activeList};
 
     newGroupedGames.forEach((date, games) {
-      updatedList.update(
+      _activeList.update(
         date,
         (existingGames) => existingGames..addAll(games),
         ifAbsent: () => games,
       );
     });
 
-    setState(() {
-      _activeList = updatedList;
-    });
+    setState(() {});
   }
 
   void _fetchData() async {
-    if (_isLastPage || _getTotalItems() < _requestLimit) {
-      print('Last page reached or max items fetched!');
-      return;
-    }
+    if (_isLastPage || _isLoading) return;
 
     setState(() => _isLoading = true);
 
@@ -81,36 +76,48 @@ class _GameListState extends State<GameList> {
 
       if (newGames.isNotEmpty) {
         _updateGameList(newGames);
-        setState(() => _offset += _requestLimit);
+        _offset += _requestLimit;
       }
 
       if (newGames.length < _requestLimit) {
-        setState(() => _isLastPage = true);
+        _isLastPage = true;
       }
     } finally {
       setState(() => _isLoading = false);
     }
   }
 
+  void _onScroll() {
+    if (_scrollController.position.extentAfter < 300 && !_isLoading) {
+      _fetchData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return InfiniteList(
-      itemCount: _activeList.length,
-      isLoading: _isLoading,
-      onFetchData: _fetchData,
-      separatorBuilder: (_, __) => const Divider(),
-      itemBuilder: (_, index) {
-        if (_activeList.isEmpty) {
-          return const Center(child: Text('No games found'));
-        }
+    final entries = _activeList.entries.toList();
 
-        final entry = _activeList.entries.elementAt(index);
-
-        return DaySection(
-          groupedGames: entry,
-          key: ValueKey(entry.key),
-        );
-      },
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        if (entries.isEmpty)
+          const SliverFillRemaining(
+            child: Center(child: Text('No games found')),
+          )
+        else
+          for (var entry in entries)
+            DaySection(
+              groupedGames: entry,
+              key: ValueKey(entry.key),
+            ),
+        if (_isLoading)
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ),
+      ],
     );
   }
 }

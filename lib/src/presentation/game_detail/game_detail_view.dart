@@ -27,9 +27,6 @@ class GameDetailView extends StatefulWidget {
 }
 
 class _GameDetailViewState extends State<GameDetailView> {
-  bool _isScheduled = context.read<RemindersCubit>().isGameScheduled(
-    widget.game.id,
-  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(

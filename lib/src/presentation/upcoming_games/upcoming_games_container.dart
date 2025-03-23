@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/search_toolbar/search_toolbar.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter_toolbar/filter_toolbar.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
@@ -16,41 +17,40 @@ class UpcomingGamesContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Row(
           children: [
-            const Icon(Icons.event),
+            const Icon(LucideIcons.calendar_search),
             SizedBox(width: context.spacings.m),
             const Text('Upcoming Games'),
           ],
         ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(context.spacings.xxxl),
+          child: SearchToolbar(),
+        ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          FilterToolbar(),
-          Expanded(
-            child: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
-              builder: (_, state) {
-                return state.games.when(
-                  data: (games) => games.isEmpty
-                      ? Center(child: Text('No games found'))
-                      : GameList(
-                          games: games,
-                        ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
+      body: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
+        builder: (_, state) {
+          return state.games.when(
+            data: (games) => games.isEmpty
+                ? Center(
+                    child: Text(
+                      'No games found',
+                    ),
+                  )
+                : GameList(
+                    games: games,
                   ),
-                  error: (error, _) => Center(
-                    child: Text('Error: $error'),
-                  ),
-                );
-              },
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-        ],
+            error: (error, _) => Center(
+              child: Text(
+                'Error: $error',
+              ),
+            ),
+          );
+        },
       ),
     );
   }

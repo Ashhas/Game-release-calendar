@@ -88,4 +88,27 @@ class DateRangeUtility {
         );
     }
   }
+
+  static String getDayDifferenceLabel(
+    DateTime otherDate, {
+    DateTime? currentDate,
+  }) {
+    final now = currentDate ?? DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final comparisonDate =
+        DateTime(otherDate.year, otherDate.month, otherDate.day);
+
+    final differenceInDays = comparisonDate.difference(today).inDays;
+
+    if (differenceInDays == 0) {
+      return 'Today';
+    } else if (differenceInDays == 1) {
+      return 'Tomorrow';
+    } else if (differenceInDays <= 30) {
+      return '$differenceInDays days';
+    } else {
+      final differenceInWeeks = (differenceInDays / 7).floor();
+      return '$differenceInWeeks week${differenceInWeeks > 1 ? 's' : ''}';
+    }
+  }
 }

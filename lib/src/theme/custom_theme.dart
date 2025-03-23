@@ -1,53 +1,40 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
+import 'package:moon_design/moon_design.dart';
 
 class CustomTheme {
-  const CustomTheme._();
+  CustomTheme._();
 
-  static ThemeData lightTheme() {
-    return ThemeData(
-      extensions: const [AppSpacings.defaultValues],
-    );
-  }
+  static const double borderRadiusValue = 8.0;
 
-  static ThemeData darkTheme() {
-    return ThemeData.dark().copyWith(
-      extensions: const [AppSpacings.defaultValues],
-      splashColor: const Color(0xFF212121),
-      colorScheme: ThemeData.dark().colorScheme.copyWith(
-            // Primary colors (used for buttons, active states, etc.)
-            primary: Color(0xFF3D3D3D),
-            onPrimary: Colors.white,
+  static MoonTokens _lightTokens = MoonTokens.light.copyWith(
+    colors: MoonColors.light.copyWith(
+      piccolo: Colors.blue,
+    ),
+  );
 
-            // Secondary colors (can be used for accents or in bottom navbar)
-            secondary: Color(0xFF686868),
-            onSecondary: Colors.white,
+  static MoonTokens _darkTokens = MoonTokens.dark.copyWith(
+    colors: MoonColors.dark.copyWith(
+      piccolo: Colors.blue,
+    ),
+  );
 
-            // Surface colors (used for cards, menus, background.)
-            surface: Color(0xFF262626),
-            onSurface: Colors.white,
+  static ThemeData lightTheme = ThemeData.light().copyWith(
+    extensions: <ThemeExtension>[
+      AppSpacings.defaultValues,
+      MoonTheme(
+        tokens: _lightTokens,
+      )
+    ],
+  );
 
-            // Other colors, Searchbar background
-            primaryContainer: Color(0xFF222222),
-            onPrimaryContainer: Colors.white,
-
-            // Appbar scroll
-            surfaceTint: Color(0xFF262626),
-
-            // Divider color
-            outline: Color(0xFF3D3D3D),
-            // Border color or dividers
-
-            // Error colors (optional, default values for errors)
-            error: Colors.red,
-            onError: Colors.white,
-          ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: const Color(0xFF262626),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: const Color(0xFF666666),
-      ),
-    );
-  }
+  static ThemeData darkTheme = ThemeData.dark().copyWith(
+    extensions: <ThemeExtension>[
+      AppSpacings.defaultValues,
+      MoonTheme(
+        tokens: _darkTokens,
+      )
+    ],
+  );
 }
