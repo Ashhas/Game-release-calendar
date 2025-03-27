@@ -7,6 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -35,6 +36,7 @@ Future<void> main() async {
 
   final getIt = GetIt.instance;
 
+  await _initializeSharedPrefs(getIt);
   await _loadEnvVariables(getIt);
   await _initializeDio(getIt);
   await _initializeTwitchAuthService(getIt);
@@ -47,6 +49,11 @@ Future<void> main() async {
   runApp(
     const App(),
   );
+}
+
+Future<void> _initializeSharedPrefs(GetIt getIt) async {
+  await SharedPrefsService.init();
+  getIt.registerSingleton<SharedPrefsService>(SharedPrefsService());
 }
 
 Future<void> _loadEnvVariables(GetIt getIt) async {

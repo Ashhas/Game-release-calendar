@@ -15,42 +15,46 @@ class UpcomingGamesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Icon(LucideIcons.calendar_search),
-            SizedBox(width: context.spacings.m),
-            const Text('Upcoming Games'),
-          ],
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              const Icon(LucideIcons.calendar_search),
+              SizedBox(width: context.spacings.m),
+              const Text('Upcoming Games'),
+            ],
+          ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(context.spacings.xxxl),
+            child: SearchToolbar(),
+          ),
         ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(context.spacings.xxxl),
-          child: SearchToolbar(),
-        ),
-      ),
-      body: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
-        builder: (_, state) {
-          return state.games.when(
-            data: (games) => games.isEmpty
-                ? Center(
-                    child: Text(
-                      'No games found',
+        body: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
+          builder: (_, state) {
+            return state.games.when(
+              data: (games) => games.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No games found',
+                      ),
+                    )
+                  : GameList(
+                      games: games,
                     ),
-                  )
-                : GameList(
-                    games: games,
-                  ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            error: (error, _) => Center(
-              child: Text(
-                'Error: $error',
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-          );
-        },
+              error: (error, _) => Center(
+                child: Text(
+                  'Error: $error',
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

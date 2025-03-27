@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
+import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -37,13 +39,22 @@ class App extends StatelessWidget {
             remindersBox: GetIt.instance.get<Box<Game>>(),
           ),
         ),
+        BlocProvider<ThemeCubit>(
+          create: (_) => ThemeCubit(
+            GetIt.instance.get<SharedPrefsService>(),
+          ),
+        ),
       ],
-      child: MaterialApp(
-        title: GetIt.instance.get<PackageInfo>().appName,
-        theme: CustomTheme.lightTheme,
-        darkTheme: CustomTheme.darkTheme,
-        themeMode: ThemeMode.light,
-        home: AppNavigationBar(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (_, themeMode) {
+          return MaterialApp(
+            title: GetIt.instance.get<PackageInfo>().appName,
+            theme: CustomTheme.lightTheme,
+            darkTheme: CustomTheme.darkTheme,
+            themeMode: themeMode,
+            home: AppNavigationBar(),
+          );
+        },
       ),
     );
   }

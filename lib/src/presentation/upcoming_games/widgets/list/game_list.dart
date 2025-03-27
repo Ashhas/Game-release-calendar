@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
+import 'package:game_release_calendar/src/utils/constants.dart';
 import 'package:game_release_calendar/src/utils/date_range_utility.dart';
 import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +10,6 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
-import 'package:moon_design/moon_design.dart';
 
 part 'section/day_section.dart';
 
@@ -33,8 +33,8 @@ class _GameListState extends State<GameList> {
   final ScrollController _scrollController = ScrollController();
 
   late Map<DateTime, List<Game>> _activeList;
-  int _requestLimit = 500;
-  int _offset = 500;
+  int _requestLimit = Constants.gameRequestLimit;
+  int _offset = Constants.gameRequestLimit;
   bool _isLastPage = false;
   bool _isLoading = false;
 
@@ -51,7 +51,7 @@ class _GameListState extends State<GameList> {
     super.dispose();
   }
 
-  void _updateGameList(List<Game> newGames) {
+  void _extendUpcomingGamesList(List<Game> newGames) {
     final newGroupedGames = GameDateGrouper.groupGamesByReleaseDate(newGames);
 
     newGroupedGames.forEach((date, games) {
@@ -75,7 +75,7 @@ class _GameListState extends State<GameList> {
           await context.read<UpcomingGamesCubit>().getGamesWithOffset(_offset);
 
       if (newGames.isNotEmpty) {
-        _updateGameList(newGames);
+        _extendUpcomingGamesList(newGames);
         _offset += _requestLimit;
       }
 

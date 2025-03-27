@@ -11,6 +11,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.3.0):
+    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -21,6 +23,7 @@ DEPENDENCIES:
   - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 EXTERNAL SOURCES:
@@ -36,16 +39,19 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
+  flutter_local_notifications: df98d66e515e1ca797af436137b4459b160ad8c9
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
-  flutter_timezone: ffb07bdad3c6276af8dada0f11978d8a1f8a20bb
+  flutter_timezone: ac3da59ac941ff1c98a2e1f0293420e020120282
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796

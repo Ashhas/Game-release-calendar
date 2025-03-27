@@ -1,6 +1,7 @@
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/utils/constants.dart';
 
 class IGDBService {
   final IGDBRepository repository;
@@ -9,23 +10,21 @@ class IGDBService {
     required this.repository,
   });
 
-  Future<List<Game>> getGames(GameFilter filter) {
-    return repository.getGames(_buildQuery(filter));
-  }
-
-  Future<List<Game>> getGamesWithOffset({
+  Future<List<Game>> getGames({
+    required String? nameQuery,
     required GameFilter filter,
-    required int offset,
-  }) {
+    int offset = 0,
+  }) async {
     return repository.getGames(
       _buildQuery(
+        nameQuery,
         filter,
         offset: offset,
       ),
     );
   }
 
-  String _buildQuery(GameFilter filter, {int offset = 0}) {
+  String _buildQuery(String? nameQuery, GameFilter filter, {int offset = 0}) {
     List<String> filterConditions = [];
 
     // Platform filter
@@ -58,12 +57,15 @@ class IGDBService {
         ? 'where ${filterConditions.join(' & ')};'
         : '';
 
+    final isSearchQuery = nameQuery != null && nameQuery.isNotEmpty;
+
     final query = [
+      if (isSearchQuery) 'search "$nameQuery";',
       'fields *, platforms.*, cover.*, release_dates.*;',
       whereClause,
-      'limit 500;',
+      'limit ${Constants.gameRequestLimit};',
       'offset $offset;',
-      'sort first_release_date asc;'
+      if (!isSearchQuery) 'sort first_release_date asc;'
     ].join(' ');
 
     return query;
