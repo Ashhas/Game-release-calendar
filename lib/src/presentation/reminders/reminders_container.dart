@@ -23,16 +23,6 @@ class RemindersContainer extends StatefulWidget {
 
 class _RemindersContainerState extends State<RemindersContainer> {
   @override
-  void initState() {
-    super.initState();
-    _retrievePendingNotifications();
-  }
-
-  Future<void> _retrievePendingNotifications() async {
-    await context.read<RemindersCubit>().retrievePendingNotifications();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

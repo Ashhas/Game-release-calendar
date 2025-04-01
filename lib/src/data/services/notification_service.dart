@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:dartx/dartx.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -22,8 +23,14 @@ class NotificationClient {
           await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
 
   /// Schedules a notification for the game's upcoming release date.
-  Future<void> scheduleNotification(Game game) async {
-    final (notificationDate, releaseCategory) = computeNotificationDate(game);
+  Future<void> scheduleNotification({
+    required Game game,
+    required ReleaseDate releaseDate,
+  }) async {
+    final (notificationDate, releaseCategory) = computeNotificationDate(
+      game: game,
+      releaseDate: releaseDate,
+    );
 
     if (notificationDate == null) {
       // No upcoming release date found
@@ -37,7 +44,7 @@ class NotificationClient {
     );
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-      game.id,
+      releaseDate.id!,
       'Release Day: ${game.name}',
       '${game.name} will be available today! Get ready to play.',
       notificationTime,
@@ -52,6 +59,7 @@ class NotificationClient {
         ScheduledNotificationPayload.fromGame(
           game: game,
           scheduledReleaseDate: notificationTime,
+          releaseDate: releaseDate,
           releaseDateCategory: releaseCategory ?? ReleaseDateCategory.exactDate,
         ).toJson(),
       ),
@@ -68,31 +76,31 @@ class NotificationClient {
   /// Computes the notification date based on the game's release dates.
   /// For now, we'll by default take the earliest release date and set the
   /// notification time to 10:00 AM.
-  (DateTime?, ReleaseDateCategory?) computeNotificationDate(Game game) {
-    DateTime? earliestReleaseDate;
-    ReleaseDateCategory? earliestReleaseCategory;
+  (DateTime?, ReleaseDateCategory?) computeNotificationDate({
+    required Game game,
+    required ReleaseDate releaseDate,
+  }) {
+    DateTime? convertedDate;
+    ReleaseDateCategory? convertedCategory;
 
-    final sortedReleaseDates = game.releaseDates?.sortedBy(
-          (releaseDate) => releaseDate.date!,
-        ) ??
-        null;
-
-    if (sortedReleaseDates?.first.date != null) {
-      earliestReleaseDate = DateTime.fromMillisecondsSinceEpoch(
-        sortedReleaseDates!.first.date! * 1000,
+    if (releaseDate.date != null) {
+      convertedDate = DateTimeConverter.secondSinceEpochToDateTime(
+        releaseDate.date!,
       );
 
-      if (earliestReleaseDate.isAfter(DateTime.now())) {
-        earliestReleaseCategory = sortedReleaseDates.first.category;
-        earliestReleaseDate = DateTime(
-          earliestReleaseDate.year,
-          earliestReleaseDate.month,
-          earliestReleaseDate.day,
+      if (convertedDate.isAfter(DateTime.now())) {
+        convertedCategory = releaseDate.category;
+
+        // Set the notification time to 10:00 AM
+        convertedDate = DateTime(
+          convertedDate.year,
+          convertedDate.month,
+          convertedDate.day,
           10,
         );
       }
     }
 
-    return (earliestReleaseDate, earliestReleaseCategory);
+    return (convertedDate, convertedCategory);
   }
 }

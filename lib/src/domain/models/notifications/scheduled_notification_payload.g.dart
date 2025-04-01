@@ -24,13 +24,14 @@ class ScheduledNotificationPayloadAdapter
       game: fields[3] as Game,
       scheduledDateTime: fields[4] as TZDateTime,
       releaseDateCategory: fields[5] as ReleaseDateCategory,
+      releaseDate: fields[6] as ReleaseDate,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduledNotificationPayload obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -42,7 +43,9 @@ class ScheduledNotificationPayloadAdapter
       ..writeByte(4)
       ..write(obj.scheduledDateTime)
       ..writeByte(5)
-      ..write(obj.releaseDateCategory);
+      ..write(obj.releaseDateCategory)
+      ..writeByte(6)
+      ..write(obj.releaseDate);
   }
 
   @override

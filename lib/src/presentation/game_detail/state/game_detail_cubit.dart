@@ -12,7 +12,15 @@ class GameDetailCubit extends Cubit<GameDetailState> {
 
   final Box<Game> _remindersBox;
 
-  void saveGame(Game game) {
+  bool isGameSaved(int gameId) {
+    return _remindersBox.containsKey(gameId);
+  }
+
+  Future<void> saveGame(Game game) async {
     _remindersBox.put(game.id, game);
+  }
+
+  Future<void> removeGame(int gameId) async {
+    _remindersBox.delete(gameId);
   }
 }

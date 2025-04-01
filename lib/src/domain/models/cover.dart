@@ -36,4 +36,13 @@ class Cover {
       'image_id': imageId,
     };
   }
+
+  @override
+  String toString() {
+    return '''Cover(
+    id: $id,
+    url: $url,
+    imageId: $imageId
+  )''';
+  }
 }

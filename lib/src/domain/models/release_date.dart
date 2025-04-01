@@ -67,4 +67,18 @@ class ReleaseDate {
       'platform': platform?.toValue(),
     };
   }
+
+  @override
+  String toString() {
+    return '''ReleaseDate(
+    id: $id,
+    date: $date,
+    human: $human,
+    category: $category,
+    year: $year,
+    month: $month,
+    quarter: $quarter,
+    platform: $platform
+  )''';
+  }
 }

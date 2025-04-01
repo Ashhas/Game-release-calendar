@@ -14,7 +14,10 @@ class DaySection extends StatelessWidget {
       slivers: [
         SliverPersistentHeader(
           pinned: true,
-          delegate: _DayHeaderDelegate(date: groupedGames.key),
+          delegate: _DayHeaderDelegate(
+            date: groupedGames.key,
+            colorScheme: Theme.of(context).colorScheme,
+          ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -31,8 +34,12 @@ class DaySection extends StatelessWidget {
 
 class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
   final DateTime date;
+  final ColorScheme colorScheme;
 
-  const _DayHeaderDelegate({required this.date});
+  const _DayHeaderDelegate({
+    required this.date,
+    required this.colorScheme,
+  });
 
   @override
   Widget build(
@@ -43,7 +50,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
     );
 
     return Container(
-      color: Theme.of(context).colorScheme.surface,
+      color: colorScheme.surface,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       alignment: Alignment.centerLeft,
       child: Row(
@@ -77,6 +84,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => 60;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
+  bool shouldRebuild(covariant _DayHeaderDelegate oldDelegate) {
+    return oldDelegate.date != date || oldDelegate.colorScheme != colorScheme;
+  }
 }

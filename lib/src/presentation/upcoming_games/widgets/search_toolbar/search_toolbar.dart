@@ -26,6 +26,7 @@ class SearchToolbar extends StatelessWidget {
             children: [
               Expanded(
                 child: MoonTextInput(
+                  autofocus: false,
                   leading: Icon(Icons.search),
                   hintText: 'Search for games',
                   onChanged: (value) async {

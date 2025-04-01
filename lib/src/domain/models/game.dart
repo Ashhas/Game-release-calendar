@@ -141,13 +141,13 @@ class Game {
       name: json['name'],
       platforms: json['platforms'] != null
           ? (json['platforms'] as List)
-              .map((e) => Platform.fromJson(e))
-              .toList()
+          .map((e) => Platform.fromJson(e))
+          .toList()
           : null,
       releaseDates: json['release_dates'] != null
           ? (json['release_dates'] as List)
-              .map((e) => ReleaseDate.fromJson(e))
-              .toList()
+          .map((e) => ReleaseDate.fromJson(e))
+          .toList()
           : null,
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),
@@ -202,4 +202,40 @@ class Game {
       'version_title': versionTitle,
     };
   }
+
+  @override
+  String toString() {
+    return 'Game(\n'
+        '  id: $id,\n'
+        '  createdAt: $createdAt,\n'
+        '  name: $name,\n'
+        '  updatedAt: $updatedAt,\n'
+        '  url: $url,\n'
+        '  checksum: $checksum,\n'
+        '  ageRatings: $ageRatings,\n'
+        '  artworks: $artworks,\n'
+        '  category: $category,\n'
+        '  cover: ${cover?.toString()},\n'
+        '  externalGames: $externalGames,\n'
+        '  firstReleaseDate: $firstReleaseDate,\n'
+        '  genres: $genres,\n'
+        '  platforms: ${platforms?.map((p) => p.toString()).toList()},\n'
+        '  releaseDates: ${releaseDates?.map((r) => r.toString()).toList()},\n'
+        '  screenshots: $screenshots,\n'
+        '  similarGames: $similarGames,\n'
+        '  slug: $slug,\n'
+        '  description: $description,\n'
+        '  tags: $tags,\n'
+        '  themes: $themes,\n'
+        '  websites: $websites,\n'
+        '  languageSupports: $languageSupports,\n'
+        '  gameModes: $gameModes,\n'
+        '  status: $status,\n'
+        '  multiplayerModes: $multiplayerModes,\n'
+        '  videos: $videos,\n'
+        '  versionParent: $versionParent,\n'
+        '  versionTitle: $versionTitle\n'
+        ')';
+  }
+
 }

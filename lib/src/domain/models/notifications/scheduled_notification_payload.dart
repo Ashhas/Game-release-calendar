@@ -1,3 +1,4 @@
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:hive/hive.dart';
 import 'package:timezone/timezone.dart';
 
@@ -26,6 +27,9 @@ class ScheduledNotificationPayload {
   @HiveField(5)
   final ReleaseDateCategory releaseDateCategory;
 
+  @HiveField(6)
+  final ReleaseDate releaseDate;
+
   const ScheduledNotificationPayload({
     required this.id,
     required this.gameId,
@@ -33,6 +37,7 @@ class ScheduledNotificationPayload {
     required this.game,
     required this.scheduledDateTime,
     required this.releaseDateCategory,
+    required this.releaseDate,
   });
 
   Map<String, dynamic> toJson() {
@@ -45,6 +50,7 @@ class ScheduledNotificationPayload {
         'millisecondsSinceEpoch': scheduledDateTime.millisecondsSinceEpoch,
         'location': scheduledDateTime.location.name,
       },
+      'releaseDate': releaseDate.toJson(),
       'releaseDateCategory': releaseDateCategory.toValue(),
     };
   }
@@ -59,6 +65,7 @@ class ScheduledNotificationPayload {
         getLocation(json['scheduledDateTime']['location']),
         json['scheduledDateTime']['millisecondsSinceEpoch'],
       ),
+      releaseDate: ReleaseDate.fromJson(json['releaseDate']),
       releaseDateCategory:
           ReleaseDateCategory.fromValue(json['releaseDateCategory']),
     );
@@ -69,6 +76,7 @@ class ScheduledNotificationPayload {
     required Game game,
     required TZDateTime scheduledReleaseDate,
     required ReleaseDateCategory releaseDateCategory,
+    required ReleaseDate releaseDate,
   }) {
     return ScheduledNotificationPayload(
       id: game.id,
@@ -77,6 +85,7 @@ class ScheduledNotificationPayload {
       game: game,
       scheduledDateTime: scheduledReleaseDate,
       releaseDateCategory: releaseDateCategory,
+      releaseDate: releaseDate,
     );
   }
 }

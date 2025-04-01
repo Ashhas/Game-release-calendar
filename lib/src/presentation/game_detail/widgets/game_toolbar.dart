@@ -19,7 +19,7 @@ class _GameToolbarState extends State<GameToolbar> {
   void initState() {
     super.initState();
 
-    _isScheduled = context.read<RemindersCubit>().isGameScheduled(
+    _isScheduled = context.read<RemindersCubit>().hasScheduledNotifications(
           widget.game.id,
         );
   }
@@ -40,9 +40,9 @@ class _GameToolbarState extends State<GameToolbar> {
               });
             } else {
               setState(() {
-                context
-                    .read<RemindersCubit>()
-                    .scheduleNotification(widget.game);
+                // context
+                //     .read<RemindersCubit>()
+                //     .scheduleNotification(widget.game);
                 _isScheduled = true;
               });
             }

@@ -40,4 +40,14 @@ class Platform {
       'url': url,
     };
   }
+
+  @override
+  String toString() {
+    return '''Platform(
+    id: $id,
+    abbreviation: $abbreviation,
+    name: $name,
+    url: $url
+  )''';
+  }
 }
