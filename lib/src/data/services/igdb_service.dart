@@ -43,7 +43,11 @@ class IGDBService {
       filterConditions.add('first_release_date >= $fromTimestamp');
     } else {
       // Default to current date if no start is provided
-      final currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      DateTime dateOnly = DateTime.now();
+      DateTime withoutTime =
+          DateTime(dateOnly.year, dateOnly.month, dateOnly.day);
+
+      final currentTimestamp = withoutTime.millisecondsSinceEpoch ~/ 1000;
       filterConditions.add('first_release_date >= $currentTimestamp');
     }
 
