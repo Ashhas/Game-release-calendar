@@ -8,7 +8,8 @@ import 'package:timezone/timezone.dart' as tz;
 
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification_payload.dart';
+
+import '../../domain/models/notifications/game_reminder.dart';
 
 class NotificationClient {
   NotificationClient() {
@@ -22,14 +23,13 @@ class NotificationClient {
       retrievePendingNotifications() async =>
           await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
 
-  /// Schedules a notification for the game's upcoming release date.
-  Future<void> scheduleNotification({
+  /// Schedules a notification using the [Game] Object
+  Future<void> scheduleNotificationFromGame({
     required Game game,
     required ReleaseDate releaseDate,
   }) async {
-    final (notificationDate, releaseCategory) = computeNotificationDate(
-      game: game,
-      releaseDate: releaseDate,
+    final notificationDate = DateTimeConverter.computeNotificationDate(
+      releaseDate.date ?? 0,
     );
 
     if (notificationDate == null) {
@@ -44,7 +44,7 @@ class NotificationClient {
     );
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-      releaseDate.id!,
+      releaseDate.id,
       'Release Day: ${game.name}',
       '${game.name} will be available today! Get ready to play.',
       notificationTime,
@@ -56,11 +56,12 @@ class NotificationClient {
         ),
       ),
       payload: jsonEncode(
-        ScheduledNotificationPayload.fromGame(
+        GameReminder.fromGame(
           game: game,
-          scheduledReleaseDate: notificationTime,
           releaseDate: releaseDate,
-          releaseDateCategory: releaseCategory ?? ReleaseDateCategory.exactDate,
+          releaseDateCategory:
+              releaseDate.category ?? ReleaseDateCategory.exactDate,
+          notificationDate: notificationDate,
         ).toJson(),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -69,38 +70,41 @@ class NotificationClient {
     );
   }
 
-  Future<void> cancelNotification(int gameId) async {
-    await _flutterLocalNotificationsPlugin.cancel(gameId);
-  }
-
-  /// Computes the notification date based on the game's release dates.
-  /// For now, we'll by default take the earliest release date and set the
-  /// notification time to 10:00 AM.
-  (DateTime?, ReleaseDateCategory?) computeNotificationDate({
-    required Game game,
-    required ReleaseDate releaseDate,
-  }) {
-    DateTime? convertedDate;
-    ReleaseDateCategory? convertedCategory;
-
-    if (releaseDate.date != null) {
-      convertedDate = DateTimeConverter.secondSinceEpochToDateTime(
-        releaseDate.date!,
-      );
-
-      if (convertedDate.isAfter(DateTime.now())) {
-        convertedCategory = releaseDate.category;
-
-        // Set the notification time to 10:00 AM
-        convertedDate = DateTime(
-          convertedDate.year,
-          convertedDate.month,
-          convertedDate.day,
-          10,
-        );
-      }
+  /// Schedules a notification using the [GameReminder] Object
+  Future<void> scheduleNotificationFromReminder({
+    required GameReminder gameReminder,
+  }) async {
+    if (gameReminder.notificationDate == null) {
+      // Invalid reminder
+      return;
     }
 
-    return (convertedDate, convertedCategory);
+    // Convert the notification date to the appropriate timezone
+    final tz.TZDateTime notificationTime = tz.TZDateTime.from(
+      gameReminder.notificationDate!,
+      tz.local,
+    );
+
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      gameReminder.releaseDate.id,
+      'Release Day: ${gameReminder.gameName}',
+      '${gameReminder.gameName} will be available today! Get ready to play.',
+      notificationTime,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'release_day_channel',
+          'Game Release Notifications',
+          channelDescription: 'Notifications for game release days',
+        ),
+      ),
+      payload: jsonEncode(gameReminder.toJson()),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> cancelNotification(int gameId) async {
+    await _flutterLocalNotificationsPlugin.cancel(gameId);
   }
 }

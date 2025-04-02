@@ -1,15 +1,14 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 
 class RemindersState {
-  AsyncValue<List<PendingNotificationRequest>> reminders;
+  final List<GameReminder> reminders;
 
-  RemindersState({
-    this.reminders = const AsyncValue.data([]),
+  const RemindersState({
+    this.reminders = const [],
   });
 
   RemindersState copyWith({
-    AsyncValue<List<PendingNotificationRequest>>? reminders,
+    List<GameReminder>? reminders,
   }) {
     return RemindersState(
       reminders: reminders ?? this.reminders,

@@ -13,28 +13,22 @@ class GameReleases extends StatefulWidget {
 }
 
 class _GameReleasesState extends State<GameReleases> {
-  late final GameDetailCubit gameCubit;
-  late final RemindersCubit remindersCubit;
+  late final GameDetailCubit gameDetailCubit;
   late final List<ReleaseDate> sortedReleaseDates;
   late final List<bool> checkedStatus;
 
   @override
   void initState() {
     super.initState();
-    gameCubit = context.read<GameDetailCubit>();
-    remindersCubit = context.read<RemindersCubit>();
-
     // Sort release dates by date, then by platform name
     sortedReleaseDates = _sortReleaseDates(widget.game.releaseDates);
 
     // Determine which platforms are already scheduled
+    gameDetailCubit = context.read<GameDetailCubit>();
     checkedStatus = sortedReleaseDates
-        .map(
-          (rd) => remindersCubit.isReleaseDateScheduled(
-            gameId: widget.game.id,
-            releaseDate: rd,
-          ),
-        )
+        .map((rd) => gameDetailCubit.isReminderSaved(
+              rd.id,
+            ))
         .toList();
   }
 
@@ -50,68 +44,40 @@ class _GameReleasesState extends State<GameReleases> {
     int index,
     ReleaseDate releaseDate,
   ) async {
-    final gameId = widget.game.id;
-    final isSaved = gameCubit.isGameSaved(gameId);
+    final isSaved = gameDetailCubit.isReminderSaved(
+      releaseDate.id,
+    );
 
     if (!isSaved) {
-      await _saveAndSchedule(
-        gameId: gameId,
+      await _saveReminder(
         releaseDate: releaseDate,
       );
       _updateCheckedStatus(index);
       return;
-    }
-
-    final isScheduled = remindersCubit.isReleaseDateScheduled(
-      gameId: gameId,
-      releaseDate: releaseDate,
-    );
-
-    if (isScheduled) {
-      await _cancelReminderOrRemoveGame(
-        gameId: gameId,
-        releaseDate: releaseDate,
-      );
-      _updateCheckedStatus(index);
-      return;
-    }
-
-    // If saved but not scheduled yet.
-    await remindersCubit.scheduleNotification(
-      game: widget.game,
-      releaseDate: releaseDate,
-    );
-    _showSnackBar('Reminder scheduled!');
-    _updateCheckedStatus(index);
-  }
-
-  Future<void> _saveAndSchedule({
-    required int gameId,
-    required ReleaseDate releaseDate,
-  }) async {
-    await gameCubit.saveGame(widget.game);
-    await remindersCubit.scheduleNotification(
-      game: widget.game,
-      releaseDate: releaseDate,
-    );
-    _showSnackBar('Game saved & reminder scheduled!');
-  }
-
-  Future<void> _cancelReminderOrRemoveGame({
-    required int gameId,
-    required ReleaseDate releaseDate,
-  }) async {
-    await remindersCubit.cancelNotificationForPlatform(
-      gameId: gameId,
-      releaseDate: releaseDate,
-    );
-
-    if (!remindersCubit.hasScheduledNotifications(gameId)) {
-      await gameCubit.removeGame(gameId);
-      _showSnackBar('Reminder cancelled & game removed!');
     } else {
-      _showSnackBar('Reminder cancelled!');
+      await _removeReminder(
+        releaseDateId: releaseDate.id,
+      );
+      _updateCheckedStatus(index);
+      return;
     }
+  }
+
+  Future<void> _saveReminder({
+    required ReleaseDate releaseDate,
+  }) async {
+    await gameDetailCubit.saveReminder(
+      game: widget.game,
+      releaseDate: releaseDate,
+    );
+    _showSnackBar('Reminder saved!');
+  }
+
+  Future<void> _removeReminder({
+    required int releaseDateId,
+  }) async {
+    await gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
+    _showSnackBar('Reminder cancelled!');
   }
 
   void _updateCheckedStatus(int index) {
@@ -154,21 +120,15 @@ class _GameReleasesState extends State<GameReleases> {
               );
             }
 
-            final convertedDate = DateTimeConverter.secondSinceEpochToDateTime(
-              rd.date!,
-            );
-            final hasBeenReleased = convertedDate.isBefore(
-              DateTime.now(),
-            );
-            final formattedDate = DateFormat('dd-MM-yyyy').format(
-              convertedDate,
-            );
+            final hasBeenReleased =
+                DateTimeConverter.secondSinceEpochToDateTime(rd.date!)
+                    .isBefore(DateTime.now());
 
             return CheckboxListTile(
               enabled: !hasBeenReleased,
               value: checkedStatus[index],
               title: Text(platform.fullName),
-              subtitle: Text(formattedDate),
+              subtitle: Text(rd.human.toString()),
               onChanged: (_) => _onReminderTileTapped(index, rd),
             );
           },

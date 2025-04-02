@@ -17,7 +17,7 @@ class ReleaseDateAdapter extends TypeAdapter<ReleaseDate> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ReleaseDate(
-      id: fields[0] as int?,
+      id: fields[0] as int,
       date: fields[1] as int?,
       human: fields[2] as String?,
       category: fields[3] as ReleaseDateCategory?,

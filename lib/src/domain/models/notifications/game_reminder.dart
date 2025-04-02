@@ -1,14 +1,13 @@
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:hive/hive.dart';
-import 'package:timezone/timezone.dart';
 
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 
-part 'scheduled_notification_payload.g.dart';
+part 'game_reminder.g.dart';
 
-@HiveType(typeId: 5)
-class ScheduledNotificationPayload {
+@HiveType(typeId: 6)
+class GameReminder {
   @HiveField(0)
   final int id;
 
@@ -19,25 +18,25 @@ class ScheduledNotificationPayload {
   final String gameName;
 
   @HiveField(3)
-  final Game game;
+  final Game gamePayload;
 
   @HiveField(4)
-  final TZDateTime scheduledDateTime;
+  final ReleaseDate releaseDate;
 
   @HiveField(5)
   final ReleaseDateCategory releaseDateCategory;
 
   @HiveField(6)
-  final ReleaseDate releaseDate;
+  final DateTime? notificationDate;
 
-  const ScheduledNotificationPayload({
+  const GameReminder({
     required this.id,
     required this.gameId,
     required this.gameName,
-    required this.game,
-    required this.scheduledDateTime,
-    required this.releaseDateCategory,
+    required this.gamePayload,
     required this.releaseDate,
+    required this.releaseDateCategory,
+    required this.notificationDate,
   });
 
   Map<String, dynamic> toJson() {
@@ -45,47 +44,41 @@ class ScheduledNotificationPayload {
       'id': id,
       'gameId': gameId,
       'gameName': gameName,
-      'game': game.toJson(),
-      'scheduledDateTime': {
-        'millisecondsSinceEpoch': scheduledDateTime.millisecondsSinceEpoch,
-        'location': scheduledDateTime.location.name,
-      },
+      'game': gamePayload.toJson(),
       'releaseDate': releaseDate.toJson(),
       'releaseDateCategory': releaseDateCategory.toValue(),
+      'notificationDate': notificationDate?.toIso8601String(),
     };
   }
 
-  factory ScheduledNotificationPayload.fromJson(Map<String, dynamic> json) {
-    return ScheduledNotificationPayload(
+  factory GameReminder.fromJson(Map<String, dynamic> json) {
+    return GameReminder(
       id: json['id'],
       gameId: json['gameId'],
       gameName: json['gameName'],
-      game: Game.fromJson(json['game']),
-      scheduledDateTime: TZDateTime.fromMillisecondsSinceEpoch(
-        getLocation(json['scheduledDateTime']['location']),
-        json['scheduledDateTime']['millisecondsSinceEpoch'],
-      ),
+      gamePayload: Game.fromJson(json['game']),
       releaseDate: ReleaseDate.fromJson(json['releaseDate']),
       releaseDateCategory:
           ReleaseDateCategory.fromValue(json['releaseDateCategory']),
+      notificationDate: DateTime.parse(json['notificationDate']),
     );
   }
 
   /// Creates a ScheduledNotification instance from a Game object.
-  factory ScheduledNotificationPayload.fromGame({
+  factory GameReminder.fromGame({
     required Game game,
-    required TZDateTime scheduledReleaseDate,
-    required ReleaseDateCategory releaseDateCategory,
     required ReleaseDate releaseDate,
+    required ReleaseDateCategory releaseDateCategory,
+    required DateTime? notificationDate,
   }) {
-    return ScheduledNotificationPayload(
-      id: game.id,
+    return GameReminder(
+      id: releaseDate.id,
       gameId: game.id,
       gameName: game.name,
-      game: game,
-      scheduledDateTime: scheduledReleaseDate,
-      releaseDateCategory: releaseDateCategory,
+      gamePayload: game,
       releaseDate: releaseDate,
+      releaseDateCategory: releaseDateCategory,
+      notificationDate: notificationDate,
     );
   }
 }

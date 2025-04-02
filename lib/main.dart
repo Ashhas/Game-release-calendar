@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification_payload.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -130,21 +130,21 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(PlatformAdapter());
   Hive.registerAdapter(CoverAdapter());
   Hive.registerAdapter(ReleaseDateAdapter());
+  Hive.registerAdapter(GameReminderAdapter());
   Hive.registerAdapter(ReleaseDateCategoryAdapter());
   Hive.registerAdapter(SupportedGamePlatformAdapter());
-  Hive.registerAdapter(ScheduledNotificationPayloadAdapter());
 
-  final Box<Game> box = await Hive.openBox<Game>('game_bookmark_box');
+  final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(
-    box,
+    gameBox,
   );
 
-  // final box = await Hive.openBox<ScheduledNotificationPayload>(
-  //   'game_scheduled_box',
-  // );
-  // getIt.registerSingleton<Box<ScheduledNotificationPayload>>(
-  //   box,
-  // );
+  final box = await Hive.openBox<GameReminder>(
+    'game_scheduled_box',
+  );
+  getIt.registerSingleton<Box<GameReminder>>(
+    box,
+  );
 }
 
 Future<void> _initializeNotificationService(GetIt getIt) async {
