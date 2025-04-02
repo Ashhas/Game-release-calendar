@@ -10,6 +10,7 @@ import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/url_helper.dart';
 
 import '../../theme/state/theme_cubit.dart';
+import '../../utils/constants.dart';
 
 part 'widgets/app_details.dart';
 
@@ -17,7 +18,7 @@ part 'widgets/privacy_policy.dart';
 
 part 'widgets/options_list.dart';
 
-part 'widgets/notifications.dart';
+part 'widgets/notifications/notifications.dart';
 
 part 'widgets/app_theme/app_theme.dart';
 

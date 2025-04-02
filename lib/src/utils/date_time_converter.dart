@@ -1,3 +1,5 @@
+import 'package:game_release_calendar/src/utils/constants.dart';
+
 class DateTimeConverter {
   /// Converts an epoch in seconds to a DateTime at 10:00 AM local time.
   /// Returns null if the resulting date is in the past.
@@ -7,7 +9,8 @@ class DateTimeConverter {
       rawDate.year,
       rawDate.month,
       rawDate.day,
-      10, // 10:00 AM
+      Constants.defaultNotificationHour,
+      Constants.defaultNotificationMinute,
     );
 
     return notificationDate.isAfter(DateTime.now()) ? notificationDate : null;
