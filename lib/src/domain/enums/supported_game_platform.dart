@@ -98,6 +98,8 @@ enum SupportedGamePlatform {
   mobile(55, "Mobile", "Mobile"),
   @HiveField(46)
   webBrowser(82, "Web", "Web browser"),
+  @HiveField(47)
+  nintendoSwitch2(508, "Switch 2", "Nintendo Switch 2"),
   @HiveField(100)
   noSuchPlatform(0, "Unknown", "Unknown");
 

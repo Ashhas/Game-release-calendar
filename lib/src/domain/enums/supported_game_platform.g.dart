@@ -107,6 +107,8 @@ class SupportedGamePlatformAdapter extends TypeAdapter<SupportedGamePlatform> {
         return SupportedGamePlatform.mobile;
       case 46:
         return SupportedGamePlatform.webBrowser;
+      case 47:
+        return SupportedGamePlatform.nintendoSwitch2;
       case 100:
         return SupportedGamePlatform.noSuchPlatform;
       default:
@@ -257,6 +259,9 @@ class SupportedGamePlatformAdapter extends TypeAdapter<SupportedGamePlatform> {
         break;
       case SupportedGamePlatform.webBrowser:
         writer.writeByte(46);
+        break;
+      case SupportedGamePlatform.nintendoSwitch2:
+        writer.writeByte(47);
         break;
       case SupportedGamePlatform.noSuchPlatform:
         writer.writeByte(100);
