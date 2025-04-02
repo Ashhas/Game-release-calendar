@@ -23,7 +23,7 @@ class RemindersTab extends StatelessWidget {
           itemCount: remindersList.length,
           itemBuilder: (_, index) {
             final reminder = remindersList[index];
-            return GameReminderTile(reminder: reminder);
+            return GameCard(reminder: reminder);
           },
         );
       },

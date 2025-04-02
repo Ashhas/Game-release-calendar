@@ -7,6 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:game_release_calendar/src/domain/models/artwork.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -133,6 +134,7 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(GameReminderAdapter());
   Hive.registerAdapter(ReleaseDateCategoryAdapter());
   Hive.registerAdapter(SupportedGamePlatformAdapter());
+  Hive.registerAdapter(ArtworkAdapter());
 
   final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(

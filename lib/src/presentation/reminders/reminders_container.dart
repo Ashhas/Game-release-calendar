@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_release_calendar/src/presentation/more/more_container.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/game_card.dart';
 import 'package:intl/intl.dart';
+import 'package:moon_design/moon_design.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
@@ -28,35 +31,63 @@ class RemindersContainer extends StatefulWidget {
   State<RemindersContainer> createState() => _RemindersContainerState();
 }
 
-class _RemindersContainerState extends State<RemindersContainer> {
+class _RemindersContainerState extends State<RemindersContainer>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
     context.read<RemindersCubit>().loadGames();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: const Text('Reminders'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Reminders'),
-              Tab(text: 'Scheduled Notifications'),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: const Text('Reminders'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => Notifications(),
+                ),
+              );
+            },
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(context.spacings.xxxl),
+          child: MoonTabBar.pill(
+            tabController: _tabController,
+            pillTabs: [
+              MoonPillTab(
+                label: Text('Reminders'),
+              ),
+              MoonPillTab(
+                label: Text('Notifications'),
+              ),
             ],
           ),
         ),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: const TabBarView(
-          children: [
-            RemindersTab(),
-            NotificationsTab(),
-          ],
-        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          RemindersTab(),
+          NotificationsTab(),
+        ],
       ),
     );
   }
