@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
-import 'package:game_release_calendar/src/utils/constants.dart';
-import 'package:game_release_calendar/src/utils/date_range_utility.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+import 'package:game_release_calendar/src/utils/constants.dart';
+import 'package:game_release_calendar/src/utils/date_range_utility.dart';
+import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 
 part 'section/day_section.dart';

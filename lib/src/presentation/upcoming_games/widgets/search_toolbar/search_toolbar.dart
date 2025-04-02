@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
+import 'package:moon_design/moon_design.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-import 'package:moon_design/moon_design.dart';
 
 class SearchToolbar extends StatelessWidget {
   const SearchToolbar({super.key});

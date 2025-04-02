@@ -1,14 +1,14 @@
 import 'dart:developer';
 
-import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:spaced_flex/spaced_flex.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 

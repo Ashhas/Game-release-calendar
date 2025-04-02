@@ -1,5 +1,6 @@
-import 'package:game_release_calendar/src/theme/app_theme_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:game_release_calendar/src/theme/app_theme_mode.dart';
 
 class SharedPrefsService {
   final _themeKey = 'app_theme_mode';

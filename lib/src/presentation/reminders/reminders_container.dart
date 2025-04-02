@@ -1,20 +1,18 @@
 import 'dart:convert';
 
-import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
-import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
-
-import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
-import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
-
-import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
-import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:riverpod/riverpod.dart';
 
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
+import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
+import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../../domain/models/notifications/game_reminder.dart';
 
 part 'widgets/game_reminder_tile.dart';

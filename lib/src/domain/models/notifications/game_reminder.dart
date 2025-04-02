@@ -1,8 +1,8 @@
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:hive/hive.dart';
 
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
 
 part 'game_reminder.g.dart';
 

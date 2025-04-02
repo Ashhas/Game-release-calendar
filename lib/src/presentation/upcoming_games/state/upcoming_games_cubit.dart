@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
-
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 import 'package:moon_design/moon_design.dart';
+
+import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 class CustomTheme {
   CustomTheme._();

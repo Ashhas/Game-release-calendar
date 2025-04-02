@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
-
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import '../../domain/models/notifications/game_reminder.dart';
 
 class NotificationClient {

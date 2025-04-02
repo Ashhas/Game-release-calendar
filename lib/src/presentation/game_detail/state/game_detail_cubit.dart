@@ -1,11 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:hive/hive.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_state.dart';
-
 import '../../../domain/enums/release_date_category.dart';
 import '../../../domain/models/notifications/game_reminder.dart';
 import '../../../utils/date_time_converter.dart';

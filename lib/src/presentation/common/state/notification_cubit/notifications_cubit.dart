@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
-
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import '../../../../domain/models/notifications/game_reminder.dart';
 import 'notifications_state.dart';
 
