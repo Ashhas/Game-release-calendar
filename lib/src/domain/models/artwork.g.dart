@@ -18,24 +18,39 @@ class ArtworkAdapter extends TypeAdapter<Artwork> {
     };
     return Artwork(
       id: fields[0] as int,
-      url: fields[1] as String,
-      width: fields[2] as int?,
-      height: fields[3] as int?,
+      imageId: fields[1] as String,
+      url: fields[2] as String,
+      game: fields[7] as int,
+      alphaChannel: fields[3] as bool?,
+      animated: fields[4] as bool?,
+      checksum: fields[8] as String?,
+      width: fields[5] as int?,
+      height: fields[6] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Artwork obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.url)
+      ..write(obj.imageId)
       ..writeByte(2)
-      ..write(obj.width)
+      ..write(obj.url)
       ..writeByte(3)
-      ..write(obj.height);
+      ..write(obj.alphaChannel)
+      ..writeByte(4)
+      ..write(obj.animated)
+      ..writeByte(5)
+      ..write(obj.width)
+      ..writeByte(6)
+      ..write(obj.height)
+      ..writeByte(7)
+      ..write(obj.game)
+      ..writeByte(8)
+      ..write(obj.checksum);
   }
 
   @override

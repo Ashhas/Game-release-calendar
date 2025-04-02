@@ -26,7 +26,7 @@ class GameTile extends StatelessWidget {
       leading: FadeInImage.assetNetwork(
         placeholder: 'assets/images/placeholder_210_284.png',
         image: game.cover?.imageId != null
-            ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover!.imageId}.jpg'
+            ? game.cover!.imageUrl()
             : 'assets/images/placeholder_210_284.png',
         fadeInDuration: const Duration(milliseconds: 100),
         imageErrorBuilder: (_, __, ___) =>

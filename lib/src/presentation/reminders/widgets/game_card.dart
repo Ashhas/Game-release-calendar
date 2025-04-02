@@ -35,10 +35,13 @@ class GameCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
-                    //'https://picsum.photos/300/200',
                     reminder.gamePayload.artworks != null
-                        ? 'https:${reminder.gamePayload.artworks!.first.url}'
-                        : reminder.gamePayload.cover!.url!,
+                        ? reminder.gamePayload.artworks!.first.imageUrl(
+                            size: 'screenshot_med',
+                          )
+                        : reminder.gamePayload.cover!.imageUrl(
+                            size: 'screenshot_big',
+                          ),
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,

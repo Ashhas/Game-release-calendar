@@ -22,7 +22,7 @@ class _GameInfoState extends State<GameInfo> {
           flex: 1,
           child: Image(
             image: NetworkImage(
-              'https://images.igdb.com/igdb/image/upload/t_logo_med/${widget.game.cover?.imageId}.jpg',
+              widget.game.cover!.imageUrl(),
             ) as ImageProvider,
           ),
         ),
