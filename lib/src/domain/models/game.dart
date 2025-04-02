@@ -4,6 +4,8 @@ import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 
+import 'artwork.dart';
+
 part 'game.g.dart';
 
 @HiveType(typeId: 0)
@@ -30,7 +32,7 @@ class Game {
   final List<int>? ageRatings;
 
   @HiveField(7)
-  final List<int>? artworks;
+  final List<Artwork>? artworks;
 
   @HiveField(8)
   final int? category;
@@ -131,7 +133,9 @@ class Game {
     return Game(
       id: json['id'],
       ageRatings: json['age_ratings']?.cast<int>(),
-      artworks: json['artworks']?.cast<int>(),
+      artworks: (json['artworks'] as List<dynamic>?)
+          ?.map((a) => Artwork.fromJson(a))
+          .toList(),
       category: json['category'],
       cover: json['cover'] != null ? Cover.fromJson(json['cover']) : null,
       createdAt: json['created_at'],
@@ -141,13 +145,13 @@ class Game {
       name: json['name'],
       platforms: json['platforms'] != null
           ? (json['platforms'] as List)
-          .map((e) => Platform.fromJson(e))
-          .toList()
+              .map((e) => Platform.fromJson(e))
+              .toList()
           : null,
       releaseDates: json['release_dates'] != null
           ? (json['release_dates'] as List)
-          .map((e) => ReleaseDate.fromJson(e))
-          .toList()
+              .map((e) => ReleaseDate.fromJson(e))
+              .toList()
           : null,
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),
@@ -237,5 +241,4 @@ class Game {
         '  versionTitle: $versionTitle\n'
         ')';
   }
-
 }

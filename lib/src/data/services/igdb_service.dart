@@ -65,7 +65,7 @@ class IGDBService {
 
     final query = [
       if (isSearchQuery) 'search "$nameQuery";',
-      'fields *, platforms.*, cover.*, release_dates.*;',
+      'fields *, platforms.*, cover.*, release_dates.*, artworks.*;',
       whereClause,
       'limit ${Constants.gameRequestLimit};',
       'offset $offset;',
