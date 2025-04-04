@@ -39,13 +39,14 @@ class App extends StatelessWidget {
             GetIt.instance.get<SharedPrefsService>(),
           ),
         ),
-        BlocProvider<RemindersCubit>(
-          create: (_) => RemindersCubit(
-            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
-          ),
-        ),
         BlocProvider<GameDetailCubit>(
           create: (context) => GameDetailCubit(
+            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
+            notificationsCubit: context.read<NotificationsCubit>(),
+          ),
+        ),
+        BlocProvider<RemindersCubit>(
+          create: (context) => RemindersCubit(
             remindersBox: GetIt.instance.get<Box<GameReminder>>(),
             notificationsCubit: context.read<NotificationsCubit>(),
           ),

@@ -3,14 +3,26 @@ import 'package:hive/hive.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:riverpod/riverpod.dart';
+
+import '../../common/state/notification_cubit/notifications_cubit.dart';
 
 class RemindersCubit extends Cubit<RemindersState> {
   RemindersCubit({
+    required NotificationsCubit notificationsCubit,
     required Box<GameReminder> remindersBox,
   })  : _remindersBox = remindersBox,
-        super(RemindersState());
+        _notificationsCubit = notificationsCubit,
+        super(RemindersState()) {
+    _notificationsCubit.stream.listen((state) {
+      state.notifications.whenData((_) {
+        loadGames();
+      });
+    });
+  }
 
   final Box<GameReminder> _remindersBox;
+  final NotificationsCubit _notificationsCubit;
 
   Future<void> loadGames() async {
     final reminders = _remindersBox.values.toList();

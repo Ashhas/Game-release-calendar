@@ -106,30 +106,6 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     emit(state.copyWith(reminders: AsyncValue.data(reminders ?? [])));
   }
 
-  bool hasScheduledNotifications(int gameId) {
-    final reminders = state.notifications.asData?.valueOrNull;
-    return reminders?.any(
-          (notification) =>
-              _parseScheduledNotificationPayload(notification).gameId == gameId,
-        ) ??
-        false;
-  }
-
-  bool isReleaseDateScheduled({
-    required int gameId,
-    required ReleaseDate releaseDate,
-  }) {
-    final reminders = state.notifications.asData?.valueOrNull;
-    return reminders?.any(
-          (notification) =>
-              _parseScheduledNotificationPayload(notification).gameId ==
-                  gameId &&
-              _parseScheduledNotificationPayload(notification).releaseDate.id ==
-                  releaseDate.id,
-        ) ??
-        false;
-  }
-
   GameReminder _parseScheduledNotificationPayload(
       PendingNotificationRequest notification) {
     return GameReminder.fromJson(jsonDecode(notification.payload!));
