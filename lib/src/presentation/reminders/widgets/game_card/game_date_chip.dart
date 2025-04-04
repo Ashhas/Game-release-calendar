@@ -1,37 +1,32 @@
 part of 'game_card.dart';
 
-class PlatformChip extends StatelessWidget {
-  const PlatformChip({
+class GameDateChip extends StatelessWidget {
+  const GameDateChip({
     super.key,
-    required this.platformAbbreviation,
+    required this.label,
   });
 
-  final String platformAbbreviation;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 4,
+      bottom: 4,
       left: 4,
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 4,
+          horizontal: 6,
+          vertical: 2,
         ),
         decoration: BoxDecoration(
-          //color: Color.fromARGB(255, 255, 255, 255),
-          color: Theme.of(context).colorScheme.surface,
+          color: Color.fromARGB(255, 255, 255, 255),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(6),
-            bottomRight: Radius.circular(6),
+            topRight: Radius.circular(6),
           ),
         ),
         child: Text(
-          platformAbbreviation,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          label,
+          style: Theme.of(context).textTheme.labelSmall,
         ),
       ),
     );

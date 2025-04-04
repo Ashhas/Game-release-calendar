@@ -1,10 +1,10 @@
-part of '../game_list.dart';
+part of '../reminder_list_view.dart';
 
 class DaySection extends StatelessWidget {
-  final MapEntry<DateTime, List<Game>> groupedGames;
+  final MapEntry<DateTime, List<GameReminder>> groupedReminders;
 
   const DaySection({
-    required this.groupedGames,
+    required this.groupedReminders,
     super.key,
   });
 
@@ -15,16 +15,16 @@ class DaySection extends StatelessWidget {
         SliverPersistentHeader(
           pinned: true,
           delegate: _DayHeaderDelegate(
-            date: groupedGames.key,
+            date: groupedReminders.key,
             colorScheme: Theme.of(context).colorScheme,
           ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (_, index) => GameTile(
-              game: groupedGames.value[index],
+              reminder: groupedReminders.value[index],
             ),
-            childCount: groupedGames.value.length,
+            childCount: groupedReminders.value.length,
           ),
         ),
       ],
@@ -62,10 +62,12 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                DateFormat('EEEE, MMMM d y').format(date),
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              GameDateGrouper.tbdDate.isAtSameMomentAs(date)
+                  ? const Text('TBD')
+                  : Text(
+                      DateFormat('EEEE, MMMM d y').format(date),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
             ],
           ),
           Text(

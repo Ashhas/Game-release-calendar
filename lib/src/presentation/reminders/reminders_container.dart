@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_release_calendar/src/presentation/more/more_container.dart';
-import 'package:game_release_calendar/src/presentation/reminders/widgets/game_card.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/game_card/game_card.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/list/reminder_list_view.dart';
+import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 import 'package:intl/intl.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:riverpod/riverpod.dart';
@@ -17,6 +19,7 @@ import 'package:game_release_calendar/src/presentation/reminders/state/reminders
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../../domain/models/notifications/game_reminder.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 
 part 'widgets/game_reminder_tile.dart';
 
@@ -68,16 +71,19 @@ class _RemindersContainerState extends State<RemindersContainer>
         ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(context.spacings.xxxl),
-          child: MoonTabBar.pill(
-            tabController: _tabController,
-            pillTabs: [
-              MoonPillTab(
-                label: Text('Reminders'),
-              ),
-              MoonPillTab(
-                label: Text('Notifications'),
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.only(bottom: context.spacings.xs),
+            child: MoonTabBar.pill(
+              tabController: _tabController,
+              pillTabs: [
+                MoonPillTab(
+                  label: Text('Reminders'),
+                ),
+                MoonPillTab(
+                  label: Text('Notifications'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,12 +1,12 @@
-part of '../game_list.dart';
+part of '../reminder_list_view.dart';
 
 class GameTile extends StatelessWidget {
   const GameTile({
-    required this.game,
+    required this.reminder,
     super.key,
   });
 
-  final Game game;
+  final GameReminder reminder;
 
   DateTime _fromEpochToDateTime(int? timestamp) {
     return timestamp != null
@@ -25,41 +25,44 @@ class GameTile extends StatelessWidget {
     return ListTile(
       leading: FadeInImage.assetNetwork(
         placeholder: 'assets/images/placeholder_210_284.png',
-        image: game.cover?.imageId != null
-            ? game.cover!.imageUrl()
+        image: reminder.gamePayload.cover?.imageId != null
+            ? reminder.gamePayload.cover!.imageUrl()
             : 'assets/images/placeholder_210_284.png',
         fadeInDuration: const Duration(milliseconds: 100),
         imageErrorBuilder: (_, __, ___) =>
             Image.asset('assets/images/placeholder_210_284.png'),
       ),
-      title: Text(game.name),
+      title: Text(reminder.gameName),
       subtitle: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-              'Release date: ${_convertDateTimeDay(_fromEpochToDateTime(game.firstReleaseDate))}'),
-          if (game.platforms != null)
+            'Release date: ${_convertDateTimeDay(
+              _fromEpochToDateTime(reminder.releaseDate.date),
+            )}',
+          ),
+          if (reminder.releaseDate.platform != null)
             Wrap(
               spacing: 4.0,
-              children: game.platforms!
-                  .map(
-                    (platform) => Chip(
-                      label: Text(
-                        platform.abbreviation ?? platform.name ?? 'N/A',
-                      ),
-                      visualDensity: VisualDensity.compact,
-                      padding: EdgeInsets.zero,
-                    ),
-                  )
-                  .toList(),
+              children: [
+                Chip(
+                  label: Text(
+                    reminder.releaseDate.platform?.abbreviation ??
+                        reminder.releaseDate.platform?.name ??
+                        'N/A',
+                  ),
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                ),
+              ],
             ),
         ],
       ),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => GameDetailView(game: game),
+          builder: (_) => GameDetailView(game: reminder.gamePayload),
         ),
       ),
     );

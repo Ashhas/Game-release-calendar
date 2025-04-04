@@ -1,7 +1,14 @@
 part of '../reminders_container.dart';
 
-class RemindersTab extends StatelessWidget {
+class RemindersTab extends StatefulWidget {
   const RemindersTab({super.key});
+
+  @override
+  State<RemindersTab> createState() => _RemindersTabState();
+}
+
+class _RemindersTabState extends State<RemindersTab> {
+  int reminderListIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +19,85 @@ class RemindersTab extends StatelessWidget {
             .thenBy((reminder) => reminder.gameName);
 
         if (remindersList.isEmpty) {
-          return Center(
-            child: Text(
-              'No reminders set',
-            ),
-          );
+          return const Center(child: Text('No reminders set'));
         }
 
-        return ListView.builder(
-          itemCount: remindersList.length,
-          itemBuilder: (_, index) {
-            final reminder = remindersList[index];
-            return GameCard(reminder: reminder);
-          },
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: context.spacings.s),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FlutterToggleTab(
+                width: 35,
+                borderRadius: 12,
+                dataTabs: [
+                  DataTab(
+                    icon: Icons.grid_view,
+                  ),
+                  DataTab(
+                    icon: Icons.grid_on,
+                  ),
+                  DataTab(
+                    icon: Icons.list,
+                  ),
+                ],
+                selectedBackgroundColors: [
+                  Colors.white,
+                ],
+                selectedIndex: reminderListIndex,
+                selectedLabelIndex: (index) {
+                  setState(() {
+                    reminderListIndex = index;
+                  });
+                },
+              ),
+              SizedBox(height: context.spacings.xs),
+              if (reminderListIndex == 0)
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount: remindersList.length,
+                  itemBuilder: (_, index) {
+                    final reminder = remindersList[index];
+                    return GameCard(
+                      isVertical: true,
+                      reminder: reminder,
+                    );
+                  },
+                ),
+              if (reminderListIndex == 1)
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount: remindersList.length,
+                  itemBuilder: (_, index) {
+                    final reminder = remindersList[index];
+                    return GameCard(
+                      isVertical: true,
+                      reminder: reminder,
+                    );
+                  },
+                ),
+              if (reminderListIndex == 2)
+                RemindersListView(
+                  reminders: GameDateGrouper.groupRemindersByReleaseDate(
+                    remindersList,
+                  ),
+                )
+            ],
+          ),
         );
       },
     );

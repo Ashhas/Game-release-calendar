@@ -36,6 +36,7 @@ dependencies:
   flutter_lucide: ^1.6.2
   moon_design: ^1.1.0
   shared_preferences: ^2.5.2
+  flutter_toggle_tab: ^1.5.1
 
 dev_dependencies:
   flutter_test:
