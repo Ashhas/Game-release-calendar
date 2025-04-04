@@ -7,43 +7,66 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/app_navigation_bar.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
+import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(_) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<NotificationsCubit>(
+          create: (_) => NotificationsCubit(
+            notificationClient: GetIt.instance.get<NotificationClient>(),
+          ),
+        ),
         BlocProvider<UpcomingGamesCubit>(
           create: (_) => UpcomingGamesCubit(
             igdbService: GetIt.instance.get<IGDBService>(),
           ),
         ),
-        BlocProvider<RemindersCubit>(
-          lazy: false,
-          create: (_) => RemindersCubit(
-            notificationClient: GetIt.instance.get<NotificationClient>(),
+        BlocProvider<ThemeCubit>(
+          create: (_) => ThemeCubit(
+            GetIt.instance.get<SharedPrefsService>(),
           ),
         ),
         BlocProvider<GameDetailCubit>(
-          create: (_) => GameDetailCubit(
-            remindersBox: GetIt.instance.get<Box<Game>>(),
+          create: (context) => GameDetailCubit(
+            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
+            notificationsCubit: context.read<NotificationsCubit>(),
+          ),
+        ),
+        BlocProvider<RemindersCubit>(
+          create: (context) => RemindersCubit(
+            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
+            notificationsCubit: context.read<NotificationsCubit>(),
+            prefsService: GetIt.instance.get<SharedPrefsService>(),
           ),
         ),
       ],
-      child: MaterialApp(
-        title: GetIt.instance.get<PackageInfo>().appName,
-        theme: CustomTheme.lightTheme(),
-        darkTheme: CustomTheme.darkTheme(),
-        themeMode: ThemeMode.dark,
-        home: AppNavigationBar(),
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (_, themeMode) {
+              return MaterialApp(
+                title: GetIt.instance.get<PackageInfo>().appName,
+                theme: CustomTheme.lightTheme,
+                darkTheme: CustomTheme.darkTheme,
+                themeMode: themeMode,
+                home: AppNavigationBar(),
+              );
+            },
+          );
+        },
       ),
     );
   }

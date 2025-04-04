@@ -20,11 +20,14 @@ import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
+import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
+import 'package:game_release_calendar/src/domain/models/artwork.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/utils/env_config.dart';
@@ -35,6 +38,7 @@ Future<void> main() async {
 
   final getIt = GetIt.instance;
 
+  await _initializeSharedPrefs(getIt);
   await _loadEnvVariables(getIt);
   await _initializeDio(getIt);
   await _initializeTwitchAuthService(getIt);
@@ -47,6 +51,11 @@ Future<void> main() async {
   runApp(
     const App(),
   );
+}
+
+Future<void> _initializeSharedPrefs(GetIt getIt) async {
+  await SharedPrefsService.init();
+  getIt.registerSingleton<SharedPrefsService>(SharedPrefsService());
 }
 
 Future<void> _loadEnvVariables(GetIt getIt) async {
@@ -122,11 +131,20 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(PlatformAdapter());
   Hive.registerAdapter(CoverAdapter());
   Hive.registerAdapter(ReleaseDateAdapter());
+  Hive.registerAdapter(GameReminderAdapter());
   Hive.registerAdapter(ReleaseDateCategoryAdapter());
   Hive.registerAdapter(SupportedGamePlatformAdapter());
+  Hive.registerAdapter(ArtworkAdapter());
 
-  final Box<Game> box = await Hive.openBox<Game>('game_bookmark_box');
+  final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(
+    gameBox,
+  );
+
+  final box = await Hive.openBox<GameReminder>(
+    'game_scheduled_box',
+  );
+  getIt.registerSingleton<Box<GameReminder>>(
     box,
   );
 }

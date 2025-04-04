@@ -1,4 +1,4 @@
-part of '../more_container.dart';
+part of '../../more_container.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({super.key});
@@ -66,9 +66,35 @@ class _NotificationsState extends State<Notifications>
             onTap: () {
               _openSettingsAndCheckPermission();
             },
+          ),
+          Divider(height: 0, thickness: 0.5),
+          Column(
+            children: [
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: context.spacings.m),
+                  const Text('Schedule'),
+                  Expanded(child: SizedBox()),
+                ],
+              ),
+            ],
+          ),
+          ListTile(
+            title: const Text('Default notification time'),
+            subtitle: Text(
+              '${_twoDigits(Constants.defaultNotificationHour)}:${_twoDigits(Constants.defaultNotificationMinute)}',
+            ),
+            onTap: () {},
           )
         ],
       ),
     );
+  }
+
+  String _twoDigits(int n) {
+    if (n >= 10) return "${n}";
+    return "0${n}";
   }
 }

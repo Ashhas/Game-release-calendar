@@ -8,7 +8,7 @@ part 'release_date.g.dart'; // For Hive type adapter
 @HiveType(typeId: 3)
 class ReleaseDate {
   @HiveField(0)
-  final int? id;
+  final int id;
 
   @HiveField(1)
   final int? date;
@@ -32,7 +32,7 @@ class ReleaseDate {
   final SupportedGamePlatform? platform;
 
   const ReleaseDate({
-    this.id,
+    required this.id,
     this.date,
     this.human,
     this.category,
@@ -66,5 +66,19 @@ class ReleaseDate {
       'q': quarter,
       'platform': platform?.toValue(),
     };
+  }
+
+  @override
+  String toString() {
+    return '''ReleaseDate(
+    id: $id,
+    date: $date,
+    human: $human,
+    category: $category,
+    year: $year,
+    month: $month,
+    quarter: $quarter,
+    platform: $platform
+  )''';
   }
 }

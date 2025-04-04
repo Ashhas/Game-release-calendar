@@ -1,6 +1,6 @@
 part of '../game_detail_view.dart';
 
-class GameInfo extends StatelessWidget {
+class GameInfo extends StatefulWidget {
   const GameInfo({
     required this.game,
     super.key,
@@ -9,15 +9,12 @@ class GameInfo extends StatelessWidget {
   final Game game;
 
   @override
-  Widget build(BuildContext context) {
-    final formattedDate = game.firstReleaseDate != null
-        ? DateFormat('dd-MM-yyyy').format(
-            DateTimeConverter.secondSinceEpochToDateTime(
-              game.firstReleaseDate!,
-            ),
-          )
-        : '-';
+  State<GameInfo> createState() => _GameInfoState();
+}
 
+class _GameInfoState extends State<GameInfo> {
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -25,42 +22,47 @@ class GameInfo extends StatelessWidget {
           flex: 1,
           child: Image(
             image: NetworkImage(
-              'https://images.igdb.com/igdb/image/upload/t_logo_med/${game.cover?.imageId}.jpg',
+              widget.game.cover != null
+                  ? widget.game.cover!.imageUrl()
+                  : Constants.placeholderImageUrl,
             ) as ImageProvider,
           ),
         ),
         Flexible(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.all(context.spacings.xs),
-              child: SpacedColumn(
-                spacing: context.spacings.xxs,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    game.name,
-                    style: const TextStyle(fontSize: 25),
-                  ),
-                  Text('Release date: $formattedDate'),
-                  Wrap(
-                    spacing: 4.0,
-                    runSpacing: 0,
-                    children: game.platforms!
-                        .map(
-                          (platform) => Chip(
-                            label: Text(
-                              platform.abbreviation ?? platform.name ?? 'N/A',
-                            ),
-                            visualDensity: VisualDensity.compact,
-                            padding: EdgeInsets.zero,
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.all(context.spacings.xs),
+            child: SpacedColumn(
+              spacing: context.spacings.xxs,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.game.name,
+                  style: const TextStyle(fontSize: 24),
+                ),
+                Wrap(
+                  spacing: 4.0,
+                  runSpacing: 0,
+                  children: widget.game.platforms!
+                      .map(
+                        (platform) => Chip(
+                          label: Text(
+                            platform.abbreviation ?? platform.name ?? 'N/A',
                           ),
-                        )
-                        .toList(),
-                  ),
-                ],
-              ),
-            )),
+                          visualDensity: VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          padding: EdgeInsets.zero,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -1,4 +1,4 @@
-part of '../more_container.dart';
+part of '../../more_container.dart';
 
 class AppTheme extends StatefulWidget {
   const AppTheme({super.key});
@@ -8,9 +8,13 @@ class AppTheme extends StatefulWidget {
 }
 
 class _AppThemeState extends State<AppTheme> {
+  bool isDarkMode = false;
+
   @override
   void initState() {
     super.initState();
+
+    isDarkMode = context.read<ThemeCubit>().isDarkMode;
   }
 
   @override
@@ -27,9 +31,16 @@ class _AppThemeState extends State<AppTheme> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           SwitchListTile(
-            value: false,
+            value: isDarkMode,
             title: const Text('Dark Mode'),
-            onChanged: (_) {},
+            onChanged: (value) {
+              setState(() {
+                isDarkMode = value;
+                context.read<ThemeCubit>().setThemeMode(
+                      isDarkMode ? AppThemeMode.dark : AppThemeMode.light,
+                    );
+              });
+            },
           ),
         ],
       ),

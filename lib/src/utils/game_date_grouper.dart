@@ -1,7 +1,10 @@
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 
 /// Holds filter functions to be used throughout the app
 class GameDateGrouper {
+  static DateTime tbdDate = DateTime(9999, 1, 1);
+
   static Map<DateTime, List<Game>> groupGamesByReleaseDate(List<Game> games) {
     Map<DateTime, List<Game>> groupedGames = {};
 
@@ -25,6 +28,34 @@ class GameDateGrouper {
         // Add the game to the list of games for that day
         groupedGames[dateWithoutTime]?.add(game);
       }
+    }
+
+    return groupedGames;
+  }
+
+  static Map<DateTime, List<GameReminder>> groupRemindersByReleaseDate(
+    List<GameReminder> reminders,
+  ) {
+    final Map<DateTime, List<GameReminder>> groupedGames = {};
+
+    for (final reminder in reminders) {
+      final timestamp = reminder.releaseDate.date;
+      final DateTime dateOnly;
+
+      if (timestamp != null) {
+        final normalizedDate = DateTime.fromMillisecondsSinceEpoch(
+          timestamp * 1000,
+        );
+        dateOnly = DateTime(
+          normalizedDate.year,
+          normalizedDate.month,
+          normalizedDate.day,
+        );
+      } else {
+        dateOnly = tbdDate;
+      }
+
+      groupedGames.putIfAbsent(dateOnly, () => []).add(reminder);
     }
 
     return groupedGames;

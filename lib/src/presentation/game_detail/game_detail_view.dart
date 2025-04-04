@@ -1,18 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
-import 'package:intl/intl.dart';
 import 'package:spaced_flex/spaced_flex.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_time_converter.dart';
-import 'package:game_release_calendar/src/utils/url_helper.dart';
+import '../../utils/constants.dart';
 
 part 'widgets/game_info.dart';
 
-part 'widgets/game_toolbar.dart';
+part 'widgets/game_releases.dart';
 
 class GameDetailView extends StatefulWidget {
   const GameDetailView({
@@ -27,26 +30,24 @@ class GameDetailView extends StatefulWidget {
 }
 
 class _GameDetailViewState extends State<GameDetailView> {
-  bool _isScheduled = context.read<RemindersCubit>().isGameScheduled(
-    widget.game.id,
-  );
   @override
   Widget build(BuildContext context) {
+    log(widget.game.toString());
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-      ),
+      appBar: AppBar(),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: EdgeInsets.all(context.spacings.m),
-        child: SpacedColumn(
-          spacing: context.spacings.m,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            GameInfo(game: widget.game),
-            const Divider(),
-            GameToolbar(game: widget.game),
-          ],
+        padding: EdgeInsets.symmetric(horizontal: context.spacings.m),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GameInfo(game: widget.game),
+              const Divider(),
+              GameReleases(game: widget.game),
+            ],
+          ),
         ),
       ),
     );

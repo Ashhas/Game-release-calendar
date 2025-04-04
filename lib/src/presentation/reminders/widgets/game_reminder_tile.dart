@@ -1,7 +1,7 @@
 part of '../reminders_container.dart';
 
 class GameReminderTile extends StatefulWidget {
-  final PendingNotificationRequest reminder;
+  final GameReminder reminder;
 
   const GameReminderTile({
     Key? key,
@@ -13,16 +13,6 @@ class GameReminderTile extends StatefulWidget {
 }
 
 class _GameReminderTileState extends State<GameReminderTile> {
-  late ScheduledNotificationPayload _notification;
-
-  @override
-  void initState() {
-    super.initState();
-    _notification = ScheduledNotificationPayload.fromJson(
-      jsonDecode(widget.reminder.payload!),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -32,7 +22,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
           Flexible(
             flex: 1,
             child: Text(
-              _notification.game.releaseDates!.first.human.toString(),
+              widget.reminder.releaseDate.human.toString(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
@@ -40,7 +30,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
           Flexible(
             flex: 3,
             child: Text(
-              _notification.gameName,
+              widget.reminder.gameName,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.end,
               maxLines: 2,
@@ -52,7 +42,7 @@ class _GameReminderTileState extends State<GameReminderTile> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => GameDetailView(game: _notification.game),
+          builder: (_) => GameDetailView(game: widget.reminder.gamePayload),
         ),
       ),
     );

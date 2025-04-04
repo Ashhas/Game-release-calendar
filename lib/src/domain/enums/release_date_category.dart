@@ -28,4 +28,14 @@ enum ReleaseDateCategory {
   int toValue() {
     return value;
   }
+
+  @override
+  String toString() {
+    return '''ReleaseDateCategory(
+    id: $value,
+    type: $name
+    description: $description
+  )''';
+  }
+
 }

@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'artwork.dart';
 
 part 'game.g.dart';
 
@@ -30,7 +31,7 @@ class Game {
   final List<int>? ageRatings;
 
   @HiveField(7)
-  final List<int>? artworks;
+  final List<Artwork>? artworks;
 
   @HiveField(8)
   final int? category;
@@ -131,7 +132,9 @@ class Game {
     return Game(
       id: json['id'],
       ageRatings: json['age_ratings']?.cast<int>(),
-      artworks: json['artworks']?.cast<int>(),
+      artworks: (json['artworks'] as List<dynamic>?)
+          ?.map((a) => Artwork.fromJson(a))
+          .toList(),
       category: json['category'],
       cover: json['cover'] != null ? Cover.fromJson(json['cover']) : null,
       createdAt: json['created_at'],
@@ -201,5 +204,40 @@ class Game {
       'version_parent': versionParent,
       'version_title': versionTitle,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Game(\n'
+        '  id: $id,\n'
+        '  createdAt: $createdAt,\n'
+        '  name: $name,\n'
+        '  updatedAt: $updatedAt,\n'
+        '  url: $url,\n'
+        '  checksum: $checksum,\n'
+        '  ageRatings: $ageRatings,\n'
+        '  artworks: $artworks,\n'
+        '  category: $category,\n'
+        '  cover: ${cover?.toString()},\n'
+        '  externalGames: $externalGames,\n'
+        '  firstReleaseDate: $firstReleaseDate,\n'
+        '  genres: $genres,\n'
+        '  platforms: ${platforms?.map((p) => p.toString()).toList()},\n'
+        '  releaseDates: ${releaseDates?.map((r) => r.toString()).toList()},\n'
+        '  screenshots: $screenshots,\n'
+        '  similarGames: $similarGames,\n'
+        '  slug: $slug,\n'
+        '  description: $description,\n'
+        '  tags: $tags,\n'
+        '  themes: $themes,\n'
+        '  websites: $websites,\n'
+        '  languageSupports: $languageSupports,\n'
+        '  gameModes: $gameModes,\n'
+        '  status: $status,\n'
+        '  multiplayerModes: $multiplayerModes,\n'
+        '  videos: $videos,\n'
+        '  versionParent: $versionParent,\n'
+        '  versionTitle: $versionTitle\n'
+        ')';
   }
 }

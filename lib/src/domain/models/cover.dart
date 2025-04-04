@@ -36,4 +36,18 @@ class Cover {
       'image_id': imageId,
     };
   }
+
+  @override
+  String toString() {
+    return '''Cover(
+    id: $id,
+    url: $url,
+    imageId: $imageId
+  )''';
+  }
+
+  /// Generates the full image URL with optional size (e.g., screenshot_huge, thumb, etc.)
+  String imageUrl({String size = 'cover_big'}) {
+    return 'https://images.igdb.com/igdb/image/upload/t_$size/$imageId.jpg';
+  }
 }

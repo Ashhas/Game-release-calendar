@@ -2,17 +2,30 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:intl/intl.dart';
+import 'package:moon_design/moon_design.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'package:game_release_calendar/src/domain/models/notifications/scheduled_notification_payload.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
+import 'package:game_release_calendar/src/presentation/more/more_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/game_card/game_card.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/list/reminder_list_view.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
+import '../../domain/models/notifications/game_reminder.dart';
 
 part 'widgets/game_reminder_tile.dart';
+
+part 'tabs/reminders_tab.dart';
+
+part 'tabs/notifications_tab.dart';
 
 class RemindersContainer extends StatefulWidget {
   const RemindersContainer({super.key});
@@ -21,15 +34,21 @@ class RemindersContainer extends StatefulWidget {
   State<RemindersContainer> createState() => _RemindersContainerState();
 }
 
-class _RemindersContainerState extends State<RemindersContainer> {
+class _RemindersContainerState extends State<RemindersContainer>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
-    _retrievePendingNotifications();
+    context.read<RemindersCubit>().loadGames();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
-  Future<void> _retrievePendingNotifications() async {
-    await context.read<RemindersCubit>().retrievePendingNotifications();
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -38,36 +57,43 @@ class _RemindersContainerState extends State<RemindersContainer> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Reminders'),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: BlocBuilder<RemindersCubit, RemindersState>(
-        builder: (_, state) {
-          return state.reminders.when(
-            data: (remindersList) {
-              if (remindersList.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No reminders set',
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                itemCount: remindersList.length,
-                itemBuilder: (_, index) {
-                  final reminder = remindersList[index];
-                  return GameReminderTile(reminder: reminder);
-                },
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => Notifications(),
+                ),
               );
             },
-            error: (err, _) => Center(
-              child: Text(
-                'Error: $err',
-              ),
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(context.spacings.xxxl),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: context.spacings.xs),
+            child: MoonTabBar.pill(
+              tabController: _tabController,
+              pillTabs: [
+                MoonPillTab(
+                  label: Text('Reminders'),
+                ),
+                MoonPillTab(
+                  label: Text('Notifications'),
+                ),
+              ],
             ),
-            loading: () => CircularProgressIndicator(),
-          );
-        },
+          ),
+        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          RemindersTab(),
+          NotificationsTab(),
+        ],
       ),
     );
   }
