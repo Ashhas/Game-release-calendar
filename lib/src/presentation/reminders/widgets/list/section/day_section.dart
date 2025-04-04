@@ -62,7 +62,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GameDateGrouper.tbdDate.isAtSameMomentAs(date)
+              GameDateGrouper.tbdDate.isAtSameDayAs(date)
                   ? const Text('TBD')
                   : Text(
                       DateFormat('EEEE, MMMM d y').format(date),

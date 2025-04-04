@@ -7,7 +7,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:game_release_calendar/src/domain/models/artwork.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -25,6 +24,7 @@ import 'package:game_release_calendar/src/data/services/shared_prefs_service.dar
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
+import 'package:game_release_calendar/src/domain/models/artwork.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';

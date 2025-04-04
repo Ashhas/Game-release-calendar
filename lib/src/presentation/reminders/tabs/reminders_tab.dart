@@ -19,7 +19,9 @@ class _RemindersTabState extends State<RemindersTab> {
             .thenBy((reminder) => reminder.gameName);
 
         if (remindersList.isEmpty) {
-          return const Center(child: Text('No reminders set'));
+          return const Center(
+            child: Text('No reminders set'),
+          );
         }
 
         return SingleChildScrollView(

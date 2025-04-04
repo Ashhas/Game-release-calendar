@@ -103,7 +103,9 @@ class _GameListState extends State<GameList> {
       slivers: [
         if (entries.isEmpty)
           const SliverFillRemaining(
-            child: Center(child: Text('No games found')),
+            child: Center(
+              child: Text('No games found'),
+            ),
           )
         else
           for (var entry in entries)

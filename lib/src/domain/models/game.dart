@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
-
 import 'artwork.dart';
 
 part 'game.g.dart';

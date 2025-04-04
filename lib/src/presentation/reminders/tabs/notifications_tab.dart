@@ -41,7 +41,7 @@ class NotificationsTab extends StatelessWidget {
                         child: Text(
                           reminder.gameName,
                           overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.end,
+                          textAlign: TextAlign.start,
                           maxLines: 2,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
