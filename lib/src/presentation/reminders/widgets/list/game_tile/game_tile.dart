@@ -25,9 +25,9 @@ class GameTile extends StatelessWidget {
     return ListTile(
       leading: FadeInImage.assetNetwork(
         placeholder: 'assets/images/placeholder_210_284.png',
-        image: reminder.gamePayload.cover?.imageId != null
+        image: reminder.gamePayload.cover != null
             ? reminder.gamePayload.cover!.imageUrl()
-            : 'assets/images/placeholder_210_284.png',
+            : Constants.placeholderImageUrl,
         fadeInDuration: const Duration(milliseconds: 100),
         imageErrorBuilder: (_, __, ___) =>
             Image.asset('assets/images/placeholder_210_284.png'),

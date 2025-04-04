@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
+import '../../../../utils/constants.dart';
 
 part 'platform_chip.dart';
 
@@ -33,9 +34,10 @@ class GameCard extends StatelessWidget {
             child: Stack(
               children: [
                 GameCoverArt(
-                  imageUrl: reminder.gamePayload.cover!.imageUrl(
-                    size: 'cover_big',
-                  ),
+                  imageUrl: reminder.gamePayload.cover?.imageUrl(
+                        size: 'cover_big',
+                      ) ??
+                      Constants.placeholderImageUrl,
                   isVertical: isVertical,
                 ),
                 PlatformChip(
