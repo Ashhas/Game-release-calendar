@@ -8,7 +8,11 @@ class RemindersTab extends StatefulWidget {
 }
 
 class _RemindersTabState extends State<RemindersTab> {
-  int reminderListIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    context.read<RemindersCubit>().getPreferredDataView();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +50,17 @@ class _RemindersTabState extends State<RemindersTab> {
                 selectedBackgroundColors: [
                   Colors.white,
                 ],
-                selectedIndex: reminderListIndex,
+                selectedIndex: state.reminderViewIndex,
                 selectedLabelIndex: (index) {
                   setState(() {
-                    reminderListIndex = index;
+                    context.read<RemindersCubit>().storePreferredDataView(
+                          index,
+                        );
                   });
                 },
               ),
               SizedBox(height: context.spacings.xs),
-              if (reminderListIndex == 0)
+              if (state.reminderViewIndex == 0)
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -73,7 +79,7 @@ class _RemindersTabState extends State<RemindersTab> {
                     );
                   },
                 ),
-              if (reminderListIndex == 1)
+              if (state.reminderViewIndex == 1)
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -92,7 +98,7 @@ class _RemindersTabState extends State<RemindersTab> {
                     );
                   },
                 ),
-              if (reminderListIndex == 2)
+              if (state.reminderViewIndex == 2)
                 RemindersListView(
                   reminders: GameDateGrouper.groupRemindersByReleaseDate(
                     remindersList,

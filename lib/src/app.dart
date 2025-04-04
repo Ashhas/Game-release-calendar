@@ -49,6 +49,7 @@ class App extends StatelessWidget {
           create: (context) => RemindersCubit(
             remindersBox: GetIt.instance.get<Box<GameReminder>>(),
             notificationsCubit: context.read<NotificationsCubit>(),
+            prefsService: GetIt.instance.get<SharedPrefsService>(),
           ),
         ),
       ],
