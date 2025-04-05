@@ -25,7 +25,7 @@ class GameCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: Color.fromARGB(255, 251, 251, 251),
+      color: Color.fromARGB(255, 255, 255, 255),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
