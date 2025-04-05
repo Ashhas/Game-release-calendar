@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:game_release_calendar/src/config/firebase_options.dart';
+import 'package:game_release_calendar/src/domain/models/platform.dart'
+    as GamePlatform;
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -28,9 +32,8 @@ import 'package:game_release_calendar/src/domain/models/artwork.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
-import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/utils/env_config.dart';
+import 'package:game_release_calendar/src/config/env_config.dart';
 import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 Future<void> main() async {
@@ -38,6 +41,7 @@ Future<void> main() async {
 
   final getIt = GetIt.instance;
 
+  await _setupFirebase();
   await _initializeSharedPrefs(getIt);
   await _loadEnvVariables(getIt);
   await _initializeDio(getIt);
@@ -128,7 +132,7 @@ Future<void> _initializeHive(GetIt getIt) async {
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(GameAdapter());
-  Hive.registerAdapter(PlatformAdapter());
+  Hive.registerAdapter(GamePlatform.PlatformAdapter());
   Hive.registerAdapter(CoverAdapter());
   Hive.registerAdapter(ReleaseDateAdapter());
   Hive.registerAdapter(GameReminderAdapter());
@@ -191,4 +195,16 @@ Future<void> _initializeTimeZoneSettings() async {
 
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation(timeZoneName));
+}
+
+Future<void> _setupFirebase() async {
+  final isAndroid = Platform.isAndroid;
+  final isIOS = Platform.isIOS;
+  final isMobile = isAndroid || isIOS;
+
+  if (!isMobile) return;
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }

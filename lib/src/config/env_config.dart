@@ -4,6 +4,8 @@ class EnvConfig {
   const EnvConfig(this.map);
 
   Map<String, dynamic> get envMap => map;
+
+  // Twitch / IGDB
   String get twitchClientId => map['twitchClientId'] ?? '';
   String get twitchClientSecret => map['twitchClientSecret'] ?? '';
   String get igdbAuthTokenURL => map['igdbAuthTokenURL'] ?? '';
