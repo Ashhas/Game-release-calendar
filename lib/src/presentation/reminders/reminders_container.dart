@@ -57,18 +57,6 @@ class _RemindersContainerState extends State<RemindersContainer>
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Reminders'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => Notifications(),
-                ),
-              );
-            },
-          ),
-        ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(context.spacings.xxxl),
           child: Padding(
