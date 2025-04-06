@@ -7,6 +7,8 @@ import 'package:moon_design/moon_design.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
+import '../filter/filter_bottom_sheet.dart';
+
 class SearchToolbar extends StatelessWidget {
   const SearchToolbar({super.key});
 
@@ -38,13 +40,31 @@ class SearchToolbar extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: false,
+                visible: true,
                 child: Row(
                   children: [
                     SizedBox(width: context.spacings.xs),
                     MoonButton.icon(
                       buttonSize: MoonButtonSize.sm,
-                      onTap: () {},
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(context.spacings.xl),
+                            ),
+                          ),
+                          builder: (context) {
+                            return BlocProvider.value(
+                              value:
+                                  BlocProvider.of<UpcomingGamesCubit>(context),
+                              child: FilterBottomSheet(),
+                            );
+                          },
+                        );
+                      },
                       icon: const Icon(LucideIcons.filter),
                       backgroundColor: Colors.white,
                       showBorder: true,

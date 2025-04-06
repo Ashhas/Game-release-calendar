@@ -12,7 +12,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
-import 'package:game_release_calendar/src/presentation/more/more_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
 import 'package:game_release_calendar/src/presentation/reminders/widgets/game_card/game_card.dart';

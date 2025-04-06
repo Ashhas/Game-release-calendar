@@ -1,4 +1,5 @@
 enum DateFilterChoice {
+  allTime,
   thisWeek,
   thisMonth,
   nextMonth,

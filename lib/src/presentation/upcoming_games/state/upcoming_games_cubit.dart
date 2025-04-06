@@ -8,6 +8,9 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 
+import '../../../domain/enums/filter/date_filter_choice.dart';
+import '../../../domain/enums/filter/platform_filter.dart';
+
 class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   UpcomingGamesCubit({
     required IGDBService igdbService,
@@ -53,6 +56,20 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
 
   Future<void> updateNameQuery(String query) async {
     emit(state.copyWith(nameQuery: query));
+  }
+
+  Future<void> applySearchFilters({
+    required Set<PlatformFilter> platformChoices,
+    required DateFilterChoice? setDateChoice,
+  }) async {
+    emit(
+      state.copyWith(
+        selectedFilters: state.selectedFilters.copyWith(
+          platformChoices: platformChoices,
+          releaseDateChoice: setDateChoice,
+        ),
+      ),
+    );
   }
 
   /// Default function to fetch games from IGDB API and update state

@@ -3,6 +3,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 
+import '../../../domain/enums/filter/date_filter_choice.dart';
+
 class UpcomingGamesState {
   final AsyncValue<Map<DateTime, List<Game>>> games;
   final GameFilter selectedFilters;
@@ -12,7 +14,11 @@ class UpcomingGamesState {
     this.games = const AsyncValue.data({}),
     GameFilter? selectedFilters,
     this.nameQuery = '',
-  }) : selectedFilters = selectedFilters ?? GameFilter(platformChoices: {});
+  }) : selectedFilters = selectedFilters ??
+            GameFilter(
+              releaseDateChoice: DateFilterChoice.allTime,
+              platformChoices: {},
+            );
 
   UpcomingGamesState copyWith({
     AsyncValue<Map<DateTime, List<Game>>>? games,

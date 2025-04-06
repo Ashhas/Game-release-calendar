@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
+import 'package:game_release_calendar/src/utils/constants.dart';
 
 class DateRangeUtility {
+  /// Returns the start of the current day (00:00:00).
+  static DateTime getStartOfToday() {
+    DateTime now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  }
+
   /// Returns the start of the current week (Monday).
   static DateTime getStartOfThisWeek() {
     DateTime now = DateTime.now();
@@ -66,6 +73,11 @@ class DateRangeUtility {
 
   static DateTimeRange getDateRangeForChoice(DateFilterChoice choice) {
     switch (choice) {
+      case DateFilterChoice.allTime:
+        return DateTimeRange(
+          start: DateRangeUtility.getStartOfToday(),
+          end: Constants.maxDateLimit,
+        );
       case DateFilterChoice.thisWeek:
         return DateTimeRange(
           start: DateRangeUtility.getStartOfThisWeek(),

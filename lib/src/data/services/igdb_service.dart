@@ -3,6 +3,8 @@ import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart'
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
 
+import '../../utils/date_range_utility.dart';
+
 class IGDBService {
   final IGDBRepository repository;
 
@@ -26,6 +28,8 @@ class IGDBService {
 
   String _buildQuery(String? nameQuery, GameFilter filter, {int offset = 0}) {
     List<String> filterConditions = [];
+    DateTime? startTimestamp;
+    DateTime? endTimestamp;
 
     // Platform filter
     if (filter.platformChoices.isNotEmpty) {
@@ -35,8 +39,14 @@ class IGDBService {
     }
 
     // Release date range filter
-    final startTimestamp = filter.releaseDateRange?.start;
-    final endTimestamp = filter.releaseDateRange?.end;
+    if (filter.releaseDateChoice != null) {
+      final dateRange = DateRangeUtility.getDateRangeForChoice(
+        filter.releaseDateChoice!,
+      );
+
+      startTimestamp = dateRange.start;
+      endTimestamp = dateRange.end;
+    }
 
     if (startTimestamp != null) {
       final fromTimestamp = startTimestamp.millisecondsSinceEpoch ~/ 1000;
@@ -51,7 +61,7 @@ class IGDBService {
       filterConditions.add('first_release_date >= $currentTimestamp');
     }
 
-    if (endTimestamp != null) {
+    if (endTimestamp != null && endTimestamp != Constants.maxDateLimit) {
       final toTimestamp = endTimestamp.millisecondsSinceEpoch ~/ 1000;
       filterConditions.add('first_release_date < $toTimestamp');
     }
@@ -65,7 +75,7 @@ class IGDBService {
 
     final query = [
       if (isSearchQuery) 'search "$nameQuery";',
-      'fields *, platforms.*, cover.*, release_dates.*, artworks.*;',
+      'fields *, platforms.*, cover.*, release_dates.*, artworks.*, category;',
       whereClause,
       'limit ${Constants.gameRequestLimit};',
       'offset $offset;',
