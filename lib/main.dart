@@ -11,8 +11,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:game_release_calendar/src/config/firebase_options.dart';
+import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart'
-    as GamePlatform;
+as GamePlatform;
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -141,6 +142,7 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(ReleaseDateCategoryAdapter());
   Hive.registerAdapter(SupportedGamePlatformAdapter());
   Hive.registerAdapter(ArtworkAdapter());
+  Hive.registerAdapter(GameCategoryAdapter());
 
   final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(
@@ -180,7 +182,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
   // Request permissions for Android
   notificationsPluginInstance
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+      AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(

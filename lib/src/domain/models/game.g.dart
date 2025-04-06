@@ -25,7 +25,7 @@ class GameAdapter extends TypeAdapter<Game> {
       checksum: fields[5] as String,
       ageRatings: (fields[6] as List?)?.cast<int>(),
       artworks: (fields[7] as List?)?.cast<Artwork>(),
-      category: fields[8] as int?,
+      category: fields[8] as GameCategory?,
       cover: fields[9] as Cover?,
       externalGames: (fields[10] as List?)?.cast<int>(),
       firstReleaseDate: fields[11] as int?,

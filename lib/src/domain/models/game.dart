@@ -1,3 +1,4 @@
+import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:hive/hive.dart';
 
 import 'package:game_release_calendar/src/domain/models/cover.dart';
@@ -34,7 +35,7 @@ class Game {
   final List<Artwork>? artworks;
 
   @HiveField(8)
-  final int? category;
+  final GameCategory? category;
 
   @HiveField(9)
   final Cover? cover;
@@ -135,7 +136,7 @@ class Game {
       artworks: (json['artworks'] as List<dynamic>?)
           ?.map((a) => Artwork.fromJson(a))
           .toList(),
-      category: json['category'],
+      category: GameCategory.fromValue(json['category'] ?? 0),
       cover: json['cover'] != null ? Cover.fromJson(json['cover']) : null,
       createdAt: json['created_at'],
       externalGames: json['external_games']?.cast<int>(),
@@ -144,13 +145,13 @@ class Game {
       name: json['name'],
       platforms: json['platforms'] != null
           ? (json['platforms'] as List)
-              .map((e) => Platform.fromJson(e))
-              .toList()
+          .map((e) => Platform.fromJson(e))
+          .toList()
           : null,
       releaseDates: json['release_dates'] != null
           ? (json['release_dates'] as List)
-              .map((e) => ReleaseDate.fromJson(e))
-              .toList()
+          .map((e) => ReleaseDate.fromJson(e))
+          .toList()
           : null,
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),
@@ -182,7 +183,7 @@ class Game {
       'checksum': checksum,
       'age_ratings': ageRatings,
       'artworks': artworks,
-      'category': category,
+      'category': category?.value,
       'cover': cover?.toJson(),
       'external_games': externalGames,
       'first_release_date': firstReleaseDate,
