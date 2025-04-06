@@ -1,10 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
-import 'package:riverpod/riverpod.dart';
-
 import '../../../data/services/shared_prefs_service.dart';
 import '../../common/state/notification_cubit/notifications_cubit.dart';
 

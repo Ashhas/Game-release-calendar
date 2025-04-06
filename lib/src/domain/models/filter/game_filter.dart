@@ -9,6 +9,7 @@ part 'game_filter.freezed.dart';
 class GameFilter with _$GameFilter {
   const factory GameFilter({
     required Set<PlatformFilter> platformChoices,
+    required Set<int> categoryIds,
     DateFilterChoice? releaseDateChoice,
   }) = _GameFilter;
 }

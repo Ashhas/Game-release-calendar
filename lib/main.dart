@@ -1,19 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:game_release_calendar/src/config/firebase_options.dart';
-import 'package:game_release_calendar/src/domain/enums/game_category.dart';
-import 'package:game_release_calendar/src/domain/models/platform.dart'
-as GamePlatform;
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -23,12 +19,15 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:game_release_calendar/src/app.dart';
+import 'package:game_release_calendar/src/config/env_config.dart';
+import 'package:game_release_calendar/src/config/firebase_options.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
+import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
 import 'package:game_release_calendar/src/domain/models/artwork.dart';
@@ -36,8 +35,11 @@ import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/config/env_config.dart';
 import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
+
+import 'package:game_release_calendar/src/domain/models/platform.dart'
+    as GamePlatform;
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -182,7 +184,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
   // Request permissions for Android
   notificationsPluginInstance
       .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(

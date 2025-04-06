@@ -2,7 +2,6 @@ import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
-
 import '../../utils/date_range_utility.dart';
 
 class IGDBService {
@@ -30,6 +29,13 @@ class IGDBService {
     List<String> filterConditions = [];
     DateTime? startTimestamp;
     DateTime? endTimestamp;
+
+    // Category filter
+    if (filter.categoryIds.isNotEmpty) {
+      final categoryIds =
+          filter.categoryIds.map((categoryId) => categoryId).join(', ');
+      filterConditions.add('category = ($categoryIds)');
+    }
 
     // Platform filter
     if (filter.platformChoices.isNotEmpty) {

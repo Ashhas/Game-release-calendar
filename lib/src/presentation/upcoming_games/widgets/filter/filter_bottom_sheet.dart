@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:game_release_calendar/src/domain/enums/game_category.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../../../../domain/enums/filter/date_filter_choice.dart';
 import '../../../../domain/enums/filter/platform_filter.dart';
 import '../../state/upcoming_games_cubit.dart';
@@ -9,6 +11,8 @@ import '../../state/upcoming_games_cubit.dart';
 part 'widgets/platform_filters.dart';
 
 part 'widgets/date_filters.dart';
+
+part 'widgets/category_filters.dart';
 
 part 'widgets/footer.dart';
 
@@ -24,12 +28,16 @@ class FilterBottomSheet extends StatefulWidget {
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
   late Set<PlatformFilter> _selectedPlatformFilterOptions;
   late DateFilterChoice? _selectedDateFilterOption;
+  late Set<int> _selectedCategoryFilterOptions;
 
   @override
   void initState() {
     super.initState();
     _selectedPlatformFilterOptions = Set.of(
       context.read<UpcomingGamesCubit>().state.selectedFilters.platformChoices,
+    );
+    _selectedCategoryFilterOptions = Set.of(
+      context.read<UpcomingGamesCubit>().state.selectedFilters.categoryIds,
     );
     _selectedDateFilterOption = context
         .read<UpcomingGamesCubit>()
@@ -69,10 +77,15 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     selectedPlatformFilterOptions:
                         _selectedPlatformFilterOptions,
                   ),
+                  _CategoryFilters(
+                    selectedCategoryFilterOptions:
+                        _selectedCategoryFilterOptions,
+                  )
                 ],
               ),
             ),
           ),
+          SizedBox(height: context.spacings.m),
           Footer(
             onApplyFilter: () => _applyFilters(context),
             onResetFilter: () => _resetFilters(context),
@@ -86,6 +99,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     await context.read<UpcomingGamesCubit>().applySearchFilters(
           platformChoices: _selectedPlatformFilterOptions,
           setDateChoice: _selectedDateFilterOption,
+          categoryId: _selectedCategoryFilterOptions,
         );
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
@@ -94,6 +108,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Future<void> _resetFilters(BuildContext context) async {
     setState(() {
       _selectedPlatformFilterOptions = {};
+      _selectedCategoryFilterOptions = {};
       _selectedDateFilterOption = DateFilterChoice.allTime;
     });
   }

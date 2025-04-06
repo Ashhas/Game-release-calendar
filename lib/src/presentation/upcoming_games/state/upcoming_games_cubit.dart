@@ -7,7 +7,6 @@ import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
-
 import '../../../domain/enums/filter/date_filter_choice.dart';
 import '../../../domain/enums/filter/platform_filter.dart';
 
@@ -61,11 +60,13 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   Future<void> applySearchFilters({
     required Set<PlatformFilter> platformChoices,
     required DateFilterChoice? setDateChoice,
+    required Set<int> categoryId,
   }) async {
     emit(
       state.copyWith(
         selectedFilters: state.selectedFilters.copyWith(
           platformChoices: platformChoices,
+          categoryIds: categoryId,
           releaseDateChoice: setDateChoice,
         ),
       ),

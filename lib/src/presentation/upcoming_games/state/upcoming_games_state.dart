@@ -2,7 +2,6 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
-
 import '../../../domain/enums/filter/date_filter_choice.dart';
 
 class UpcomingGamesState {
@@ -18,6 +17,7 @@ class UpcomingGamesState {
             GameFilter(
               releaseDateChoice: DateFilterChoice.allTime,
               platformChoices: {},
+              categoryIds: {},
             );
 
   UpcomingGamesState copyWith({
