@@ -8,8 +8,31 @@ import 'package:game_release_calendar/src/presentation/upcoming_games/state/upco
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../filter/filter_bottom_sheet.dart';
 
-class SearchToolbar extends StatelessWidget {
+class SearchToolbar extends StatefulWidget {
   const SearchToolbar({super.key});
+
+  @override
+  State<SearchToolbar> createState() => _SearchToolbarState();
+}
+
+class _SearchToolbarState extends State<SearchToolbar> {
+  final TextEditingController _searchController = TextEditingController();
+  bool _showClearButton = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() {
+      _showClearButton = false;
+    });
+    context.read<UpcomingGamesCubit>().updateNameQuery('');
+    context.read<UpcomingGamesCubit>().searchGames('');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +50,21 @@ class SearchToolbar extends StatelessWidget {
             children: [
               Expanded(
                 child: MoonTextInput(
+                  controller: _searchController,
                   autofocus: false,
                   leading: Icon(Icons.search),
+                  trailing: _showClearButton
+                      ? IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: _clearSearch,
+                          tooltip: 'Clear search',
+                        )
+                      : null,
                   hintText: 'Search for games',
                   onChanged: (value) async {
+                    setState(() {
+                      _showClearButton = value.isNotEmpty;
+                    });
                     await context
                         .read<UpcomingGamesCubit>()
                         .updateNameQuery(value);
