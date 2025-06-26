@@ -8,6 +8,7 @@ import 'package:game_release_calendar/src/presentation/upcoming_games/state/upco
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/search_toolbar/search_toolbar.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/game_update_status_indicator.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
 class UpcomingGamesContainer extends StatelessWidget {
@@ -27,6 +28,9 @@ class UpcomingGamesContainer extends StatelessWidget {
               const Text('Upcoming Games'),
             ],
           ),
+          actions: [
+            GameUpdateStatusIndicator(),
+          ],
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(context.spacings.xxxl),
             child: SearchToolbar(),

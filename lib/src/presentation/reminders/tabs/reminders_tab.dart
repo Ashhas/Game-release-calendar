@@ -54,8 +54,8 @@ class _RemindersTabState extends State<RemindersTab> {
                 selectedLabelIndex: (index) {
                   setState(() {
                     context.read<RemindersCubit>().storePreferredDataView(
-                          index,
-                        );
+                      index,
+                    );
                   });
                 },
               ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -25,6 +26,7 @@ import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
+import 'package:game_release_calendar/src/data/services/game_update_service.dart';
 import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
@@ -36,7 +38,7 @@ import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 import 'package:game_release_calendar/src/domain/models/platform.dart'
-    as GamePlatform;
+as GamePlatform;
 
 
 Future<void> main() async {
@@ -50,10 +52,10 @@ Future<void> main() async {
   await _initializeDio(getIt);
   await _initializeTwitchAuthService(getIt);
   await _initializeRepositories(getIt);
-  await _initializeServices(getIt);
   await _initializeHive(getIt);
   await _initializeTimeZoneSettings();
   await _initializeNotificationService(getIt);
+  await _initializeServices(getIt);
 
   runApp(
     const App(),
@@ -98,10 +100,10 @@ Future<void> _initializeDio(GetIt getIt) async {
   );
   dio.interceptors.add(
     PrettyDioLogger(
-      requestHeader: true,
+      requestHeader: false,
       requestBody: true,
       responseBody: false,
-      responseHeader: true,
+      responseHeader: false,
       error: true,
       compact: true,
       maxWidth: 100,
@@ -128,6 +130,14 @@ Future<void> _initializeServices(GetIt getIt) async {
   final packageInfo = await PackageInfo.fromPlatform();
   getIt.registerSingleton<PackageInfo>(
     packageInfo,
+  );
+
+  getIt.registerSingleton<GameUpdateService>(
+    GameUpdateService(
+      igdbRepository: getIt.get<IGDBRepository>(),
+      gameRemindersBox: getIt.get<Box<GameReminder>>(),
+      notificationClient: getIt.get<NotificationClient>(),
+    ),
   );
 }
 
@@ -182,7 +192,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
   // Request permissions for Android
   notificationsPluginInstance
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+      AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
@@ -221,3 +231,4 @@ Future<void> _setupFirebase() async {
   //   return true;
   // };
 }
+
