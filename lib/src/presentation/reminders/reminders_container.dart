@@ -55,7 +55,10 @@ class _RemindersContainerState extends State<RemindersContainer>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .surface,
         title: const Text('Reminders'),
         actions: [
           GameUpdateStatusIndicator(),
@@ -78,7 +81,10 @@ class _RemindersContainerState extends State<RemindersContainer>
           ),
         ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .surface,
       body: TabBarView(
         controller: _tabController,
         children: [

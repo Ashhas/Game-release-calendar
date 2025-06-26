@@ -8,15 +8,6 @@ class AppTheme extends StatefulWidget {
 }
 
 class _AppThemeState extends State<AppTheme> {
-  bool isDarkMode = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    isDarkMode = context.read<ThemeCubit>().isDarkMode;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,22 +18,60 @@ class _AppThemeState extends State<AppTheme> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          SwitchListTile(
-            value: isDarkMode,
-            title: const Text('Dark Mode'),
-            onChanged: (value) {
-              setState(() {
-                isDarkMode = value;
-                context.read<ThemeCubit>().setThemeMode(
-                      isDarkMode ? AppThemeMode.dark : AppThemeMode.light,
-                    );
-              });
-            },
-          ),
-        ],
+      body: BlocBuilder<ThemeCubit, AppThemePreset>(
+        builder: (context, currentPreset) {
+          return ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              ListTile(
+                title: const Text('Light'),
+                trailing: Radio<AppThemePreset>(
+                  value: AppThemePreset.light,
+                  groupValue: currentPreset,
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<ThemeCubit>().setThemePreset(value);
+                    }
+                  },
+                ),
+                onTap: () {
+                  context.read<ThemeCubit>().setThemePreset(AppThemePreset.light);
+                },
+              ),
+              ListTile(
+                title: const Text('Dark'),
+                trailing: Radio<AppThemePreset>(
+                  value: AppThemePreset.dark,
+                  groupValue: currentPreset,
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<ThemeCubit>().setThemePreset(value);
+                    }
+                  },
+                ),
+                onTap: () {
+                  context.read<ThemeCubit>().setThemePreset(AppThemePreset.dark);
+                },
+              ),
+              ListTile(
+                title: const Text('System'),
+                subtitle: const Text('Follow system appearance'),
+                trailing: Radio<AppThemePreset>(
+                  value: AppThemePreset.system,
+                  groupValue: currentPreset,
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<ThemeCubit>().setThemePreset(value);
+                    }
+                  },
+                ),
+                onTap: () {
+                  context.read<ThemeCubit>().setThemePreset(AppThemePreset.system);
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }

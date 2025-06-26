@@ -18,6 +18,7 @@ import 'package:game_release_calendar/src/presentation/reminders/state/reminders
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
 import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
+import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -62,13 +63,13 @@ class App extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          return BlocBuilder<ThemeCubit, ThemeMode>(
-            builder: (_, themeMode) {
+          return BlocBuilder<ThemeCubit, AppThemePreset>(
+            builder: (context, themePreset) {
               return MaterialApp(
                 title: GetIt.instance.get<PackageInfo>().appName,
-                theme: CustomTheme.lightTheme,
-                darkTheme: CustomTheme.darkTheme,
-                themeMode: themeMode,
+                theme: CustomTheme.getThemeForPreset(themePreset, Brightness.light),
+                darkTheme: CustomTheme.getThemeForPreset(themePreset, Brightness.dark),
+                themeMode: themePreset.themeMode,
                 home: AppNavigationBar(),
               );
             },
@@ -77,4 +78,5 @@ class App extends StatelessWidget {
       ),
     );
   }
+
 }

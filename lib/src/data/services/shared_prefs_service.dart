@@ -1,9 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:game_release_calendar/src/theme/app_theme_mode.dart';
+import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 class SharedPrefsService {
-  final _themeKey = 'app_theme_mode';
+  final _themePresetKey = 'app_theme_preset';
 
   static SharedPreferences? _prefs;
 
@@ -24,8 +24,13 @@ class SharedPrefsService {
     await _prefs?.setInt(key, value);
   }
 
-  Future<void> setThemeMode(AppThemeMode mode) async {
-    await _prefs?.setString(_themeKey, mode.name);
+  /// Save theme preset
+  Future<bool> setThemePreset(AppThemePreset preset) async {
+    try {
+      return await _prefs?.setString(_themePresetKey, preset.name) ?? false;
+    } catch (e) {
+      return false;
+    }
   }
 
   // Getters
@@ -35,9 +40,14 @@ class SharedPrefsService {
 
   int? getInt(String key) => _prefs?.getInt(key);
 
-  AppThemeMode getThemeMode() {
-    final value = _prefs?.getString(_themeKey);
-    return AppThemeModeExtension.fromString(value ?? 'light');
+  /// Get theme preset
+  AppThemePreset getThemePreset() {
+    try {
+      final value = _prefs?.getString(_themePresetKey);
+      return AppThemePresetExtension.fromString(value ?? 'system');
+    } catch (e) {
+      return AppThemePreset.system; // Safe fallback
+    }
   }
 
   // Utility
