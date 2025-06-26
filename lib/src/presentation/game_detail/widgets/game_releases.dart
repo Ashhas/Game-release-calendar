@@ -37,7 +37,8 @@ class _GameReleasesState extends State<GameReleases> {
 
     return releaseDates
         .sortedBy((rd) => rd.date ?? 0)
-        .thenBy((rd) => rd.platform!.fullName);
+        .thenBy((rd) => rd.platform!.fullName)
+        .thenBy((rd) => rd.region?.name ?? 'ZZ');
   }
 
   Future<void> _onReminderTileTapped(
@@ -111,11 +112,17 @@ class _GameReleasesState extends State<GameReleases> {
             // If date is null, mark as "TBD" and disable
             final date = rd.date;
             if (date == null) {
+              // Build subtitle for TBD with optional region
+              String tbdSubtitle = 'TBD';
+              if (rd.region != null) {
+                tbdSubtitle += ' • ${rd.region!.name}';
+              }
+
               return CheckboxListTile(
                 enabled: false,
                 value: checkedStatus[index],
                 title: Text(platform.fullName),
-                subtitle: const Text('TBD'),
+                subtitle: Text(tbdSubtitle),
                 onChanged: null,
               );
             }
@@ -124,11 +131,17 @@ class _GameReleasesState extends State<GameReleases> {
                 DateTimeConverter.secondSinceEpochToDateTime(rd.date!)
                     .isBefore(DateTime.now());
 
+            // Build subtitle with date and optional region
+            String subtitle = rd.human.toString();
+            if (rd.region != null) {
+              subtitle += ' • ${rd.region!.name}';
+            }
+
             return CheckboxListTile(
               enabled: !hasBeenReleased,
               value: checkedStatus[index],
               title: Text(platform.fullName),
-              subtitle: Text(rd.human.toString()),
+              subtitle: Text(subtitle),
               onChanged: (_) => _onReminderTileTapped(index, rd),
             );
           },

@@ -25,13 +25,14 @@ class ReleaseDateAdapter extends TypeAdapter<ReleaseDate> {
       month: fields[5] as int?,
       quarter: fields[6] as int?,
       platform: fields[7] as SupportedGamePlatform?,
+      region: fields[8] as ReleaseRegion?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ReleaseDate obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class ReleaseDateAdapter extends TypeAdapter<ReleaseDate> {
       ..writeByte(6)
       ..write(obj.quarter)
       ..writeByte(7)
-      ..write(obj.platform);
+      ..write(obj.platform)
+      ..writeByte(8)
+      ..write(obj.region);
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
+import 'package:game_release_calendar/src/domain/enums/release_region.dart';
 import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
 
 part 'release_date.g.dart'; // For Hive type adapter
@@ -31,6 +32,9 @@ class ReleaseDate {
   @HiveField(7)
   final SupportedGamePlatform? platform;
 
+  @HiveField(8)
+  final ReleaseRegion? region;
+
   const ReleaseDate({
     required this.id,
     this.date,
@@ -40,6 +44,7 @@ class ReleaseDate {
     this.month,
     this.quarter,
     this.platform,
+    this.region,
   });
 
   factory ReleaseDate.fromJson(Map<String, dynamic> json) {
@@ -52,6 +57,7 @@ class ReleaseDate {
       month: json['m'],
       quarter: json['q'],
       platform: SupportedGamePlatform.fromValue(json['platform']),
+      region: ReleaseRegion.fromValue(json['region']),
     );
   }
 
@@ -65,6 +71,7 @@ class ReleaseDate {
       'm': month,
       'q': quarter,
       'platform': platform?.toValue(),
+      'region': region?.toValue(),
     };
   }
 
@@ -78,7 +85,8 @@ class ReleaseDate {
     year: $year,
     month: $month,
     quarter: $quarter,
-    platform: $platform
+    platform: $platform,
+    region: $region
   )''';
   }
 }
