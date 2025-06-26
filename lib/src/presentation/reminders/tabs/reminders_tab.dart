@@ -48,8 +48,17 @@ class _RemindersTabState extends State<RemindersTab> {
                   ),
                 ],
                 selectedBackgroundColors: [
-                  Colors.white,
+                  Theme.of(context).colorScheme.primaryContainer,
                 ],
+                unSelectedBackgroundColors: [
+                  Theme.of(context).colorScheme.surfaceContainerHighest,
+                ],
+                selectedTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                unSelectedTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 selectedIndex: state.reminderViewIndex,
                 selectedLabelIndex: (index) {
                   setState(() {
@@ -76,6 +85,9 @@ class _RemindersTabState extends State<RemindersTab> {
                     return GameCard(
                       isVertical: true,
                       reminder: reminder,
+                      onRemove: () {
+                        context.read<RemindersCubit>().removeReminder(reminder.id);
+                      },
                     );
                   },
                 ),
@@ -95,6 +107,9 @@ class _RemindersTabState extends State<RemindersTab> {
                     return GameCard(
                       isVertical: true,
                       reminder: reminder,
+                      onRemove: () {
+                        context.read<RemindersCubit>().removeReminder(reminder.id);
+                      },
                     );
                   },
                 ),

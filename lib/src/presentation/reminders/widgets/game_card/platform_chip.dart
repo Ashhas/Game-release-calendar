@@ -19,7 +19,7 @@ class PlatformChip extends StatelessWidget {
           vertical: 2,
         ),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(6),
             bottomRight: Radius.circular(6),
@@ -27,7 +27,7 @@ class PlatformChip extends StatelessWidget {
         ),
         child: Text(
           platformAbbreviation,
-          style: Theme.of(context).textTheme.labelMedium
+          style: Theme.of(context).textTheme.labelMedium,
         ),
       ),
     );

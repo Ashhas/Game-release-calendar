@@ -19,7 +19,7 @@ class GameDateChip extends StatelessWidget {
           vertical: 2,
         ),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(6),
           ),

@@ -16,7 +16,7 @@ class GameCoverArt extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           width: 6,
         ),
       ),

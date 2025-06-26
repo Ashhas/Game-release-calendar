@@ -11,21 +11,28 @@ part 'game_cover_art.dart';
 
 part 'bottom_card.dart';
 
+part 'delete_chip.dart';
+
 class GameCard extends StatelessWidget {
   final GameReminder reminder;
   final bool isVertical;
+  final VoidCallback? onRemove;
 
   const GameCard({
     super.key,
     required this.reminder,
     this.isVertical = false,
+    this.onRemove,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Explicitly define the card color we want to use
+    final cardColor = Theme.of(context).colorScheme.surfaceContainerLow;
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: Color.fromARGB(255, 255, 255, 255),
+      color: cardColor, // Explicitly set the card color
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,6 +54,10 @@ class GameCard extends StatelessWidget {
                 GameDateChip(
                   label: reminder.releaseDate.human.toString(),
                 ),
+                if (onRemove != null)
+                  DeleteChip(
+                    onRemove: onRemove,
+                  ),
               ],
             ),
           ),

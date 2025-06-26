@@ -59,6 +59,13 @@ class GameTile extends StatelessWidget {
             ),
         ],
       ),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete_outline),
+        onPressed: () {
+          context.read<RemindersCubit>().removeReminder(reminder.id);
+        },
+        tooltip: 'Remove reminder',
+      ),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(

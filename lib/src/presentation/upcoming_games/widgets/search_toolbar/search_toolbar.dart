@@ -65,7 +65,7 @@ class SearchToolbar extends StatelessWidget {
                         );
                       },
                       icon: const Icon(LucideIcons.filter),
-                      backgroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
                       showBorder: true,
                     ),
                   ],

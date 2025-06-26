@@ -19,12 +19,6 @@ class CustomTheme {
           )
         : null;
 
-    final moonTokens = MoonTokens.light.copyWith(
-      colors: MoonColors.light.copyWith(
-        piccolo: seedColor ?? Colors.blue,
-      ),
-    );
-
     final themeData = ThemeData.light(useMaterial3: true);
 
     return themeData.copyWith(
@@ -37,8 +31,8 @@ class CustomTheme {
       extensions: <ThemeExtension>[
         AppSpacings.defaultValues,
         MoonTheme(
-          tokens: moonTokens,
-        )
+          tokens: MoonTokens.light,
+        ),
       ],
     );
   }
@@ -52,12 +46,6 @@ class CustomTheme {
           )
         : null;
 
-    final moonTokens = MoonTokens.dark.copyWith(
-      colors: MoonColors.dark.copyWith(
-        piccolo: seedColor ?? Colors.blue,
-      ),
-    );
-
     final themeData = ThemeData.dark(useMaterial3: true);
 
     return themeData.copyWith(
@@ -70,8 +58,8 @@ class CustomTheme {
       extensions: <ThemeExtension>[
         AppSpacings.defaultValues,
         MoonTheme(
-          tokens: moonTokens,
-        )
+          tokens: MoonTokens.dark,
+        ),
       ],
     );
   }
