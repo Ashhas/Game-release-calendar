@@ -4,6 +4,8 @@ import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 class SharedPrefsService {
   final _themePresetKey = 'app_theme_preset';
+  final _experimentalFeaturesEnabledKey = 'experimental_features_enabled';
+  final _scrollbarEnabledKey = 'experimental_scrollbar_enabled';
 
   static SharedPreferences? _prefs;
 
@@ -11,7 +13,6 @@ class SharedPrefsService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  // Setters
   Future<void> setString(String key, String value) async {
     await _prefs?.setString(key, value);
   }
@@ -24,7 +25,6 @@ class SharedPrefsService {
     await _prefs?.setInt(key, value);
   }
 
-  /// Save theme preset
   Future<bool> setThemePreset(AppThemePreset preset) async {
     try {
       return await _prefs?.setString(_themePresetKey, preset.name) ?? false;
@@ -33,24 +33,53 @@ class SharedPrefsService {
     }
   }
 
-  // Getters
   String? getString(String key) => _prefs?.getString(key);
 
   bool? getBool(String key) => _prefs?.getBool(key);
 
   int? getInt(String key) => _prefs?.getInt(key);
 
-  /// Get theme preset
   AppThemePreset getThemePreset() {
     try {
       final value = _prefs?.getString(_themePresetKey);
       return AppThemePresetExtension.fromString(value ?? 'system');
     } catch (e) {
-      return AppThemePreset.system; // Safe fallback
+      return AppThemePreset.system;
     }
   }
 
-  // Utility
+  Future<bool> setExperimentalFeaturesEnabled(bool enabled) async {
+    try {
+      return await _prefs?.setBool(_experimentalFeaturesEnabledKey, enabled) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool getExperimentalFeaturesEnabled() {
+    try {
+      return _prefs?.getBool(_experimentalFeaturesEnabledKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> setScrollbarEnabled(bool enabled) async {
+    try {
+      return await _prefs?.setBool(_scrollbarEnabledKey, enabled) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool getScrollbarEnabled() {
+    try {
+      return _prefs?.getBool(_scrollbarEnabledKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> remove(String key) async {
     await _prefs?.remove(key);
   }

@@ -10,6 +10,7 @@ import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/url_helper.dart';
 import '../../theme/state/theme_cubit.dart';
 import '../../utils/constants.dart';
+import '../../data/services/shared_prefs_service.dart';
 
 part 'widgets/app_details.dart';
 
@@ -20,6 +21,8 @@ part 'widgets/options_list.dart';
 part 'widgets/notifications/notifications.dart';
 
 part 'widgets/app_theme/app_theme.dart';
+
+part 'widgets/experimental_features/experimental_features.dart';
 
 class MoreContainer extends StatelessWidget {
   const MoreContainer({super.key});
