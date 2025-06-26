@@ -507,3 +507,7 @@ lib/src/config/firebase_options.dart
 firebase.json
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,androidstudio,android,macos,flutter,dart,kotlin,swift
+
+CLAUDE.md
+
+.claude/settings.local.json
