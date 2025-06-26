@@ -116,11 +116,20 @@ class DateRangeUtility {
       return 'Today';
     } else if (differenceInDays == 1) {
       return 'Tomorrow';
-    } else if (differenceInDays <= 30) {
+    } else if (differenceInDays == -1) {
+      return 'Yesterday';
+    } else if (differenceInDays > 0 && differenceInDays <= 30) {
       return '$differenceInDays days';
-    } else {
+    } else if (differenceInDays < 0 && differenceInDays >= -30) {
+      final daysPast = differenceInDays.abs();
+      return '$daysPast day${daysPast > 1 ? 's' : ''} ago';
+    } else if (differenceInDays > 30) {
       final differenceInWeeks = (differenceInDays / 7).floor();
       return '$differenceInWeeks week${differenceInWeeks > 1 ? 's' : ''}';
+    } else {
+      final daysPast = differenceInDays.abs();
+      final differenceInWeeks = (daysPast / 7).floor();
+      return '$differenceInWeeks week${differenceInWeeks > 1 ? 's' : ''} ago';
     }
   }
 }
