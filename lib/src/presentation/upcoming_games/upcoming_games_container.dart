@@ -47,7 +47,8 @@ class UpcomingGamesContainer extends StatelessWidget {
                           ? 'Try adjusting your search or filters'
                           : 'No upcoming games available',
                       onAction: state.nameQuery.isNotEmpty
-                          ? () => context.read<UpcomingGamesCubit>().clearSearch()
+                          ? () =>
+                              context.read<UpcomingGamesCubit>().clearSearch()
                           : null,
                       actionLabel: 'Clear Search',
                     )

@@ -29,12 +29,11 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
     setState(() {
       _scrollbarEnabled = enabled;
     });
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(enabled 
-            ? 'Date scrollbar enabled' 
-            : 'Date scrollbar disabled'),
+        content: Text(
+            enabled ? 'Date scrollbar enabled' : 'Date scrollbar disabled'),
         duration: const Duration(seconds: 1),
       ),
     );
@@ -69,8 +68,9 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
                     child: Text(
                       'These features are experimental and may be unstable. Use at your own risk.',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onErrorContainer,
-                      ),
+                            color:
+                                Theme.of(context).colorScheme.onErrorContainer,
+                          ),
                     ),
                   ),
                 ],
@@ -82,7 +82,8 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
                 children: [
                   SwitchListTile(
                     title: const Text('Date Scrollbar'),
-                    subtitle: const Text('Enable vertical scrollbar with snap-to-date functionality'),
+                    subtitle: const Text(
+                        'Enable vertical scrollbar with snap-to-date functionality'),
                     secondary: const Icon(Icons.linear_scale),
                     value: _scrollbarEnabled,
                     onChanged: _setScrollbarEnabled,
@@ -101,8 +102,8 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
               'They may have bugs, performance issues, or be removed in future updates. '
               'Enable them only if you want to test cutting-edge functionality.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
           ],
         ),

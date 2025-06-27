@@ -32,24 +32,10 @@ class GameUpdateStatusIndicator extends StatelessWidget {
             padding: EdgeInsets.only(right: context.spacings.m),
             child: Semantics(
               label: 'Games synced successfully, no updates found',
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Synced!',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(width: context.spacings.xs),
-                  const Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 20,
-                  ),
-                ],
+              child: const Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 20,
               ),
             ),
           ),

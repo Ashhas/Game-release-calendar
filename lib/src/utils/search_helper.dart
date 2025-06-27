@@ -1,5 +1,5 @@
 /// Helper utilities for search functionality.
-/// 
+///
 /// Contains methods to improve search matching, particularly for APIs
 /// that require exact character matching like IGDB.
 class SearchHelper {
@@ -8,7 +8,7 @@ class SearchHelper {
   /// This method generates common accented variants of the search query.
   static List<String> addAccentedVariants(String query) {
     final variants = <String>[];
-    
+
     // Common character mappings for game titles
     final charMap = {
       'e': ['é', 'è', 'ê', 'ë'],
@@ -21,12 +21,12 @@ class SearchHelper {
     };
 
     String currentVariant = query.toLowerCase();
-    
+
     // Generate variants by replacing each character with its accented versions
     for (final entry in charMap.entries) {
       final baseChar = entry.key;
       final accentedChars = entry.value;
-      
+
       if (currentVariant.contains(baseChar)) {
         for (final accentedChar in accentedChars) {
           final variant = currentVariant.replaceAll(baseChar, accentedChar);
@@ -36,7 +36,7 @@ class SearchHelper {
         }
       }
     }
-    
+
     return variants;
   }
 }

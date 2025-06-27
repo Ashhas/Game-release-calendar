@@ -18,7 +18,7 @@ class _DateTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tooltipPosition = isDragging ? dragPosition : currentScrollPosition;
-    
+
     return Positioned(
       right: DateScrollbar.tooltipOffset,
       top: (tooltipPosition * constraints.maxHeight) - 20,

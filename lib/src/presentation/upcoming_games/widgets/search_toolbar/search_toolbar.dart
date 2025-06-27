@@ -97,11 +97,13 @@ class _SearchToolbarState extends State<SearchToolbar> {
                       SizedBox(width: context.spacings.xs),
                       Semantics(
                         label: 'Open game filters',
-                        hint: 'Filter games by platform, category, and release dates',
+                        hint:
+                            'Filter games by platform, category, and release dates',
                         button: true,
                         child: MoonButton.icon(
                           buttonSize: MoonButtonSize.sm,
-                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
                           showBorder: true,
                           onTap: () {
                             showModalBottomSheet(

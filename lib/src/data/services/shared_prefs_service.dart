@@ -50,7 +50,8 @@ class SharedPrefsService {
 
   Future<bool> setExperimentalFeaturesEnabled(bool enabled) async {
     try {
-      return await _prefs?.setBool(_experimentalFeaturesEnabledKey, enabled) ?? false;
+      return await _prefs?.setBool(_experimentalFeaturesEnabledKey, enabled) ??
+          false;
     } catch (e) {
       return false;
     }

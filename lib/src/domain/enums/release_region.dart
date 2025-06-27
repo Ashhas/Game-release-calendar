@@ -34,7 +34,7 @@ enum ReleaseRegion {
 
   static ReleaseRegion? fromValue(int? value) {
     if (value == null) return null;
-    
+
     for (ReleaseRegion region in ReleaseRegion.values) {
       if (region.id == value) {
         return region;

@@ -25,8 +25,9 @@ class SnapScrollPhysics extends ScrollPhysics {
     double velocity,
   ) {
     // If we're scrolling fast, let the default physics handle it first
-    final Simulation? simulation = super.createBallisticSimulation(position, velocity);
-    
+    final Simulation? simulation =
+        super.createBallisticSimulation(position, velocity);
+
     // For slow scrolling or when settling, snap to nearest section
     if (velocity.abs() < 100) {
       final targetOffset = _findNearestSectionOffset(position.pixels);
@@ -40,7 +41,7 @@ class SnapScrollPhysics extends ScrollPhysics {
         );
       }
     }
-    
+
     return simulation;
   }
 
@@ -60,10 +61,10 @@ class SnapScrollPhysics extends ScrollPhysics {
             // Get the section's position relative to the viewport
             final sectionPosition = renderBox.localToGlobal(Offset.zero);
             final sectionTopOffset = scrollOffset + sectionPosition.dy;
-            
+
             // Calculate distance from current scroll position
             final distance = (sectionTopOffset - currentOffset).abs();
-            
+
             if (distance < nearestDistance) {
               nearestDistance = distance;
               nearestOffset = sectionTopOffset;

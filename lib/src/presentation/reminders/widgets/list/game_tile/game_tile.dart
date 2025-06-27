@@ -8,15 +8,11 @@ class GameTile extends StatelessWidget {
 
   final GameReminder reminder;
 
-  DateTime _fromEpochToDateTime(int? timestamp) {
-    return timestamp != null
-        ? DateTimeConverter.secondSinceEpochToDateTime(
-            timestamp,
-          )
-        : DateTime.now();
-  }
-
-  String _convertDateTimeDay(DateTime dateTime) {
+  String _formatReleaseDate(int? timestamp) {
+    if (timestamp == null) {
+      return 'TBD';
+    }
+    final dateTime = DateTimeConverter.secondSinceEpochToDateTime(timestamp);
     return DateFormat('dd-MM-yyyy').format(dateTime);
   }
 
@@ -38,10 +34,7 @@ class GameTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Release date: ${_convertDateTimeDay(
-              _fromEpochToDateTime(reminder.releaseDate.date),
-            )}',
-          ),
+              'Release date: ${_formatReleaseDate(reminder.releaseDate.date)}'),
           if (reminder.releaseDate.platform != null)
             Wrap(
               spacing: 4.0,

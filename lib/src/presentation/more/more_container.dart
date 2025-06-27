@@ -71,7 +71,8 @@ class _MoreContainerState extends State<MoreContainer> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppDetails(onExperimentalUnlocked: _loadExperimentalFeaturesVisibility),
+          AppDetails(
+              onExperimentalUnlocked: _loadExperimentalFeaturesVisibility),
           SizedBox(height: context.spacings.l),
           const OptionsList(),
           const Spacer(),

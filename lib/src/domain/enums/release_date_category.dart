@@ -37,5 +37,4 @@ enum ReleaseDateCategory {
     description: $description
   )''';
   }
-
 }

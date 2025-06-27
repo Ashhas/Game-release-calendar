@@ -9,25 +9,30 @@ class GameDateGrouper {
     Map<DateTime, List<Game>> groupedGames = {};
 
     for (final game in games) {
+      final DateTime dateWithoutTime;
+
       if (game.firstReleaseDate != null) {
         final releaseDate = DateTime.fromMillisecondsSinceEpoch(
           game.firstReleaseDate! * 1000,
         );
 
-        final dateWithoutTime = DateTime(
+        dateWithoutTime = DateTime(
           releaseDate.year,
           releaseDate.month,
           releaseDate.day,
         );
-
-        // If the date is not in the map, add new entry for it
-        if (!groupedGames.containsKey(dateWithoutTime)) {
-          groupedGames[dateWithoutTime] = [];
-        }
-
-        // Add the game to the list of games for that day
-        groupedGames[dateWithoutTime]?.add(game);
+      } else {
+        // Use tbdDate for games without release dates instead of filtering them out
+        dateWithoutTime = tbdDate;
       }
+
+      // If the date is not in the map, add new entry for it
+      if (!groupedGames.containsKey(dateWithoutTime)) {
+        groupedGames[dateWithoutTime] = [];
+      }
+
+      // Add the game to the list of games for that day
+      groupedGames[dateWithoutTime]?.add(game);
     }
 
     return groupedGames;

@@ -19,7 +19,7 @@ class _GameListScrollView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: scrollController,
-      physics: isScrollbarEnabled 
+      physics: isScrollbarEnabled
           ? SnapScrollPhysics(
               sectionKeys: sectionKeys,
               scrollController: scrollController,

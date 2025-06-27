@@ -19,7 +19,8 @@ class _RemindersTabState extends State<RemindersTab> {
     return BlocBuilder<RemindersCubit, RemindersState>(
       builder: (_, state) {
         final remindersList = state.reminders
-            .sortedBy((reminder) => reminder.releaseDate.date ?? 0)
+            .sortedBy((reminder) => ReleaseDateComparator.getSortableTimestamp(
+                reminder.releaseDate.date))
             .thenBy((reminder) => reminder.gameName);
 
         if (remindersList.isEmpty) {
@@ -63,8 +64,8 @@ class _RemindersTabState extends State<RemindersTab> {
                 selectedLabelIndex: (index) {
                   setState(() {
                     context.read<RemindersCubit>().storePreferredDataView(
-                      index,
-                    );
+                          index,
+                        );
                   });
                 },
               ),
@@ -86,7 +87,9 @@ class _RemindersTabState extends State<RemindersTab> {
                       isVertical: true,
                       reminder: reminder,
                       onRemove: () {
-                        context.read<RemindersCubit>().removeReminder(reminder.id);
+                        context
+                            .read<RemindersCubit>()
+                            .removeReminder(reminder.id);
                       },
                     );
                   },
@@ -108,7 +111,9 @@ class _RemindersTabState extends State<RemindersTab> {
                       isVertical: true,
                       reminder: reminder,
                       onRemove: () {
-                        context.read<RemindersCubit>().removeReminder(reminder.id);
+                        context
+                            .read<RemindersCubit>()
+                            .removeReminder(reminder.id);
                       },
                     );
                   },

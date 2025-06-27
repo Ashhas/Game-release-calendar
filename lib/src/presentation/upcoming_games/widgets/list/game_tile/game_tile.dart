@@ -8,15 +8,11 @@ class GameTile extends StatelessWidget {
 
   final Game game;
 
-  DateTime _fromEpochToDateTime(int? timestamp) {
-    return timestamp != null
-        ? DateTimeConverter.secondSinceEpochToDateTime(
-            timestamp,
-          )
-        : DateTime.now();
-  }
-
-  String _convertDateTimeDay(DateTime dateTime) {
+  String _formatReleaseDate(int? timestamp) {
+    if (timestamp == null) {
+      return 'TBD';
+    }
+    final dateTime = DateTimeConverter.secondSinceEpochToDateTime(timestamp);
     return DateFormat('dd-MM-yyyy').format(dateTime);
   }
 
@@ -37,8 +33,7 @@ class GameTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              'Release date: ${_convertDateTimeDay(_fromEpochToDateTime(game.firstReleaseDate))}'),
+          Text('Release date: ${_formatReleaseDate(game.firstReleaseDate)}'),
           if (game.platforms != null)
             Wrap(
               spacing: 4.0,

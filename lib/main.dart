@@ -38,9 +38,8 @@ import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 import 'package:game_release_calendar/src/domain/models/platform.dart'
-as GamePlatform;
+    as GamePlatform;
 import 'package:game_release_calendar/src/domain/enums/release_region.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +66,6 @@ Future<void> _initializeSharedPrefs(GetIt getIt) async {
   await SharedPrefsService.init();
   getIt.registerSingleton<SharedPrefsService>(SharedPrefsService());
 }
-
 
 Future<void> _loadEnvVariables(GetIt getIt) async {
   final jsonString = await rootBundle.loadString('env/env.json');
@@ -195,7 +193,7 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
   // Request permissions for Android
   notificationsPluginInstance
       .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
@@ -234,4 +232,3 @@ Future<void> _setupFirebase() async {
   //   return true;
   // };
 }
-

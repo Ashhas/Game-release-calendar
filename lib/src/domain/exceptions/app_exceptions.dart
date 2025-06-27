@@ -52,6 +52,7 @@ class ExceptionHandler {
   }
 
   static bool isRetryable(Exception exception) {
-    return exception is NetworkException && exception is! AuthenticationException;
+    return exception is NetworkException &&
+        exception is! AuthenticationException;
   }
 }

@@ -13,6 +13,7 @@ import 'package:game_release_calendar/src/presentation/common/state/notification
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/game_update_status_indicator.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
+import 'package:game_release_calendar/src/utils/release_date_comparator.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
 import 'package:game_release_calendar/src/presentation/reminders/widgets/game_card/game_card.dart';
@@ -55,10 +56,7 @@ class _RemindersContainerState extends State<RemindersContainer>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Reminders'),
         actions: [
           GameUpdateStatusIndicator(),
@@ -81,10 +79,7 @@ class _RemindersContainerState extends State<RemindersContainer>
           ),
         ),
       ),
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: TabBarView(
         controller: _tabController,
         children: [

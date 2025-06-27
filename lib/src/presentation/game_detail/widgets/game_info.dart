@@ -39,24 +39,34 @@ class _GameInfoState extends State<GameInfo> {
                   widget.game.name,
                   style: const TextStyle(fontSize: 24),
                 ),
-                Wrap(
-                  spacing: 4.0,
-                  runSpacing: 0,
-                  children: widget.game.platforms!
-                      .map(
-                        (platform) => Chip(
-                          label: Text(
-                            platform.abbreviation ?? platform.name ?? 'N/A',
+                if (widget.game.platforms != null &&
+                    widget.game.platforms!.isNotEmpty)
+                  Wrap(
+                    spacing: 4.0,
+                    runSpacing: 0,
+                    children: widget.game.platforms!
+                        .map(
+                          (platform) => Chip(
+                            label: Text(
+                              platform.abbreviation ?? platform.name ?? 'N/A',
+                            ),
+                            visualDensity: VisualDensity(
+                              horizontal: VisualDensity.minimumDensity,
+                              vertical: VisualDensity.minimumDensity,
+                            ),
+                            padding: EdgeInsets.zero,
                           ),
-                          visualDensity: VisualDensity(
-                            horizontal: VisualDensity.minimumDensity,
-                            vertical: VisualDensity.minimumDensity,
-                          ),
-                          padding: EdgeInsets.zero,
-                        ),
-                      )
-                      .toList(),
-                ),
+                        )
+                        .toList(),
+                  )
+                else
+                  const Text(
+                    'Platform information not available',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
               ],
             ),
           ),

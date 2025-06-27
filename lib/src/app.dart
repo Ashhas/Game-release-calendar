@@ -67,8 +67,10 @@ class App extends StatelessWidget {
             builder: (context, themePreset) {
               return MaterialApp(
                 title: GetIt.instance.get<PackageInfo>().appName,
-                theme: CustomTheme.getThemeForPreset(themePreset, Brightness.light),
-                darkTheme: CustomTheme.getThemeForPreset(themePreset, Brightness.dark),
+                theme: CustomTheme.getThemeForPreset(
+                    themePreset, Brightness.light),
+                darkTheme:
+                    CustomTheme.getThemeForPreset(themePreset, Brightness.dark),
                 themeMode: themePreset.themeMode,
                 home: AppNavigationBar(),
               );
@@ -78,5 +80,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-
 }

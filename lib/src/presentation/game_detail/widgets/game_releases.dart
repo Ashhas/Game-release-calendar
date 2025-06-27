@@ -36,8 +36,8 @@ class _GameReleasesState extends State<GameReleases> {
     if (releaseDates == null) return [];
 
     return releaseDates
-        .sortedBy((rd) => rd.date ?? 0)
-        .thenBy((rd) => rd.platform!.fullName)
+        .sortedBy((rd) => ReleaseDateComparator.getSortableTimestamp(rd.date))
+        .thenBy((rd) => rd.platform?.fullName ?? 'Unknown Platform')
         .thenBy((rd) => rd.region?.name ?? 'ZZ');
   }
 
@@ -115,9 +115,9 @@ class _GameReleasesState extends State<GameReleases> {
           itemCount: sortedReleaseDates.length,
           itemBuilder: (_, index) {
             final rd = sortedReleaseDates[index];
-            final platform = rd.platform!;
+            final platform = rd.platform;
 
-            // If date is null, mark as "TBD" and disable
+            // If date is null, mark as "TBD" but enable for reminders
             final date = rd.date;
             if (date == null) {
               // Build subtitle for TBD with optional region
@@ -127,11 +127,11 @@ class _GameReleasesState extends State<GameReleases> {
               }
 
               return CheckboxListTile(
-                enabled: false,
+                enabled: true,
                 value: checkedStatus[index],
-                title: Text(platform.fullName),
+                title: Text(platform?.fullName ?? 'Unknown Platform'),
                 subtitle: Text(tbdSubtitle),
-                onChanged: null,
+                onChanged: (_) => _onReminderTileTapped(index, rd),
               );
             }
 
@@ -140,7 +140,7 @@ class _GameReleasesState extends State<GameReleases> {
                     .isBefore(DateTime.now());
 
             // Build subtitle with date and optional region
-            String subtitle = rd.human.toString();
+            String subtitle = rd.human ?? 'Release date available';
             if (rd.region != null) {
               subtitle += ' • ${rd.region!.name}';
             }
@@ -148,7 +148,7 @@ class _GameReleasesState extends State<GameReleases> {
             return CheckboxListTile(
               enabled: !hasBeenReleased,
               value: checkedStatus[index],
-              title: Text(platform.fullName),
+              title: Text(platform?.fullName ?? 'Unknown Platform'),
               subtitle: Text(subtitle),
               onChanged: (_) => _onReminderTileTapped(index, rd),
             );

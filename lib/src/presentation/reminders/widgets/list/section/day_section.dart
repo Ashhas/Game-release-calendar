@@ -70,10 +70,11 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
                     ),
             ],
           ),
-          Text(
-            timeTillRelease,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          if (!GameDateGrouper.tbdDate.isAtSameDayAs(date))
+            Text(
+              timeTillRelease,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
         ],
       ),
     );

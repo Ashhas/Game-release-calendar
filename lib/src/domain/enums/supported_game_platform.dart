@@ -113,7 +113,7 @@ enum SupportedGamePlatform {
 
   static SupportedGamePlatform fromValue(int value) {
     return SupportedGamePlatform.values.firstWhere(
-          (platform) => platform.id == value,
+      (platform) => platform.id == value,
       orElse: () => noSuchPlatform,
     );
   }

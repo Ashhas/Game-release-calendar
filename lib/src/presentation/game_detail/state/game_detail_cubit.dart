@@ -33,9 +33,9 @@ class GameDetailCubit extends Cubit<GameDetailState> {
     required ReleaseDate releaseDate,
   }) async {
     try {
-      final notificationDate = DateTimeConverter.computeNotificationDate(
-        releaseDate.date ?? 0,
-      );
+      final notificationDate = releaseDate.date != null
+          ? DateTimeConverter.computeNotificationDate(releaseDate.date!)
+          : null;
       final reminder = GameReminder.fromGame(
         game: game,
         releaseDate: releaseDate,
@@ -48,7 +48,7 @@ class GameDetailCubit extends Cubit<GameDetailState> {
       await _notificationsCubit.scheduleNotificationFromReminder(
         gameReminder: reminder,
       );
-      
+
       developer.log('Reminder saved successfully for game: ${game.name}');
     } catch (e, stackTrace) {
       developer.log('Error saving reminder: $e', stackTrace: stackTrace);
@@ -64,8 +64,9 @@ class GameDetailCubit extends Cubit<GameDetailState> {
       await _notificationsCubit.cancelNotification(
         releaseDateId,
       );
-      
-      developer.log('Reminder removed successfully for releaseId: $releaseDateId');
+
+      developer
+          .log('Reminder removed successfully for releaseId: $releaseDateId');
     } catch (e, stackTrace) {
       developer.log('Error removing reminder: $e', stackTrace: stackTrace);
       rethrow;

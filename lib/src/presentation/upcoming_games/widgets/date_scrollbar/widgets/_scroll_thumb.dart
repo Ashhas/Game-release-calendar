@@ -37,21 +37,22 @@ class _ScrollThumb extends StatelessWidget {
 
   double _getScrollThumbPosition() {
     if (!scrollController.hasClients) return 0.0;
-    
+
     final thumbHeight = _getScrollThumbHeight();
     final maxPosition = constraints.maxHeight - thumbHeight;
-    
+
     return (currentScrollPosition * maxPosition).clamp(0.0, maxPosition);
   }
 
   double _getScrollThumbHeight() {
     if (!scrollController.hasClients) return constraints.maxHeight * 0.1;
-    
+
     final position = scrollController.position;
     final totalContent = position.maxScrollExtent + position.viewportDimension;
     final viewportRatio = position.viewportDimension / totalContent;
-    
+
     const minThumbHeight = 20.0;
-    return (constraints.maxHeight * viewportRatio).clamp(minThumbHeight, constraints.maxHeight);
+    return (constraints.maxHeight * viewportRatio)
+        .clamp(minThumbHeight, constraints.maxHeight);
   }
 }

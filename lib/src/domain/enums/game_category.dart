@@ -59,7 +59,7 @@ enum GameCategory {
 
   static GameCategory fromValue(int value) {
     return GameCategory.values.firstWhere(
-          (e) => e.value == value,
+      (e) => e.value == value,
       orElse: () => GameCategory.mainGame,
     );
   }

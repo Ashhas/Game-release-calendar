@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -99,7 +100,7 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
           _isScrollbarEnabled = currentSetting;
         });
       }
-      
+
       Future.delayed(const Duration(seconds: 1), _checkSettingsUpdates);
     }
   }
@@ -162,7 +163,8 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final sortedEntries = _activeList.entries.toList();
+    final sortedEntries = _activeList.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
     final availableDates = _extractSortedDates(sortedEntries);
 
     return Stack(
@@ -189,8 +191,8 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
     );
   }
 
-  List<DateTime> _extractSortedDates(List<MapEntry<DateTime, List<Game>>> entries) {
+  List<DateTime> _extractSortedDates(
+      List<MapEntry<DateTime, List<Game>>> entries) {
     return entries.map((entry) => entry.key).toList()..sort();
   }
 }
-

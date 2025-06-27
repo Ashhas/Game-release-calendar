@@ -13,6 +13,7 @@ import 'package:game_release_calendar/src/presentation/game_detail/state/game_de
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_time_converter.dart';
 import '../../utils/constants.dart';
+import '../../utils/release_date_comparator.dart';
 
 part 'widgets/game_info.dart';
 

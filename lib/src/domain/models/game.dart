@@ -145,13 +145,13 @@ class Game {
       name: json['name'],
       platforms: json['platforms'] != null
           ? (json['platforms'] as List)
-          .map((e) => Platform.fromJson(e))
-          .toList()
+              .map((e) => Platform.fromJson(e))
+              .toList()
           : null,
       releaseDates: json['release_dates'] != null
           ? (json['release_dates'] as List)
-          .map((e) => ReleaseDate.fromJson(e))
-          .toList()
+              .map((e) => ReleaseDate.fromJson(e))
+              .toList()
           : null,
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),

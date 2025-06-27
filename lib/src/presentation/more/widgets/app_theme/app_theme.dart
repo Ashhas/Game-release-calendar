@@ -35,7 +35,9 @@ class _AppThemeState extends State<AppTheme> {
                   },
                 ),
                 onTap: () {
-                  context.read<ThemeCubit>().setThemePreset(AppThemePreset.light);
+                  context
+                      .read<ThemeCubit>()
+                      .setThemePreset(AppThemePreset.light);
                 },
               ),
               ListTile(
@@ -50,7 +52,9 @@ class _AppThemeState extends State<AppTheme> {
                   },
                 ),
                 onTap: () {
-                  context.read<ThemeCubit>().setThemePreset(AppThemePreset.dark);
+                  context
+                      .read<ThemeCubit>()
+                      .setThemePreset(AppThemePreset.dark);
                 },
               ),
               ListTile(
@@ -66,7 +70,9 @@ class _AppThemeState extends State<AppTheme> {
                   },
                 ),
                 onTap: () {
-                  context.read<ThemeCubit>().setThemePreset(AppThemePreset.system);
+                  context
+                      .read<ThemeCubit>()
+                      .setThemePreset(AppThemePreset.system);
                 },
               ),
             ],

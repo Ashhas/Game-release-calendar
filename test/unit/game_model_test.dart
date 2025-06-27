@@ -15,7 +15,7 @@ void main() {
         checksum: 'abc123',
         category: GameCategory.mainGame,
       );
-      
+
       expect(game.id, equals(1));
       expect(game.name, equals('Test Game'));
       expect(game.category, equals(GameCategory.mainGame));
@@ -27,12 +27,18 @@ void main() {
         imageId: 'test123',
         url: '//images.igdb.com/igdb/image/upload/t_thumb/test123.jpg',
       );
-      
+
       final imageUrl = cover.imageUrl();
-      expect(imageUrl, equals('https://images.igdb.com/igdb/image/upload/t_cover_big/test123.jpg'));
-      
+      expect(
+          imageUrl,
+          equals(
+              'https://images.igdb.com/igdb/image/upload/t_cover_big/test123.jpg'));
+
       final customSizeUrl = cover.imageUrl(size: 'thumb');
-      expect(customSizeUrl, equals('https://images.igdb.com/igdb/image/upload/t_thumb/test123.jpg'));
+      expect(
+          customSizeUrl,
+          equals(
+              'https://images.igdb.com/igdb/image/upload/t_thumb/test123.jpg'));
     });
 
     test('should validate basic game properties', () {
@@ -45,7 +51,7 @@ void main() {
         checksum: 'def456',
         category: GameCategory.dlcAddon,
       );
-      
+
       expect(game.id, isA<int>());
       expect(game.name, isA<String>());
       expect(game.category, isA<GameCategory>());

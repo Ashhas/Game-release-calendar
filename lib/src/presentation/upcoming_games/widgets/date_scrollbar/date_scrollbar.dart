@@ -96,7 +96,7 @@ class _DateScrollbarState extends State<DateScrollbar> {
   bool _shouldUpdateScrollPosition(DateScrollbar oldWidget) {
     // Update if dates list length changed or content changed
     return oldWidget.dates.length != widget.dates.length ||
-           !_listsEqual(oldWidget.dates, widget.dates);
+        !_listsEqual(oldWidget.dates, widget.dates);
   }
 
   bool _listsEqual(List<DateTime> oldDates, List<DateTime> newDates) {
@@ -122,7 +122,7 @@ class _DateScrollbarState extends State<DateScrollbar> {
     if (_isScrolling) return;
 
     setState(() => _isScrolling = true);
-    
+
     Future.delayed(_hideDelay, () {
       if (mounted) setState(() => _isScrolling = false);
     });
@@ -149,7 +149,7 @@ class _DateScrollbarState extends State<DateScrollbar> {
     if (!widget.scrollController.hasClients || widget.dates.isEmpty) {
       return false;
     }
-    
+
     try {
       // Check if position is actually available and valid
       final position = widget.scrollController.position;
@@ -162,7 +162,7 @@ class _DateScrollbarState extends State<DateScrollbar> {
   double _calculateScrollPercentage(ScrollPosition position) {
     try {
       if (!position.hasContentDimensions) return 0.0;
-      
+
       final maxExtent = position.maxScrollExtent;
       return maxExtent > 0
           ? (position.pixels / maxExtent).clamp(0.0, 1.0)
@@ -219,11 +219,11 @@ class _DateScrollbarState extends State<DateScrollbar> {
     });
   }
 
-
   void _scrollToPosition(double position) {
     if (!widget.scrollController.hasClients) return;
-    
-    final scrollPosition = position * widget.scrollController.position.maxScrollExtent;
+
+    final scrollPosition =
+        position * widget.scrollController.position.maxScrollExtent;
     widget.scrollController.jumpTo(scrollPosition);
   }
 
@@ -231,7 +231,7 @@ class _DateScrollbarState extends State<DateScrollbar> {
   Widget build(BuildContext context) {
     // Don't show scrollbar if no dates
     if (widget.dates.isEmpty) return const SizedBox.shrink();
-    
+
     // Check if content is actually scrollable - with proper null checks
     if (widget.scrollController.hasClients) {
       try {

@@ -31,13 +31,13 @@ class IGDBService {
     DateTime? startTimestamp;
     DateTime? endTimestamp;
 
-    // Name search filter (using fuzzy search for better reliability)
-    // IGDB API requires exact character matching, so we add normalized variants
-    // to handle cases like "pokemon" finding "pokémon"
+    // Name search filter (with accented variants for better matching)
     if (nameQuery != null && nameQuery.isNotEmpty) {
       final normalizedQuery = SearchHelper.addAccentedVariants(nameQuery);
       if (normalizedQuery.isNotEmpty) {
-        final searchTerms = [nameQuery, ...normalizedQuery]
+        // Include original query plus up to 8 variants to balance coverage and performance
+        final limitedVariants = normalizedQuery.take(8).toList();
+        final searchTerms = [nameQuery, ...limitedVariants]
             .map((term) => 'name ~ *"$term"*')
             .join(' | ');
         filterConditions.add('($searchTerms)');
@@ -72,7 +72,8 @@ class IGDBService {
 
     if (startTimestamp != null) {
       final fromTimestamp = startTimestamp.millisecondsSinceEpoch ~/ 1000;
-      filterConditions.add('first_release_date >= $fromTimestamp');
+      filterConditions.add(
+          '(first_release_date >= $fromTimestamp | first_release_date = null)');
     } else {
       // Default to current date if no start is provided
       DateTime dateOnly = DateTime.now();
@@ -80,12 +81,14 @@ class IGDBService {
           DateTime(dateOnly.year, dateOnly.month, dateOnly.day);
 
       final currentTimestamp = withoutTime.millisecondsSinceEpoch ~/ 1000;
-      filterConditions.add('first_release_date >= $currentTimestamp');
+      filterConditions.add(
+          '(first_release_date >= $currentTimestamp | first_release_date = null)');
     }
 
     if (endTimestamp != null && endTimestamp != Constants.maxDateLimit) {
       final toTimestamp = endTimestamp.millisecondsSinceEpoch ~/ 1000;
-      filterConditions.add('first_release_date < $toTimestamp');
+      filterConditions.add(
+          '(first_release_date < $toTimestamp | first_release_date = null)');
     }
 
     // Query construction
@@ -103,5 +106,4 @@ class IGDBService {
 
     return query;
   }
-
 }

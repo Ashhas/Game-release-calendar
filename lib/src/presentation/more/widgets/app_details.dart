@@ -23,9 +23,9 @@ class _AppDetailsState extends State<AppDetails> {
       setState(() {
         _tapCount = 0;
       });
-      
+
       widget.onExperimentalUnlocked?.call();
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Experimental features unlocked!'),

@@ -31,7 +31,8 @@ class RemindersListView extends StatefulWidget {
 class _RemindersListViewState extends State<RemindersListView> {
   @override
   Widget build(BuildContext context) {
-    final entries = widget.reminders.entries.toList();
+    final entries = widget.reminders.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
 
     return CustomScrollView(
       shrinkWrap: true,

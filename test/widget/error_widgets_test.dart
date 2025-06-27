@@ -5,9 +5,10 @@ import 'package:game_release_calendar/src/domain/exceptions/app_exceptions.dart'
 
 void main() {
   group('Error Widgets', () {
-    testWidgets('AppErrorWidget should display error message', (WidgetTester tester) async {
+    testWidgets('AppErrorWidget should display error message',
+        (WidgetTester tester) async {
       const exception = NetworkException('Network failed');
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: AppErrorWidget(
@@ -16,16 +17,17 @@ void main() {
           ),
         ),
       );
-      
+
       expect(find.text('Test Error'), findsOneWidget);
       expect(find.text('Network failed'), findsOneWidget);
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
 
-    testWidgets('AppErrorWidget should show retry button when retryable', (WidgetTester tester) async {
+    testWidgets('AppErrorWidget should show retry button when retryable',
+        (WidgetTester tester) async {
       const exception = NetworkException('Network failed');
       bool retryPressed = false;
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: AppErrorWidget(
@@ -34,27 +36,29 @@ void main() {
           ),
         ),
       );
-      
+
       expect(find.text('Try Again'), findsOneWidget);
-      
+
       await tester.tap(find.text('Try Again'));
       await tester.pump();
-      
+
       expect(retryPressed, isTrue);
     });
 
-    testWidgets('AppLoadingWidget should display loading message', (WidgetTester tester) async {
+    testWidgets('AppLoadingWidget should display loading message',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: AppLoadingWidget(message: 'Loading games...'),
         ),
       );
-      
+
       expect(find.text('Loading games...'), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('AppEmptyWidget should display empty state', (WidgetTester tester) async {
+    testWidgets('AppEmptyWidget should display empty state',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: AppEmptyWidget(
@@ -63,7 +67,7 @@ void main() {
           ),
         ),
       );
-      
+
       expect(find.text('No Games'), findsOneWidget);
       expect(find.text('No games found'), findsOneWidget);
       expect(find.byIcon(Icons.inbox), findsOneWidget);
