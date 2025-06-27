@@ -1,7 +1,47 @@
 part of '../more_container.dart';
 
-class AppDetails extends StatelessWidget {
-  const AppDetails({super.key});
+class AppDetails extends StatefulWidget {
+  const AppDetails({super.key, this.onExperimentalUnlocked});
+
+  final VoidCallback? onExperimentalUnlocked;
+
+  @override
+  State<AppDetails> createState() => _AppDetailsState();
+}
+
+class _AppDetailsState extends State<AppDetails> {
+  int _tapCount = 0;
+
+  void _handleIconTap() {
+    setState(() {
+      _tapCount++;
+    });
+
+    if (_tapCount >= 5) {
+      final sharedPrefs = GetIt.instance.get<SharedPrefsService>();
+      sharedPrefs.setExperimentalFeaturesEnabled(true);
+      setState(() {
+        _tapCount = 0;
+      });
+      
+      widget.onExperimentalUnlocked?.call();
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Experimental features unlocked!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _tapCount = 0;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +52,12 @@ class AppDetails extends StatelessWidget {
         Center(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: context.spacings.l),
-            child: const Icon(
-              Icons.emoji_symbols,
-              size: 100.0,
+            child: GestureDetector(
+              onTap: _handleIconTap,
+              child: const Icon(
+                Icons.emoji_symbols,
+                size: 100.0,
+              ),
             ),
           ),
         ),

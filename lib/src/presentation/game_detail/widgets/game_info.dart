@@ -20,12 +20,10 @@ class _GameInfoState extends State<GameInfo> {
       children: [
         Flexible(
           flex: 1,
-          child: Image(
-            image: NetworkImage(
-              widget.game.cover != null
-                  ? widget.game.cover!.imageUrl()
-                  : Constants.placeholderImageUrl,
-            ) as ImageProvider,
+          child: GameImage(
+            imageUrl: widget.game.cover != null
+                ? widget.game.cover!.imageUrl()
+                : Constants.placeholderImageUrl,
           ),
         ),
         Flexible(

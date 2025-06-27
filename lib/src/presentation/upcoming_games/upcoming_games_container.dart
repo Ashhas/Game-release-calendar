@@ -9,6 +9,7 @@ import 'package:game_release_calendar/src/presentation/upcoming_games/state/upco
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/search_toolbar/search_toolbar.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/game_update_status_indicator.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/error_widgets.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
 class UpcomingGamesContainer extends StatelessWidget {
@@ -37,24 +38,29 @@ class UpcomingGamesContainer extends StatelessWidget {
           ),
         ),
         body: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
-          builder: (_, state) {
+          builder: (context, state) {
             return state.games.when(
               data: (games) => games.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No games found',
-                      ),
+                  ? AppEmptyWidget(
+                      title: 'No Games Found',
+                      message: state.nameQuery.isNotEmpty
+                          ? 'Try adjusting your search or filters'
+                          : 'No upcoming games available',
+                      onAction: state.nameQuery.isNotEmpty
+                          ? () => context.read<UpcomingGamesCubit>().clearSearch()
+                          : null,
+                      actionLabel: 'Clear Search',
                     )
                   : GameList(
                       games: games,
                     ),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
+              loading: () => const AppLoadingWidget(
+                message: 'Loading games...',
               ),
-              error: (error, _) => Center(
-                child: Text(
-                  'Error: $error',
-                ),
+              error: (error, _) => AppErrorWidget(
+                error: error is Exception ? error : Exception(error.toString()),
+                onRetry: () => context.read<UpcomingGamesCubit>().getGames(),
+                title: 'Failed to Load Games',
               ),
             );
           },

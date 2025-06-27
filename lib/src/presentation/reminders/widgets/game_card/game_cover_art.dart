@@ -22,19 +22,10 @@ class GameCoverArt extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Image.network(
-          // reminder.gamePayload.artworks != null
-          //     ? reminder.gamePayload.artworks!.first.imageUrl(
-          //         size: 'screenshot_med',
-          //       )
-          //     : reminder.gamePayload.cover!.imageUrl(
-          //         size: 'screenshot_big',
-          //       ),
-          imageUrl,
+        child: GameImage(
+          imageUrl: imageUrl,
           height: isVertical ? null : 180,
-          //height: double.infinity,
           width: double.infinity,
-          fit: BoxFit.cover,
         ),
       ),
     );

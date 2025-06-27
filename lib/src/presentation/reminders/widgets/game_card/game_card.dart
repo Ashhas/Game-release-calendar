@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/game_image.dart';
 import '../../../../utils/constants.dart';
 
 part 'platform_chip.dart';

@@ -39,6 +39,7 @@ import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 import 'package:game_release_calendar/src/domain/models/platform.dart'
 as GamePlatform;
+import 'package:game_release_calendar/src/domain/enums/release_region.dart';
 
 
 Future<void> main() async {
@@ -66,6 +67,7 @@ Future<void> _initializeSharedPrefs(GetIt getIt) async {
   await SharedPrefsService.init();
   getIt.registerSingleton<SharedPrefsService>(SharedPrefsService());
 }
+
 
 Future<void> _loadEnvVariables(GetIt getIt) async {
   final jsonString = await rootBundle.loadString('env/env.json');
@@ -153,6 +155,7 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(SupportedGamePlatformAdapter());
   Hive.registerAdapter(ArtworkAdapter());
   Hive.registerAdapter(GameCategoryAdapter());
+  Hive.registerAdapter(ReleaseRegionAdapter());
 
   final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(

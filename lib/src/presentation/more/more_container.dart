@@ -24,20 +24,54 @@ part 'widgets/app_theme/app_theme.dart';
 
 part 'widgets/experimental_features/experimental_features.dart';
 
-class MoreContainer extends StatelessWidget {
+class MoreContainer extends StatefulWidget {
   const MoreContainer({super.key});
+
+  @override
+  State<MoreContainer> createState() => _MoreContainerState();
+}
+
+class _MoreContainerState extends State<MoreContainer> {
+  bool _showExperimentalIcon = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExperimentalFeaturesVisibility();
+  }
+
+  void _loadExperimentalFeaturesVisibility() {
+    final sharedPrefs = GetIt.instance.get<SharedPrefsService>();
+    setState(() {
+      _showExperimentalIcon = sharedPrefs.getExperimentalFeaturesEnabled();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
+        actions: [
+          if (_showExperimentalIcon)
+            IconButton(
+              icon: const Icon(Icons.science_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ExperimentalFeatures(),
+                  ),
+                );
+              },
+            ),
+        ],
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const AppDetails(),
+          AppDetails(onExperimentalUnlocked: _loadExperimentalFeaturesVisibility),
           SizedBox(height: context.spacings.l),
           const OptionsList(),
           const Spacer(),

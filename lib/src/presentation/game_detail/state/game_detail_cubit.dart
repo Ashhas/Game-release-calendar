@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
@@ -30,29 +32,43 @@ class GameDetailCubit extends Cubit<GameDetailState> {
     required Game game,
     required ReleaseDate releaseDate,
   }) async {
-    final notificationDate = DateTimeConverter.computeNotificationDate(
-      releaseDate.date ?? 0,
-    );
-    final reminder = GameReminder.fromGame(
-      game: game,
-      releaseDate: releaseDate,
-      releaseDateCategory:
-          releaseDate.category ?? ReleaseDateCategory.exactDate,
-      notificationDate: notificationDate,
-    );
+    try {
+      final notificationDate = DateTimeConverter.computeNotificationDate(
+        releaseDate.date ?? 0,
+      );
+      final reminder = GameReminder.fromGame(
+        game: game,
+        releaseDate: releaseDate,
+        releaseDateCategory:
+            releaseDate.category ?? ReleaseDateCategory.exactDate,
+        notificationDate: notificationDate,
+      );
 
-    _remindersBox.put(releaseDate.id, reminder);
-    await _notificationsCubit.scheduleNotificationFromReminder(
-      gameReminder: reminder,
-    );
+      await _remindersBox.put(releaseDate.id, reminder);
+      await _notificationsCubit.scheduleNotificationFromReminder(
+        gameReminder: reminder,
+      );
+      
+      developer.log('Reminder saved successfully for game: ${game.name}');
+    } catch (e, stackTrace) {
+      developer.log('Error saving reminder: $e', stackTrace: stackTrace);
+      rethrow;
+    }
   }
 
   Future<void> removeReminder({
     required int releaseDateId,
   }) async {
-    _remindersBox.delete(releaseDateId);
-    await _notificationsCubit.cancelNotification(
-      releaseDateId,
-    );
+    try {
+      await _remindersBox.delete(releaseDateId);
+      await _notificationsCubit.cancelNotification(
+        releaseDateId,
+      );
+      
+      developer.log('Reminder removed successfully for releaseId: $releaseDateId');
+    } catch (e, stackTrace) {
+      developer.log('Error removing reminder: $e', stackTrace: stackTrace);
+      rethrow;
+    }
   }
 }

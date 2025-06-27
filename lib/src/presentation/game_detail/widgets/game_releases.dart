@@ -67,18 +67,26 @@ class _GameReleasesState extends State<GameReleases> {
   Future<void> _saveReminder({
     required ReleaseDate releaseDate,
   }) async {
-    await gameDetailCubit.saveReminder(
-      game: widget.game,
-      releaseDate: releaseDate,
-    );
-    _showSnackBar('Reminder saved!');
+    try {
+      await gameDetailCubit.saveReminder(
+        game: widget.game,
+        releaseDate: releaseDate,
+      );
+      _showSnackBar('Reminder saved!');
+    } catch (e) {
+      _showSnackBar('Failed to save reminder. Please try again.');
+    }
   }
 
   Future<void> _removeReminder({
     required int releaseDateId,
   }) async {
-    await gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
-    _showSnackBar('Reminder cancelled!');
+    try {
+      await gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
+      _showSnackBar('Reminder cancelled!');
+    } catch (e) {
+      _showSnackBar('Failed to cancel reminder. Please try again.');
+    }
   }
 
   void _updateCheckedStatus(int index) {
