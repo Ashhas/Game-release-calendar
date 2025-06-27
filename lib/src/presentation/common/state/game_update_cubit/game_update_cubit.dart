@@ -23,7 +23,7 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
       emit(const GameUpdateState.loading(totalGames: 0, processedGames: 0));
 
       // Run the update with progress callbacks
-      await gameUpdateService.checkAndUpdateBookmarkedGamesWithProgress(
+      final hasUpdates = await gameUpdateService.checkAndUpdateBookmarkedGamesWithProgress(
         onProgress: (total, processed) {
           emit(GameUpdateState.loading(
             totalGames: total,
@@ -32,12 +32,13 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
         },
       );
 
-      emit(const GameUpdateState.completed());
+      emit(hasUpdates ? const GameUpdateState.updated() : const GameUpdateState.completed());
 
       // Reset to idle after a short delay
       Timer(const Duration(seconds: 2), () {
         state.whenOrNull(
           completed: () => emit(const GameUpdateState.idle()),
+          updated: () => emit(const GameUpdateState.idle()),
         );
       });
     } catch (e) {

@@ -50,43 +50,53 @@ class PrivacyPolicy extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
-                text: '3. Data Sharing\n',
+                text: '3. Third-Party Services\n',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              TextSpan(
+                text: 'IGDB (Internet Game Database):\n'
+                    '- Game information is retrieved from IGDB via Twitch API. No personal data is shared with these services.\n'
+                    '- IGDB\'s privacy policy: https://www.igdb.com/privacy_policy\n\n'
+                    'Firebase Services:\n'
+                    '- We use Firebase Crashlytics to collect crash reports and improve app stability.\n'
+                    '- We use Firebase Analytics to understand app usage patterns.\n'
+                    '- This data is anonymous and used only for app improvement.\n'
+                    '- Google\'s privacy policy: https://policies.google.com/privacy\n\n',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              TextSpan(
+                text: '4. Data Sharing\n',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
                 text:
-                    '- GameWatch does not share the collected information with any third parties.\n\n',
+                    '- We do not sell, trade, or share your personal information with third parties for marketing purposes.\n'
+                    '- Anonymous crash and analytics data may be shared with Firebase for app improvement.\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
-                text: '4. Data Storage and Security\n',
+                text: '5. Data Storage and Security\n',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
                 text: 'Data Storage:\n'
-                    '- The information about the games you track is stored locally on your device.\n\n'
+                    '- Game tracking data is stored locally on your device using Hive database.\n'
+                    '- No personal data is stored on external servers.\n\n'
                     'Security Measures:\n'
-                    '- Since the data is stored locally and not shared online, it remains secure within your device.\n\n',
+                    '- Local data is secured within your device\'s app sandbox.\n'
+                    '- Crash reports are anonymized before transmission to Firebase.\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
-                text: '5. User Rights\n',
+                text: '6. User Rights\n',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
                 text: 'Your Rights:\n'
-                    '- You have the right to choose which games you want to track and can remove any game from your tracked list at any time.\n\n'
+                    '- You have the right to choose which games you want to track and can remove any game from your tracked list at any time.\n'
+                    '- You can delete all app data by uninstalling the app.\n\n'
                     'Exercising Your Rights:\n'
                     '- You can manage your tracked games by going to the game details section within the app and using the provided actions to add or remove games.\n\n',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              TextSpan(
-                text: '6. Cookies and Tracking Technologies\n',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              TextSpan(
-                text:
-                    '- GameWatch does not use cookies or any other tracking technologies.\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
@@ -95,7 +105,8 @@ class PrivacyPolicy extends StatelessWidget {
               ),
               TextSpan(
                 text:
-                    '- Any changes to this privacy policy will be communicated to users through in-app messaging. We encourage you to review the policy periodically for any updates.\n\n',
+                    '- Any changes to this privacy policy will be communicated to users through app updates. We encourage you to review the policy periodically for any updates.\n'
+                    '- Last updated: January 2025\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
@@ -104,13 +115,8 @@ class PrivacyPolicy extends StatelessWidget {
               ),
               TextSpan(
                 text:
-                    '- If you have any questions or concerns about this privacy policy, please contact us at: ashhas.studio@gmail.com\n',
+                    '- If you have any questions or concerns about this privacy policy, please contact us at: ashhas.studio@gmail.com\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              TextSpan(
-                text:
-                    '- If you have any questions or concerns about this privacy policy, please contact us at: ashhas.studio@gmail.com\n',
-                style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
           ),

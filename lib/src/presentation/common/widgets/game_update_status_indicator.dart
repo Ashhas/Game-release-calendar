@@ -16,29 +16,77 @@ class GameUpdateStatusIndicator extends StatelessWidget {
           idle: () => const SizedBox.shrink(),
           loading: (total, processed) => Padding(
             padding: EdgeInsets.only(right: context.spacings.m),
-            child: SizedBox(
-              height: 16,
-              width: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+            child: Semantics(
+              label: 'Syncing games, $processed of $total processed',
+              child: SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                ),
               ),
             ),
           ),
           completed: () => Padding(
             padding: EdgeInsets.only(right: context.spacings.m),
-            child: Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 20,
+            child: Semantics(
+              label: 'Games synced successfully, no updates found',
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Synced!',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(width: context.spacings.xs),
+                  const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          updated: () => Padding(
+            padding: EdgeInsets.only(right: context.spacings.m),
+            child: Semantics(
+              label: 'Games updated successfully, new changes found',
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Updated!',
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(width: context.spacings.xs),
+                  const Icon(
+                    Icons.check_circle,
+                    color: Colors.orange,
+                    size: 20,
+                  ),
+                ],
+              ),
             ),
           ),
           error: (message) => Padding(
             padding: EdgeInsets.only(right: context.spacings.m),
-            child: Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 20,
+            child: Semantics(
+              label: 'Sync failed: $message',
+              child: Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 20,
+              ),
             ),
           ),
         );

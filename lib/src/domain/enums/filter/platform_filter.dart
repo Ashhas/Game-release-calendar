@@ -18,7 +18,6 @@ enum PlatformFilter {
   wiiu(41, "WiiU", "Wii U"),
   xboxOne(49, "XONE", "Xbox One"),
   xboxSeries(169, "Series X|S", "Xbox Series X|S"),
-  n3ds(37, "3DS", "Nintendo 3DS"),
   windows(6, "PC", "PC (Microsoft Windows)"),
   playstation(7, "PS1", "PlayStation"),
   playstation2(8, "PS2", "PlayStation 2"),

@@ -21,6 +21,7 @@ mixin _$GameUpdateState {
     required TResult Function() idle,
     required TResult Function(int totalGames, int processedGames) loading,
     required TResult Function() completed,
+    required TResult Function() updated,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +30,7 @@ mixin _$GameUpdateState {
     TResult? Function()? idle,
     TResult? Function(int totalGames, int processedGames)? loading,
     TResult? Function()? completed,
+    TResult? Function()? updated,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +39,7 @@ mixin _$GameUpdateState {
     TResult Function()? idle,
     TResult Function(int totalGames, int processedGames)? loading,
     TResult Function()? completed,
+    TResult Function()? updated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -46,6 +49,7 @@ mixin _$GameUpdateState {
     required TResult Function(_Idle value) idle,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Completed value) completed,
+    required TResult Function(_Updated value) updated,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +58,7 @@ mixin _$GameUpdateState {
     TResult? Function(_Idle value)? idle,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Completed value)? completed,
+    TResult? Function(_Updated value)? updated,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +67,7 @@ mixin _$GameUpdateState {
     TResult Function(_Idle value)? idle,
     TResult Function(_Loading value)? loading,
     TResult Function(_Completed value)? completed,
+    TResult Function(_Updated value)? updated,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -132,6 +138,7 @@ class _$IdleImpl implements _Idle {
     required TResult Function() idle,
     required TResult Function(int totalGames, int processedGames) loading,
     required TResult Function() completed,
+    required TResult Function() updated,
     required TResult Function(String message) error,
   }) {
     return idle();
@@ -143,6 +150,7 @@ class _$IdleImpl implements _Idle {
     TResult? Function()? idle,
     TResult? Function(int totalGames, int processedGames)? loading,
     TResult? Function()? completed,
+    TResult? Function()? updated,
     TResult? Function(String message)? error,
   }) {
     return idle?.call();
@@ -154,6 +162,7 @@ class _$IdleImpl implements _Idle {
     TResult Function()? idle,
     TResult Function(int totalGames, int processedGames)? loading,
     TResult Function()? completed,
+    TResult Function()? updated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -169,6 +178,7 @@ class _$IdleImpl implements _Idle {
     required TResult Function(_Idle value) idle,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Completed value) completed,
+    required TResult Function(_Updated value) updated,
     required TResult Function(_Error value) error,
   }) {
     return idle(this);
@@ -180,6 +190,7 @@ class _$IdleImpl implements _Idle {
     TResult? Function(_Idle value)? idle,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Completed value)? completed,
+    TResult? Function(_Updated value)? updated,
     TResult? Function(_Error value)? error,
   }) {
     return idle?.call(this);
@@ -191,6 +202,7 @@ class _$IdleImpl implements _Idle {
     TResult Function(_Idle value)? idle,
     TResult Function(_Loading value)? loading,
     TResult Function(_Completed value)? completed,
+    TResult Function(_Updated value)? updated,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -286,6 +298,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() idle,
     required TResult Function(int totalGames, int processedGames) loading,
     required TResult Function() completed,
+    required TResult Function() updated,
     required TResult Function(String message) error,
   }) {
     return loading(totalGames, processedGames);
@@ -297,6 +310,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? idle,
     TResult? Function(int totalGames, int processedGames)? loading,
     TResult? Function()? completed,
+    TResult? Function()? updated,
     TResult? Function(String message)? error,
   }) {
     return loading?.call(totalGames, processedGames);
@@ -308,6 +322,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? idle,
     TResult Function(int totalGames, int processedGames)? loading,
     TResult Function()? completed,
+    TResult Function()? updated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -323,6 +338,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Idle value) idle,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Completed value) completed,
+    required TResult Function(_Updated value) updated,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -334,6 +350,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Idle value)? idle,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Completed value)? completed,
+    TResult? Function(_Updated value)? updated,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -345,6 +362,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Idle value)? idle,
     TResult Function(_Loading value)? loading,
     TResult Function(_Completed value)? completed,
+    TResult Function(_Updated value)? updated,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -414,6 +432,7 @@ class _$CompletedImpl implements _Completed {
     required TResult Function() idle,
     required TResult Function(int totalGames, int processedGames) loading,
     required TResult Function() completed,
+    required TResult Function() updated,
     required TResult Function(String message) error,
   }) {
     return completed();
@@ -425,6 +444,7 @@ class _$CompletedImpl implements _Completed {
     TResult? Function()? idle,
     TResult? Function(int totalGames, int processedGames)? loading,
     TResult? Function()? completed,
+    TResult? Function()? updated,
     TResult? Function(String message)? error,
   }) {
     return completed?.call();
@@ -436,6 +456,7 @@ class _$CompletedImpl implements _Completed {
     TResult Function()? idle,
     TResult Function(int totalGames, int processedGames)? loading,
     TResult Function()? completed,
+    TResult Function()? updated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -451,6 +472,7 @@ class _$CompletedImpl implements _Completed {
     required TResult Function(_Idle value) idle,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Completed value) completed,
+    required TResult Function(_Updated value) updated,
     required TResult Function(_Error value) error,
   }) {
     return completed(this);
@@ -462,6 +484,7 @@ class _$CompletedImpl implements _Completed {
     TResult? Function(_Idle value)? idle,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Completed value)? completed,
+    TResult? Function(_Updated value)? updated,
     TResult? Function(_Error value)? error,
   }) {
     return completed?.call(this);
@@ -473,6 +496,7 @@ class _$CompletedImpl implements _Completed {
     TResult Function(_Idle value)? idle,
     TResult Function(_Loading value)? loading,
     TResult Function(_Completed value)? completed,
+    TResult Function(_Updated value)? updated,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -485,6 +509,129 @@ class _$CompletedImpl implements _Completed {
 
 abstract class _Completed implements GameUpdateState {
   const factory _Completed() = _$CompletedImpl;
+}
+
+/// @nodoc
+abstract class _$$UpdatedImplCopyWith<$Res> {
+  factory _$$UpdatedImplCopyWith(
+          _$UpdatedImpl value, $Res Function(_$UpdatedImpl) then) =
+      __$$UpdatedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$UpdatedImplCopyWithImpl<$Res>
+    extends _$GameUpdateStateCopyWithImpl<$Res, _$UpdatedImpl>
+    implements _$$UpdatedImplCopyWith<$Res> {
+  __$$UpdatedImplCopyWithImpl(
+      _$UpdatedImpl _value, $Res Function(_$UpdatedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of GameUpdateState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$UpdatedImpl implements _Updated {
+  const _$UpdatedImpl();
+
+  @override
+  String toString() {
+    return 'GameUpdateState.updated()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$UpdatedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() idle,
+    required TResult Function(int totalGames, int processedGames) loading,
+    required TResult Function() completed,
+    required TResult Function() updated,
+    required TResult Function(String message) error,
+  }) {
+    return updated();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
+    TResult? Function(int totalGames, int processedGames)? loading,
+    TResult? Function()? completed,
+    TResult? Function()? updated,
+    TResult? Function(String message)? error,
+  }) {
+    return updated?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
+    TResult Function(int totalGames, int processedGames)? loading,
+    TResult Function()? completed,
+    TResult Function()? updated,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (updated != null) {
+      return updated();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Idle value) idle,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Completed value) completed,
+    required TResult Function(_Updated value) updated,
+    required TResult Function(_Error value) error,
+  }) {
+    return updated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Idle value)? idle,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Completed value)? completed,
+    TResult? Function(_Updated value)? updated,
+    TResult? Function(_Error value)? error,
+  }) {
+    return updated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Idle value)? idle,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Completed value)? completed,
+    TResult Function(_Updated value)? updated,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (updated != null) {
+      return updated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Updated implements GameUpdateState {
+  const factory _Updated() = _$UpdatedImpl;
 }
 
 /// @nodoc
@@ -558,6 +705,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() idle,
     required TResult Function(int totalGames, int processedGames) loading,
     required TResult Function() completed,
+    required TResult Function() updated,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -569,6 +717,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? idle,
     TResult? Function(int totalGames, int processedGames)? loading,
     TResult? Function()? completed,
+    TResult? Function()? updated,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -580,6 +729,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? idle,
     TResult Function(int totalGames, int processedGames)? loading,
     TResult Function()? completed,
+    TResult Function()? updated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -595,6 +745,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Idle value) idle,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Completed value) completed,
+    required TResult Function(_Updated value) updated,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -606,6 +757,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Idle value)? idle,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Completed value)? completed,
+    TResult? Function(_Updated value)? updated,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -617,6 +769,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Idle value)? idle,
     TResult Function(_Loading value)? loading,
     TResult Function(_Completed value)? completed,
+    TResult Function(_Updated value)? updated,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {

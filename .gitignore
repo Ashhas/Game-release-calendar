@@ -29,6 +29,7 @@ render.experimental.xml
 # Keystore files
 *.jks
 *.keystore
+android/game-release-keystore.jks
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
@@ -511,3 +512,5 @@ firebase.json
 CLAUDE.md
 
 .claude/settings.local.json
+
+SIGNING.md

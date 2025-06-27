@@ -10,5 +10,6 @@ class GameUpdateState with _$GameUpdateState {
     required int processedGames,
   }) = _Loading;
   const factory GameUpdateState.completed() = _Completed;
+  const factory GameUpdateState.updated() = _Updated;
   const factory GameUpdateState.error(String message) = _Error;
 }

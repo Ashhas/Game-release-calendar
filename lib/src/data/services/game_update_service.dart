@@ -26,7 +26,7 @@ class GameUpdateService {
   }
 
   /// Checks all bookmarked games for updates with progress tracking
-  Future<void> checkAndUpdateBookmarkedGamesWithProgress({
+  Future<bool> checkAndUpdateBookmarkedGamesWithProgress({
     Function(int total, int processed)? onProgress,
   }) async {
     try {
@@ -37,8 +37,10 @@ class GameUpdateService {
       if (gameReminders.isEmpty) {
         log('❌ No bookmarked games to update - reminders box is empty');
         onProgress?.call(0, 0);
-        return;
+        return false;
       }
+      
+      bool hasUpdates = false;
 
       // Extract unique games from reminders
       final uniqueGames = <int, Game>{};
@@ -68,7 +70,8 @@ class GameUpdateService {
           log('   🎮 Checking: ${game.name}');
         }
         
-        await _processBatchWithProgress(batch, onProgress, processedCount, bookmarkedGames.length);
+        final batchHasUpdates = await _processBatchWithProgress(batch, onProgress, processedCount, bookmarkedGames.length);
+        if (batchHasUpdates) hasUpdates = true;
         
         processedCount += batch.length;
         onProgress?.call(bookmarkedGames.length, processedCount);
@@ -85,6 +88,8 @@ class GameUpdateService {
       }
       
       log('🎉 Completed bookmark update check - processed ${bookmarkedGames.length} games total');
+      log(hasUpdates ? '✨ Updates were found and applied!' : '✅ No updates needed - all games are current');
+      return hasUpdates;
     } catch (e) {
       log('Error during bookmark update check: $e');
       rethrow;
@@ -92,12 +97,13 @@ class GameUpdateService {
   }
 
 
-  Future<void> _processBatchWithProgress(
+  Future<bool> _processBatchWithProgress(
     List<Game> games, 
     Function(int total, int processed)? onProgress,
     int currentProcessed,
     int totalGames,
   ) async {
+    bool batchHasUpdates = false;
     final gameIds = games.map((game) => game.id).join(',');
     
     try {
@@ -123,7 +129,8 @@ class GameUpdateService {
           (game) => game.id == updatedGame.id,
         );
         
-        await _processGameUpdate(existingGame, updatedGame);
+        final gameHasUpdates = await _processGameUpdate(existingGame, updatedGame);
+        if (gameHasUpdates) batchHasUpdates = true;
         
         // Yield control periodically during processing
         if (i % 2 == 0) {
@@ -134,16 +141,17 @@ class GameUpdateService {
       log('❌ Error processing batch: $e');
       rethrow;
     }
+    return batchHasUpdates;
   }
 
-  Future<void> _processGameUpdate(Game existingGame, Game updatedGame) async {
+  Future<bool> _processGameUpdate(Game existingGame, Game updatedGame) async {
     try {
       // Check if the game data has been updated
       final hasDataChanged = _hasGameDataChanged(existingGame, updatedGame);
       final hasReleaseDateChanged = _hasReleaseDateChanged(existingGame, updatedGame);
       
       if (!hasDataChanged && !hasReleaseDateChanged) {
-        return; // No changes detected
+        return false; // No changes detected
       }
       
       log('🔄 Detected changes for game: ${updatedGame.name}');
@@ -160,8 +168,10 @@ class GameUpdateService {
         await _handleReleaseDateChange(existingGame, updatedGame);
       }
       
+      return true; // Changes were detected and processed
     } catch (e) {
       log('❌ Error processing game update for ${existingGame.name}: $e');
+      return false; // Error occurred, treat as no updates
     }
   }
 

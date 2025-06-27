@@ -19,40 +19,53 @@ class AppErrorWidget extends StatelessWidget {
     final message = ExceptionHandler.getUserMessage(error);
     final canRetry = ExceptionHandler.isRetryable(error) && onRetry != null;
 
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(context.spacings.l),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Theme.of(context).colorScheme.error,
-            ),
-            SizedBox(height: context.spacings.m),
-            if (title != null) ...[
+    return Semantics(
+      label: 'Error occurred: $message',
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(context.spacings.l),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Semantics(
+                label: 'Error icon',
+                child: Icon(
+                  Icons.error_outline,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+              SizedBox(height: context.spacings.m),
+              if (title != null) ...[
+                Semantics(
+                  header: true,
+                  child: Text(
+                    title!,
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: context.spacings.s),
+              ],
               Text(
-                title!,
-                style: Theme.of(context).textTheme.titleLarge,
+                message,
+                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: context.spacings.s),
+              if (canRetry) ...[
+                SizedBox(height: context.spacings.l),
+                Semantics(
+                  button: true,
+                  hint: 'Retry the failed operation',
+                  child: FilledButton.icon(
+                    onPressed: onRetry,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Try Again'),
+                  ),
+                ),
+              ],
             ],
-            Text(
-              message,
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-            if (canRetry) ...[
-              SizedBox(height: context.spacings.l),
-              FilledButton.icon(
-                onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Try Again'),
-              ),
-            ],
-          ],
+          ),
         ),
       ),
     );
@@ -69,14 +82,21 @@ class AppLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          SizedBox(height: context.spacings.m),
-          Text(message),
-        ],
+    return Semantics(
+      label: message,
+      liveRegion: true,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Semantics(
+              label: 'Loading progress indicator',
+              child: const CircularProgressIndicator(),
+            ),
+            SizedBox(height: context.spacings.m),
+            Text(message),
+          ],
+        ),
       ),
     );
   }

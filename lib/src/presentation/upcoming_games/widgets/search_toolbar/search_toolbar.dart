@@ -59,27 +59,35 @@ class _SearchToolbarState extends State<SearchToolbar> {
             child: Row(
               children: [
                 Expanded(
-                  child: MoonTextInput(
-                    controller: _searchController,
-                    autofocus: false,
-                    leading: Icon(Icons.search),
-                    trailing: _showClearButton
-                        ? IconButton(
-                            icon: Icon(Icons.clear),
-                            onPressed: _clearSearch,
-                            tooltip: 'Clear search',
-                          )
-                        : null,
-                    hintText: 'Search for games',
-                    onChanged: (value) async {
-                      setState(() {
-                        _showClearButton = value.isNotEmpty;
-                      });
-                      await context
-                          .read<UpcomingGamesCubit>()
-                          .updateNameQuery(value);
-                      context.read<UpcomingGamesCubit>().searchGames(value);
-                    },
+                  child: Semantics(
+                    label: 'Search for games',
+                    hint: 'Enter game title to search',
+                    child: MoonTextInput(
+                      controller: _searchController,
+                      autofocus: false,
+                      leading: Icon(Icons.search),
+                      trailing: _showClearButton
+                          ? Semantics(
+                              label: 'Clear search field',
+                              button: true,
+                              child: IconButton(
+                                icon: Icon(Icons.clear),
+                                onPressed: _clearSearch,
+                                tooltip: 'Clear search',
+                              ),
+                            )
+                          : null,
+                      hintText: 'Search for games',
+                      onChanged: (value) async {
+                        setState(() {
+                          _showClearButton = value.isNotEmpty;
+                        });
+                        await context
+                            .read<UpcomingGamesCubit>()
+                            .updateNameQuery(value);
+                        context.read<UpcomingGamesCubit>().searchGames(value);
+                      },
+                    ),
                   ),
                 ),
                 Visibility(
@@ -87,30 +95,35 @@ class _SearchToolbarState extends State<SearchToolbar> {
                   child: Row(
                     children: [
                       SizedBox(width: context.spacings.xs),
-                      MoonButton.icon(
-                        buttonSize: MoonButtonSize.sm,
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(context.spacings.xl),
+                      Semantics(
+                        label: 'Open game filters',
+                        hint: 'Filter games by platform, category, and release dates',
+                        button: true,
+                        child: MoonButton.icon(
+                          buttonSize: MoonButtonSize.sm,
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          showBorder: true,
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(context.spacings.xl),
+                                ),
                               ),
-                            ),
-                            builder: (context) {
-                              return BlocProvider.value(
-                                value: BlocProvider.of<UpcomingGamesCubit>(
-                                    context),
-                                child: FilterBottomSheet(),
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(LucideIcons.filter),
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        showBorder: true,
+                              builder: (context) {
+                                return BlocProvider.value(
+                                  value: BlocProvider.of<UpcomingGamesCubit>(
+                                      context),
+                                  child: FilterBottomSheet(),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(LucideIcons.filter),
+                        ),
                       ),
                     ],
                   ),
