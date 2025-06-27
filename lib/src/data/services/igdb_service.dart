@@ -2,6 +2,7 @@ import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
+import 'package:game_release_calendar/src/utils/search_helper.dart';
 import '../../utils/date_range_utility.dart';
 
 class IGDBService {
@@ -29,6 +30,21 @@ class IGDBService {
     List<String> filterConditions = [];
     DateTime? startTimestamp;
     DateTime? endTimestamp;
+
+    // Name search filter (using fuzzy search for better reliability)
+    // IGDB API requires exact character matching, so we add normalized variants
+    // to handle cases like "pokemon" finding "pokémon"
+    if (nameQuery != null && nameQuery.isNotEmpty) {
+      final normalizedQuery = SearchHelper.addAccentedVariants(nameQuery);
+      if (normalizedQuery.isNotEmpty) {
+        final searchTerms = [nameQuery, ...normalizedQuery]
+            .map((term) => 'name ~ *"$term"*')
+            .join(' | ');
+        filterConditions.add('($searchTerms)');
+      } else {
+        filterConditions.add('name ~ *"$nameQuery"*');
+      }
+    }
 
     // Category filter
     if (filter.categoryIds.isNotEmpty) {
@@ -77,17 +93,15 @@ class IGDBService {
         ? 'where ${filterConditions.join(' & ')};'
         : '';
 
-    final isSearchQuery = nameQuery != null && nameQuery.isNotEmpty;
-
     final query = [
-      if (isSearchQuery) 'search "$nameQuery";',
       'fields *, platforms.*, cover.*, release_dates.*, artworks.*, category;',
       whereClause,
       'limit ${Constants.gameRequestLimit};',
       'offset $offset;',
-      if (!isSearchQuery) 'sort first_release_date asc;'
+      'sort first_release_date asc;'
     ].join(' ');
 
     return query;
   }
+
 }
