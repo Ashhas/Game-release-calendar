@@ -208,27 +208,28 @@ void main() {
 
       test('should handle all quarter detection cases', () {
         final quarterTests = [
-          ('Q1 2025', 'Q1 2025'),
-          ('q2 2025', 'Q2 2025'), // Case insensitive
-          ('Quarter Q3 2025', 'Q3 2025'),
-          ('q4 coming', 'Q4 2025'),
+          ('Q1 2025', DateTime(2025, 2, 15).millisecondsSinceEpoch ~/ 1000, 'Q1 2025'),
+          ('q2 2025', DateTime(2025, 5, 15).millisecondsSinceEpoch ~/ 1000, 'Q2 2025'), // Case insensitive
+          ('Quarter Q3 2025', DateTime(2025, 8, 15).millisecondsSinceEpoch ~/ 1000, 'Q3 2025'),
+          ('q4 coming', DateTime(2025, 11, 15).millisecondsSinceEpoch ~/ 1000, 'Q4 2025'),
         ];
 
-        for (final (humanText, expectedQuarter) in quarterTests) {
+        for (final (humanText, timestamp, expectedQuarter) in quarterTests) {
           final game = _createGame(
-            firstReleaseDate: 1751241600,
+            firstReleaseDate: timestamp,
             releaseDates: [
               ReleaseDate(
                 id: 1,
-                date: 1751241600,
+                date: timestamp,
                 human: humanText,
                 category: null,
+                dateFormat: 4,
               ),
             ],
           );
           
           final result = DateUtilities.formatGameReleaseDate(game);
-          expect(result, contains('Q'), reason: 'Should detect quarter in "$humanText"');
+          expect(result, equals(expectedQuarter), reason: 'Should detect quarter in "$humanText"');
         }
       });
     });

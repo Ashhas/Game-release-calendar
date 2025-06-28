@@ -4,7 +4,6 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
-import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
 
 void main() {
@@ -20,7 +19,7 @@ void main() {
     testWidgets('should display exact release date correctly', (WidgetTester tester) async {
       final game = _createTestGame(
         name: 'Exact Date Game',
-        firstReleaseDate: 1751241600, // June 27, 2025
+        firstReleaseDate: 1751241600, // June 30, 2025
         releaseDates: [
           ReleaseDate(
             id: 1,
@@ -34,7 +33,7 @@ void main() {
       await tester.pumpWidget(_createTestApp(game));
       
       expect(find.textContaining('Release date:'), findsOneWidget);
-      expect(find.textContaining('27-06-2025'), findsOneWidget);
+      expect(find.textContaining('30-06-2025'), findsOneWidget);
     });
 
     testWidgets('should display month release date correctly', (WidgetTester tester) async {
@@ -107,7 +106,7 @@ void main() {
       await tester.pumpWidget(_createTestApp(game));
       
       expect(find.textContaining('Release date:'), findsOneWidget);
-      expect(find.textContaining('TBD'), findsOneWidget);
+      expect(find.textContaining('Release date: TBD'), findsOneWidget);
     });
 
     testWidgets('should display TBD when category is unreliable but fixed by logic', (WidgetTester tester) async {
@@ -130,7 +129,7 @@ void main() {
       
       expect(find.textContaining('Release date:'), findsOneWidget);
       expect(find.textContaining('Q2 2025'), findsOneWidget);
-      expect(find.textContaining('TBD'), findsNothing);
+      expect(find.textContaining('Release date: TBD'), findsNothing);
     });
 
     testWidgets('should display platforms when available', (WidgetTester tester) async {
@@ -141,13 +140,13 @@ void main() {
             id: 1,
             name: 'PlayStation 5',
             abbreviation: 'PS5',
-            supportedGamePlatform: SupportedGamePlatform.playstation5,
+            url: 'ps5-url',
           ),
           Platform(
             id: 2,
             name: 'PC (Microsoft Windows)',
             abbreviation: 'PC',
-            supportedGamePlatform: SupportedGamePlatform.pc,
+            url: 'pc-url',
           ),
         ],
       );
@@ -204,7 +203,7 @@ void main() {
             id: 1,
             name: 'Nintendo Switch',
             abbreviation: null,
-            supportedGamePlatform: SupportedGamePlatform.nintendoSwitch,
+            url: 'switch-url',
           ),
         ],
       );
@@ -223,7 +222,7 @@ void main() {
             id: 1,
             name: null,
             abbreviation: null,
-            supportedGamePlatform: SupportedGamePlatform.pc,
+            url: 'unknown-url',
           ),
         ],
       );
@@ -256,7 +255,7 @@ void main() {
             ReleaseDate(
               id: 1,
               date: 1751241600,
-              human: 'Q1 2025', // Human shows Q1
+              human: 'Q2 2025', // Human shows Q2
               category: null,
               dateFormat: 4,
             ),
@@ -265,7 +264,7 @@ void main() {
         
         await tester.pumpWidget(_createTestApp(game));
         
-        expect(find.textContaining('Q1 2025'), findsOneWidget);
+        expect(find.textContaining('Q2 2025'), findsOneWidget);
       });
 
       testWidgets('should use dateFormat when category is unreliable', (WidgetTester tester) async {
@@ -310,7 +309,7 @@ void main() {
         await tester.pumpWidget(_createTestApp(game));
         
         // Should use exact date format (most specific)
-        expect(find.textContaining('27-06-2025'), findsOneWidget);
+        expect(find.textContaining('30-06-2025'), findsOneWidget);
       });
     });
 

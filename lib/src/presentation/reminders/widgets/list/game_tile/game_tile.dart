@@ -19,14 +19,24 @@ class GameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: FadeInImage.assetNetwork(
-        placeholder: 'assets/images/placeholder_210_284.png',
-        image: reminder.gamePayload.cover != null
-            ? reminder.gamePayload.cover!.imageUrl()
-            : Constants.placeholderImageUrl,
-        fadeInDuration: const Duration(milliseconds: 100),
-        imageErrorBuilder: (_, __, ___) =>
-            Image.asset('assets/images/placeholder_210_284.png'),
+      leading: SizedBox(
+        width: 56,
+        height: 94,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: FadeInImage.assetNetwork(
+            placeholder: 'assets/images/placeholder_210_284.png',
+            image: reminder.gamePayload.cover != null
+                ? reminder.gamePayload.cover!.imageUrl()
+                : Constants.placeholderImageUrl,
+            fadeInDuration: const Duration(milliseconds: 100),
+            fit: BoxFit.cover,
+            imageErrorBuilder: (_, __, ___) => Image.asset(
+              'assets/images/placeholder_210_284.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       ),
       title: Text(reminder.gameName),
       subtitle: Column(

@@ -56,12 +56,18 @@ class ReleaseDate {
       id: json['id'],
       date: json['date'],
       human: json['human'],
-      category: ReleaseDateCategory.fromValue(json['category']),
+      category: json['category'] != null 
+          ? ReleaseDateCategory.fromValue(json['category']) 
+          : null,
       year: json['y'],
       month: json['m'],
       quarter: json['q'],
-      platform: SupportedGamePlatform.fromValue(json['platform']),
-      region: ReleaseRegion.fromValue(json['region']),
+      platform: json['platform'] != null 
+          ? SupportedGamePlatform.fromValue(json['platform']) 
+          : null,
+      region: json['region'] != null 
+          ? ReleaseRegion.fromValue(json['region']) 
+          : null,
       dateFormat: json['date_format'],
     );
   }

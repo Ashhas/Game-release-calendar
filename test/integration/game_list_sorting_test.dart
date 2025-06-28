@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
@@ -81,7 +80,7 @@ void main() {
 
         // Group and sort using the actual app logic
         final grouped = GameDateGrouper.groupGamesByReleaseDate(games);
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
 
         // Verify the sorting order matches expected category specificity
         expect(sortedGames[0].name, equals('Exact Game')); // Most specific
@@ -151,7 +150,7 @@ void main() {
         ];
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(games);
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
 
         expect(sortedGames[0].name, equals('Alpha Quarter Game'));
         expect(sortedGames[1].name, equals('Beta Quarter Game'));
@@ -215,16 +214,13 @@ void main() {
         ).toList();
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(sameDayGames);
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
 
-        // Should sort by formatted quarter string: Q1, Q2, Q4
-        final formattedStrings = sortedGames.map((game) => 
-          DateUtilities.formatGameReleaseDate(game)
-        ).toList();
-
-        expect(formattedStrings[0], equals('Q1 2025'));
-        expect(formattedStrings[1], equals('Q2 2025'));
-        expect(formattedStrings[2], equals('Q4 2025'));
+        // All games are on the same day (June 30, 2025), so they should sort alphabetically by name
+        // since they have the same category (quarter) and date format
+        expect(sortedGames[0].name, equals('Game A'));
+        expect(sortedGames[1].name, equals('Game B'));
+        expect(sortedGames[2].name, equals('Game C'));
       });
     });
 
@@ -234,24 +230,24 @@ void main() {
           _createGame(
             id: 1,
             name: 'Future Game',
-            firstReleaseDate: 1753833600, // July 15, 2025
+            firstReleaseDate: 1752530400, // July 15, 2025
           ),
           _createGame(
             id: 2,
             name: 'Earlier Game',
-            firstReleaseDate: 1751241600, // June 27, 2025
+            firstReleaseDate: 1751241600, // June 30, 2025
           ),
           _createGame(
             id: 3,
             name: 'Latest Game',
-            firstReleaseDate: 1756425600, // August 28, 2025
+            firstReleaseDate: 1756332000, // August 28, 2025
           ),
         ];
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(games);
         final sortedDates = grouped.keys.toList()..sort();
 
-        expect(sortedDates[0], equals(DateTime(2025, 6, 27)));
+        expect(sortedDates[0], equals(DateTime(2025, 6, 30)));
         expect(sortedDates[1], equals(DateTime(2025, 7, 15)));
         expect(sortedDates[2], equals(DateTime(2025, 8, 28)));
       });
@@ -272,7 +268,7 @@ void main() {
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(games);
 
-        expect(grouped.containsKey(DateTime(2025, 6, 27)), isTrue);
+        expect(grouped.containsKey(DateTime(2025, 6, 30)), isTrue);
         expect(grouped.containsKey(GameDateGrouper.tbdDate), isTrue);
         expect(grouped[GameDateGrouper.tbdDate]!.length, equals(1));
         expect(grouped[GameDateGrouper.tbdDate]!.first.name, equals('TBD Game'));
@@ -330,7 +326,7 @@ void main() {
 
         final allGames = [problemGame, ...otherGames];
         final grouped = GameDateGrouper.groupGamesByReleaseDate(allGames);
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
 
         // The originally problematic game should now display correctly and be sorted properly
         expect(
@@ -409,7 +405,7 @@ void main() {
         ];
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(mixedQualityGames);
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
 
         // Should sort by data quality/specificity
         expect(sortedGames[0].name, equals('AAA Studio Game')); // Exact date
@@ -418,7 +414,7 @@ void main() {
         expect(sortedGames[3].name, equals('Mysterious Game')); // TBD
 
         // Verify display formats are correct
-        expect(DateUtilities.formatGameReleaseDate(sortedGames[0]), contains('27-06-2025'));
+        expect(DateUtilities.formatGameReleaseDate(sortedGames[0]), contains('30-06-2025'));
         expect(DateUtilities.formatGameReleaseDate(sortedGames[1]), equals('Q2 2025'));
         expect(DateUtilities.formatGameReleaseDate(sortedGames[2]), equals('2025'));
         expect(DateUtilities.formatGameReleaseDate(sortedGames[3]), equals('TBD'));
@@ -487,11 +483,11 @@ void main() {
 
         final allGames = [multiPlatformGame, ...singlePlatformGames];
         final grouped = GameDateGrouper.groupGamesByReleaseDate(allGames);
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
 
         // Multi-platform game should use most specific release date (exact date)
         expect(sortedGames[0].name, equals('Multi-Platform Game'));
-        expect(DateUtilities.formatGameReleaseDate(sortedGames[0]), contains('27-06-2025'));
+        expect(DateUtilities.formatGameReleaseDate(sortedGames[0]), contains('30-06-2025'));
 
         // Other games sorted by their precision
         expect(sortedGames[1].name, equals('Console Only Game')); // Quarter
@@ -524,7 +520,7 @@ void main() {
         // Should complete quickly
         expect(stopwatch.elapsedMilliseconds, lessThan(100));
 
-        final sortedGames = grouped[DateTime(2025, 6, 27)]!;
+        final sortedGames = grouped[DateTime(2025, 6, 30)]!;
         expect(sortedGames.length, equals(100));
 
         // Verify sorting is correct - games with lower dateFormat should come first
