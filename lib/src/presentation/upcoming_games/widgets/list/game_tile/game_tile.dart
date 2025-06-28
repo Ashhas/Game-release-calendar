@@ -8,13 +8,6 @@ class GameTile extends StatelessWidget {
 
   final Game game;
 
-  String _formatReleaseDate(int? timestamp) {
-    if (timestamp == null) {
-      return 'TBD';
-    }
-    final dateTime = DateTimeConverter.secondSinceEpochToDateTime(timestamp);
-    return DateFormat('dd-MM-yyyy').format(dateTime);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +26,7 @@ class GameTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Release date: ${_formatReleaseDate(game.firstReleaseDate)}'),
+          Text('Release date: ${DateUtilities.formatGameReleaseDate(game)}'),
           if (game.platforms != null)
             Wrap(
               spacing: 4.0,

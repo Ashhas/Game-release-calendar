@@ -8,7 +8,7 @@ import 'package:game_release_calendar/src/domain/models/notifications/game_remin
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/utils/date_range_utility.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
+import 'package:game_release_calendar/src/utils/date_utilities.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/game_date_grouper.dart';
 

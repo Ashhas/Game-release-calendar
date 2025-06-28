@@ -11,7 +11,7 @@ import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/game_image.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
+import 'package:game_release_calendar/src/utils/date_utilities.dart';
 import '../../utils/constants.dart';
 import '../../utils/release_date_comparator.dart';
 

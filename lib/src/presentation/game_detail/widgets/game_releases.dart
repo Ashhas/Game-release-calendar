@@ -136,7 +136,7 @@ class _GameReleasesState extends State<GameReleases> {
             }
 
             final hasBeenReleased =
-                DateTimeConverter.secondSinceEpochToDateTime(rd.date!)
+                DateUtilities.secondSinceEpochToDateTime(rd.date!)
                     .isBefore(DateTime.now());
 
             // Build subtitle with date and optional region

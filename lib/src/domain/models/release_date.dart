@@ -35,6 +35,9 @@ class ReleaseDate {
   @HiveField(8)
   final ReleaseRegion? region;
 
+  @HiveField(9)
+  final int? dateFormat;
+
   const ReleaseDate({
     required this.id,
     this.date,
@@ -45,6 +48,7 @@ class ReleaseDate {
     this.quarter,
     this.platform,
     this.region,
+    this.dateFormat,
   });
 
   factory ReleaseDate.fromJson(Map<String, dynamic> json) {
@@ -58,6 +62,7 @@ class ReleaseDate {
       quarter: json['q'],
       platform: SupportedGamePlatform.fromValue(json['platform']),
       region: ReleaseRegion.fromValue(json['region']),
+      dateFormat: json['date_format'],
     );
   }
 
@@ -72,6 +77,7 @@ class ReleaseDate {
       'q': quarter,
       'platform': platform?.toValue(),
       'region': region?.toValue(),
+      'date_format': dateFormat,
     };
   }
 
@@ -86,7 +92,8 @@ class ReleaseDate {
     month: $month,
     quarter: $quarter,
     platform: $platform,
-    region: $region
+    region: $region,
+    dateFormat: $dateFormat
   )''';
   }
 }

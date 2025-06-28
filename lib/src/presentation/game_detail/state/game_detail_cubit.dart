@@ -9,7 +9,7 @@ import 'package:game_release_calendar/src/presentation/common/state/notification
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_state.dart';
 import '../../../domain/enums/release_date_category.dart';
 import '../../../domain/models/notifications/game_reminder.dart';
-import '../../../utils/date_time_converter.dart';
+import '../../../utils/date_utilities.dart';
 
 class GameDetailCubit extends Cubit<GameDetailState> {
   GameDetailCubit({
@@ -34,7 +34,7 @@ class GameDetailCubit extends Cubit<GameDetailState> {
   }) async {
     try {
       final notificationDate = releaseDate.date != null
-          ? DateTimeConverter.computeNotificationDate(releaseDate.date!)
+          ? DateUtilities.computeNotificationDate(releaseDate.date!)
           : null;
       final reminder = GameReminder.fromGame(
         game: game,

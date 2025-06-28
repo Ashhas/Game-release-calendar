@@ -7,7 +7,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
+import 'package:game_release_calendar/src/utils/date_utilities.dart';
 import '../../domain/models/notifications/game_reminder.dart';
 
 class NotificationClient {
@@ -27,7 +27,7 @@ class NotificationClient {
     required Game game,
     required ReleaseDate releaseDate,
   }) async {
-    final notificationDate = DateTimeConverter.computeNotificationDate(
+    final notificationDate = DateUtilities.computeNotificationDate(
       releaseDate.date ?? 0,
     );
 

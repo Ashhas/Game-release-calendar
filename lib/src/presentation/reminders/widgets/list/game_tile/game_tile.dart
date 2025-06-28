@@ -12,7 +12,7 @@ class GameTile extends StatelessWidget {
     if (timestamp == null) {
       return 'TBD';
     }
-    final dateTime = DateTimeConverter.secondSinceEpochToDateTime(timestamp);
+    final dateTime = DateUtilities.secondSinceEpochToDateTime(timestamp);
     return DateFormat('dd-MM-yyyy').format(dateTime);
   }
 

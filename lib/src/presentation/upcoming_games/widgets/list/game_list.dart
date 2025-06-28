@@ -13,7 +13,7 @@ import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/da
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
 import 'package:game_release_calendar/src/utils/date_range_utility.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
+import 'package:game_release_calendar/src/utils/date_utilities.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 
 part 'section/day_section.dart';

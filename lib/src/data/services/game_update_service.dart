@@ -7,7 +7,7 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
-import 'package:game_release_calendar/src/utils/date_time_converter.dart';
+import 'package:game_release_calendar/src/utils/date_utilities.dart';
 
 class GameUpdateService {
   final IGDBRepository igdbRepository;
@@ -398,6 +398,6 @@ class GameUpdateService {
 
   DateTime? _computeNotificationDate(ReleaseDate releaseDate) {
     if (releaseDate.date == null) return null;
-    return DateTimeConverter.computeNotificationDate(releaseDate.date!);
+    return DateUtilities.computeNotificationDate(releaseDate.date!);
   }
 }
