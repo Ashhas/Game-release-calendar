@@ -100,6 +100,18 @@ enum SupportedGamePlatform {
   webBrowser(82, "Web", "Web browser"),
   @HiveField(47)
   nintendoSwitch2(508, "Switch 2", "Nintendo Switch 2"),
+  @HiveField(48)
+  oculusQuest(384, "Oculus Quest", "Oculus Quest"),
+  @HiveField(49)
+  oculusVR(162, "Oculus VR", "Oculus VR"),
+  @HiveField(50)
+  steamVR(163, "Steam VR", "Steam VR"),
+  @HiveField(51)
+  psvr(165, "PSVR", "PlayStation VR"),
+  @HiveField(52)
+  psvr2(390, "PSVR2", "PlayStation VR2"),
+  @HiveField(53)
+  vita(46, "Vita", "PlayStation Vita"),
   @HiveField(100)
   noSuchPlatform(0, "Unknown", "Unknown");
 

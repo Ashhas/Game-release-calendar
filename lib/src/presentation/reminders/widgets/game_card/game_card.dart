@@ -48,12 +48,13 @@ class GameCard extends StatelessWidget {
                       Constants.placeholderImageUrl,
                   isVertical: isVertical,
                 ),
-                PlatformChip(
-                  platformAbbreviation:
-                      reminder.releaseDate.platform!.abbreviation.toString(),
-                ),
+                if (reminder.releaseDate.platform != null)
+                  PlatformChip(
+                    platformAbbreviation:
+                        reminder.releaseDate.platform!.abbreviation.toString(),
+                  ),
                 GameDateChip(
-                  label: reminder.releaseDate.human.toString(),
+                  label: reminder.releaseDate.human ?? 'TBD',
                 ),
                 if (onRemove != null)
                   DeleteChip(

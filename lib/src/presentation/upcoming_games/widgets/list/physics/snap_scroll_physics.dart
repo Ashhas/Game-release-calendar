@@ -55,11 +55,11 @@ class SnapScrollPhysics extends ScrollPhysics {
     for (final key in sectionKeys.values) {
       final context = key.currentContext;
       if (context != null) {
-        final renderBox = context.findRenderObject() as RenderBox?;
-        if (renderBox != null) {
+        final renderObject = context.findRenderObject();
+        if (renderObject is RenderBox) {
           try {
             // Get the section's position relative to the viewport
-            final sectionPosition = renderBox.localToGlobal(Offset.zero);
+            final sectionPosition = renderObject.localToGlobal(Offset.zero);
             final sectionTopOffset = scrollOffset + sectionPosition.dy;
 
             // Calculate distance from current scroll position

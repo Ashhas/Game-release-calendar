@@ -109,6 +109,18 @@ class SupportedGamePlatformAdapter extends TypeAdapter<SupportedGamePlatform> {
         return SupportedGamePlatform.webBrowser;
       case 47:
         return SupportedGamePlatform.nintendoSwitch2;
+      case 48:
+        return SupportedGamePlatform.oculusQuest;
+      case 49:
+        return SupportedGamePlatform.oculusVR;
+      case 50:
+        return SupportedGamePlatform.steamVR;
+      case 51:
+        return SupportedGamePlatform.psvr;
+      case 52:
+        return SupportedGamePlatform.psvr2;
+      case 53:
+        return SupportedGamePlatform.vita;
       case 100:
         return SupportedGamePlatform.noSuchPlatform;
       default:
@@ -262,6 +274,24 @@ class SupportedGamePlatformAdapter extends TypeAdapter<SupportedGamePlatform> {
         break;
       case SupportedGamePlatform.nintendoSwitch2:
         writer.writeByte(47);
+        break;
+      case SupportedGamePlatform.oculusQuest:
+        writer.writeByte(48);
+        break;
+      case SupportedGamePlatform.oculusVR:
+        writer.writeByte(49);
+        break;
+      case SupportedGamePlatform.steamVR:
+        writer.writeByte(50);
+        break;
+      case SupportedGamePlatform.psvr:
+        writer.writeByte(51);
+        break;
+      case SupportedGamePlatform.psvr2:
+        writer.writeByte(52);
+        break;
+      case SupportedGamePlatform.vita:
+        writer.writeByte(53);
         break;
       case SupportedGamePlatform.noSuchPlatform:
         writer.writeByte(100);
