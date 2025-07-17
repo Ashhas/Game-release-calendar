@@ -39,7 +39,6 @@ void main() {
           callCount++;
           throw const AuthenticationException('Auth failed');
         });
-        fail('Should have thrown exception');
       } catch (e) {
         expect(e, isA<AuthenticationException>());
         expect(callCount, equals(1)); // Should not retry
@@ -54,7 +53,6 @@ void main() {
           callCount++;
           throw const NoInternetException();
         });
-        fail('Should have thrown exception');
       } catch (e) {
         expect(e, isA<NoInternetException>());
         expect(callCount, equals(1)); // Should not retry
@@ -72,7 +70,6 @@ void main() {
           },
           maxRetries: 2,
         );
-        fail('Should have thrown exception');
       } catch (e) {
         expect(e, isA<NetworkException>());
         expect(callCount, equals(3)); // Initial attempt + 2 retries

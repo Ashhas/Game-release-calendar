@@ -11,7 +11,7 @@ void main() {
         // January 1, 2025 00:00:00 UTC
         final epochSeconds = 1735689600;
         final result = DateUtilities.secondSinceEpochToDateTime(epochSeconds);
-        
+
         expect(result.year, equals(2025));
         expect(result.month, equals(1));
         expect(result.day, equals(1));
@@ -26,7 +26,7 @@ void main() {
         // Future date: December 31, 2025
         final futureEpoch = 1767139200;
         final result = DateUtilities.computeNotificationDate(futureEpoch);
-        
+
         expect(result, isNotNull);
         expect(result!.hour, equals(10));
         expect(result.minute, equals(0));
@@ -39,7 +39,7 @@ void main() {
         // Past date: January 1, 2020
         final pastEpoch = 1577836800;
         final result = DateUtilities.computeNotificationDate(pastEpoch);
-        
+
         expect(result, isNull);
       });
     });
@@ -51,7 +51,7 @@ void main() {
           date: null,
           category: ReleaseDateCategory.exactDate,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, equals('TBD'));
       });
@@ -63,7 +63,7 @@ void main() {
           date: 1751241600,
           category: ReleaseDateCategory.exactDate,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, matches(r'\d{2}-\d{2}-2025')); // Format: dd-MM-yyyy
       });
@@ -75,7 +75,7 @@ void main() {
           date: 1751241600,
           category: ReleaseDateCategory.yearMonth,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, equals('Jun 2025'));
       });
@@ -87,7 +87,7 @@ void main() {
           date: 1751241600, // June 27, 2025
           category: ReleaseDateCategory.quarter,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, equals('Q2 2025'));
       });
@@ -98,7 +98,7 @@ void main() {
           date: 1751241600,
           category: ReleaseDateCategory.year,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, equals('2025'));
       });
@@ -109,7 +109,7 @@ void main() {
           date: 1751241600,
           category: ReleaseDateCategory.tbd,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, equals('TBD'));
       });
@@ -120,7 +120,7 @@ void main() {
           date: 1751241600,
           category: null,
         );
-        
+
         final result = DateUtilities.formatReleaseDate(releaseDate);
         expect(result, equals('TBD'));
       });
@@ -129,7 +129,7 @@ void main() {
     group('formatGameReleaseDate', () {
       test('should return TBD when firstReleaseDate is null', () {
         final game = _createGame(firstReleaseDate: null);
-        
+
         final result = DateUtilities.formatGameReleaseDate(game);
         expect(result, equals('TBD'));
       });
@@ -145,12 +145,14 @@ void main() {
             ),
           ],
         );
-        
+
         final result = DateUtilities.formatGameReleaseDate(game);
         expect(result, equals('TBD'));
       });
 
-      test('should use most specific category when multiple release dates exist', () {
+      test(
+          'should use most specific category when multiple release dates exist',
+          () {
         final game = _createGame(
           firstReleaseDate: 1751241600,
           releaseDates: [
@@ -166,9 +168,10 @@ void main() {
             ),
           ],
         );
-        
+
         final result = DateUtilities.formatGameReleaseDate(game);
-        expect(result, matches(r'\d{2}-\d{2}-2025')); // Should use exact date format
+        expect(result,
+            matches(r'\d{2}-\d{2}-2025')); // Should use exact date format
       });
 
       test('should prioritize human-readable quarter format over category', () {
@@ -179,12 +182,13 @@ void main() {
               id: 1,
               date: 1751241600,
               human: 'Q2 2025',
-              category: ReleaseDateCategory.tbd, // Wrong category
+              category: ReleaseDateCategory.tbd,
+              // Wrong category
               dateFormat: 4,
             ),
           ],
         );
-        
+
         final result = DateUtilities.formatGameReleaseDate(game);
         expect(result, equals('Q2 2025'));
       });
@@ -201,17 +205,33 @@ void main() {
             ),
           ],
         );
-        
+
         final result = DateUtilities.formatGameReleaseDate(game);
         expect(result, equals('Jun 2025'));
       });
 
       test('should handle all quarter detection cases', () {
         final quarterTests = [
-          ('Q1 2025', DateTime(2025, 2, 15).millisecondsSinceEpoch ~/ 1000, 'Q1 2025'),
-          ('q2 2025', DateTime(2025, 5, 15).millisecondsSinceEpoch ~/ 1000, 'Q2 2025'), // Case insensitive
-          ('Quarter Q3 2025', DateTime(2025, 8, 15).millisecondsSinceEpoch ~/ 1000, 'Q3 2025'),
-          ('q4 coming', DateTime(2025, 11, 15).millisecondsSinceEpoch ~/ 1000, 'Q4 2025'),
+          (
+            'Q1 2025',
+            DateTime(2025, 2, 15).millisecondsSinceEpoch ~/ 1000,
+            'Q1 2025'
+          ),
+          (
+            'q2 2025',
+            DateTime(2025, 5, 15).millisecondsSinceEpoch ~/ 1000,
+            'Q2 2025'
+          ), // Case insensitive
+          (
+            'Quarter Q3 2025',
+            DateTime(2025, 8, 15).millisecondsSinceEpoch ~/ 1000,
+            'Q3 2025'
+          ),
+          (
+            'q4 coming',
+            DateTime(2025, 11, 15).millisecondsSinceEpoch ~/ 1000,
+            'Q4 2025'
+          ),
         ];
 
         for (final (humanText, timestamp, expectedQuarter) in quarterTests) {
@@ -227,9 +247,10 @@ void main() {
               ),
             ],
           );
-          
+
           final result = DateUtilities.formatGameReleaseDate(game);
-          expect(result, equals(expectedQuarter), reason: 'Should detect quarter in "$humanText"');
+          expect(result, equals(expectedQuarter),
+              reason: 'Should detect quarter in "$humanText"');
         }
       });
     });
@@ -237,19 +258,20 @@ void main() {
     group('getMostSpecificReleaseCategory', () {
       test('should return tbd when no release dates exist', () {
         final game = _createGame(releaseDates: null);
-        
+
         final result = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(result, equals(ReleaseDateCategory.tbd));
       });
 
       test('should return tbd when release dates list is empty', () {
         final game = _createGame(releaseDates: []);
-        
+
         final result = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(result, equals(ReleaseDateCategory.tbd));
       });
 
-      test('should return most specific category from multiple release dates', () {
+      test('should return most specific category from multiple release dates',
+          () {
         final game = _createGame(
           releaseDates: [
             ReleaseDate(
@@ -269,7 +291,7 @@ void main() {
             ),
           ],
         );
-        
+
         final result = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(result, equals(ReleaseDateCategory.exactDate));
       });
@@ -285,7 +307,7 @@ void main() {
             ),
           ],
         );
-        
+
         final result = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(result, equals(ReleaseDateCategory.exactDate));
       });
@@ -302,7 +324,7 @@ void main() {
             ),
           ],
         );
-        
+
         final result = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(result, equals(ReleaseDateCategory.quarter));
       });
@@ -328,12 +350,13 @@ void main() {
               ),
             ],
           );
-          
+
           final result = DateUtilities.getMostSpecificReleaseCategory(game);
           expect(
-            result, 
+            result,
             equals(expectedCategory),
-            reason: 'dateFormat $dateFormat should map to ${expectedCategory.name}',
+            reason:
+                'dateFormat $dateFormat should map to ${expectedCategory.name}',
           );
         }
       });
@@ -353,7 +376,8 @@ void main() {
         ];
 
         for (final (month, expectedQuarter) in quarterTests) {
-          final timestamp = DateTime(2025, month, 15).millisecondsSinceEpoch ~/ 1000;
+          final timestamp =
+              DateTime(2025, month, 15).millisecondsSinceEpoch ~/ 1000;
           final game = _createGame(
             firstReleaseDate: timestamp,
             releaseDates: [
@@ -364,10 +388,10 @@ void main() {
               ),
             ],
           );
-          
+
           final result = DateUtilities.formatGameReleaseDate(game);
           expect(
-            result, 
+            result,
             equals('$expectedQuarter 2025'),
             reason: 'Month $month should be in $expectedQuarter',
           );
