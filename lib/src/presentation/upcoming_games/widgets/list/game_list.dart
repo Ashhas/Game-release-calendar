@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:dartx/dartx.dart';
@@ -44,6 +45,7 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
   bool _isLastPage = false;
   bool _isLoading = false;
   bool _isScrollbarEnabled = false;
+  Timer? _settingsTimer;
 
   @override
   void initState() {
@@ -80,6 +82,7 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _scrollController.dispose();
+    _settingsTimer?.cancel();
     super.dispose();
   }
 
@@ -101,7 +104,8 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
         });
       }
 
-      Future.delayed(const Duration(seconds: 1), _checkSettingsUpdates);
+      _settingsTimer?.cancel();
+      _settingsTimer = Timer(const Duration(seconds: 1), _checkSettingsUpdates);
     }
   }
 

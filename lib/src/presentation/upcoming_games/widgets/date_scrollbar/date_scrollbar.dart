@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -52,6 +53,10 @@ class _DateScrollbarState extends State<DateScrollbar> {
   double _currentScrollPosition = 0.0;
   DateTime? _currentDate;
 
+  // Timers
+  Timer? _hideTimer;
+  Timer? _scrollEndTimer;
+
   // Constants
   static const Duration _hideDelay = Duration(milliseconds: 1500);
   static const Duration _scrollEndDelay = Duration(milliseconds: 1000);
@@ -79,6 +84,8 @@ class _DateScrollbarState extends State<DateScrollbar> {
   @override
   void dispose() {
     _detachScrollListeners();
+    _hideTimer?.cancel();
+    _scrollEndTimer?.cancel();
     super.dispose();
   }
 
@@ -123,7 +130,8 @@ class _DateScrollbarState extends State<DateScrollbar> {
 
     setState(() => _isScrolling = true);
 
-    Future.delayed(_hideDelay, () {
+    _hideTimer?.cancel();
+    _hideTimer = Timer(_hideDelay, () {
       if (mounted) setState(() => _isScrolling = false);
     });
   }
@@ -208,7 +216,8 @@ class _DateScrollbarState extends State<DateScrollbar> {
   }
 
   void _onPanEnd(DragEndDetails details) {
-    Future.delayed(_scrollEndDelay, () {
+    _scrollEndTimer?.cancel();
+    _scrollEndTimer = Timer(_scrollEndDelay, () {
       if (mounted) {
         setState(() {
           _isScrolling = false;
