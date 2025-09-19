@@ -9,7 +9,28 @@ analyzer:
 
 custom_lint:
   rules:
-    # Dart lints
+    # Core Rules
+    - always_declare_return_types
+    - cancel_subscriptions
+    - close_sinks
+    - avoid_print
+    - use_key_in_widget_constructors
+
+    # Performance & Widget Rules
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - sized_box_for_whitespace
+    - use_build_context_synchronously
+
+    # Code Quality Rules
+    - always_use_package_imports
+    - avoid_relative_lib_imports
+    - prefer_final_fields
+    - prefer_final_locals
+    - unnecessary_const
+    - unnecessary_new
+
+    # Existing Dart lints
     - always_put_doc_comments_before_annotations
     - always_specify_parameter_names
     - avoid_dynamic
@@ -30,7 +51,8 @@ custom_lint:
     - prefer_library_prefixes
     - prefer_underscore_for_unused_callback_parameters
     - unnecessary_nullable_return_type
-    # Flutter lints
+
+    # Existing Flutter lints
     - avoid_returning_widgets
     - avoid_single_child_in_flex
     - avoid_public_members_in_states
