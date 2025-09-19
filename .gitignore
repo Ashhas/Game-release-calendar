@@ -499,6 +499,8 @@ obj/
 
 # Local configuration file (environment path, etc)
 assets/env.json
+env/env.json
+env.json
 
 # Firebase config files
 ios/Runner/GoogleService-Info.plist
