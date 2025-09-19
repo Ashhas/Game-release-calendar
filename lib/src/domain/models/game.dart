@@ -133,6 +133,7 @@ class Game {
     return Game(
       id: json['id'],
       ageRatings: json['age_ratings']?.cast<int>(),
+      // ignore: avoid_dynamic
       artworks: (json['artworks'] as List<dynamic>?)
           ?.map((a) => Artwork.fromJson(a))
           .toList(),

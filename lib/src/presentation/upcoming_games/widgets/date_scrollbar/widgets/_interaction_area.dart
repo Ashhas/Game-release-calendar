@@ -9,9 +9,9 @@ class _InteractionArea extends StatelessWidget {
   });
 
   final BoxConstraints constraints;
-  final Function(DragUpdateDetails, BoxConstraints) onPanUpdate;
-  final Function(DragStartDetails) onPanStart;
-  final Function(DragEndDetails) onPanEnd;
+  final Function(DragUpdateDetails details, BoxConstraints constraints) onPanUpdate;
+  final Function(DragStartDetails details) onPanStart;
+  final Function(DragEndDetails details) onPanEnd;
 
   @override
   Widget build(BuildContext context) {

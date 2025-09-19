@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +17,10 @@ class ThemeCubit extends Cubit<AppThemePreset> {
       final success = await prefsService.setThemePreset(preset);
       if (success) {
         emit(preset);
-        log('Theme preset changed to: ${preset.displayName}');
+        dev.log('Theme preset changed to: ${preset.displayName}');
       }
     } catch (e) {
-      log('Error saving theme preset: $e');
+      dev.log('Error saving theme preset: $e');
     }
   }
 

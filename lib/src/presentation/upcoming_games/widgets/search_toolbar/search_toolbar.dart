@@ -32,13 +32,13 @@ class _SearchToolbarState extends State<SearchToolbar> {
       _showClearButton = false;
     });
     context.read<UpcomingGamesCubit>().updateNameQuery('');
-    context.read<UpcomingGamesCubit>().searchGames('');
+    context.read<UpcomingGamesCubit>().searchGames();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<UpcomingGamesCubit, UpcomingGamesState>(
-      listener: (context, state) {
+      listener: (_, state) {
         if (state.nameQuery.isEmpty && _searchController.text.isNotEmpty) {
           _searchController.clear();
           setState(() {
@@ -85,7 +85,7 @@ class _SearchToolbarState extends State<SearchToolbar> {
                         await context
                             .read<UpcomingGamesCubit>()
                             .updateNameQuery(value);
-                        context.read<UpcomingGamesCubit>().searchGames(value);
+                        context.read<UpcomingGamesCubit>().searchGames();
                       },
                     ),
                   ),

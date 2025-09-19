@@ -24,7 +24,7 @@ class _DateTooltip extends StatelessWidget {
       top: (tooltipPosition * constraints.maxHeight) - 20,
       child: Material(
         elevation: 4,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         color: Theme.of(context).colorScheme.inverseSurface,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

@@ -31,7 +31,7 @@ class Artwork {
   @HiveField(8)
   final String? checksum;
 
-  Artwork({
+  const Artwork({
     required this.id,
     required this.imageId,
     required this.url,

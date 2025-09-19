@@ -58,18 +58,12 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GameDateGrouper.tbdDate.isAtSameDayAs(date)
-                  ? const Text('TBD')
-                  : Text(
-                      DateFormat('EEEE, MMMM d y').format(date),
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-            ],
-          ),
+          GameDateGrouper.tbdDate.isAtSameDayAs(date)
+              ? const Text('TBD')
+              : Text(
+                  DateFormat('EEEE, MMMM d y').format(date),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
           if (!GameDateGrouper.tbdDate.isAtSameDayAs(date))
             Text(
               timeTillRelease,

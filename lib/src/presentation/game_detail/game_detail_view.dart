@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class GameDetailView extends StatefulWidget {
 class _GameDetailViewState extends State<GameDetailView> {
   @override
   Widget build(BuildContext context) {
-    log(widget.game.toString());
+    dev.log(widget.game.toString());
     return Scaffold(
       appBar: AppBar(),
       backgroundColor: Theme.of(context).colorScheme.surface,

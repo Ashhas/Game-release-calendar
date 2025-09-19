@@ -54,25 +54,25 @@ class SnapScrollPhysics extends ScrollPhysics {
 
     for (final key in sectionKeys.values) {
       final context = key.currentContext;
-      if (context != null) {
-        final renderObject = context.findRenderObject();
-        if (renderObject is RenderBox) {
-          try {
-            // Get the section's position relative to the viewport
-            final sectionPosition = renderObject.localToGlobal(Offset.zero);
-            final sectionTopOffset = scrollOffset + sectionPosition.dy;
+      if (context == null) continue;
 
-            // Calculate distance from current scroll position
-            final distance = (sectionTopOffset - currentOffset).abs();
+      final renderObject = context.findRenderObject();
+      if (renderObject is! RenderBox) continue;
 
-            if (distance < nearestDistance) {
-              nearestDistance = distance;
-              nearestOffset = sectionTopOffset;
-            }
-          } catch (e) {
-            // Ignore if renderBox is not ready
-          }
+      try {
+        // Get the section's position relative to the viewport
+        final sectionPosition = renderObject.localToGlobal(Offset.zero);
+        final sectionTopOffset = scrollOffset + sectionPosition.dy;
+
+        // Calculate distance from current scroll position
+        final distance = (sectionTopOffset - currentOffset).abs();
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestOffset = sectionTopOffset;
         }
+      } catch (e) {
+        // Ignore if renderBox is not ready
       }
     }
 

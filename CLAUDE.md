@@ -53,6 +53,13 @@ dart run build_runner watch --delete-conflicting-outputs
 ```
 
 ### Code Quality
+
+**IMPORTANT: When checking for analysis issues, ALWAYS run BOTH commands:**
+1. **Standard analysis**: `flutter analyze` - Checks standard Dart/Flutter rules
+2. **Custom lint**: `dart run custom_lint` - Checks project-specific custom rules
+
+The project uses custom_lint with additional strict rules beyond the standard analyzer. Running only `flutter analyze` will miss many issues that appear in the IDE.
+
 ```bash
 # Run tests
 flutter test
@@ -62,17 +69,16 @@ flutter test
 flutter test test/path/to/test_file.dart
 # WSL: cmd.exe /c "D:\SDKs\flutter\bin\flutter.bat test test/path/to/test_file.dart"
 
-# Analyze code
-flutter analyze
-# WSL: cmd.exe /c "D:\SDKs\flutter\bin\flutter.bat analyze"
+# Analyze code - BOTH COMMANDS REQUIRED FOR COMPLETE ANALYSIS
+flutter analyze  # Standard Dart/Flutter analysis
+dart run custom_lint  # Project-specific custom rules (MUST RUN THIS TOO!)
+# WSL:
+# cmd.exe /c "D:\SDKs\flutter\bin\flutter.bat analyze"
+# cmd.exe /c "D:\SDKs\flutter\bin\dart.bat run custom_lint"
 
 # Format code
 dart format .
 # WSL: cmd.exe /c "D:\SDKs\flutter\bin\dart.bat format ."
-
-# Custom lint analysis (configured in analysis_options.yaml)
-dart run custom_lint
-# WSL: cmd.exe /c "D:\SDKs\flutter\bin\dart.bat run custom_lint"
 
 # Sort imports
 dart run import_sorter:main

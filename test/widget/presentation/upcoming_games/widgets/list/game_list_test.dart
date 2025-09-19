@@ -24,6 +24,7 @@ class FakeUpcomingGamesCubit implements UpcomingGamesCubit {
   }
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -40,6 +41,7 @@ void main() {
       tearDownTestDependencies();
     });
 
+    // ignore: avoid_returning_widgets
     Widget createTestWidget({required Map<DateTime, List<Game>> games}) {
       return MaterialApp(
         theme: ThemeData(

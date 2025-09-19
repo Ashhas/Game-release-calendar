@@ -358,6 +358,7 @@ void main() {
   });
 }
 
+// ignore: avoid_returning_widgets
 /// Helper function to create a test app with MaterialApp wrapper
 Widget _createTestApp(Game game) {
   return MaterialApp(

@@ -76,7 +76,7 @@ class _NotificationsState extends State<Notifications>
                 children: [
                   SizedBox(width: context.spacings.m),
                   const Text('Schedule'),
-                  Expanded(child: SizedBox()),
+                  const Spacer(),
                 ],
               ),
             ],

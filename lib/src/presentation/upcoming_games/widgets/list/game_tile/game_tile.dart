@@ -16,7 +16,7 @@ class GameTile extends StatelessWidget {
         width: 56,
         height: 94,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
           child: FadeInImage.assetNetwork(
             placeholder: 'assets/images/placeholder_210_284.png',
             image: game.cover != null

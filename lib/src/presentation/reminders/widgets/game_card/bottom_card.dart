@@ -11,25 +11,12 @@ class BottomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 12,
-        left: 12,
-        right: 12,
-        top: 6,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Text(
-              description,
-              style: Theme.of(context).textTheme.labelMedium,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
-        ],
+      padding: const EdgeInsets.fromLTRB(12, 6, 12, 12),
+      child: Text(
+        description,
+        style: Theme.of(context).textTheme.labelMedium,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
       ),
     );
   }

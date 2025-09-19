@@ -25,7 +25,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   }
 
   /// Based on search-input, fetch games from IGDB API
-  void searchGames(String query) {
+  void searchGames() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 400), () async {

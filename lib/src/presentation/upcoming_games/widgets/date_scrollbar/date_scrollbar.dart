@@ -208,14 +208,16 @@ class _DateScrollbarState extends State<DateScrollbar> {
     _scrollToPosition(position);
   }
 
-  void _onPanStart(DragStartDetails details) {
+  // ignore: avoid_unused_parameters
+  void _onPanStart(DragStartDetails _) {
     setState(() {
       _isScrolling = true;
       _isDragging = true;
     });
   }
 
-  void _onPanEnd(DragEndDetails details) {
+  // ignore: avoid_unused_parameters
+  void _onPanEnd(DragEndDetails _) {
     _scrollEndTimer?.cancel();
     _scrollEndTimer = Timer(_scrollEndDelay, () {
       if (mounted) {
@@ -258,7 +260,7 @@ class _DateScrollbarState extends State<DateScrollbar> {
       width: DateScrollbar.thumbWidth + 2,
       margin: const EdgeInsets.only(right: 4, top: 8, bottom: 8),
       child: LayoutBuilder(
-        builder: (context, constraints) => _ScrollbarStack(
+        builder: (_, constraints) => _ScrollbarStack(
           constraints: constraints,
           isScrolling: _isScrolling,
           isDragging: _isDragging,

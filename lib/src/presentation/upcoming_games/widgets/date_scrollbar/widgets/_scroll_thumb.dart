@@ -29,7 +29,7 @@ class _ScrollThumb extends StatelessWidget {
         height: _getScrollThumbHeight(),
         decoration: BoxDecoration(
           color: thumbColor,
-          borderRadius: BorderRadius.circular(DateScrollbar.thumbWidth / 2),
+          borderRadius: BorderRadius.all(Radius.circular(DateScrollbar.thumbWidth / 2)),
         ),
       ),
     );

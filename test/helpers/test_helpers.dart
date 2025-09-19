@@ -21,11 +21,13 @@ class FakeSharedPrefsService implements SharedPrefsService {
   bool getExperimentalFeaturesEnabled() => false;
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class FakeIGDBService implements IGDBService {
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -34,6 +36,7 @@ class FakeNotificationClient implements NotificationClient {
   Future<List<PendingNotificationRequest>> retrievePendingNotifications() async => [];
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -41,6 +44,7 @@ class FakeGameUpdateService implements GameUpdateService {
   void startBackgroundUpdate() {}
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -49,6 +53,7 @@ class FakeBox<T> implements Box<T> {
   Iterable<T> get values => <T>[];
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -72,11 +77,13 @@ class FakePackageInfo implements PackageInfo {
   String? get installerStore => null;
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class FakeFlutterLocalNotificationsPlugin implements FlutterLocalNotificationsPlugin {
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

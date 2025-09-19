@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:hive/hive.dart';
 
@@ -30,12 +30,12 @@ class GameUpdateService {
     Function(int total, int processed)? onProgress,
   }) async {
     try {
-      log('🔄 Starting bookmark update check...');
+      dev.log('🔄 Starting bookmark update check...');
 
       final gameReminders = gameRemindersBox.values.toList();
 
       if (gameReminders.isEmpty) {
-        log('❌ No bookmarked games to update - reminders box is empty');
+        dev.log('❌ No bookmarked games to update - reminders box is empty');
         onProgress?.call(0, 0);
         return false;
       }
@@ -49,9 +49,9 @@ class GameUpdateService {
       }
       final bookmarkedGames = uniqueGames.values.toList();
 
-      log('✅ Found ${bookmarkedGames.length} unique bookmarked games to check for updates');
+      dev.log('✅ Found ${bookmarkedGames.length} unique bookmarked games to check for updates');
       for (final game in bookmarkedGames) {
-        log('   📋 Game: ${game.name} (ID: ${game.id})');
+        dev.log('   📋 Game: ${game.name} (ID: ${game.id})');
       }
 
       // Process games in batches to avoid overwhelming the API
@@ -65,45 +65,41 @@ class GameUpdateService {
         final batchNumber = (i ~/ batchSize) + 1;
         final totalBatches = (bookmarkedGames.length / batchSize).ceil();
 
-        log('🔍 Processing batch $batchNumber/$totalBatches (${batch.length} games)');
+        dev.log('🔍 Processing batch $batchNumber/$totalBatches (${batch.length} games)');
         for (final game in batch) {
-          log('   🎮 Checking: ${game.name}');
+          dev.log('   🎮 Checking: ${game.name}');
         }
 
-        final batchHasUpdates = await _processBatchWithProgress(
-            batch, onProgress, processedCount, bookmarkedGames.length);
+        final batchHasUpdates = await _processBatchWithProgress(batch);
         if (batchHasUpdates) hasUpdates = true;
 
         processedCount += batch.length;
         onProgress?.call(bookmarkedGames.length, processedCount);
 
-        log('✅ Completed batch $batchNumber/$totalBatches - processed $processedCount/${bookmarkedGames.length} games');
+        dev.log('✅ Completed batch $batchNumber/$totalBatches - processed $processedCount/${bookmarkedGames.length} games');
 
         // Small delay between batches and yield to allow UI updates
         if (i + batchSize < bookmarkedGames.length) {
-          log('⏳ Waiting 300ms before next batch...');
+          dev.log('⏳ Waiting 300ms before next batch...');
           await Future.delayed(const Duration(milliseconds: 300));
           // Yield control back to the UI thread
           await Future.delayed(Duration.zero);
         }
       }
 
-      log('🎉 Completed bookmark update check - processed ${bookmarkedGames.length} games total');
-      log(hasUpdates
+      dev.log('🎉 Completed bookmark update check - processed ${bookmarkedGames.length} games total');
+      dev.log(hasUpdates
           ? '✨ Updates were found and applied!'
           : '✅ No updates needed - all games are current');
       return hasUpdates;
     } catch (e) {
-      log('Error during bookmark update check: $e');
+      dev.log('Error during bookmark update check: $e');
       rethrow;
     }
   }
 
   Future<bool> _processBatchWithProgress(
     List<Game> games,
-    Function(int total, int processed)? onProgress,
-    int currentProcessed,
-    int totalGames,
   ) async {
     bool batchHasUpdates = false;
     final gameIds = games.map((game) => game.id).join(',');
@@ -114,15 +110,15 @@ class GameUpdateService {
           'fields *, platforms.*, cover.*, release_dates.*, artworks.*, category; '
           'limit ${games.length};';
 
-      log('🌐 Fetching updated data from IGDB API for ${games.length} games...');
-      log('   📡 Query: $query');
+      dev.log('🌐 Fetching updated data from IGDB API for ${games.length} games...');
+      dev.log('   📡 Query: $query');
 
       final updatedGames = await igdbRepository.getGames(query);
 
-      log('📥 Received ${updatedGames.length} game updates from IGDB API');
+      dev.log('📥 Received ${updatedGames.length} game updates from IGDB API');
 
       if (updatedGames.length != games.length) {
-        log('⚠️  Warning: Expected ${games.length} games but received ${updatedGames.length}');
+        dev.log('⚠️  Warning: Expected ${games.length} games but received ${updatedGames.length}');
       }
 
       for (int i = 0; i < updatedGames.length; i++) {
@@ -141,7 +137,7 @@ class GameUpdateService {
         }
       }
     } catch (e) {
-      log('❌ Error processing batch: $e');
+      dev.log('❌ Error processing batch: $e');
       rethrow;
     }
     return batchHasUpdates;
@@ -158,23 +154,23 @@ class GameUpdateService {
         return false; // No changes detected
       }
 
-      log('🔄 Detected changes for game: ${updatedGame.name}');
+      dev.log('🔄 Detected changes for game: ${updatedGame.name}');
 
       if (hasDataChanged) {
-        log('   📝 Updating game data...');
+        dev.log('   📝 Updating game data...');
         // Update the bookmarked game with new data
         await _updateBookmarkedGame(existingGame, updatedGame);
       }
 
       if (hasReleaseDateChanged) {
-        log('   📅 Handling release date changes...');
+        dev.log('   📅 Handling release date changes...');
         // Handle release date changes and notification updates
         await _handleReleaseDateChange(existingGame, updatedGame);
       }
 
       return true; // Changes were detected and processed
     } catch (e) {
-      log('❌ Error processing game update for ${existingGame.name}: $e');
+      dev.log('❌ Error processing game update for ${existingGame.name}: $e');
       return false; // Error occurred, treat as no updates
     }
   }
@@ -223,16 +219,16 @@ class GameUpdateService {
   Future<void> _updateBookmarkedGame(
       Game existingGame, Game updatedGame) async {
     try {
-      log('   🔍 Finding reminders to update for game: ${existingGame.name}');
+      dev.log('   🔍 Finding reminders to update for game: ${existingGame.name}');
       // Update all reminders that reference this game
       final remindersToUpdate = gameRemindersBox.values
           .where((reminder) => reminder.gameId == existingGame.id)
           .toList();
 
-      log('   📋 Found ${remindersToUpdate.length} reminders to update');
+      dev.log('   📋 Found ${remindersToUpdate.length} reminders to update');
 
       for (final reminder in remindersToUpdate) {
-        log('      🔄 Updating reminder ID: ${reminder.id}');
+        dev.log('      🔄 Updating reminder ID: ${reminder.id}');
         // Find the key for this reminder
         final reminderKey = gameRemindersBox.keys.firstWhere(
           (key) => gameRemindersBox.get(key)?.id == reminder.id,
@@ -251,37 +247,37 @@ class GameUpdateService {
 
         // Update the reminder in the box
         await gameRemindersBox.put(reminderKey, updatedReminder);
-        log('      ✅ Updated reminder ID: ${reminder.id}');
+        dev.log('      ✅ Updated reminder ID: ${reminder.id}');
       }
 
-      log('   ✅ Updated ${remindersToUpdate.length} reminders for game: ${updatedGame.name}');
+      dev.log('   ✅ Updated ${remindersToUpdate.length} reminders for game: ${updatedGame.name}');
     } catch (e) {
-      log('   ❌ Error updating bookmarked game ${existingGame.name}: $e');
+      dev.log('   ❌ Error updating bookmarked game ${existingGame.name}: $e');
     }
   }
 
   Future<void> _handleReleaseDateChange(
       Game existingGame, Game updatedGame) async {
     try {
-      log('   🔍 Finding reminders for release date changes: ${existingGame.name}');
+      dev.log('   🔍 Finding reminders for release date changes: ${existingGame.name}');
       // Find all reminders for this game
       final gameReminders = gameRemindersBox.values
           .where((reminder) => reminder.gameId == existingGame.id)
           .toList();
 
       if (gameReminders.isEmpty) {
-        log('   ❌ No reminders found to update for release date changes');
+        dev.log('   ❌ No reminders found to update for release date changes');
         return; // No reminders to update
       }
 
-      log('   📅 Found ${gameReminders.length} reminders to check for release date changes');
+      dev.log('   📅 Found ${gameReminders.length} reminders to check for release date changes');
 
       for (final reminder in gameReminders) {
-        log('      🔄 Processing reminder ID: ${reminder.id} for release date: ${reminder.releaseDate.id}');
+        dev.log('      🔄 Processing reminder ID: ${reminder.id} for release date: ${reminder.releaseDate.id}');
         await _updateGameReminder(reminder, updatedGame);
       }
     } catch (e) {
-      log('   ❌ Error handling release date change for ${existingGame.name}: $e');
+      dev.log('   ❌ Error handling release date change for ${existingGame.name}: $e');
     }
   }
 
@@ -321,7 +317,7 @@ class GameUpdateService {
       await _rescheduleNotification(
           existingReminder, updatedGame, updatedReleaseDate);
     } catch (e) {
-      log('Error updating game reminder for ${existingReminder.gameName}: $e');
+      dev.log('Error updating game reminder for ${existingReminder.gameName}: $e');
     }
   }
 
@@ -355,9 +351,9 @@ class GameUpdateService {
 
       await _saveUpdatedReminder(existingReminder, updatedReminder);
 
-      log('Rescheduled notification for ${updatedGame.name}');
+      dev.log('Rescheduled notification for ${updatedGame.name}');
     } catch (e) {
-      log('Error rescheduling notification for ${existingReminder.gameName}: $e');
+      dev.log('Error rescheduling notification for ${existingReminder.gameName}: $e');
     }
   }
 
@@ -372,9 +368,9 @@ class GameUpdateService {
       // Update the reminder in the box
       await gameRemindersBox.put(reminderKey, updatedReminder);
 
-      log('Updated reminder for: ${updatedReminder.gameName}');
+      dev.log('Updated reminder for: ${updatedReminder.gameName}');
     } catch (e) {
-      log('Error saving updated reminder: $e');
+      dev.log('Error saving updated reminder: $e');
     }
   }
 
@@ -390,9 +386,9 @@ class GameUpdateService {
 
       await gameRemindersBox.delete(reminderKey);
 
-      log('Removed outdated reminder for: ${reminder.gameName}');
+      dev.log('Removed outdated reminder for: ${reminder.gameName}');
     } catch (e) {
-      log('Error removing game reminder: $e');
+      dev.log('Error removing game reminder: $e');
     }
   }
 

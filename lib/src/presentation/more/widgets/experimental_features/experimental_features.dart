@@ -55,7 +55,7 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
               padding: EdgeInsets.all(context.spacings.m),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.errorContainer,
-                borderRadius: BorderRadius.circular(context.spacings.s),
+                borderRadius: BorderRadius.all(Radius.circular(context.spacings.s)),
               ),
               child: Row(
                 children: [
@@ -78,17 +78,13 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
             ),
             SizedBox(height: context.spacings.l),
             Card(
-              child: Column(
-                children: [
-                  SwitchListTile(
-                    title: const Text('Date Scrollbar'),
-                    subtitle: const Text(
-                        'Enable vertical scrollbar with snap-to-date functionality'),
-                    secondary: const Icon(Icons.linear_scale),
-                    value: _scrollbarEnabled,
-                    onChanged: _setScrollbarEnabled,
-                  ),
-                ],
+              child: SwitchListTile(
+                title: const Text('Date Scrollbar'),
+                subtitle: const Text(
+                    'Enable vertical scrollbar with snap-to-date functionality'),
+                secondary: const Icon(Icons.linear_scale),
+                value: _scrollbarEnabled,
+                onChanged: _setScrollbarEnabled,
               ),
             ),
             SizedBox(height: context.spacings.m),

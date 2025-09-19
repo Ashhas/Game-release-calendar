@@ -6,6 +6,7 @@ import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 void main() {
   group('Error Widgets', () {
+    // ignore: avoid_returning_widgets
     Widget createTestWidget({required Widget child}) {
       return MaterialApp(
         theme: ThemeData(

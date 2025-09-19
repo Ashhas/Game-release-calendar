@@ -32,7 +32,7 @@ class GameCard extends StatelessWidget {
     final cardColor = Theme.of(context).colorScheme.surfaceContainerLow;
 
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
       color: cardColor, // Explicitly set the card color
       child: Column(
         mainAxisSize: MainAxisSize.min,

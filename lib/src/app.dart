@@ -62,9 +62,9 @@ class App extends StatelessWidget {
         ),
       ],
       child: Builder(
-        builder: (context) {
+        builder: (_) {
           return BlocBuilder<ThemeCubit, AppThemePreset>(
-            builder: (context, themePreset) {
+            builder: (__, themePreset) {
               return MaterialApp(
                 title: GetIt.instance.get<PackageInfo>().appName,
                 theme: CustomTheme.getThemeForPreset(

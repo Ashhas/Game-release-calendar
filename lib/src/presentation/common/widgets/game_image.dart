@@ -22,7 +22,7 @@ class GameImage extends StatelessWidget {
       height: height,
       width: width,
       fit: fit,
-      imageErrorBuilder: (context, error, stackTrace) {
+      imageErrorBuilder: (_, __, ___) {
         return Image.asset(
           'assets/images/placeholder_210_284.png',
           height: height,

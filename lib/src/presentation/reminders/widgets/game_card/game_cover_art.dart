@@ -14,14 +14,14 @@ class GameCoverArt extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        border: Border.fromBorderSide(BorderSide(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
           width: 6,
-        ),
+        )),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
         child: GameImage(
           imageUrl: imageUrl,
           height: isVertical ? null : 180,

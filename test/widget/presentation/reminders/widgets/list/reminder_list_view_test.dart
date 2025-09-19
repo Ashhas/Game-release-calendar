@@ -20,6 +20,7 @@ class FakeRemindersCubit implements RemindersCubit {
   Stream<RemindersState> get stream => Stream.value(state);
   
   @override
+  // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -31,6 +32,7 @@ void main() {
       fakeRemindersCubit = FakeRemindersCubit();
     });
 
+    // ignore: avoid_returning_widgets
     Widget createTestWidget({required Map<DateTime, List<GameReminder>> reminders}) {
       return MaterialApp(
         theme: ThemeData(

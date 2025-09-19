@@ -13,20 +13,20 @@ class GameReleases extends StatefulWidget {
 }
 
 class _GameReleasesState extends State<GameReleases> {
-  late final GameDetailCubit gameDetailCubit;
-  late final List<ReleaseDate> sortedReleaseDates;
-  late final List<bool> checkedStatus;
+  late final GameDetailCubit _gameDetailCubit;
+  late final List<ReleaseDate> _sortedReleaseDates;
+  late final List<bool> _checkedStatus;
 
   @override
   void initState() {
     super.initState();
     // Sort release dates by date, then by platform name
-    sortedReleaseDates = _sortReleaseDates(widget.game.releaseDates);
+    _sortedReleaseDates = _sortReleaseDates(widget.game.releaseDates);
 
     // Determine which platforms are already scheduled
-    gameDetailCubit = context.read<GameDetailCubit>();
-    checkedStatus = sortedReleaseDates
-        .map((rd) => gameDetailCubit.isReminderSaved(
+    _gameDetailCubit = context.read<GameDetailCubit>();
+    _checkedStatus = _sortedReleaseDates
+        .map((rd) => _gameDetailCubit.isReminderSaved(
               rd.id,
             ))
         .toList();
@@ -45,7 +45,7 @@ class _GameReleasesState extends State<GameReleases> {
     int index,
     ReleaseDate releaseDate,
   ) async {
-    final isSaved = gameDetailCubit.isReminderSaved(
+    final isSaved = _gameDetailCubit.isReminderSaved(
       releaseDate.id,
     );
 
@@ -68,7 +68,7 @@ class _GameReleasesState extends State<GameReleases> {
     required ReleaseDate releaseDate,
   }) async {
     try {
-      await gameDetailCubit.saveReminder(
+      await _gameDetailCubit.saveReminder(
         game: widget.game,
         releaseDate: releaseDate,
       );
@@ -82,7 +82,7 @@ class _GameReleasesState extends State<GameReleases> {
     required int releaseDateId,
   }) async {
     try {
-      await gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
+      await _gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
       _showSnackBar('Reminder cancelled!');
     } catch (e) {
       _showSnackBar('Failed to cancel reminder. Please try again.');
@@ -91,7 +91,7 @@ class _GameReleasesState extends State<GameReleases> {
 
   void _updateCheckedStatus(int index) {
     setState(() {
-      checkedStatus[index] = !checkedStatus[index];
+      _checkedStatus[index] = !_checkedStatus[index];
     });
   }
 
@@ -112,9 +112,9 @@ class _GameReleasesState extends State<GameReleases> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: sortedReleaseDates.length,
+          itemCount: _sortedReleaseDates.length,
           itemBuilder: (_, index) {
-            final rd = sortedReleaseDates[index];
+            final rd = _sortedReleaseDates[index];
             final platform = rd.platform;
 
             // If date is null, mark as "TBD" but enable for reminders
@@ -128,7 +128,7 @@ class _GameReleasesState extends State<GameReleases> {
 
               return CheckboxListTile(
                 enabled: true,
-                value: checkedStatus[index],
+                value: _checkedStatus[index],
                 title: Text(platform?.fullName ?? 'Unknown Platform'),
                 subtitle: Text(tbdSubtitle),
                 onChanged: (_) => _onReminderTileTapped(index, rd),
@@ -147,7 +147,7 @@ class _GameReleasesState extends State<GameReleases> {
 
             return CheckboxListTile(
               enabled: !hasBeenReleased,
-              value: checkedStatus[index],
+              value: _checkedStatus[index],
               title: Text(platform?.fullName ?? 'Unknown Platform'),
               subtitle: Text(subtitle),
               onChanged: (_) => _onReminderTileTapped(index, rd),

@@ -106,7 +106,7 @@ void main() {
         final sortedGames = result[DateTime(2025, 6, 30)]!;
 
         // Should be sorted by category specificity: exact -> quarter -> year -> tbd
-        expect(sortedGames[0].name, equals('Exact Game'));
+        expect(sortedGames.first.name, equals('Exact Game'));
         expect(sortedGames[1].name, equals('Quarter Game'));
         expect(sortedGames[2].name, equals('Year Game'));
         expect(sortedGames[3].name, equals('TBD Game'));
@@ -159,7 +159,7 @@ void main() {
         final result = GameDateGrouper.groupGamesByReleaseDate(games);
         final sortedGames = result[DateTime(2025, 6, 30)]!;
 
-        expect(sortedGames[0].name, equals('Alpha Game'));
+        expect(sortedGames.first.name, equals('Alpha Game'));
         expect(sortedGames[1].name, equals('Beta Game'));
         expect(sortedGames[2].name, equals('Zebra Game'));
       });
@@ -248,7 +248,7 @@ void main() {
         // 3. Zulu Month (month category, alphabetically second)
         // 4. Alpha Quarter (quarter category, alphabetically first)
         // 5. Zelda Quarter (quarter category, alphabetically second)
-        expect(sortedGames[0].name, equals('Exact Game'));
+        expect(sortedGames.first.name, equals('Exact Game'));
         expect(sortedGames[1].name, equals('Alpha Month'));
         expect(sortedGames[2].name, equals('Zulu Month'));
         expect(sortedGames[3].name, equals('Alpha Quarter'));
@@ -349,7 +349,7 @@ void main() {
         final groupedReminders = result[DateTime(2025, 6, 30)]!;
 
         // Should maintain input order since reminders don't have sorting logic
-        expect(groupedReminders[0].id, equals(3));
+        expect(groupedReminders.first.id, equals(3));
         expect(groupedReminders[1].id, equals(1));
         expect(groupedReminders[2].id, equals(2));
       });

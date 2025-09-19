@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,7 +45,7 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
         );
       });
     } catch (e) {
-      log('Error during background update: $e');
+      dev.log('Error during background update: $e');
       emit(GameUpdateState.error(e.toString()));
 
       // Reset to idle after showing error

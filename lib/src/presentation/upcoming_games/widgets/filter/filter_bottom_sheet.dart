@@ -88,7 +88,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           SizedBox(height: context.spacings.m),
           Footer(
             onApplyFilter: () => _applyFilters(context),
-            onResetFilter: () => _resetFilters(context),
+            onResetFilter: () => _resetFilters(),
           ),
         ],
       ),
@@ -105,7 +105,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     Navigator.pop(context);
   }
 
-  Future<void> _resetFilters(BuildContext context) async {
+  Future<void> _resetFilters() async {
     setState(() {
       _selectedPlatformFilterOptions = {};
       _selectedCategoryFilterOptions = {};

@@ -1,20 +1,20 @@
 part of '../filter_bottom_sheet.dart';
 
 class _DateFilters extends StatefulWidget {
-  _DateFilters({
+  const _DateFilters({
     required this.selectedDateFilterOption,
     required this.onDateFilterChanged,
   });
 
   final DateFilterChoice? selectedDateFilterOption;
-  final Function(DateFilterChoice?)? onDateFilterChanged;
+  final Function(DateFilterChoice? choice)? onDateFilterChanged;
 
   @override
   State<_DateFilters> createState() => _DateFiltersState();
 }
 
 class _DateFiltersState extends State<_DateFilters> {
-  final options = <DateFilterChoice, String>{
+  final _options = <DateFilterChoice, String>{
     DateFilterChoice.allTime: 'All time',
     DateFilterChoice.thisWeek: 'This Week',
     DateFilterChoice.thisMonth: 'This Month',
@@ -32,7 +32,7 @@ class _DateFiltersState extends State<_DateFilters> {
           'Date Range',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        ...options.entries.map((entry) {
+        ..._options.entries.map((entry) {
           return RadioListTile<DateFilterChoice>(
             title: Text(entry.value),
             value: entry.key,

@@ -11,6 +11,7 @@ import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 void main() {
   group('GameCard Widget Tests', () {
+    // ignore: avoid_returning_widgets
     Widget createTestWidget({required GameReminder reminder}) {
       return MaterialApp(
         theme: ThemeData(
