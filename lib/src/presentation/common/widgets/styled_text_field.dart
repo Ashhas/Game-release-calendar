@@ -66,38 +66,38 @@ class StyledTextField extends StatelessWidget {
           vertical: context.spacings.xs,
         ),
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
             color: colorScheme.outline.withValues(alpha: 0.5),
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
             color: colorScheme.outline.withValues(alpha: 0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
             color: colorScheme.primary,
             width: 2,
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
             color: colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
             color: colorScheme.error,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
             color: colorScheme.error,
             width: 2,

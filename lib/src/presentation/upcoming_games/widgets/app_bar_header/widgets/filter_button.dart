@@ -19,9 +19,9 @@ class FilterButton extends StatelessWidget {
       hint: 'Filter games by platform, category, and release dates',
       button: true,
       child: StyledIconButton.icon(
-        buttonSize: StyledButtonSize.small,
+        buttonSize: StyledButtonSize.medium,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        showBorder: true,
+        showBorder: false,
         tooltip: 'Open game filters',
         onTap: () {
           showModalBottomSheet(
@@ -41,7 +41,7 @@ class FilterButton extends StatelessWidget {
             },
           );
         },
-        icon: LucideIcons.filter,
+        icon: LucideIcons.list_filter,
       ),
     );
   }

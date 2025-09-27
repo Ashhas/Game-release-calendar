@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/app_bar_header/widgets/filter_button.dart';
 
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/app_bar_header/widgets/filter_button.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-import 'package:game_release_calendar/src/presentation/common/widgets/game_update_status_indicator.dart';
 import 'widgets/game_search_bar.dart';
 
 class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
@@ -14,9 +13,9 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       title: const Text('Upcoming Games'),
       actions: [
-        const GameUpdateStatusIndicator(),
         const FilterButton(),
         Padding(
           padding: EdgeInsets.only(

@@ -4,7 +4,7 @@ import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/list/game_list.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/list/game_list.dart';
 
 void main() {
   group('GameTile Widget Tests', () {
