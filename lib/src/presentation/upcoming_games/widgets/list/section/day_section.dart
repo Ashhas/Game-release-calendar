@@ -51,7 +51,10 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     return Container(
       color: colorScheme.surface,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: context.spacings.m,
+        vertical: context.spacings.xs,
+      ),
       alignment: Alignment.centerLeft,
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -75,10 +78,10 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 60;
+  double get maxExtent => 50;
 
   @override
-  double get minExtent => 60;
+  double get minExtent => 40;
 
   @override
   bool shouldRebuild(covariant _DayHeaderDelegate oldDelegate) {
