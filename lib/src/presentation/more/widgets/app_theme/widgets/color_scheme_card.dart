@@ -30,7 +30,7 @@ class ColorSchemeCard extends StatelessWidget {
         },
         borderRadius: const BorderRadius.all(Radius.circular(12)),
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(context.spacings.s),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             border: Border.fromBorderSide(BorderSide(
@@ -46,7 +46,7 @@ class ColorSchemeCard extends StatelessWidget {
           child: Row(
             children: [
               ColorPreview(color: color),
-              const SizedBox(width: 12),
+              SizedBox(width: context.spacings.s),
               Expanded(
                 child: Text(
                   title,

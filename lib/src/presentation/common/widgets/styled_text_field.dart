@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+
 /// A styled text field with rounded corners and optional leading/trailing widgets
 /// Replaces MoonTextInput with native Flutter components
 class StyledTextField extends StatelessWidget {
@@ -59,9 +61,9 @@ class StyledTextField extends StatelessWidget {
         suffixIcon: trailing,
         filled: true,
         fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: context.spacings.s,
+          vertical: context.spacings.xs,
         ),
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),

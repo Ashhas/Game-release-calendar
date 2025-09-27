@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+
 class ChipWithBottomSheet extends StatelessWidget {
   const ChipWithBottomSheet({super.key});
 
@@ -26,12 +28,12 @@ class ChipWithBottomSheet extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.spacings.m),
           height: 250,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(16),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(context.spacings.m),
             ),
           ),
           child: Column(
@@ -41,9 +43,9 @@ class ChipWithBottomSheet extends StatelessWidget {
                 'Bottom Sheet',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: context.spacings.xs),
               const Text('This is the content of the bottom sheet.'),
-              const SizedBox(height: 10),
+              SizedBox(height: context.spacings.xs),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context); // Close the bottom sheet

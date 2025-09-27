@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/game_image.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../../../../utils/constants.dart';
 
 part 'platform_chip.dart';
@@ -32,7 +33,7 @@ class GameCard extends StatelessWidget {
     final cardColor = Theme.of(context).colorScheme.surfaceContainerLow;
 
     return Card(
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(context.spacings.s))),
       color: cardColor, // Explicitly set the card color
       child: Column(
         mainAxisSize: MainAxisSize.min,

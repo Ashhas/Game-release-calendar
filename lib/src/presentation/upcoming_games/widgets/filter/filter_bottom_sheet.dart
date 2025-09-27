@@ -52,7 +52,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       padding: EdgeInsets.all(context.spacings.m),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(context.spacings.m)),
       ),
       child: Column(
         children: [

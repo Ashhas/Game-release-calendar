@@ -221,3 +221,60 @@ lib/src/presentation/more/widgets/app_theme/
     ├── brightness_option.dart     # Light/dark/system option
     └── color_preview.dart         # Small color circle preview
 ```
+
+## Spacing System Guidelines
+
+The project uses a consistent spacing system defined in `AppSpacings` (`lib/src/theme/spacing/app_spacings.dart`):
+
+**ALWAYS use AppSpacings instead of hardcoded values:**
+
+```dart
+// ❌ AVOID: Hardcoded spacing values
+padding: const EdgeInsets.all(16)
+SizedBox(height: 8)
+margin: const EdgeInsets.symmetric(horizontal: 12)
+
+// ✅ CORRECT: Use AppSpacings system
+padding: EdgeInsets.all(context.spacings.m)        // 16px
+SizedBox(height: context.spacings.xs)              // 8px
+margin: EdgeInsets.symmetric(horizontal: context.spacings.s)  // 12px
+```
+
+**Available spacing values:**
+- `xxs`: 4px - Minimal spacing (chip padding, small gaps)
+- `xs`: 8px - Small spacing (between related elements)
+- `s`: 12px - Small-medium spacing (form padding, card content)
+- `m`: 16px - Medium spacing (main padding, standard gaps)
+- `l`: 20px - Large spacing (section separation)
+- `xl`: 24px - Extra large spacing (major sections)
+- `xxl`: 32px - Extra extra large spacing (screen padding)
+- `xxxl`: 40px - Maximum spacing (major layout sections)
+
+**Access pattern:**
+```dart
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+
+// In build method:
+context.spacings.m    // Returns 16.0
+context.spacings.xs   // Returns 8.0
+```
+
+**Spacing principles:**
+```dart
+// Always use the defined spacing values directly
+// Don't create complex calculations - choose the closest standard value
+EdgeInsets.all(context.spacings.m)              // Use 16px, not 15px or 17px
+Radius.circular(context.spacings.xxs)           // Use 4px, not 6px
+SizedBox(height: context.spacings.xs)           // Use 8px, not 10px
+
+// For values between standards, round to nearest 4px increment:
+// 6px → use xxs (4px) or xs (8px)
+// 10px → use xs (8px) or s (12px)
+// 14px → use s (12px) or m (16px)
+```
+
+**Benefits:**
+- Consistent visual rhythm across the app
+- Easy to adjust spacing globally
+- Better design system compliance
+- Responsive spacing potential for different screen sizes

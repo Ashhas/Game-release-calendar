@@ -11,23 +11,23 @@ class DeleteChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 4,
-      right: 4,
+      top: context.spacings.xxs,
+      right: context.spacings.xxs,
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(6),
-            bottomLeft: Radius.circular(6),
+            topRight: Radius.circular(context.spacings.xxs),
+            bottomLeft: Radius.circular(context.spacings.xxs),
           ),
         ),
         child: SizedBox(
-          width: 25,
-          height: 25,
+          width: context.spacings.xl,
+          height: context.spacings.xl,
           child: IconButton(
             icon: const Icon(
               Icons.delete_outline,
-              size: 20,
+              size: context.spacings.l,
             ),
             onPressed: onRemove,
             padding: EdgeInsets.zero,

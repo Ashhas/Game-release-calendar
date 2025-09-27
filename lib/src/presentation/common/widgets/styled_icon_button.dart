@@ -55,14 +55,14 @@ class StyledIconButton extends StatelessWidget {
     }
   }
 
-  EdgeInsets get _padding {
+  EdgeInsets _padding(BuildContext context) {
     switch (size) {
       case StyledButtonSize.small:
-        return const EdgeInsets.all(6);
+        return EdgeInsets.all(context.spacings.xxs); // 4.0
       case StyledButtonSize.medium:
-        return const EdgeInsets.all(8);
+        return EdgeInsets.all(context.spacings.xs); // 8.0
       case StyledButtonSize.large:
-        return const EdgeInsets.all(10);
+        return EdgeInsets.all(context.spacings.xs); // 8.0
     }
   }
 
@@ -96,7 +96,7 @@ class StyledIconButton extends StatelessWidget {
           child: Container(
             width: _buttonSize,
             height: _buttonSize,
-            padding: _padding,
+            padding: _padding(context),
             child: Icon(
               icon,
               size: _iconSize,

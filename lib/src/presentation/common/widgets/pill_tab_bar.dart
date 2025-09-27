@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+
 /// A pill-style tab bar with smooth animations
 /// Replaces MoonTabBar.pill with native Flutter components
 class PillTabBar extends StatelessWidget {
@@ -18,7 +20,7 @@ class PillTabBar extends StatelessWidget {
 
     return Container(
       height: 40,
-      padding: const EdgeInsets.all(4),
+      padding: EdgeInsets.all(context.spacings.xxs),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: const BorderRadius.all(Radius.circular(24)),

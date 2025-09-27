@@ -11,7 +11,7 @@ class BottomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 6, 12, 12),
+      padding: EdgeInsets.fromLTRB(context.spacings.s, context.spacings.xxs, context.spacings.s, context.spacings.s),
       child: Text(
         description,
         style: Theme.of(context).textTheme.labelMedium,

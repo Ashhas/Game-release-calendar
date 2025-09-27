@@ -42,7 +42,7 @@ class _GameInfoState extends State<GameInfo> {
                 if (widget.game.platforms != null &&
                     widget.game.platforms!.isNotEmpty)
                   Wrap(
-                    spacing: 4.0,
+                    spacing: context.spacings.xxs,
                     runSpacing: 0,
                     children: widget.game.platforms!
                         .map(

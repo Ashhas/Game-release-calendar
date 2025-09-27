@@ -11,18 +11,18 @@ class PlatformChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 4,
-      left: 4,
+      top: context.spacings.xxs,
+      left: context.spacings.xxs,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 6,
-          vertical: 2,
+        padding: EdgeInsets.symmetric(
+          horizontal: context.spacings.xxs,
+          vertical: context.spacings.xxs,
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(6),
-            bottomRight: Radius.circular(6),
+            topLeft: Radius.circular(context.spacings.xxs),
+            bottomRight: Radius.circular(context.spacings.xxs),
           ),
         ),
         child: Text(

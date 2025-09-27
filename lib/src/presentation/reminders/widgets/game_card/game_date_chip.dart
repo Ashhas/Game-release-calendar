@@ -11,17 +11,17 @@ class GameDateChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 4,
-      left: 4,
+      bottom: context.spacings.xxs,
+      left: context.spacings.xxs,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 6,
-          vertical: 2,
+        padding: EdgeInsets.symmetric(
+          horizontal: context.spacings.xxs,
+          vertical: context.spacings.xxs,
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(6),
+            topRight: Radius.circular(context.spacings.xxs),
           ),
         ),
         child: Text(

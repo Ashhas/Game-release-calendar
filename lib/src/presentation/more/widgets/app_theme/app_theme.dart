@@ -23,7 +23,7 @@ class _AppThemeState extends State<AppTheme> {
       body: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(context.spacings.m),
             children: [
               // Color Scheme Section
               Text(
@@ -32,14 +32,14 @@ class _AppThemeState extends State<AppTheme> {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: context.spacings.xs),
               Text(
                 'Choose your preferred color palette',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacings.m),
 
               // Color Grid - Updated to include Red and improved layout
               GridView.count(
@@ -83,7 +83,7 @@ class _AppThemeState extends State<AppTheme> {
                 ],
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: context.spacings.xxl),
 
               // Brightness Section
               Text(
@@ -92,14 +92,14 @@ class _AppThemeState extends State<AppTheme> {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: context.spacings.xs),
               Text(
                 'Choose between light, dark, or system preference',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacings.m),
 
               // Brightness Options
               BrightnessOption(
