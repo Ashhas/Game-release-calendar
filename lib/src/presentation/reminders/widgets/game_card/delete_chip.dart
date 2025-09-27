@@ -25,7 +25,7 @@ class DeleteChip extends StatelessWidget {
           width: context.spacings.xl,
           height: context.spacings.xl,
           child: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.delete_outline,
               size: context.spacings.l,
             ),

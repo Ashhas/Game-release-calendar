@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'color_preview.dart';
 
 /// A card widget for selecting color schemes in the theme settings

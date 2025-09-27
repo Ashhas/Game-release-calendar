@@ -14,10 +14,7 @@ class PlatformChip extends StatelessWidget {
       top: context.spacings.xxs,
       left: context.spacings.xxs,
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: context.spacings.xxs,
-          vertical: context.spacings.xxs,
-        ),
+        padding: EdgeInsets.all(context.spacings.xxs),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.only(
