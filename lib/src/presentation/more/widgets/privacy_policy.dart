@@ -17,7 +17,7 @@ class PrivacyPolicy extends StatelessWidget {
         padding: EdgeInsets.all(context.spacings.m),
         child: Text.rich(
           TextSpan(
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: Theme.of(context).textTheme.bodyMedium,
             children: [
               WidgetSpan(child: SizedBox(height: context.spacings.m)),
               TextSpan(

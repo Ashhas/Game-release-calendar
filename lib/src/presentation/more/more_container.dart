@@ -11,6 +11,8 @@ import 'package:game_release_calendar/src/utils/url_helper.dart';
 import '../../theme/state/theme_cubit.dart';
 import '../../utils/constants.dart';
 import '../../data/services/shared_prefs_service.dart';
+import 'widgets/app_theme/widgets/color_scheme_card.dart';
+import 'widgets/app_theme/widgets/brightness_option.dart';
 
 part 'widgets/app_details.dart';
 

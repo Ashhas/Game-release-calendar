@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
-import 'package:moon_design/moon_design.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/styled_text_field.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/styled_icon_button.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../filter/filter_bottom_sheet.dart';
 
@@ -18,16 +19,19 @@ class SearchToolbar extends StatefulWidget {
 
 class _SearchToolbarState extends State<SearchToolbar> {
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
   bool _showClearButton = false;
 
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
   void _clearSearch() {
     _searchController.clear();
+    _searchFocusNode.unfocus();
     setState(() {
       _showClearButton = false;
     });
@@ -62,16 +66,17 @@ class _SearchToolbarState extends State<SearchToolbar> {
                   child: Semantics(
                     label: 'Search for games',
                     hint: 'Enter game title to search',
-                    child: MoonTextInput(
+                    child: StyledTextField(
                       controller: _searchController,
+                      focusNode: _searchFocusNode,
                       autofocus: false,
-                      leading: Icon(Icons.search),
+                      leading: const Icon(Icons.search),
                       trailing: _showClearButton
                           ? Semantics(
                               label: 'Clear search field',
                               button: true,
                               child: IconButton(
-                                icon: Icon(Icons.clear),
+                                icon: const Icon(Icons.clear),
                                 onPressed: _clearSearch,
                                 tooltip: 'Clear search',
                               ),
@@ -100,11 +105,12 @@ class _SearchToolbarState extends State<SearchToolbar> {
                         hint:
                             'Filter games by platform, category, and release dates',
                         button: true,
-                        child: MoonButton.icon(
-                          buttonSize: MoonButtonSize.sm,
+                        child: StyledIconButton.icon(
+                          buttonSize: StyledButtonSize.small,
                           backgroundColor:
                               Theme.of(context).colorScheme.surface,
                           showBorder: true,
+                          tooltip: 'Open game filters',
                           onTap: () {
                             showModalBottomSheet(
                               context: context,
@@ -124,7 +130,7 @@ class _SearchToolbarState extends State<SearchToolbar> {
                               },
                             );
                           },
-                          icon: const Icon(LucideIcons.filter),
+                          icon: LucideIcons.filter,
                         ),
                       ),
                     ],

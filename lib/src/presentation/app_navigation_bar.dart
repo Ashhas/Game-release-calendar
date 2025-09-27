@@ -39,6 +39,11 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,
         onTap: (int index) {
+          // Clear focus when navigating away from the search screen (Upcoming tab)
+          if (_currentPageIndex == 0 && index != 0) {
+            FocusScope.of(context).unfocus();
+          }
+
           setState(() {
             _currentPageIndex = index;
 

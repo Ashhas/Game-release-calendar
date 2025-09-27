@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
 enum AppThemePreset {
+  // Brightness modes
   light,
   dark,
   system,
+
+  // Color schemes
+  blueGrey,
+  indigo,
+  teal,
+  amber,
+  red,
 }
 
 extension AppThemePresetExtension on AppThemePreset {
@@ -15,6 +23,16 @@ extension AppThemePresetExtension on AppThemePreset {
         return 'dark';
       case AppThemePreset.system:
         return 'system';
+      case AppThemePreset.blueGrey:
+        return 'blueGrey';
+      case AppThemePreset.indigo:
+        return 'indigo';
+      case AppThemePreset.teal:
+        return 'teal';
+      case AppThemePreset.amber:
+        return 'amber';
+      case AppThemePreset.red:
+        return 'red';
     }
   }
 
@@ -26,13 +44,49 @@ extension AppThemePresetExtension on AppThemePreset {
         return 'Dark';
       case AppThemePreset.system:
         return 'System';
+      case AppThemePreset.blueGrey:
+        return 'Blue Grey';
+      case AppThemePreset.indigo:
+        return 'Indigo';
+      case AppThemePreset.teal:
+        return 'Teal';
+      case AppThemePreset.amber:
+        return 'Amber';
+      case AppThemePreset.red:
+        return 'Red';
     }
   }
 
-  /// Returns the seed color for themes (null = use default Material 3 colors)
+  /// Returns true if this is a brightness preset (light/dark/system)
+  bool get isBrightnessPreset {
+    return this == AppThemePreset.light ||
+           this == AppThemePreset.dark ||
+           this == AppThemePreset.system;
+  }
+
+  /// Returns true if this is a color preset
+  bool get isColorPreset {
+    return !isBrightnessPreset;
+  }
+
+  /// Returns the seed color for themes
   Color? get seedColor {
-    // All basic themes use default Material 3 colors
-    return null;
+    switch (this) {
+      case AppThemePreset.blueGrey:
+        return const Color(0xFF819FC3); // Your custom blue-grey
+      case AppThemePreset.indigo:
+        return Colors.indigo;
+      case AppThemePreset.teal:
+        return Colors.teal;
+      case AppThemePreset.amber:
+        return Colors.amber;
+      case AppThemePreset.red:
+        return Colors.red;
+      case AppThemePreset.light:
+      case AppThemePreset.dark:
+      case AppThemePreset.system:
+        return null; // Use default or previously selected color
+    }
   }
 
   /// Returns the brightness for this theme
@@ -43,7 +97,12 @@ extension AppThemePresetExtension on AppThemePreset {
       case AppThemePreset.dark:
         return Brightness.dark;
       case AppThemePreset.system:
-        return null; // System will handle brightness
+      case AppThemePreset.blueGrey:
+      case AppThemePreset.indigo:
+      case AppThemePreset.teal:
+      case AppThemePreset.amber:
+      case AppThemePreset.red:
+        return null; // System or color presets don't define brightness
     }
   }
 
@@ -56,6 +115,12 @@ extension AppThemePresetExtension on AppThemePreset {
         return ThemeMode.dark;
       case AppThemePreset.system:
         return ThemeMode.system;
+      case AppThemePreset.blueGrey:
+      case AppThemePreset.indigo:
+      case AppThemePreset.teal:
+      case AppThemePreset.amber:
+      case AppThemePreset.red:
+        return ThemeMode.system; // Color presets follow system by default
     }
   }
 

@@ -63,11 +63,15 @@ class _AppDetailsState extends State<AppDetails> {
         ),
         Text(
           '${appInfo.appName}',
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
         Text(
           'v${appInfo.version}',
-          style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
         ),
       ],
     );

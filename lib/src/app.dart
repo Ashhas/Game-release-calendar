@@ -18,7 +18,6 @@ import 'package:game_release_calendar/src/presentation/reminders/state/reminders
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
 import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
-import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -63,15 +62,18 @@ class App extends StatelessWidget {
       ],
       child: Builder(
         builder: (_) {
-          return BlocBuilder<ThemeCubit, AppThemePreset>(
-            builder: (__, themePreset) {
+          return BlocBuilder<ThemeCubit, ThemeState>(
+            buildWhen: (previous, current) =>
+                previous.seedColor != current.seedColor ||
+                previous.themeMode != current.themeMode,
+            builder: (__, themeState) {
               return MaterialApp(
                 title: GetIt.instance.get<PackageInfo>().appName,
-                theme: CustomTheme.getThemeForPreset(
-                    themePreset, Brightness.light),
-                darkTheme:
-                    CustomTheme.getThemeForPreset(themePreset, Brightness.dark),
-                themeMode: themePreset.themeMode,
+                theme: CustomTheme.lightTheme(seedColor: themeState.seedColor),
+                darkTheme: CustomTheme.darkTheme(seedColor: themeState.seedColor),
+                themeMode: themeState.themeMode,
+                themeAnimationDuration: const Duration(milliseconds: 200),
+                themeAnimationCurve: Curves.easeInOut,
                 home: AppNavigationBar(),
               );
             },

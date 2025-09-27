@@ -182,3 +182,42 @@ Run tests before committing changes to ensure nothing is broken.
   - Proper disposal of controllers
   - Proper use of Flutter widgets (Expanded, Flexible, etc.)
 - Import sorting enforced via `import_sorter`
+
+### Widget Performance Guidelines
+
+**NEVER use widget-returning methods** - These are rebuilt on every parent rebuild and cause performance issues:
+
+```dart
+// ❌ ANTI-PATTERN: Widget-returning methods (performance killer)
+class MyWidget extends StatelessWidget {
+  Widget _buildCard() {  // This rebuilds unnecessarily
+    return Card(...);
+  }
+}
+
+// ✅ CORRECT: Extract to separate StatelessWidget
+class MyCard extends StatelessWidget {  // Only rebuilds when needed
+  const MyCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(...);
+  }
+}
+```
+
+**Required Structure for extracted widgets:**
+- Create separate `.dart` files in a `widgets/` subdirectory
+- Follow project folder structure: `feature/widgets/widget_name.dart`
+- Use StatelessWidget for better performance
+- Pass required data as constructor parameters
+
+**Example: Theme widgets structure**
+```
+lib/src/presentation/more/widgets/app_theme/
+├── app_theme.dart                 # Main theme screen
+└── widgets/                       # Extracted widget components
+    ├── color_scheme_card.dart     # Individual color selection card
+    ├── brightness_option.dart     # Light/dark/system option
+    └── color_preview.dart         # Small color circle preview
+```
