@@ -9,62 +9,65 @@ class CustomTheme {
 
   static const double borderRadiusValue = 8.0;
 
-  // Theme caching for performance optimization
-  static final Map<Color?, ThemeData> _lightThemeCache = {};
-  static final Map<Color?, ThemeData> _darkThemeCache = {};
-  static final Map<Color?, ColorScheme> _lightColorSchemeCache = {};
-  static final Map<Color?, ColorScheme> _darkColorSchemeCache = {};
-
-  /// Creates a light ColorScheme with accent color but standard backgrounds
+  /// Creates a light ColorScheme with exact colors (no color harmonization)
   static ColorScheme _accentLightColorScheme(Color accentColor) {
-    return _lightColorSchemeCache.putIfAbsent(accentColor, () {
-      // Generate a color scheme from the accent but override backgrounds to be standard
-      final generatedScheme = ColorScheme.fromSeed(
-        seedColor: accentColor,
-        brightness: Brightness.light,
-      );
+    // Use #F2F9FF for Blue Grey theme (#819FC3), otherwise derive from accent color
+    final primaryContainer = accentColor == const Color(0xFF819FC3)
+        ? const Color(0xFFF2F9FF)
+        : Color.alphaBlend(accentColor.withValues(alpha: 0.08), Colors.white);
 
-      return generatedScheme.copyWith(
-        // Force standard light backgrounds
-        surface: const Color(0xFFFFFFFF), // Pure white
-        surfaceContainerHighest: const Color(0xFFF5F5F5), // Light grey
-        onSurface: const Color(0xFF1A1A1A), // Dark text
-        onSurfaceVariant: const Color(0xFF666666), // Medium grey text
-      );
-    });
+    final colorScheme = ColorScheme.light(
+      primary: accentColor, // Exact color passed in
+      primaryContainer: primaryContainer,
+      secondary: accentColor, // Keep consistent
+      secondaryContainer: primaryContainer,
+      tertiary: const Color(0xFF5D7C90), // Your dark accent
+      error: const Color(0xFFBA1A1A),
+      surface: const Color(0xFFFFFFFF),
+      onSurface: const Color(0xFF1A1A1A),
+      onPrimary: const Color(0xFFFFFFFF),
+      onSecondary: const Color(0xFFFFFFFF),
+      onTertiary: const Color(0xFFFFFFFF),
+      onError: const Color(0xFFFFFFFF),
+    );
+    return colorScheme;
   }
 
+  /// Creates a dark ColorScheme with exact colors (no color harmonization)
   static ColorScheme _accentDarkColorScheme(Color accentColor) {
-    return _darkColorSchemeCache.putIfAbsent(accentColor, () {
-      // Generate a color scheme from the accent but override backgrounds to be standard
-      final generatedScheme = ColorScheme.fromSeed(
-        seedColor: accentColor,
-        brightness: Brightness.dark,
-      );
+    // Use #2A3F4D for Blue Grey theme (#819FC3), otherwise derive from accent color
+    final primaryContainer = accentColor == const Color(0xFF819FC3)
+        ? const Color(0xFF2A3F4D)
+        : Color.alphaBlend(accentColor.withValues(alpha: 0.16), const Color(0xFF121212));
 
-      return generatedScheme.copyWith(
-        // Force standard dark backgrounds
-        surface: const Color(0xFF121212), // Standard Material dark surface
-        surfaceContainerHighest: const Color(0xFF1E1E1E), // Slightly lighter dark
-        onSurface: const Color(0xFFE0E0E0), // Light text
-        onSurfaceVariant: const Color(0xFFB0B0B0), // Medium light text
-      );
-    });
+    return ColorScheme.dark(
+      primary: accentColor, // Exact color passed in
+      primaryContainer: primaryContainer,
+      secondary: accentColor, // Keep consistent
+      secondaryContainer: primaryContainer,
+      tertiary: const Color(0xFFC7D9E5), // Light accent for dark mode
+      error: const Color(0xFFFFB4AB),
+      surface: const Color(0xFF121212),
+      onSurface: const Color(0xFFE0E0E0),
+      onPrimary: const Color(0xFFFFFFFF),
+      onSecondary: const Color(0xFFFFFFFF),
+      onTertiary: const Color(0xFF000000),
+      onError: const Color(0xFF690005),
+    );
   }
 
   /// Generates light theme with optional custom color scheme
   static ThemeData lightTheme({Color? seedColor}) {
-    return _lightThemeCache.putIfAbsent(seedColor, () {
-      final ColorScheme colorScheme;
+    final ColorScheme colorScheme;
 
-      if (seedColor != null) {
-        colorScheme = _accentLightColorScheme(seedColor);
-      } else {
-        final themeData = ThemeData.light(useMaterial3: true);
-        colorScheme = themeData.colorScheme;
-      }
+    if (seedColor != null) {
+      colorScheme = _accentLightColorScheme(seedColor);
+    } else {
+      final themeData = ThemeData.light(useMaterial3: true);
+      colorScheme = themeData.colorScheme;
+    }
 
-      return ThemeData(
+    return ThemeData(
         useMaterial3: true,
         colorScheme: colorScheme,
         appBarTheme: const AppBarTheme(
@@ -82,6 +85,9 @@ class CustomTheme {
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
           ),
+          backgroundColor: colorScheme.primaryContainer,
+          labelStyle: TextStyle(color: colorScheme.primary),
+          side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -125,22 +131,20 @@ class CustomTheme {
           AppColors.light,
         ],
       );
-    });
   }
 
   /// Generates dark theme with optional custom color scheme
   static ThemeData darkTheme({Color? seedColor}) {
-    return _darkThemeCache.putIfAbsent(seedColor, () {
-      final ColorScheme colorScheme;
+    final ColorScheme colorScheme;
 
-      if (seedColor != null) {
-        colorScheme = _accentDarkColorScheme(seedColor);
-      } else {
-        final themeData = ThemeData.dark(useMaterial3: true);
-        colorScheme = themeData.colorScheme;
-      }
+    if (seedColor != null) {
+      colorScheme = _accentDarkColorScheme(seedColor);
+    } else {
+      final themeData = ThemeData.dark(useMaterial3: true);
+      colorScheme = themeData.colorScheme;
+    }
 
-      return ThemeData(
+    return ThemeData(
         useMaterial3: true,
         colorScheme: colorScheme,
         appBarTheme: const AppBarTheme(
@@ -158,6 +162,9 @@ class CustomTheme {
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
           ),
+          backgroundColor: colorScheme.primaryContainer,
+          labelStyle: TextStyle(color: colorScheme.primary),
+          side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -201,7 +208,6 @@ class CustomTheme {
           AppColors.dark,
         ],
       );
-    });
   }
 
   /// Generates theme from preset
@@ -226,13 +232,5 @@ class CustomTheme {
 
     // For other presets, use the preset's defined brightness and color
     return fromPreset(preset);
-  }
-
-  /// Clears theme cache (useful for development or memory management)
-  static void clearThemeCache() {
-    _lightThemeCache.clear();
-    _darkThemeCache.clear();
-    _lightColorSchemeCache.clear();
-    _darkColorSchemeCache.clear();
   }
 }

@@ -6,6 +6,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Game Release Calendar is a Flutter mobile application that tracks video game release dates with smart notifications and advanced filtering capabilities. It uses the IGDB (Internet Game Database) API for game data and supports Android, iOS, Web, Windows, macOS, and Linux platforms.
 
+### 🚨 CRITICAL CODING STANDARDS (READ FIRST!)
+
+**PERFORMANCE:**
+- ❌ **NEVER create widget-returning methods** - Always use separate StatelessWidget classes
+- ❌ **NEVER use `Widget _buildSomething()` methods** - Extract to proper widget classes
+
+**ANALYSIS:**
+- ✅ **ALWAYS run BOTH**: `flutter analyze` AND `dart run custom_lint` before committing
+- ✅ **Standard + Custom rules required** - Custom lint catches project-specific issues
+
+**ARCHITECTURE:**
+- ✅ **Follow Clean Architecture** with BLoC pattern (Cubits for state management)
+- ✅ **Extract widgets** instead of widget-returning methods for better performance
+
 ## Essential Commands
 
 **Environment Detection for Flutter/Dart Commands**:
@@ -172,6 +186,11 @@ Run tests before committing changes to ensure nothing is broken.
 
 ## Code Style
 
+**CRITICAL PERFORMANCE RULES:**
+- ❌ **NEVER use widget-returning methods** - Always create separate StatelessWidget classes instead
+- ✅ **ALWAYS run BOTH analysis commands**: `flutter analyze` AND `dart run custom_lint`
+
+**Additional Rules:**
 - Custom linting rules configured in `analysis_options.yaml` using `custom_lint`
 - Key rules include:
   - Always declare return types
@@ -182,6 +201,19 @@ Run tests before committing changes to ensure nothing is broken.
   - Proper disposal of controllers
   - Proper use of Flutter widgets (Expanded, Flexible, etc.)
 - Import sorting enforced via `import_sorter`
+
+**Custom Lint Rule for Widget Methods:**
+```yaml
+# Add to analysis_options.yaml under custom_lint section
+custom_lint:
+  rules:
+    - avoid_widget_returning_methods
+```
+
+This rule should catch patterns like:
+- Methods returning `Widget`
+- Methods with names starting with `_build`
+- Private methods in StatelessWidget/StatefulWidget returning widgets
 
 ### Widget Performance Guidelines
 
@@ -278,3 +310,24 @@ SizedBox(height: context.spacings.xs)           // Use 8px, not 10px
 - Easy to adjust spacing globally
 - Better design system compliance
 - Responsive spacing potential for different screen sizes
+
+---
+
+# 🚨 CRITICAL FLUTTER PERFORMANCE REMINDERS
+
+These reminders are positioned here to be impossible to miss:
+
+## Widget Performance Anti-Patterns
+- ❌ **NEVER EVER create widget-returning methods** (`Widget _buildSomething()`)
+- ❌ **NEVER return widgets from private methods** in StatelessWidget/StatefulWidget
+- ❌ **NEVER use helper methods that return widgets** - Extract to proper widget classes
+
+## Required Actions
+- ✅ **ALWAYS extract widgets to separate StatelessWidget classes**
+- ✅ **ALWAYS run BOTH analysis commands**: `flutter analyze` AND `dart run custom_lint`
+- ✅ **ALWAYS check performance** - Widget methods cause unnecessary rebuilds
+
+## Why This Matters
+Widget-returning methods are rebuilt on EVERY parent rebuild, causing severe performance issues. Proper StatelessWidget classes only rebuild when their properties change.
+
+**Remember: Performance is non-negotiable in Flutter applications.**

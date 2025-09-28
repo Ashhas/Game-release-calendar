@@ -30,13 +30,15 @@ class GameUpdateService {
     Function(int total, int processed)? onProgress,
   }) async {
     try {
-      dev.log('🔄 Starting bookmark update check...');
+      dev.log('🔄 ===== STARTING BOOKMARK UPDATE CHECK =====');
+      dev.log('🔄 Method called at: ${DateTime.now()}');
 
       final gameReminders = gameRemindersBox.values.toList();
+      dev.log('📊 Found ${gameReminders.length} total reminders in box');
 
       if (gameReminders.isEmpty) {
         dev.log('❌ No bookmarked games to update - reminders box is empty');
-        onProgress?.call(0, 0);
+        dev.log('❌ EARLY RETURN - no onProgress call');
         return false;
       }
 
@@ -58,6 +60,7 @@ class GameUpdateService {
       const batchSize = 5; // Smaller batches for better progress tracking
       int processedCount = 0;
 
+      dev.log('📞 PROGRESS CALL: onProgress(${bookmarkedGames.length}, 0) - Initial');
       onProgress?.call(bookmarkedGames.length, 0);
 
       for (int i = 0; i < bookmarkedGames.length; i += batchSize) {
@@ -74,6 +77,7 @@ class GameUpdateService {
         if (batchHasUpdates) hasUpdates = true;
 
         processedCount += batch.length;
+        dev.log('📞 PROGRESS CALL: onProgress(${bookmarkedGames.length}, $processedCount) - Batch $batchNumber complete');
         onProgress?.call(bookmarkedGames.length, processedCount);
 
         dev.log('✅ Completed batch $batchNumber/$totalBatches - processed $processedCount/${bookmarkedGames.length} games');

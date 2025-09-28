@@ -55,12 +55,22 @@ class StyledTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+              color: colorScheme.primary,
             ),
-        prefixIcon: leading,
-        suffixIcon: trailing,
+        prefixIcon: leading != null
+            ? IconTheme(
+                data: IconThemeData(color: colorScheme.primary),
+                child: leading!,
+              )
+            : null,
+        suffixIcon: trailing != null
+            ? IconTheme(
+                data: IconThemeData(color: colorScheme.primary),
+                child: trailing!,
+              )
+            : null,
         filled: true,
-        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        fillColor: colorScheme.primaryContainer,
         contentPadding: EdgeInsets.symmetric(
           horizontal: context.spacings.s,
           vertical: context.spacings.xs,

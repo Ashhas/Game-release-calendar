@@ -14,18 +14,25 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
   }) : super(const GameUpdateState.idle());
 
   Future<void> startBackgroundUpdate() async {
+    dev.log('🚀 ===== CUBIT: startBackgroundUpdate() called =====');
+    dev.log('🚀 Current state: $state');
+
     if (state.maybeWhen(
       loading: (_, __) => true,
       orElse: () => false,
-    )) return;
+    )) {
+      dev.log('🚀 EARLY RETURN - already loading');
+      return;
+    }
 
     try {
-      emit(const GameUpdateState.loading(totalGames: 0, processedGames: 0));
+      dev.log('🚀 CUBIT: Starting update - letting service provide initial progress');
 
       // Run the update with progress callbacks
       final hasUpdates =
           await gameUpdateService.checkAndUpdateBookmarkedGamesWithProgress(
         onProgress: (total, processed) {
+          dev.log('🚀 CUBIT: onProgress callback received ($total, $processed)');
           emit(GameUpdateState.loading(
             totalGames: total,
             processedGames: processed,

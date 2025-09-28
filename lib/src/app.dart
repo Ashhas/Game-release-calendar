@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:toastification/toastification.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
@@ -16,6 +17,7 @@ import 'package:game_release_calendar/src/presentation/common/state/game_update_
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/toast/global_state_listener.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
 import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
 
@@ -24,8 +26,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(_) {
-    return MultiBlocProvider(
-      providers: [
+    return ToastificationWrapper(
+      child: MultiBlocProvider(
+        providers: [
         BlocProvider<NotificationsCubit>(
           create: (_) => NotificationsCubit(
             notificationClient: GetIt.instance.get<NotificationClient>(),
@@ -74,11 +77,14 @@ class App extends StatelessWidget {
                 themeMode: themeState.themeMode,
                 themeAnimationDuration: const Duration(milliseconds: 200),
                 themeAnimationCurve: Curves.easeInOut,
-                home: AppNavigationBar(),
+                home: GlobalStateListener(
+                  child: AppNavigationBar(),
+                ),
               );
             },
           );
         },
+      ),
       ),
     );
   }

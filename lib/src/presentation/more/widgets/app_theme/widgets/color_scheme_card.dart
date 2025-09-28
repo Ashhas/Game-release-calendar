@@ -36,7 +36,7 @@ class ColorSchemeCard extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             border: Border.fromBorderSide(BorderSide(
               color: isSelected
-                  ? Theme.of(context).colorScheme.primary
+                  ? color  // Use the card's own color
                   : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
               width: isSelected ? 2 : 1,
             )),
@@ -53,16 +53,14 @@ class ColorSchemeCard extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.onPrimaryContainer
-                            : Theme.of(context).colorScheme.onSurface,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
               ),
               if (isSelected)
                 Icon(
                   Icons.check_circle,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: color,  // Use the card's own color
                   size: 20,
                 ),
             ],

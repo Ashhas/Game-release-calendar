@@ -12,7 +12,6 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
-import 'package:game_release_calendar/src/presentation/common/widgets/game_update_status_indicator.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/utils/release_date_comparator.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
@@ -58,9 +57,6 @@ class _RemindersContainerState extends State<RemindersContainer>
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Reminders'),
-        actions: [
-          GameUpdateStatusIndicator(),
-        ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(context.spacings.xxxl),
           child: Padding(
