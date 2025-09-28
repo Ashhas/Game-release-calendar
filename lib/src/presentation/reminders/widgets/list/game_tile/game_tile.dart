@@ -63,7 +63,7 @@ class GameTile extends StatelessWidget {
         ],
       ),
       trailing: IconButton(
-        icon: const Icon(Icons.delete_outline),
+        icon: const Icon(Icons.notifications_off_outlined),
         onPressed: () {
           context.read<RemindersCubit>().removeReminder(reminder.id);
         },

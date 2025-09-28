@@ -18,6 +18,10 @@ class GameInfoData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the game has been released (date is in the past)
+    final bool isReleased = reminder.releaseDate.date != null &&
+        DateTime.fromMillisecondsSinceEpoch(reminder.releaseDate.date! * 1000).isBefore(DateTime.now());
+
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -39,9 +43,9 @@ class GameInfoData extends StatelessWidget {
             maxLines: 1,
           ),
           Text(
-            label,
+            isReleased ? 'Released' : label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.white,
+                  color: isReleased ? Theme.of(context).colorScheme.primary : Colors.white,
                 ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

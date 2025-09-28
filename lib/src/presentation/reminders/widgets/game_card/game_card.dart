@@ -33,6 +33,10 @@ class GameCard extends StatelessWidget {
     // Explicitly define the card color we want to use
     final cardColor = Theme.of(context).colorScheme.surfaceContainerLow;
 
+    // Check if the game has been released
+    final bool isReleased = reminder.releaseDate.date != null &&
+        DateTime.fromMillisecondsSinceEpoch(reminder.releaseDate.date! * 1000).isBefore(DateTime.now());
+
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(context.spacings.s))),
@@ -47,31 +51,42 @@ class GameCard extends StatelessWidget {
                 Constants.placeholderImageUrl,
             isVertical: isVertical,
           ),
-          // Dark gradient overlay from bottom to middle
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: MediaQuery.sizeOf(context).height * 0.15, // Half of typical card height
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(context.spacings.s),
-                  bottomRight: Radius.circular(context.spacings.s),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.black.withValues(alpha: 0.8),
-                    Colors.black.withValues(alpha: 0.4),
-                    Colors.transparent,
-                  ],
-                  stops: const [0.0, 0.6, 1.0],
+          // Dark gradient overlay from bottom to middle (only for non-released games)
+          if (!isReleased)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: MediaQuery.sizeOf(context).height * 0.15, // Half of typical card height
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(context.spacings.s),
+                    bottomRight: Radius.circular(context.spacings.s),
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.8),
+                      Colors.black.withValues(alpha: 0.4),
+                      Colors.transparent,
+                    ],
+                    stops: const [0.0, 0.6, 1.0],
+                  ),
                 ),
               ),
             ),
-          ),
+          // Full dark overlay for released games
+          if (isReleased)
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(context.spacings.s)),
+                  color: Colors.black.withValues(alpha: 0.7),
+                ),
+              ),
+            ),
           Positioned(
             bottom: context.spacings.xs,
             left: context.spacings.xxs,
