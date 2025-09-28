@@ -17,9 +17,9 @@ import 'package:game_release_calendar/src/utils/date_range_utility.dart';
 import 'package:game_release_calendar/src/utils/date_utilities.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 
-part 'section/day_section.dart';
-part 'section/section_header.dart';
-part 'game_tile/game_tile.dart';
+part 'widgets/section/day_section.dart';
+part 'widgets/section/section_header.dart';
+part 'widgets/game_tile/game_tile.dart';
 part 'widgets/_game_list_scroll_view.dart';
 part 'physics/snap_scroll_physics.dart';
 

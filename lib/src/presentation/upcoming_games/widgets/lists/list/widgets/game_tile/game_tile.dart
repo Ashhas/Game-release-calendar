@@ -1,4 +1,4 @@
-part of '../game_list.dart';
+part of '../../game_list.dart';
 
 class GameTile extends StatelessWidget {
   const GameTile({

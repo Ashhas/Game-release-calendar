@@ -22,12 +22,15 @@ class ToastHelper {
     return toastification.showCustom(
       alignment: Alignment.bottomCenter,
       autoCloseDuration: duration,
-      builder: (context, holder) {
-        return CustomToast(
-          title: title,
-          icon: icon,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
+      builder: (_, __) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 60),
+          child: CustomToast(
+            title: title,
+            icon: icon,
+            backgroundColor: backgroundColor,
+            textColor: textColor,
+          ),
         );
       },
     );

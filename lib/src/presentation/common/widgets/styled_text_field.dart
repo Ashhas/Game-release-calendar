@@ -20,6 +20,7 @@ class StyledTextField extends StatelessWidget {
     this.onSubmitted,
     this.focusNode,
     this.maxLines = 1,
+    this.onTapOutside,
   });
 
   final TextEditingController? controller;
@@ -35,6 +36,7 @@ class StyledTextField extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final FocusNode? focusNode;
   final int? maxLines;
+  final ValueChanged<PointerDownEvent>? onTapOutside;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,7 @@ class StyledTextField extends StatelessWidget {
       onSubmitted: onSubmitted,
       focusNode: focusNode,
       maxLines: maxLines,
+      onTapOutside: onTapOutside,
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         hintText: hintText,
@@ -78,13 +81,13 @@ class StyledTextField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.5),
+            color: colorScheme.primary.withValues(alpha: 0.5),
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.3),
+            color: colorScheme.primary.withValues(alpha: 0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
@@ -97,7 +100,7 @@ class StyledTextField extends StatelessWidget {
         disabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
           borderSide: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.2),
+            color: colorScheme.primary.withValues(alpha: 0.2),
           ),
         ),
         errorBorder: OutlineInputBorder(

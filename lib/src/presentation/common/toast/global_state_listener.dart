@@ -38,7 +38,7 @@ class _GlobalStateListenerState extends State<GlobalStateListener> {
       idle: () {
         // No action needed
       },
-      loading: (totalGames, processedGames) {
+      loading: (_, processedGames) {
         // Only show toast when starting (processedGames == 0)
         if (processedGames == 0) {
           ToastHelper.showToast(
@@ -52,8 +52,8 @@ class _GlobalStateListenerState extends State<GlobalStateListener> {
       },
       completed: () {
         ToastHelper.showToast(
-          'Games synced',
-          icon: Icons.check_circle_outline,
+          'Games synced!',
+          icon: Icons.check_circle,
           backgroundColor: Theme.of(context).colorScheme.primary,
           textColor: Theme.of(context).colorScheme.onPrimary,
           duration: const Duration(seconds: 5),
@@ -62,7 +62,7 @@ class _GlobalStateListenerState extends State<GlobalStateListener> {
       updated: () {
         ToastHelper.showToast(
           'Games updated!',
-          icon: Icons.check_circle_outline,
+          icon: Icons.update,
           backgroundColor: Theme.of(context).colorScheme.primary,
           textColor: Theme.of(context).colorScheme.onPrimary,
           duration: const Duration(seconds: 5),

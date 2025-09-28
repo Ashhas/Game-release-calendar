@@ -1,4 +1,4 @@
-part of '../game_list.dart';
+part of '../../game_list.dart';
 
 class SectionHeader extends StatelessWidget {
   final DateTime date;

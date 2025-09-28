@@ -1,4 +1,4 @@
-part of '../game_list.dart';
+part of '../../game_list.dart';
 
 class DaySection extends StatelessWidget {
   final MapEntry<DateTime, List<Game>> groupedGames;

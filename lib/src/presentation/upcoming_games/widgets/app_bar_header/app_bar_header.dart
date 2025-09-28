@@ -14,7 +14,10 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      title: const Text('Upcoming Games'),
+      title: Text(
+        'Upcoming Games',
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
       actions: [
         const FilterButton(),
         Padding(
@@ -26,13 +29,13 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(context.spacings.xxxl),
         child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: context.spacings.m,
-              vertical: context.spacings.xxs,
-            ),
-            child: GameSearchBar(),
+          padding: EdgeInsets.symmetric(
+            horizontal: context.spacings.m,
+            vertical: context.spacings.xxs,
           ),
+          child: GameSearchBar(),
         ),
+      ),
     );
   }
 }

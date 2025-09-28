@@ -19,6 +19,13 @@ class _GameSearchBarState extends State<GameSearchBar> {
   bool _showClearButton = false;
 
   @override
+  void deactivate() {
+    // Called when widget is removed from tree (during navigation)
+    _searchFocusNode.unfocus();
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     _searchFocusNode.dispose();
@@ -59,13 +66,19 @@ class _GameSearchBarState extends State<GameSearchBar> {
                   label: 'Clear search field',
                   button: true,
                   child: IconButton(
-                    icon: const Icon(Icons.clear),
+                    icon: Icon(
+                      Icons.clear,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     onPressed: _clearSearch,
                     tooltip: 'Clear search',
                   ),
                 )
               : null,
           hintText: 'Search for games',
+          onTapOutside: (_) {
+            _searchFocusNode.unfocus();
+          },
           onChanged: (value) async {
             setState(() {
               _showClearButton = value.isNotEmpty;

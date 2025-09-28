@@ -21,13 +21,13 @@ class CustomTheme {
       primaryContainer: primaryContainer,
       secondary: accentColor, // Keep consistent
       secondaryContainer: primaryContainer,
-      tertiary: const Color(0xFF5D7C90), // Your dark accent
+      tertiary: const Color(0xFFC7D9E5), // Same as dark mode for consistency
       error: const Color(0xFFBA1A1A),
       surface: const Color(0xFFFFFFFF),
       onSurface: const Color(0xFF1A1A1A),
       onPrimary: const Color(0xFFFFFFFF),
       onSecondary: const Color(0xFFFFFFFF),
-      onTertiary: const Color(0xFFFFFFFF),
+      onTertiary: const Color(0xFF000000), // Black text on light blue background
       onError: const Color(0xFFFFFFFF),
     );
     return colorScheme;
