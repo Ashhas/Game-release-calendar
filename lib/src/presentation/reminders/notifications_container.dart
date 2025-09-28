@@ -1,7 +1,7 @@
-part of '../reminders_container.dart';
+part of 'reminders_container.dart';
 
-class NotificationsTab extends StatelessWidget {
-  const NotificationsTab({super.key});
+class NotificationsContainer extends StatelessWidget {
+  const NotificationsContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

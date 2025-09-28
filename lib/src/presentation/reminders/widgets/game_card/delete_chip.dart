@@ -10,28 +10,31 @@ class DeleteChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: context.spacings.xxs,
-      right: context.spacings.xxs,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(context.spacings.xxs),
-            bottomLeft: Radius.circular(context.spacings.xxs),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(12),
+        bottomLeft: Radius.circular(12),
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+        child: Container(
+          padding: EdgeInsets.all(context.spacings.xs),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.20),
           ),
-        ),
-        child: SizedBox(
-          width: context.spacings.xl,
-          height: context.spacings.xl,
-          child: IconButton(
-            icon: Icon(
-              Icons.delete_outline,
-              size: context.spacings.l,
+          child: SizedBox(
+            width: context.spacings.l,
+            height: context.spacings.l,
+            child: IconButton(
+              icon: Icon(
+                Icons.notifications_off_outlined,
+                size: context.spacings.l,
+                color: Colors.white,
+              ),
+              onPressed: onRemove,
+              padding: EdgeInsets.zero,
+              tooltip: 'Remove reminder',
             ),
-            onPressed: onRemove,
-            padding: EdgeInsets.zero,
-            tooltip: 'Remove reminder',
           ),
         ),
       ),
