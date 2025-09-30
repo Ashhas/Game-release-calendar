@@ -36,10 +36,12 @@ class RemindersCubit extends Cubit<RemindersState> {
     emit(state.copyWith(reminders: sortedReminders));
   }
 
+
   List<GameReminder> _sortReminders(List<GameReminder> reminders) {
     return reminders
         .sortedBy((reminder) =>
             ReleaseDateComparator.getSortableTimestamp(reminder.releaseDate.date))
+        .thenBy((reminder) => reminder.releaseDate.hasExactDate ? 0 : 1) // Exact dates first
         .thenBy((reminder) => reminder.gameName);
   }
 

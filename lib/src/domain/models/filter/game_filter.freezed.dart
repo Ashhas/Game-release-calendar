@@ -19,6 +19,8 @@ mixin _$GameFilter {
   Set<PlatformFilter> get platformChoices => throw _privateConstructorUsedError;
   Set<int> get categoryIds => throw _privateConstructorUsedError;
   DateFilterChoice? get releaseDateChoice => throw _privateConstructorUsedError;
+  ReleasePrecisionFilter? get releasePrecisionChoice =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of GameFilter
   /// with the given fields replaced by the non-null parameter values.
@@ -36,7 +38,8 @@ abstract class $GameFilterCopyWith<$Res> {
   $Res call(
       {Set<PlatformFilter> platformChoices,
       Set<int> categoryIds,
-      DateFilterChoice? releaseDateChoice});
+      DateFilterChoice? releaseDateChoice,
+      ReleasePrecisionFilter? releasePrecisionChoice});
 }
 
 /// @nodoc
@@ -57,6 +60,7 @@ class _$GameFilterCopyWithImpl<$Res, $Val extends GameFilter>
     Object? platformChoices = null,
     Object? categoryIds = null,
     Object? releaseDateChoice = freezed,
+    Object? releasePrecisionChoice = freezed,
   }) {
     return _then(_value.copyWith(
       platformChoices: null == platformChoices
@@ -71,6 +75,10 @@ class _$GameFilterCopyWithImpl<$Res, $Val extends GameFilter>
           ? _value.releaseDateChoice
           : releaseDateChoice // ignore: cast_nullable_to_non_nullable
               as DateFilterChoice?,
+      releasePrecisionChoice: freezed == releasePrecisionChoice
+          ? _value.releasePrecisionChoice
+          : releasePrecisionChoice // ignore: cast_nullable_to_non_nullable
+              as ReleasePrecisionFilter?,
     ) as $Val);
   }
 }
@@ -86,7 +94,8 @@ abstract class _$$GameFilterImplCopyWith<$Res>
   $Res call(
       {Set<PlatformFilter> platformChoices,
       Set<int> categoryIds,
-      DateFilterChoice? releaseDateChoice});
+      DateFilterChoice? releaseDateChoice,
+      ReleasePrecisionFilter? releasePrecisionChoice});
 }
 
 /// @nodoc
@@ -105,6 +114,7 @@ class __$$GameFilterImplCopyWithImpl<$Res>
     Object? platformChoices = null,
     Object? categoryIds = null,
     Object? releaseDateChoice = freezed,
+    Object? releasePrecisionChoice = freezed,
   }) {
     return _then(_$GameFilterImpl(
       platformChoices: null == platformChoices
@@ -119,6 +129,10 @@ class __$$GameFilterImplCopyWithImpl<$Res>
           ? _value.releaseDateChoice
           : releaseDateChoice // ignore: cast_nullable_to_non_nullable
               as DateFilterChoice?,
+      releasePrecisionChoice: freezed == releasePrecisionChoice
+          ? _value.releasePrecisionChoice
+          : releasePrecisionChoice // ignore: cast_nullable_to_non_nullable
+              as ReleasePrecisionFilter?,
     ));
   }
 }
@@ -129,7 +143,8 @@ class _$GameFilterImpl implements _GameFilter {
   const _$GameFilterImpl(
       {required final Set<PlatformFilter> platformChoices,
       required final Set<int> categoryIds,
-      this.releaseDateChoice})
+      this.releaseDateChoice,
+      this.releasePrecisionChoice})
       : _platformChoices = platformChoices,
         _categoryIds = categoryIds;
 
@@ -151,10 +166,12 @@ class _$GameFilterImpl implements _GameFilter {
 
   @override
   final DateFilterChoice? releaseDateChoice;
+  @override
+  final ReleasePrecisionFilter? releasePrecisionChoice;
 
   @override
   String toString() {
-    return 'GameFilter(platformChoices: $platformChoices, categoryIds: $categoryIds, releaseDateChoice: $releaseDateChoice)';
+    return 'GameFilter(platformChoices: $platformChoices, categoryIds: $categoryIds, releaseDateChoice: $releaseDateChoice, releasePrecisionChoice: $releasePrecisionChoice)';
   }
 
   @override
@@ -167,7 +184,9 @@ class _$GameFilterImpl implements _GameFilter {
             const DeepCollectionEquality()
                 .equals(other._categoryIds, _categoryIds) &&
             (identical(other.releaseDateChoice, releaseDateChoice) ||
-                other.releaseDateChoice == releaseDateChoice));
+                other.releaseDateChoice == releaseDateChoice) &&
+            (identical(other.releasePrecisionChoice, releasePrecisionChoice) ||
+                other.releasePrecisionChoice == releasePrecisionChoice));
   }
 
   @override
@@ -175,7 +194,8 @@ class _$GameFilterImpl implements _GameFilter {
       runtimeType,
       const DeepCollectionEquality().hash(_platformChoices),
       const DeepCollectionEquality().hash(_categoryIds),
-      releaseDateChoice);
+      releaseDateChoice,
+      releasePrecisionChoice);
 
   /// Create a copy of GameFilter
   /// with the given fields replaced by the non-null parameter values.
@@ -190,7 +210,8 @@ abstract class _GameFilter implements GameFilter {
   const factory _GameFilter(
       {required final Set<PlatformFilter> platformChoices,
       required final Set<int> categoryIds,
-      final DateFilterChoice? releaseDateChoice}) = _$GameFilterImpl;
+      final DateFilterChoice? releaseDateChoice,
+      final ReleasePrecisionFilter? releasePrecisionChoice}) = _$GameFilterImpl;
 
   @override
   Set<PlatformFilter> get platformChoices;
@@ -198,6 +219,8 @@ abstract class _GameFilter implements GameFilter {
   Set<int> get categoryIds;
   @override
   DateFilterChoice? get releaseDateChoice;
+  @override
+  ReleasePrecisionFilter? get releasePrecisionChoice;
 
   /// Create a copy of GameFilter
   /// with the given fields replaced by the non-null parameter values.

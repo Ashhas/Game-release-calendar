@@ -1,6 +1,7 @@
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
 import 'package:game_release_calendar/src/utils/search_helper.dart';
 import '../../utils/date_range_utility.dart';
@@ -17,13 +18,26 @@ class IGDBService {
     required GameFilter filter,
     int offset = 0,
   }) async {
-    return repository.getGames(
+    final games = await repository.getGames(
       _buildQuery(
         nameQuery,
         filter,
         offset: offset,
       ),
     );
+
+    // Apply release precision filter if specified
+    if (filter.releasePrecisionChoice != null &&
+        filter.releasePrecisionChoice != ReleasePrecisionFilter.all) {
+      return games.where((game) {
+        // Check if any release date matches the precision filter
+        return game.releaseDates?.any((releaseDate) {
+          return filter.releasePrecisionChoice!.matches(releaseDate);
+        }) ?? false;
+      }).toList();
+    }
+
+    return games;
   }
 
   String _buildQuery(String? nameQuery, GameFilter filter, {int offset = 0}) {

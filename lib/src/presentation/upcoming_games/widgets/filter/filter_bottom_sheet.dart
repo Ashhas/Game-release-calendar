@@ -6,6 +6,7 @@ import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import '../../../../domain/enums/filter/date_filter_choice.dart';
 import '../../../../domain/enums/filter/platform_filter.dart';
+import '../../../../domain/enums/filter/release_precision_filter.dart';
 import '../../state/upcoming_games_cubit.dart';
 
 part 'widgets/platform_filters.dart';
@@ -13,6 +14,7 @@ part 'widgets/platform_filters.dart';
 part 'widgets/date_filters.dart';
 
 part 'widgets/category_filters.dart';
+
 
 part 'widgets/footer.dart';
 
@@ -31,6 +33,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   late Set<PlatformFilter> _selectedPlatformFilterOptions;
   late DateFilterChoice? _selectedDateFilterOption;
   late Set<int> _selectedCategoryFilterOptions;
+  late ReleasePrecisionFilter? _selectedPrecisionFilterOption;
 
   @override
   void initState() {
@@ -46,6 +49,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         .state
         .selectedFilters
         .releaseDateChoice;
+    _selectedPrecisionFilterOption = context
+        .read<UpcomingGamesCubit>()
+        .state
+        .selectedFilters
+        .releasePrecisionChoice;
   }
 
   @override
@@ -71,6 +79,15 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     onDateFilterChanged: (value) {
                       setState(() {
                         _selectedDateFilterOption = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: context.spacings.m),
+                  _PrecisionFilters(
+                    selectedPrecisionFilterOption: _selectedPrecisionFilterOption,
+                    onPrecisionFilterChanged: (value) {
+                      setState(() {
+                        _selectedPrecisionFilterOption = value;
                       });
                     },
                   ),
@@ -102,6 +119,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           platformChoices: _selectedPlatformFilterOptions,
           setDateChoice: _selectedDateFilterOption,
           categoryId: _selectedCategoryFilterOptions,
+          precisionChoice: _selectedPrecisionFilterOption,
         );
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
@@ -112,6 +130,110 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       _selectedPlatformFilterOptions = {};
       _selectedCategoryFilterOptions = {};
       _selectedDateFilterOption = DateFilterChoice.allTime;
+      _selectedPrecisionFilterOption = ReleasePrecisionFilter.all;
     });
+  }
+}
+
+class _PrecisionFilters extends StatefulWidget {
+  const _PrecisionFilters({
+    required this.selectedPrecisionFilterOption,
+    required this.onPrecisionFilterChanged,
+  });
+
+  final ReleasePrecisionFilter? selectedPrecisionFilterOption;
+  final Function(ReleasePrecisionFilter? choice)? onPrecisionFilterChanged;
+
+  @override
+  State<_PrecisionFilters> createState() => _PrecisionFiltersState();
+}
+
+class _PrecisionFiltersState extends State<_PrecisionFilters> {
+  bool _isExpanded = false;
+
+  final _options = <ReleasePrecisionFilter, String>{
+    ReleasePrecisionFilter.all: 'All Release Types',
+    ReleasePrecisionFilter.exactDate: 'Exact Dates Only',
+    ReleasePrecisionFilter.yearMonth: 'Year & Month',
+    ReleasePrecisionFilter.quarter: 'Quarters (Q1, Q2, etc.)',
+    ReleasePrecisionFilter.yearOnly: 'Year Only',
+    ReleasePrecisionFilter.tbd: 'To Be Determined',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: context.spacings.xs),
+            child: Row(
+              children: [
+                Icon(
+                  _isExpanded ? Icons.expand_less : Icons.expand_more,
+                  size: 24,
+                ),
+                SizedBox(width: context.spacings.xs),
+                const Text(
+                  'Release Date Type',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                if (widget.selectedPrecisionFilterOption != null &&
+                    widget.selectedPrecisionFilterOption != ReleasePrecisionFilter.all &&
+                    !_isExpanded)
+                  Chip(
+                    label: Text(
+                      _options[widget.selectedPrecisionFilterOption] ?? '',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colorScheme.onPrimary,
+                      ),
+                    ),
+                    backgroundColor: colorScheme.primary,
+                    visualDensity: VisualDensity.compact,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    padding: EdgeInsets.symmetric(horizontal: context.spacings.xs),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        if (_isExpanded)
+          Padding(
+            padding: EdgeInsets.only(left: context.spacings.xxl),
+            child: Wrap(
+              spacing: context.spacings.xxs,
+              runSpacing: context.spacings.xxs,
+              children: _options.entries.map((entry) {
+                final isSelected = widget.selectedPrecisionFilterOption == entry.key;
+                return ChoiceChip(
+                  label: Text(
+                    entry.value,
+                    style: TextStyle(
+                      color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  selected: isSelected,
+                  selectedColor: colorScheme.primary,
+                  backgroundColor: colorScheme.surfaceContainerHighest,
+                  onSelected: (selected) {
+                    widget.onPrecisionFilterChanged?.call(selected ? entry.key : null);
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+      ],
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:game_release_calendar/src/domain/models/notifications/game_remin
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
 import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
+import 'package:game_release_calendar/src/domain/enums/game_status.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/utils/date_utilities.dart';
 
@@ -347,9 +348,9 @@ class GameUpdateService {
 
   /// Enhanced game data comparison with logging
   Future<bool> _hasGameDataChangedWithLogging(Game existingGame, Game updatedGame) async {
-    bool hasChanges = false;
+    bool hasLoggedChanges = false;
 
-    // Check individual fields and log specific changes
+    // Only log changes users care about: title, cover, platforms, status
     if (existingGame.name != updatedGame.name) {
       await _logGameUpdate(
         updatedGame: updatedGame,
@@ -357,27 +358,7 @@ class GameUpdateService {
         oldValue: existingGame.name,
         newValue: updatedGame.name,
       );
-      hasChanges = true;
-    }
-
-    if (existingGame.description != updatedGame.description) {
-      await _logGameUpdate(
-        updatedGame: updatedGame,
-        updateType: GameUpdateType.descriptionUpdate,
-        oldValue: existingGame.description?.substring(0, 100) ?? 'null',
-        newValue: updatedGame.description?.substring(0, 100) ?? 'null',
-      );
-      hasChanges = true;
-    }
-
-    if (existingGame.status != updatedGame.status) {
-      await _logGameUpdate(
-        updatedGame: updatedGame,
-        updateType: GameUpdateType.status,
-        oldValue: existingGame.status?.toString(),
-        newValue: updatedGame.status?.toString(),
-      );
-      hasChanges = true;
+      hasLoggedChanges = true;
     }
 
     if (existingGame.cover?.url != updatedGame.cover?.url) {
@@ -387,27 +368,51 @@ class GameUpdateService {
         oldValue: existingGame.cover?.url,
         newValue: updatedGame.cover?.url,
       );
-      hasChanges = true;
+      hasLoggedChanges = true;
     }
 
-    if (existingGame.checksum != updatedGame.checksum) {
+    // Check platform changes
+    final existingPlatformIds = existingGame.platforms?.map((p) => p.id).toSet() ?? <int>{};
+    final updatedPlatformIds = updatedGame.platforms?.map((p) => p.id).toSet() ?? <int>{};
+
+    if (!existingPlatformIds.containsAll(updatedPlatformIds) ||
+        !updatedPlatformIds.containsAll(existingPlatformIds)) {
+      final existingNames = existingGame.platforms?.map((p) => p.name).join(', ') ?? 'None';
+      final updatedNames = updatedGame.platforms?.map((p) => p.name).join(', ') ?? 'None';
+
       await _logGameUpdate(
         updatedGame: updatedGame,
-        updateType: GameUpdateType.checksum,
-        oldValue: existingGame.checksum,
-        newValue: updatedGame.checksum,
+        updateType: GameUpdateType.platforms,
+        oldValue: existingNames,
+        newValue: updatedNames,
       );
-      hasChanges = true;
+      hasLoggedChanges = true;
     }
 
-    // Check general data changes (backward compatibility)
-    final generalChanges = existingGame.updatedAt != updatedGame.updatedAt ||
+    // Check status changes with readable text
+    if (existingGame.status != updatedGame.status) {
+      final oldStatusText = GameStatus.getStatusText(existingGame.status);
+      final newStatusText = GameStatus.getStatusText(updatedGame.status);
+
+      await _logGameUpdate(
+        updatedGame: updatedGame,
+        updateType: GameUpdateType.status,
+        oldValue: oldStatusText,
+        newValue: newStatusText,
+      );
+      hasLoggedChanges = true;
+    }
+
+    // Use checksum internally for detection but don't log it
+    final hasInternalChanges = existingGame.updatedAt != updatedGame.updatedAt ||
         existingGame.checksum != updatedGame.checksum ||
         existingGame.name != updatedGame.name ||
-        existingGame.description != updatedGame.description ||
-        existingGame.status != updatedGame.status;
+        existingGame.cover?.url != updatedGame.cover?.url ||
+        existingGame.status != updatedGame.status ||
+        !existingPlatformIds.containsAll(updatedPlatformIds) ||
+        !updatedPlatformIds.containsAll(existingPlatformIds);
 
-    return hasChanges || generalChanges;
+    return hasLoggedChanges || hasInternalChanges;
   }
 
   /// Enhanced release date comparison with logging
@@ -457,4 +462,5 @@ class GameUpdateService {
 
     return hasChanges;
   }
+
 }

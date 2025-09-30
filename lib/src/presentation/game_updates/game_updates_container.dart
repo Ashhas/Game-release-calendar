@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
+import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/game_image.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/state/game_updates_cubit.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/state/game_updates_state.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
+import 'package:game_release_calendar/src/utils/constants.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
@@ -66,11 +69,14 @@ class _ReleaseTodayTab extends StatelessWidget {
             final now = DateTime.now();
             final today = DateTime(now.year, now.month, now.day);
 
-            // Filter games releasing today
+            // Filter games releasing today with exact dates only
             final todaysReleases = notifications.where((notification) {
               final reminder = GameReminder.fromJson(jsonDecode(notification.payload!));
               final releaseDate = reminder.releaseDate.date;
               if (releaseDate == null) return false;
+
+              // Only include games with exact release dates, not vague dates like Q4 or "March 2024"
+              if (!reminder.releaseDate.hasExactDate) return false;
 
               final gameReleaseDate = DateTime.fromMillisecondsSinceEpoch(releaseDate * 1000);
               final gameDate = DateTime(gameReleaseDate.year, gameReleaseDate.month, gameReleaseDate.day);
@@ -321,7 +327,7 @@ class _GameUpdateCard extends StatelessWidget {
                        gameReminder?.gameName ?? '';
 
     final game = gameUpdateLog?.gamePayload ?? gameReminder?.gamePayload;
-    final coverUrl = game?.cover?.url;
+    final imageUrl = game?.cover?.imageUrl(size: 'cover_small') ?? Constants.placeholderImageUrl;
 
     // Format update type
     final displayUpdateType = gameUpdateLog?.updateType.displayText ?? '';
@@ -330,9 +336,20 @@ class _GameUpdateCard extends StatelessWidget {
     String? subtitle;
     final updateLog = gameUpdateLog;
     if (showUpdateType && updateLog != null) {
-      // For What's New tab: show detection date
+      // For What's New tab: show detection date and change details if available
       final dateFormat = DateFormat('MMM d, yyyy');
-      subtitle = 'Updated ${dateFormat.format(updateLog.detectedAt)}';
+      final baseSubtitle = 'Updated ${dateFormat.format(updateLog.detectedAt)}';
+
+      // Add change details ONLY for status updates
+      if (updateLog.updateType == GameUpdateType.status &&
+          updateLog.oldValue != null &&
+          updateLog.newValue != null &&
+          updateLog.oldValue!.isNotEmpty &&
+          updateLog.newValue!.isNotEmpty) {
+        subtitle = '$baseSubtitle\n${updateLog.oldValue} → ${updateLog.newValue}';
+      } else {
+        subtitle = baseSubtitle;
+      }
     } else if (!showUpdateType && gameReminder != null) {
       // For Release Today tab: show platform info if available
       subtitle = _formatPlatformSubtitle(game?.platforms);
@@ -379,24 +396,15 @@ class _GameUpdateCard extends StatelessWidget {
                         color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                       )),
                     ),
-                    child: coverUrl != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(context.spacings.xxs)),
-                            child: Image.network(
-                              'https:${coverUrl.replaceAll('t_thumb', 't_cover_small')}',
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Icon(
-                                Icons.videogame_asset,
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                size: 24,
-                              ),
-                            ),
-                          )
-                        : Icon(
-                            Icons.videogame_asset,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            size: 24,
-                          ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(context.spacings.xxs)),
+                      child: GameImage(
+                        imageUrl: imageUrl,
+                        width: 60,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   SizedBox(width: context.spacings.m),
                   // Game info

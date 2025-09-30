@@ -19,8 +19,8 @@ class ThreeColumnGridView extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: context.spacings.m),
       sliver: SliverGrid(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 130, // Max width per item (results in ~3 columns on most phones)
-          childAspectRatio: 0.75, // 108w/144h from Figma
+          maxCrossAxisExtent: 130,
+          childAspectRatio: 0.75,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
@@ -29,7 +29,7 @@ class ThreeColumnGridView extends StatelessWidget {
             final reminder = reminders[index];
             return RepaintBoundary(
               child: GameCard(
-                key: ValueKey(reminder.id), // Stable key for widget recycling
+                key: ValueKey(reminder.id),
                 isVertical: true,
                 reminder: reminder,
                 onRemove: () {
@@ -40,7 +40,7 @@ class ThreeColumnGridView extends StatelessWidget {
           },
           childCount: reminders.length,
           addAutomaticKeepAlives: false,
-          addRepaintBoundaries: false, // We manually add RepaintBoundary
+          addRepaintBoundaries: false,
           findChildIndexCallback: (Key key) {
             if (key is ValueKey<int>) {
               final id = key.value;

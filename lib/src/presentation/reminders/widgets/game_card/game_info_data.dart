@@ -15,9 +15,8 @@ class GameInfoData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check if the game has been released (date is in the past)
-    final bool isReleased = reminder.releaseDate.date != null &&
-        DateTime.fromMillisecondsSinceEpoch(reminder.releaseDate.date! * 1000).isBefore(DateTime.now());
+    // Check if the game has been released with an exact date (not vague dates like Q4)
+    final bool isReleased = reminder.releaseDate.isReleasedWithExactDate;
 
     return SizedBox(
       width: double.infinity,

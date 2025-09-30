@@ -94,6 +94,21 @@ class GameDateGrouper {
       groupedGames.putIfAbsent(dateOnly, () => []).add(reminder);
     }
 
+    // Sort reminders within each day: exact dates first, then by game name
+    for (final entry in groupedGames.entries) {
+      entry.value.sort((a, b) {
+        // Primary sort: exact dates come before vague dates
+        final aIsExact = a.releaseDate.hasExactDate;
+        final bIsExact = b.releaseDate.hasExactDate;
+
+        if (aIsExact && !bIsExact) return -1; // a comes first
+        if (!aIsExact && bIsExact) return 1;  // b comes first
+
+        // Secondary sort: by game name if both have same precision
+        return a.gameName.compareTo(b.gameName);
+      });
+    }
+
     return groupedGames;
   }
 }

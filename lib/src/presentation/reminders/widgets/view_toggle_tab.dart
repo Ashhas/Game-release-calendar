@@ -30,8 +30,8 @@ class ViewToggleTab extends StatelessWidget {
       selectedBackgroundColors: [
         Theme.of(context).colorScheme.tertiary,
       ],
-      unSelectedBackgroundColors: [
-        Theme.of(context).colorScheme.surfaceContainerLow,
+      unSelectedBackgroundColors: const [
+        Color(0x805E5E5E),
       ],
       selectedTextStyle: TextStyle(
         color: Theme.of(context).colorScheme.onPrimaryContainer,

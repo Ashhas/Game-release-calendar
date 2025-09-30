@@ -28,17 +28,13 @@ class GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Explicitly define the card color we want to use
     final cardColor = Theme.of(context).colorScheme.surfaceContainerLow;
-
-    // Check if the game has been released
-    final bool isReleased = reminder.releaseDate.date != null &&
-        DateTime.fromMillisecondsSinceEpoch(reminder.releaseDate.date! * 1000).isBefore(DateTime.now());
+    final bool isReleased = reminder.releaseDate.isReleasedWithExactDate;
 
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(context.spacings.s))),
-      color: cardColor, // Explicitly set the card color
+      color: cardColor,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -49,7 +45,6 @@ class GameCard extends StatelessWidget {
                 Constants.placeholderImageUrl,
             isVertical: isVertical,
           ),
-          // Simple dark gradient overlay at bottom for text readability
           if (!isReleased)
             Positioned(
               bottom: 0,
@@ -74,7 +69,6 @@ class GameCard extends StatelessWidget {
                 ),
               ),
             ),
-          // Full dark overlay for released games
           if (isReleased)
             Positioned.fill(
               child: Container(
@@ -84,10 +78,9 @@ class GameCard extends StatelessWidget {
                 ),
               ),
             ),
-          // Platform chip positioned above the black background
           if (!isReleased && reminder.releaseDate.platform != null)
             Positioned(
-              bottom: 50, // Above the black background
+              bottom: 50,
               left: context.spacings.xxs,
               child: PlatformChip(
                 platformAbbreviation:
@@ -106,8 +99,6 @@ class GameCard extends StatelessWidget {
           ),
           if (onRemove != null)
             Positioned(
-              // top: context.spacings.xxs,
-              // right: context.spacings.xxs,
               top: 0,
               right: 0,
               child: DeleteChip(

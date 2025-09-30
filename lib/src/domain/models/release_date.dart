@@ -87,6 +87,59 @@ class ReleaseDate {
     };
   }
 
+  /// Returns true only if this release date has an exact, specific date (not vague like quarter/year)
+  bool get hasExactDate {
+    // Use the same robust logic as ReleasePrecisionFilter
+    return _resolveActualCategory() == ReleaseDateCategory.exactDate && date != null;
+  }
+
+  /// Resolves the actual category using robust logic
+  /// Priority: human text -> dateFormat -> category -> TBD fallback
+  ReleaseDateCategory _resolveActualCategory() {
+    // 1. First priority: Parse human-readable text
+    if (human != null) {
+      final humanLower = human!.toLowerCase();
+      // Match various quarter patterns: "q1", "q2", "q1 2025", "q4 2025", "quarter 1", etc.
+      if (RegExp(r'\bq[1-4]\b|\bquarter\s*[1-4]\b').hasMatch(humanLower)) {
+        return ReleaseDateCategory.quarter;
+      }
+    }
+
+    // 2. Second priority: Use dateFormat field
+    if (dateFormat != null) {
+      switch (dateFormat!) {
+        case 0: // YYYYMMDDHHMMSS
+          return ReleaseDateCategory.exactDate;
+        case 1: // YYYYMM
+          return ReleaseDateCategory.yearMonth;
+        case 2: // YYYY
+          return ReleaseDateCategory.year;
+        case 3: // Quarter
+        case 4: // Based on the provided data, 4 seems to be quarter too
+          return ReleaseDateCategory.quarter;
+        default:
+          // Unknown dateFormat, fall through to category
+          break;
+      }
+    }
+
+    // 3. Third priority: Use category field (often null in IGDB)
+    if (category != null) {
+      return category!;
+    }
+
+    // 4. Final fallback: TBD
+    return ReleaseDateCategory.tbd;
+  }
+
+  /// Returns true if this release date is in the past (and has exact date)
+  bool get isReleasedWithExactDate {
+    if (!hasExactDate) return false;
+
+    final releaseDateTime = DateTime.fromMillisecondsSinceEpoch(date! * 1000);
+    return releaseDateTime.isBefore(DateTime.now());
+  }
+
   @override
   String toString() {
     return '''ReleaseDate(
