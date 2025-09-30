@@ -15,60 +15,66 @@ class GameInfo extends StatefulWidget {
 class _GameInfoState extends State<GameInfo> {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Flexible(
-          flex: 1,
-          child: GameImage(
-            imageUrl: widget.game.cover != null
-                ? widget.game.cover!.imageUrl()
-                : Constants.placeholderImageUrl,
+        SizedBox(
+          height: 250, 
+          child: AspectRatio(
+            aspectRatio: 249 / 374, // 0.666 ratio
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: GameImage(
+                imageUrl: widget.game.cover != null
+                    ? widget.game.cover!.imageUrl()
+                    : Constants.placeholderImageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
         ),
-        Flexible(
-          flex: 2,
-          child: Padding(
-            padding: EdgeInsets.all(context.spacings.xs),
-            child: SpacedColumn(
-              spacing: context.spacings.xxs,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.game.name,
-                  style: const TextStyle(fontSize: 24),
-                ),
-                if (widget.game.platforms != null &&
-                    widget.game.platforms!.isNotEmpty)
-                  Wrap(
-                    spacing: context.spacings.xxs,
-                    runSpacing: 0,
-                    children: widget.game.platforms!
-                        .map(
-                          (platform) => Chip(
-                            label: Text(
-                              platform.abbreviation ?? platform.name ?? 'N/A',
-                            ),
-                            visualDensity: VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                            padding: EdgeInsets.zero,
+        Padding(
+          padding: EdgeInsets.all(context.spacings.xs),
+          child: SpacedColumn(
+            spacing: context.spacings.xxs,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                widget.game.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 24),
+              ),
+              if (widget.game.platforms != null &&
+                  widget.game.platforms!.isNotEmpty)
+                Wrap(
+                  spacing: context.spacings.xxs,
+                  runSpacing: 0,
+                  children: widget.game.platforms!
+                      .map(
+                        (platform) => Chip(
+                          label: Text(
+                            platform.abbreviation ?? platform.name ?? 'N/A',
                           ),
-                        )
-                        .toList(),
-                  )
-                else
-                  const Text(
-                    'Platform information not available',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                    ),
+                          visualDensity: VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          padding: EdgeInsets.zero,
+                        ),
+                      )
+                      .toList(),
+                )
+              else
+                const Text(
+                  'Platform information not available',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ],

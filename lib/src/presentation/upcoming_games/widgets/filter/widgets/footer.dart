@@ -17,22 +17,28 @@ class Footer extends StatefulWidget {
 class _FooterState extends State<Footer> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
       children: [
-        SizedBox(height: context.spacings.m),
-        ElevatedButton(
-          child: const Text('Clear Selection'),
-          onPressed: widget.onResetFilter,
+        Expanded(
+          child: FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: colorScheme.primaryContainer,
+              foregroundColor: colorScheme.primary,
+            ),
+            onPressed: widget.onResetFilter,
+            child: const Text('Clear'),
+          ),
         ),
-        SizedBox(height: context.spacings.xxs),
-        ElevatedButton(
-          child: const Text('Apply Filter'),
-          onPressed: widget.onApplyFilter,
+        SizedBox(width: context.spacings.s),
+        Expanded(
+          child: FilledButton(
+            onPressed: widget.onApplyFilter,
+            child: const Text('Apply Filters'),
+          ),
         ),
-        SizedBox(height: context.spacings.m),
       ],
     );
   }

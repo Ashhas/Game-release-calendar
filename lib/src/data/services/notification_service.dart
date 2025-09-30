@@ -32,15 +32,16 @@ class NotificationClient {
     );
 
     if (notificationDate == null) {
-      // No upcoming release date found
+      print('DEBUG: Notification not scheduled for ${game.name} - date is in the past or null');
       return;
     }
 
-    // Convert the notification date to the appropriate timezone
     final tz.TZDateTime notificationTime = tz.TZDateTime.from(
       notificationDate,
       tz.local,
     );
+
+    print('DEBUG: Scheduling notification for ${game.name} at $notificationTime');
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
       releaseDate.id,
@@ -52,6 +53,8 @@ class NotificationClient {
           'release_day_channel',
           'Game Release Notifications',
           channelDescription: 'Notifications for game release days',
+          importance: Importance.high,
+          priority: Priority.high,
         ),
       ),
       payload: jsonEncode(
@@ -67,6 +70,8 @@ class NotificationClient {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+
+    print('DEBUG: Notification scheduled successfully for ${game.name}');
   }
 
   /// Schedules a notification using the [GameReminder] Object
@@ -94,6 +99,8 @@ class NotificationClient {
           'release_day_channel',
           'Game Release Notifications',
           channelDescription: 'Notifications for game release days',
+          importance: Importance.high,
+          priority: Priority.high,
         ),
       ),
       payload: jsonEncode(gameReminder.toJson()),
@@ -105,5 +112,34 @@ class NotificationClient {
 
   Future<void> cancelNotification(int gameId) async {
     await _flutterLocalNotificationsPlugin.cancel(gameId);
+    print('DEBUG: Cancelled notification for gameId: $gameId');
+  }
+
+  /// Debug method to check current pending notifications
+  Future<void> debugPendingNotifications() async {
+    final pending = await retrievePendingNotifications();
+    print('DEBUG: Current pending notifications: ${pending.length}');
+    for (final notification in pending) {
+      print('  - ID: ${notification.id}, Title: ${notification.title}, Body: ${notification.body}');
+    }
+  }
+
+  /// Test method to send an immediate notification
+  Future<void> sendTestNotification() async {
+    await _flutterLocalNotificationsPlugin.show(
+      99999,
+      'Test Notification',
+      'This is a test to verify notifications are working!',
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'release_day_channel',
+          'Game Release Notifications',
+          channelDescription: 'Notifications for game release days',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
+    );
+    print('DEBUG: Test notification sent');
   }
 }

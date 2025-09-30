@@ -40,6 +40,7 @@ dependencies:
   firebase_analytics: ^11.4.5
   connectivity_plus: ^6.1.0
   toastification: ^2.3.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:dartx/dartx.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:game_release_calendar/src/utils/release_date_comparator.dart';
 import '../../../data/services/shared_prefs_service.dart';
 import '../../common/state/notification_cubit/notifications_cubit.dart';
 
@@ -30,7 +32,15 @@ class RemindersCubit extends Cubit<RemindersState> {
 
   Future<void> loadGames() async {
     final reminders = _remindersBox.values.toList();
-    emit(state.copyWith(reminders: reminders));
+    final sortedReminders = _sortReminders(reminders);
+    emit(state.copyWith(reminders: sortedReminders));
+  }
+
+  List<GameReminder> _sortReminders(List<GameReminder> reminders) {
+    return reminders
+        .sortedBy((reminder) =>
+            ReleaseDateComparator.getSortableTimestamp(reminder.releaseDate.date))
+        .thenBy((reminder) => reminder.gameName);
   }
 
   Future<void> removeReminder(int reminderId) async {

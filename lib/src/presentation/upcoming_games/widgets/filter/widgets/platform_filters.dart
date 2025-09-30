@@ -1,5 +1,6 @@
 part of '../filter_bottom_sheet.dart';
 
+/// Platform filter section with collapsible UI and chip-based selection.
 class _PlatformFilters extends StatefulWidget {
   const _PlatformFilters({
     required this.selectedPlatformFilterOptions,
@@ -12,35 +13,26 @@ class _PlatformFilters extends StatefulWidget {
 }
 
 class _PlatformFiltersState extends State<_PlatformFilters> {
+  /// Handles selection/deselection of platform filters.
+  void _onPlatformSelectionChanged(PlatformFilter platform, bool selected) {
+    setState(() {
+      if (selected) {
+        widget.selectedPlatformFilterOptions.add(platform);
+      } else {
+        widget.selectedPlatformFilterOptions.remove(platform);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        const Text(
-          'Platforms',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        ...PlatformFilter.values.map((platform) {
-          return CheckboxListTile(
-            title: Text(platform.fullName),
-            value: widget.selectedPlatformFilterOptions.contains(platform),
-            onChanged: (bool? isChecked) {
-              setState(() {
-                if (isChecked == true) {
-                  if (!widget.selectedPlatformFilterOptions
-                      .contains(platform)) {
-                    widget.selectedPlatformFilterOptions.add(platform);
-                  }
-                } else {
-                  widget.selectedPlatformFilterOptions.remove(platform);
-                }
-              });
-            },
-          );
-        }).toList(),
-      ],
+    return _CollapsibleFilterSection<PlatformFilter>(
+      title: 'Platforms',
+      selectedItems: widget.selectedPlatformFilterOptions,
+      allItems: PlatformFilter.values,
+      itemDisplayName: (platform) => platform.fullName,
+      itemShortName: (platform) => platform.abbreviation,
+      onSelectionChanged: _onPlatformSelectionChanged,
     );
   }
 }

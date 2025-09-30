@@ -14,6 +14,7 @@ import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/date_utilities.dart';
 import '../../utils/constants.dart';
 import '../../utils/release_date_comparator.dart';
+import '../common/toast/toast_helper.dart';
 
 part 'widgets/game_info.dart';
 
@@ -44,9 +45,9 @@ class _GameDetailViewState extends State<GameDetailView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               GameInfo(game: widget.game),
-              const Divider(),
               GameReleases(game: widget.game),
             ],
           ),

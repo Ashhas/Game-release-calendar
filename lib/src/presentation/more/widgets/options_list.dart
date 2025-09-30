@@ -11,7 +11,7 @@ class OptionsList extends StatelessWidget {
       children: [
         ListTile(
           leading: const Icon(Icons.notifications_none_outlined),
-          title: const Text('Notifications'),
+          title: const Text('Notification Settings'),
           onTap: () {
             Navigator.push(
               context,
@@ -57,7 +57,7 @@ class OptionsList extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.mail_outline),
+          leading: const Icon(Icons.support_agent),
           title: const Text('Support'),
           onTap: () {
             final emailLaunchUri = Uri(

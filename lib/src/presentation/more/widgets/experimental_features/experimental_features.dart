@@ -18,6 +18,11 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
     _loadSettings();
   }
 
+  Future<void> _sendTestNotification() async {
+    final notificationClient = GetIt.instance.get<NotificationClient>();
+    await notificationClient.sendTestNotification();
+  }
+
   void _loadSettings() {
     setState(() {
       _scrollbarEnabled = _sharedPrefs.getScrollbarEnabled();
@@ -85,6 +90,15 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
                 secondary: const Icon(Icons.linear_scale),
                 value: _scrollbarEnabled,
                 onChanged: _setScrollbarEnabled,
+              ),
+            ),
+            SizedBox(height: context.spacings.s),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.bug_report_outlined),
+                title: const Text('Test Notification'),
+                subtitle: const Text('Send a test notification to verify setup'),
+                onTap: _sendTestNotification,
               ),
             ),
             SizedBox(height: context.spacings.m),

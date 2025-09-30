@@ -35,6 +35,8 @@ import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
+import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 import 'package:game_release_calendar/src/domain/models/platform.dart'
@@ -137,6 +139,7 @@ Future<void> _initializeServices(GetIt getIt) async {
       igdbRepository: getIt.get<IGDBRepository>(),
       gameRemindersBox: getIt.get<Box<GameReminder>>(),
       notificationClient: getIt.get<NotificationClient>(),
+      gameUpdateLogBox: getIt.get<Box<GameUpdateLog>>(),
     ),
   );
 }
@@ -154,6 +157,8 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapter(ArtworkAdapter());
   Hive.registerAdapter(GameCategoryAdapter());
   Hive.registerAdapter(ReleaseRegionAdapter());
+  Hive.registerAdapter(GameUpdateTypeAdapter());
+  Hive.registerAdapter(GameUpdateLogAdapter());
 
   final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(
@@ -166,6 +171,13 @@ Future<void> _initializeHive(GetIt getIt) async {
   getIt.registerSingleton<Box<GameReminder>>(
     box,
   );
+
+  final gameUpdateLogBox = await Hive.openBox<GameUpdateLog>(
+    'game_updates_log_box',
+  );
+  getIt.registerSingleton<Box<GameUpdateLog>>(
+    gameUpdateLogBox,
+  );
 }
 
 Future<void> _initializeNotificationService(GetIt getIt) async {
@@ -176,9 +188,9 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
     notificationIconSource,
   );
   const initializationSettingsIOS = DarwinInitializationSettings(
-    requestSoundPermission: false,
-    requestBadgePermission: false,
-    requestAlertPermission: false,
+    requestSoundPermission: true,
+    requestBadgePermission: true,
+    requestAlertPermission: true,
   );
   const initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -190,11 +202,31 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
     onDidReceiveNotificationResponse: (_) {},
   );
 
-  // Request permissions for Android
-  notificationsPluginInstance
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.requestNotificationsPermission();
+  // Create notification channel for Android
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'release_day_channel',
+    'Game Release Notifications',
+    description: 'Notifications for game release days',
+    importance: Importance.high,
+    enableVibration: true,
+    playSound: true,
+  );
+
+  final androidPlugin = notificationsPluginInstance
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+
+  if (androidPlugin != null) {
+    // Create the notification channel
+    await androidPlugin.createNotificationChannel(channel);
+
+    // Request notification permissions
+    await androidPlugin.requestNotificationsPermission();
+
+    // Request exact alarm permission for Android 12+
+    await androidPlugin.requestExactAlarmsPermission();
+
+    print('DEBUG: Notification permissions and channel setup complete');
+  }
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
     notificationsPluginInstance,

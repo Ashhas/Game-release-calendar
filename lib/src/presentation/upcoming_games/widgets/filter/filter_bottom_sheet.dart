@@ -18,6 +18,8 @@ part 'widgets/footer.dart';
 
 part 'widgets/top_bar.dart';
 
+part 'widgets/collapsible_filter_section.dart';
+
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
 

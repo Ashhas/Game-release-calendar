@@ -1,5 +1,125 @@
 part of '../game_detail_view.dart';
 
+class ReminderActionButton extends StatelessWidget {
+  const ReminderActionButton({
+    super.key,
+    required this.isChecked,
+    required this.hasBeenReleased,
+    required this.onPressed,
+  });
+
+  final bool isChecked;
+  final bool hasBeenReleased;
+  final VoidCallback onPressed;
+
+  static const double _buttonWidth = 140.0;
+  static const double _fontSize = 13.0;
+  static const String _setReminderText = 'Set Reminder';
+  static const String _removeReminderText = 'Remove';
+  static const String _outOfDateText = 'Out of Date';
+
+  ButtonStyle _getButtonStyle(BuildContext context, _ReminderButtonState state) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    switch (state) {
+      case _ReminderButtonState.setReminder:
+        return FilledButton.styleFrom(
+          textStyle: const TextStyle(fontSize: _fontSize),
+        );
+      case _ReminderButtonState.removeReminder:
+        return FilledButton.styleFrom(
+          backgroundColor: colorScheme.primaryContainer,
+          foregroundColor: colorScheme.primary,
+          textStyle: const TextStyle(fontSize: _fontSize),
+        );
+      case _ReminderButtonState.outOfDate:
+        return FilledButton.styleFrom(
+          textStyle: const TextStyle(fontSize: _fontSize),
+        );
+    }
+  }
+
+  _ReminderButtonState _getButtonState() {
+    if (hasBeenReleased) return _ReminderButtonState.outOfDate;
+    if (isChecked) return _ReminderButtonState.removeReminder;
+    return _ReminderButtonState.setReminder;
+  }
+
+  String _getButtonText(_ReminderButtonState state) {
+    switch (state) {
+      case _ReminderButtonState.setReminder:
+        return _setReminderText;
+      case _ReminderButtonState.removeReminder:
+        return _removeReminderText;
+      case _ReminderButtonState.outOfDate:
+        return _outOfDateText;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final buttonState = _getButtonState();
+
+    return SizedBox(
+      width: _buttonWidth,
+      child: _ReminderButton(
+        state: buttonState,
+        onPressed: onPressed,
+        getButtonStyle: _getButtonStyle,
+        getButtonText: _getButtonText,
+      ),
+    );
+  }
+}
+
+enum _ReminderButtonState {
+  setReminder,
+  removeReminder,
+  outOfDate,
+}
+
+class _ReminderButton extends StatelessWidget {
+  const _ReminderButton({
+    required this.state,
+    required this.onPressed,
+    required this.getButtonStyle,
+    required this.getButtonText,
+  });
+
+  final _ReminderButtonState state;
+  final VoidCallback onPressed;
+  final ButtonStyle Function(BuildContext context, _ReminderButtonState state) getButtonStyle;
+  final String Function(_ReminderButtonState state) getButtonText;
+
+  static const int _maxLines = 1;
+  static const TextOverflow _textOverflow = TextOverflow.ellipsis;
+
+  @override
+  Widget build(BuildContext context) {
+    if (state == _ReminderButtonState.outOfDate) {
+      return FilledButton.tonal(
+        style: getButtonStyle(context, state),
+        onPressed: null,
+        child: Text(
+          getButtonText(state),
+          maxLines: _maxLines,
+          overflow: _textOverflow,
+        ),
+      );
+    }
+
+    return FilledButton(
+      style: getButtonStyle(context, state),
+      onPressed: onPressed,
+      child: Text(
+        getButtonText(state),
+        maxLines: _maxLines,
+        overflow: _textOverflow,
+      ),
+    );
+  }
+}
+
 class GameReleases extends StatefulWidget {
   const GameReleases({
     super.key,
@@ -72,9 +192,14 @@ class _GameReleasesState extends State<GameReleases> {
         game: widget.game,
         releaseDate: releaseDate,
       );
-      _showSnackBar('Reminder saved!');
+      if (mounted) {
+        _showToast(_reminderSavedMessage);
+      }
     } catch (e) {
-      _showSnackBar('Failed to save reminder. Please try again.');
+      debugPrint('Failed to save reminder: $e');
+      if (mounted) {
+        _showToast(_saveErrorMessage, isError: true);
+      }
     }
   }
 
@@ -83,9 +208,14 @@ class _GameReleasesState extends State<GameReleases> {
   }) async {
     try {
       await _gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
-      _showSnackBar('Reminder cancelled!');
+      if (mounted) {
+        _showToast(_reminderRemovedMessage);
+      }
     } catch (e) {
-      _showSnackBar('Failed to cancel reminder. Please try again.');
+      debugPrint('Failed to remove reminder: $e');
+      if (mounted) {
+        _showToast(_removeErrorMessage, isError: true);
+      }
     }
   }
 
@@ -95,9 +225,23 @@ class _GameReleasesState extends State<GameReleases> {
     });
   }
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+  static const Duration _toastDuration = Duration(seconds: 3);
+  static const double _toastSpacing = 30.0;
+  static const String _reminderSavedMessage = 'Reminder saved!';
+  static const String _reminderRemovedMessage = 'Removed!';
+  static const String _saveErrorMessage = 'Failed to save reminder. Please try again.';
+  static const String _removeErrorMessage = 'Failed to remove reminder. Please try again.';
+
+  void _showToast(String message, {bool isError = false}) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    ToastHelper.showToast(
+      message,
+      icon: isError ? Icons.error_outline : Icons.check_circle,
+      backgroundColor: isError ? colorScheme.error : colorScheme.primary,
+      textColor: isError ? colorScheme.onError : colorScheme.onPrimary,
+      customSpacing: _toastSpacing,
+      duration: _toastDuration,
     );
   }
 
@@ -117,40 +261,33 @@ class _GameReleasesState extends State<GameReleases> {
             final rd = _sortedReleaseDates[index];
             final platform = rd.platform;
 
-            // If date is null, mark as "TBD" but enable for reminders
+            // Check if the release date has passed
             final date = rd.date;
-            if (date == null) {
-              // Build subtitle for TBD with optional region
-              String tbdSubtitle = 'TBD';
-              if (rd.region != null) {
-                tbdSubtitle += ' • ${rd.region!.name}';
-              }
-
-              return CheckboxListTile(
-                enabled: true,
-                value: _checkedStatus[index],
-                title: Text(platform?.fullName ?? 'Unknown Platform'),
-                subtitle: Text(tbdSubtitle),
-                onChanged: (_) => _onReminderTileTapped(index, rd),
-              );
-            }
-
-            final hasBeenReleased =
-                DateUtilities.secondSinceEpochToDateTime(rd.date!)
+            final hasBeenReleased = date != null &&
+                DateUtilities.secondSinceEpochToDateTime(date)
                     .isBefore(DateTime.now());
 
-            // Build subtitle with date and optional region
-            String subtitle = rd.human ?? 'Release date available';
+            // Build subtitle with date/TBD and optional region
+            String subtitle;
+            if (date == null) {
+              subtitle = 'TBD';
+            } else {
+              subtitle = rd.human ?? 'Release date available';
+            }
             if (rd.region != null) {
               subtitle += ' • ${rd.region!.name}';
             }
 
-            return CheckboxListTile(
+            return ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 0),
               enabled: !hasBeenReleased,
-              value: _checkedStatus[index],
               title: Text(platform?.fullName ?? 'Unknown Platform'),
               subtitle: Text(subtitle),
-              onChanged: (_) => _onReminderTileTapped(index, rd),
+              trailing: ReminderActionButton(
+                isChecked: _checkedStatus[index],
+                hasBeenReleased: hasBeenReleased,
+                onPressed: () => _onReminderTileTapped(index, rd),
+              ),
             );
           },
         ),

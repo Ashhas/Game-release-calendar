@@ -5,6 +5,7 @@ import 'package:flutter_lucide/flutter_lucide.dart';
 
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_update_cubit/game_update_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_cubit.dart';
 import 'package:game_release_calendar/src/presentation/more/more_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/reminders_container.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
@@ -30,6 +31,8 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       context.read<NotificationsCubit>().retrievePendingNotifications();
       // Start background game update check
       context.read<GameUpdateCubit>().startBackgroundUpdate();
+      // Initialize badge status
+      context.read<GameUpdatesBadgeCubit>().checkBadgeStatus();
     });
   }
 
@@ -50,6 +53,8 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
             // If selecting the "Reminders" screen, generate a new key to force rebuild
             if (index == 1) {
               _rebuildScreenKey = UniqueKey();
+              // Refresh badge status when navigating to Reminders tab
+              context.read<GameUpdatesBadgeCubit>().checkBadgeStatus();
             }
           });
         },

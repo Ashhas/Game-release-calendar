@@ -15,6 +15,7 @@ class ToastHelper {
     required Color backgroundColor,
     required Color textColor,
     Duration? duration,
+    double customSpacing = 60,
   }) {
     // Dismiss all existing toasts to prevent stacking
     toastification.dismissAll();
@@ -24,7 +25,7 @@ class ToastHelper {
       autoCloseDuration: duration,
       builder: (_, __) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 60),
+          padding: EdgeInsets.only(bottom: customSpacing),
           child: CustomToast(
             title: title,
             icon: icon,

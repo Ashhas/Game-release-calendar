@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
@@ -51,13 +49,13 @@ class GameCard extends StatelessWidget {
                 Constants.placeholderImageUrl,
             isVertical: isVertical,
           ),
-          // Dark gradient overlay from bottom to middle (only for non-released games)
+          // Simple dark gradient overlay at bottom for text readability
           if (!isReleased)
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
-              height: MediaQuery.sizeOf(context).height * 0.15, // Half of typical card height
+              height: 40,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -68,11 +66,10 @@ class GameCard extends StatelessWidget {
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      Colors.black.withValues(alpha: 0.8),
-                      Colors.black.withValues(alpha: 0.4),
+                      Colors.black.withValues(alpha: 0.9),
                       Colors.transparent,
                     ],
-                    stops: const [0.0, 0.6, 1.0],
+                    stops: const [0.3, 1.0],
                   ),
                 ),
               ),
@@ -85,6 +82,16 @@ class GameCard extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(context.spacings.s)),
                   color: Colors.black.withValues(alpha: 0.7),
                 ),
+              ),
+            ),
+          // Platform chip positioned above the black background
+          if (!isReleased && reminder.releaseDate.platform != null)
+            Positioned(
+              bottom: 50, // Above the black background
+              left: context.spacings.xxs,
+              child: PlatformChip(
+                platformAbbreviation:
+                    reminder.releaseDate.platform!.abbreviation.toString(),
               ),
             ),
           Positioned(

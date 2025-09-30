@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
@@ -10,8 +10,11 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
+import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_state.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/alert_badge.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
-import 'package:game_release_calendar/src/utils/release_date_comparator.dart';
+import 'package:game_release_calendar/src/presentation/game_updates/game_updates_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
 import 'package:game_release_calendar/src/presentation/reminders/widgets/list/reminder_list_view.dart';
@@ -38,6 +41,8 @@ class _RemindersContainerState extends State<RemindersContainer> {
     super.initState();
     context.read<RemindersCubit>().loadGames();
     context.read<RemindersCubit>().getPreferredDataView();
+    // Check badge status when reminders screen loads
+    context.read<GameUpdatesBadgeCubit>().checkBadgeStatus();
   }
 
   @override
@@ -52,12 +57,23 @@ class _RemindersContainerState extends State<RemindersContainer> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Reminders'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const NotificationsContainer()));
+          BlocBuilder<GameUpdatesBadgeCubit, GameUpdatesBadgeState>(
+            builder: (context, badgeState) {
+              return IconButton(
+                onPressed: () {
+                  // Mark as read when navigating to Game Updates
+                  context.read<GameUpdatesBadgeCubit>().markAsReadToday();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const GameUpdatesContainer()),
+                  );
+                },
+                icon: AlertBadge(
+                  showBadge: badgeState.shouldShowBadge,
+                  child: Icon(Icons.textsms_outlined),
+                ),
+              );
             },
-            icon: Icon(Icons.textsms_outlined),
           ),
           Padding(
             padding: EdgeInsets.only(
@@ -69,11 +85,7 @@ class _RemindersContainerState extends State<RemindersContainer> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: BlocBuilder<RemindersCubit, RemindersState>(
         builder: (_, state) {
-          final remindersList = state.reminders
-              .sortedBy((reminder) =>
-                  ReleaseDateComparator.getSortableTimestamp(
-                      reminder.releaseDate.date))
-              .thenBy((reminder) => reminder.gameName);
+          final remindersList = state.reminders;
 
           if (remindersList.isEmpty) {
             return const Center(
@@ -81,27 +93,45 @@ class _RemindersContainerState extends State<RemindersContainer> {
             );
           }
 
-          return SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: context.spacings.s),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ViewToggleTab(
-                  selectedIndex: state.reminderViewIndex,
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: context.spacings.m,
+                    right: context.spacings.m,
+                    top: context.spacings.s,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ViewToggleTab(
+                        selectedIndex: state.reminderViewIndex,
+                      ),
+                      SizedBox(height: context.spacings.xs),
+                    ],
+                  ),
                 ),
-                SizedBox(height: context.spacings.xs),
-                if (state.reminderViewIndex == 0)
-                  TwoColumnGridView(reminders: remindersList),
-                if (state.reminderViewIndex == 1)
-                  ThreeColumnGridView(reminders: remindersList),
-                if (state.reminderViewIndex == 2)
-                  RemindersListView(
-                    reminders: GameDateGrouper.groupRemindersByReleaseDate(
-                      remindersList,
+              ),
+              if (state.reminderViewIndex == 0)
+                TwoColumnGridView(reminders: remindersList),
+              if (state.reminderViewIndex == 1)
+                ThreeColumnGridView(reminders: remindersList),
+              if (state.reminderViewIndex == 2)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: context.spacings.m),
+                    child: RemindersListView(
+                      reminders: GameDateGrouper.groupRemindersByReleaseDate(
+                        remindersList,
+                      ),
                     ),
-                  )
-              ],
-            ),
+                  ),
+                ),
+              SliverToBoxAdapter(
+                child: SizedBox(height: context.spacings.s),
+              ),
+            ],
           );
         },
       ),

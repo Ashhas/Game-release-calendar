@@ -11,17 +11,18 @@ class _TopBarState extends State<_TopBar> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const Text(
-          'Filters',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
         IconButton(
-          icon: const Icon(Icons.arrow_circle_left_outlined),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
+        ),
+        SizedBox(width: context.spacings.xs),
+        const Text(
+          'Filters',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
     );

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
-import 'package:game_release_calendar/src/theme/theme_extensions.dart';
-
-import 'game_card.dart';
 
 class GameInfoData extends StatelessWidget {
   const GameInfoData({
@@ -28,12 +25,6 @@ class GameInfoData extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (reminder.releaseDate.platform != null)
-            PlatformChip(
-              platformAbbreviation:
-                  reminder.releaseDate.platform!.abbreviation.toString(),
-            ),
-          SizedBox(height: context.spacings.xxs),
           Text(
             description,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
