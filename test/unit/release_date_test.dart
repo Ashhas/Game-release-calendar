@@ -385,5 +385,310 @@ void main() {
         expect(releaseDate.dateFormat, equals(largeNumber));
       });
     });
+
+    group('hasExactDate - robust category resolution', () {
+      test('should return true for date with dateFormat 0 (exact)', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400, // Sep 30, 2025
+          dateFormat: 0,
+          category: null, // Test null category
+        );
+
+        expect(releaseDate.hasExactDate, isTrue);
+      });
+
+      test('should return false for date with dateFormat 1 (year-month)', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          dateFormat: 1,
+          category: null,
+        );
+
+        expect(releaseDate.hasExactDate, isFalse);
+      });
+
+      test('should return false for date with quarter human text even with exact dateFormat', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          human: 'Q1 2025', // Human text takes priority
+          dateFormat: 0, // Would normally indicate exact
+          category: null,
+        );
+
+        expect(releaseDate.hasExactDate, isFalse);
+      });
+
+      test('should return true when category is exact and date exists', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          category: ReleaseDateCategory.exactDate,
+          dateFormat: null,
+          human: null,
+        );
+
+        expect(releaseDate.hasExactDate, isTrue);
+      });
+
+      test('should return false when date is null even with exact category', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: null, // No date
+          category: ReleaseDateCategory.exactDate,
+          dateFormat: 0,
+        );
+
+        expect(releaseDate.hasExactDate, isFalse);
+      });
+
+      test('should handle Final Fantasy Tactics scenario correctly', () {
+        // Real scenario that was failing before the fix
+        final releaseDate = ReleaseDate(
+          id: 716132,
+          date: 1727654400, // Sep 30, 2025
+          human: 'Sep 30, 2025',
+          category: null, // IGDB often has null category
+          dateFormat: 0, // But dateFormat indicates exact date
+        );
+
+        expect(releaseDate.hasExactDate, isTrue);
+      });
+
+      test('should return false for quarter patterns in human text', () {
+        final quarterTexts = ['Q1 2025', 'Q4 2025', 'quarter 1', 'Quarter 2'];
+
+        for (final humanText in quarterTexts) {
+          final releaseDate = ReleaseDate(
+            id: 1,
+            date: 1727654400,
+            human: humanText,
+            category: null,
+            dateFormat: 0, // Would be exact if not for human text
+          );
+
+          expect(
+            releaseDate.hasExactDate,
+            isFalse,
+            reason: 'Should be false for quarter text: $humanText'
+          );
+        }
+      });
+
+      test('should return false for dateFormat 3 and 4 (quarters)', () {
+        final releaseDate3 = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          dateFormat: 3,
+          category: null,
+        );
+
+        final releaseDate4 = ReleaseDate(
+          id: 2,
+          date: 1727654400,
+          dateFormat: 4,
+          category: null,
+        );
+
+        expect(releaseDate3.hasExactDate, isFalse);
+        expect(releaseDate4.hasExactDate, isFalse);
+      });
+
+      test('should return false for dateFormat 2 (year only)', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          dateFormat: 2,
+          category: null,
+        );
+
+        expect(releaseDate.hasExactDate, isFalse);
+      });
+
+      test('should fallback to TBD when all fields are null', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          category: null,
+          dateFormat: null,
+          human: null,
+        );
+
+        expect(releaseDate.hasExactDate, isFalse); // TBD is not exact
+      });
+    });
+
+    group('isReleasedWithExactDate', () {
+      test('should return false when hasExactDate is false', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          human: 'Q1 2025', // Quarter, not exact
+          category: null,
+        );
+
+        expect(releaseDate.isReleasedWithExactDate, isFalse);
+      });
+
+      test('should return false when date is null', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: null, // No date
+          dateFormat: 0,
+          category: ReleaseDateCategory.exactDate,
+        );
+
+        expect(releaseDate.isReleasedWithExactDate, isFalse);
+      });
+
+      test('should return true for past exact date', () {
+        final pastDate = DateTime(2020, 1, 1).millisecondsSinceEpoch ~/ 1000;
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: pastDate,
+          dateFormat: 0,
+          category: null,
+        );
+
+        expect(releaseDate.isReleasedWithExactDate, isTrue);
+      });
+
+      test('should return false for future exact date', () {
+        final futureDate = DateTime(2030, 1, 1).millisecondsSinceEpoch ~/ 1000;
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: futureDate,
+          dateFormat: 0,
+          category: null,
+        );
+
+        expect(releaseDate.isReleasedWithExactDate, isFalse);
+      });
+
+      test('should handle today\'s date correctly', () {
+        // Use a time that's definitely in the future (1 hour from now)
+        final futureTime = DateTime.now().add(Duration(hours: 1));
+        final futureTimestamp = futureTime.millisecondsSinceEpoch ~/ 1000;
+
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: futureTimestamp,
+          dateFormat: 0,
+          category: null,
+        );
+
+        // Future time should be considered "not released yet" since it checks isBefore
+        expect(releaseDate.isReleasedWithExactDate, isFalse);
+      });
+
+      test('should handle edge case of exact current moment', () {
+        final now = DateTime.now();
+        final yesterdayTimestamp = now.subtract(Duration(days: 1)).millisecondsSinceEpoch ~/ 1000;
+
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: yesterdayTimestamp,
+          dateFormat: 0,
+          category: null,
+        );
+
+        expect(releaseDate.isReleasedWithExactDate, isTrue);
+      });
+    });
+
+    group('robust category resolution priority', () {
+      test('should prioritize human text over dateFormat', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          human: 'Q1 2025', // Quarter text
+          dateFormat: 0, // Would normally be exact
+          category: ReleaseDateCategory.year, // Would normally be year
+        );
+
+        expect(releaseDate.hasExactDate, isFalse); // Should resolve to quarter
+      });
+
+      test('should prioritize dateFormat over category', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          human: null,
+          dateFormat: 1, // Year-month
+          category: ReleaseDateCategory.exactDate, // Would normally be exact
+        );
+
+        expect(releaseDate.hasExactDate, isFalse); // Should resolve to year-month
+      });
+
+      test('should use category when human and dateFormat are null', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          human: null,
+          dateFormat: null,
+          category: ReleaseDateCategory.exactDate,
+        );
+
+        expect(releaseDate.hasExactDate, isTrue); // Should use category
+      });
+
+      test('should fallback to TBD when all resolution fields are null', () {
+        final releaseDate = ReleaseDate(
+          id: 1,
+          date: 1727654400,
+          human: null,
+          dateFormat: null,
+          category: null,
+        );
+
+        expect(releaseDate.hasExactDate, isFalse); // TBD is not exact
+      });
+    });
+
+    group('integration with precision filter logic', () {
+      test('should match ReleasePrecisionFilter exactDate behavior', () {
+        final testCases = [
+          {
+            'releaseDate': ReleaseDate(
+              id: 1,
+              date: 1727654400,
+              dateFormat: 0,
+              category: null,
+            ),
+            'shouldBeExact': true,
+          },
+          {
+            'releaseDate': ReleaseDate(
+              id: 2,
+              date: 1727654400,
+              human: 'Q1 2025',
+              dateFormat: 0,
+            ),
+            'shouldBeExact': false,
+          },
+          {
+            'releaseDate': ReleaseDate(
+              id: 3,
+              date: 1727654400,
+              dateFormat: 1, // Year-month
+              category: null,
+            ),
+            'shouldBeExact': false,
+          },
+        ];
+
+        for (final testCase in testCases) {
+          final releaseDate = testCase['releaseDate'] as ReleaseDate;
+          final shouldBeExact = testCase['shouldBeExact'] as bool;
+
+          expect(
+            releaseDate.hasExactDate,
+            equals(shouldBeExact),
+            reason: 'Release date ${releaseDate.id} exact date detection mismatch'
+          );
+        }
+      });
+    });
   });
 }

@@ -6,6 +6,7 @@ class RetryHelper {
   static Future<T> retry<T>(
     Future<T> Function() operation, {
     int maxRetries = 2,
+    Duration Function(int attempt)? delayFunction,
   }) async {
     Exception? lastException;
 
@@ -22,7 +23,8 @@ class RetryHelper {
             lastException is NoInternetException) break;
 
         // Wait before retry
-        await Future.delayed(Duration(seconds: attempt + 1));
+        final delay = delayFunction?.call(attempt) ?? Duration(seconds: attempt + 1);
+        await Future.delayed(delay);
       }
     }
 

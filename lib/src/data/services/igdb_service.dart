@@ -26,11 +26,9 @@ class IGDBService {
       ),
     );
 
-    // Apply release precision filter if specified
     if (filter.releasePrecisionChoice != null &&
         filter.releasePrecisionChoice != ReleasePrecisionFilter.all) {
       return games.where((game) {
-        // Check if any release date matches the precision filter
         return game.releaseDates?.any((releaseDate) {
           return filter.releasePrecisionChoice!.matches(releaseDate);
         }) ?? false;
@@ -45,11 +43,9 @@ class IGDBService {
     DateTime? startTimestamp;
     DateTime? endTimestamp;
 
-    // Name search filter (with accented variants for better matching)
     if (nameQuery != null && nameQuery.isNotEmpty) {
       final normalizedQuery = SearchHelper.addAccentedVariants(nameQuery);
       if (normalizedQuery.isNotEmpty) {
-        // Include original query plus up to 8 variants to balance coverage and performance
         final limitedVariants = normalizedQuery.take(8).toList();
         final searchTerms = [nameQuery, ...limitedVariants]
             .map((term) => 'name ~ *"$term"*')
@@ -60,26 +56,22 @@ class IGDBService {
       }
     }
 
-    // Category filter
     if (filter.categoryIds.isNotEmpty) {
       final categoryIds =
           filter.categoryIds.map((categoryId) => categoryId).join(', ');
       filterConditions.add('category = ($categoryIds)');
     }
 
-    // Platform filter
     if (filter.platformChoices.isNotEmpty) {
       final platformIds =
           filter.platformChoices.map((choice) => choice.id).join(', ');
       filterConditions.add('platforms = ($platformIds)');
     }
 
-    // Release date range filter
     if (filter.releaseDateChoice != null) {
       final dateRange = DateRangeUtility.getDateRangeForChoice(
         filter.releaseDateChoice!,
       );
-
       startTimestamp = dateRange.start;
       endTimestamp = dateRange.end;
     }
@@ -89,11 +81,9 @@ class IGDBService {
       filterConditions.add(
           '(first_release_date >= $fromTimestamp | first_release_date = null)');
     } else {
-      // Default to current date if no start is provided
       DateTime dateOnly = DateTime.now();
       DateTime withoutTime =
           DateTime(dateOnly.year, dateOnly.month, dateOnly.day);
-
       final currentTimestamp = withoutTime.millisecondsSinceEpoch ~/ 1000;
       filterConditions.add(
           '(first_release_date >= $currentTimestamp | first_release_date = null)');
@@ -105,7 +95,6 @@ class IGDBService {
           '(first_release_date < $toTimestamp | first_release_date = null)');
     }
 
-    // Query construction
     final whereClause = filterConditions.isNotEmpty
         ? 'where ${filterConditions.join(' & ')};'
         : '';
