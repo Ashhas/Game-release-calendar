@@ -1,0 +1,107 @@
+name: Android Play Store Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        type: choice
+        description: 'Google Play Store track'
+        required: true
+        default: 'internal'
+        options:
+          - internal
+          - alpha
+          - beta
+          - production
+
+env:
+  flutter_version: 3.29.1
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to Play Store
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(grep "^version:" pubspec.yaml | cut -d' ' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version: $VERSION"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          cache: true
+
+      - name: Create env.json
+        run: |
+          mkdir -p env
+          echo '${{ secrets.ENV_JSON }}' > env/env.json
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=keystore.jks
+          EOF
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests
+        run: flutter test
+        continue-on-error: false
+
+      - name: Build App Bundle
+        run: |
+          flutter build appbundle --release
+
+          # Verify AAB was created
+          if [ ! -f "build/app/outputs/bundle/release/app-release.aab" ]; then
+            echo "Error: AAB file not found"
+            exit 1
+          fi
+
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@v1.1.3
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.ashhas.gamewatch
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: ${{ github.event.inputs.track }}
+          status: draft
+          changesNotSentForReview: true
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-${{ steps.version.outputs.version }}
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          echo "## Deployment Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Track:** ${{ github.event.inputs.track }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** Draft (requires manual review in Play Console)" >> $GITHUB_STEP_SUMMARY
