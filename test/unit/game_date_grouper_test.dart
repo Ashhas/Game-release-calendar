@@ -261,8 +261,8 @@ void main() {
       });
 
       test('should preserve exact timestamps when grouping by date only', () {
-        final timestamp1 = 1751241600; // June 30, 2025 00:00:00
-        final timestamp2 = 1751061600; // June 28, 2025 00:00:00
+        final timestamp1 = 1751241600; // June 30, 2025 00:00:00 UTC
+        final timestamp2 = 1751061600; // June 28, 2025 00:00:00 UTC
         final games = [
           _createGame(id: 1, name: 'Game A', firstReleaseDate: timestamp1),
           _createGame(id: 2, name: 'Game B', firstReleaseDate: timestamp2),
@@ -270,9 +270,15 @@ void main() {
 
         final result = GameDateGrouper.groupGamesByReleaseDate(games);
 
+        // Convert timestamps to actual dates to compare
+        final date1 = DateTime.fromMillisecondsSinceEpoch(timestamp1 * 1000);
+        final date2 = DateTime.fromMillisecondsSinceEpoch(timestamp2 * 1000);
+        final expectedDate1 = DateTime(date1.year, date1.month, date1.day);
+        final expectedDate2 = DateTime(date2.year, date2.month, date2.day);
+
         expect(result.keys.length, equals(2));
-        expect(result.containsKey(DateTime(2025, 6, 30)), isTrue);
-        expect(result.containsKey(DateTime(2025, 6, 28)), isTrue);
+        expect(result.containsKey(expectedDate1), isTrue);
+        expect(result.containsKey(expectedDate2), isTrue);
       });
 
       test('should handle games with multiple release dates', () {
