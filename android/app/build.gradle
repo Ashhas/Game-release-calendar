@@ -78,6 +78,13 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    // Fix for Android 15 16KB page alignment warning in Play Console
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging false
+        }
+    }
 }
 
 flutter {
