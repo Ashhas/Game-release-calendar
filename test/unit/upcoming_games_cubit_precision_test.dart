@@ -14,9 +14,9 @@ import 'package:riverpod/riverpod.dart';
 // Mock repository for integration testing
 class MockIGDBRepository implements IGDBRepository {
   final List<Game> _mockGames;
-  final List<String> _queriesReceived = [];
+  final List<String> _queriesReceived = <String>[];
 
-  const MockIGDBRepository(this._mockGames);
+  MockIGDBRepository(this._mockGames);
 
   List<String> get queriesReceived => _queriesReceived;
 

@@ -338,7 +338,7 @@ void main() {
         expect(result, isEmpty);
       });
 
-      test('should maintain reminder insertion order within same date', () {
+      test('should sort reminders by game name within same date', () {
         final reminders = [
           _createReminder(id: 3, releaseTimestamp: 1751241600),
           _createReminder(id: 1, releaseTimestamp: 1751241600),
@@ -348,10 +348,10 @@ void main() {
         final result = GameDateGrouper.groupRemindersByReleaseDate(reminders);
         final groupedReminders = result[DateTime(2025, 6, 30)]!;
 
-        // Should maintain input order since reminders don't have sorting logic
-        expect(groupedReminders.first.id, equals(3));
-        expect(groupedReminders[1].id, equals(1));
-        expect(groupedReminders[2].id, equals(2));
+        // Should be sorted by game name: 'Test Game 1', 'Test Game 2', 'Test Game 3'
+        expect(groupedReminders.first.id, equals(1));
+        expect(groupedReminders[1].id, equals(2));
+        expect(groupedReminders[2].id, equals(3));
       });
     });
 

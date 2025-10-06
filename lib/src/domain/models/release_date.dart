@@ -130,6 +130,6 @@ class ReleaseDate {
 
   @override
   String toString() {
-    return 'ReleaseDate(id: $id, date: $date, human: $human, category: $category, dateFormat: $dateFormat)';
+    return 'ReleaseDate(id: $id, date: $date, human: $human, category: $category, year: $year, month: $month, quarter: $quarter, platform: $platform, region: $region, dateFormat: $dateFormat)';
   }
 }
