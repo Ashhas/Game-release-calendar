@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208744369789",
+    "project_id": "game-watch-3bd32",
+    "storage_bucket": "game-watch-3bd32.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208744369789:android:8f7f58c8808d5c35612b14",
+        "android_client_info": {
+          "package_name": "com.ashhas.gamewatch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlWwv-F3zKLYeqpqMc5WE_Ayes3SdoAIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

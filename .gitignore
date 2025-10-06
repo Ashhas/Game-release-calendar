@@ -504,8 +504,6 @@ env.json
 # Firebase config files
 ios/Runner/GoogleService-Info.plist
 macos/Runner/GoogleService-Info.plist
-android/app/google-services.json
-lib/src/config/firebase_options.dart
 firebase.json
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,androidstudio,android,macos,flutter,dart,kotlin,swift
