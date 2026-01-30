@@ -27,22 +27,27 @@ jobs:
 
       - name: Get version
         id: version
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
-          VERSION=$(grep "^version:" pubspec.yaml | cut -d' ' -f2)
-          if [ -z "$VERSION" ]; then
+          # Extract version name from pubspec.yaml (e.g., 1.0.1)
+          VERSION_NAME=$(grep "^version:" pubspec.yaml | cut -d' ' -f2 | cut -d'+' -f1)
+          if [ -z "$VERSION_NAME" ]; then
             echo "Error: Could not extract version from pubspec.yaml"
             exit 1
           fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Building version: $VERSION"
 
-          # Extract build number from version (e.g., 1.0.0+2 -> 2)
-          BUILD_NUMBER=$(echo $VERSION | cut -d'+' -f2)
-          if [ -z "$BUILD_NUMBER" ] || [ "$BUILD_NUMBER" = "$VERSION" ]; then
-            echo "Warning: No build number found in version, using 1"
-            BUILD_NUMBER="1"
-          fi
+          # Use GitHub run_number as build number (auto-incrementing)
+          BUILD_NUMBER="$RUN_NUMBER"
+
+          # Combine for full version string
+          FULL_VERSION="${VERSION_NAME}+${BUILD_NUMBER}"
+
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+          echo "version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+          echo "Building version: $FULL_VERSION (name: $VERSION_NAME, build: $BUILD_NUMBER)"
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -86,7 +91,7 @@ jobs:
 
       - name: Build APK
         run: |
-          flutter build apk --release
+          flutter build apk --release --build-number=${{ steps.version.outputs.build_number }}
 
           # Verify APK was created
           if [ ! -f "build/app/outputs/flutter-apk/app-release.apk" ]; then

@@ -15,20 +15,34 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
+      build_number: ${{ steps.version.outputs.build_number }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Get version
         id: version
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
-          VERSION=$(grep "^version:" pubspec.yaml | cut -d' ' -f2)
-          if [ -z "$VERSION" ]; then
+          # Extract version name from pubspec.yaml (e.g., 1.0.1)
+          VERSION_NAME=$(grep "^version:" pubspec.yaml | cut -d' ' -f2 | cut -d'+' -f1)
+          if [ -z "$VERSION_NAME" ]; then
             echo "Error: Could not extract version from pubspec.yaml"
             exit 1
           fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Building version: $VERSION"
+
+          # Use GitHub run_number as build number (auto-incrementing)
+          BUILD_NUMBER="$RUN_NUMBER"
+
+          # Combine for full version string
+          FULL_VERSION="${VERSION_NAME}+${BUILD_NUMBER}"
+
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+          echo "version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+          echo "Building version: $FULL_VERSION (name: $VERSION_NAME, build: $BUILD_NUMBER)"
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -72,7 +86,7 @@ jobs:
 
       - name: Build App Bundle
         run: |
-          flutter build appbundle --release
+          flutter build appbundle --release --build-number=${{ steps.version.outputs.build_number }}
 
           # Verify AAB was created
           if [ ! -f "build/app/outputs/bundle/release/app-release.aab" ]; then
@@ -94,6 +108,7 @@ jobs:
         run: |
           echo "## Build Complete ✅" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Number:** ${{ steps.version.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Artifact:** app-bundle-${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
 
   deploy:
@@ -131,6 +146,7 @@ jobs:
         run: |
           echo "## Deployment Complete 🚀" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** ${{ needs.build.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Number:** ${{ needs.build.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Track:** internal" >> $GITHUB_STEP_SUMMARY
           echo "- **Status:** Draft (requires manual review in Play Console)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
