@@ -6,6 +6,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:toastification/toastification.dart';
 
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/game_update_service.dart';
@@ -37,17 +38,20 @@ class App extends StatelessWidget {
         BlocProvider<UpcomingGamesCubit>(
           create: (_) => UpcomingGamesCubit(
             igdbService: GetIt.instance.get<IGDBService>(),
+            analyticsService: GetIt.instance.get<AnalyticsService>(),
           ),
         ),
         BlocProvider<ThemeCubit>(
           create: (_) => ThemeCubit(
             GetIt.instance.get<SharedPrefsService>(),
+            analyticsService: GetIt.instance.get<AnalyticsService>(),
           ),
         ),
         BlocProvider<GameDetailCubit>(
           create: (_) => GameDetailCubit(
             remindersBox: GetIt.instance.get<Box<GameReminder>>(),
             notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
+            analyticsService: GetIt.instance.get<AnalyticsService>(),
           ),
         ),
         BlocProvider<RemindersCubit>(

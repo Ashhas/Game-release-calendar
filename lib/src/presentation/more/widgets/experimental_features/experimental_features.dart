@@ -16,6 +16,9 @@ class _ExperimentalFeaturesState extends State<ExperimentalFeatures> {
     super.initState();
     _sharedPrefs = GetIt.instance.get<SharedPrefsService>();
     _loadSettings();
+    GetIt.instance.get<AnalyticsService>().trackScreenViewed(
+      screenName: 'ExperimentalFeatures',
+    );
   }
 
   Future<void> _sendTestNotification() async {

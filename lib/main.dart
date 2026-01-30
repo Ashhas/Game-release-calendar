@@ -2,26 +2,27 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:game_release_calendar/src/app.dart';
 import 'package:game_release_calendar/src/config/env_config.dart';
-import 'package:game_release_calendar/src/config/firebase_options.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
@@ -39,7 +40,6 @@ Future<void> main() async {
 
   final getIt = GetIt.instance;
 
-  await _setupFirebase();
   await _initializeSharedPrefs(getIt);
   await _loadEnvVariables(getIt);
   await _initializeDio(getIt);
@@ -49,10 +49,55 @@ Future<void> main() async {
   await _initializeTimeZoneSettings();
   await _initializeNotificationService(getIt);
   await _initializeServices(getIt);
+  await _initializePostHog(getIt);
 
   runApp(
-    const App(),
+    PostHogWidget(
+      child: const App(),
+    ),
   );
+}
+
+Future<void> _initializePostHog(GetIt getIt) async {
+  try {
+    final envConfig = getIt.get<EnvConfig>();
+    final packageInfo = getIt.get<PackageInfo>();
+    final sharedPrefs = getIt.get<SharedPrefsService>();
+
+    // Skip initialization if API key is not configured
+    if (envConfig.posthogApiKey.isEmpty) {
+      debugPrint('PostHog: API key not configured, analytics disabled');
+      return;
+    }
+
+    // Configure PostHog analytics
+    final config = PostHogConfig(envConfig.posthogApiKey);
+    config.host = envConfig.posthogHost;
+    config.debug = kDebugMode;
+    config.captureApplicationLifecycleEvents = true;
+
+    // Enable session replay to understand user behavior and reproduce issues
+    config.sessionReplay = true;
+    config.sessionReplayConfig.maskAllTexts = false;
+    config.sessionReplayConfig.maskAllImages = false;
+
+    await Posthog().setup(config);
+
+    // Register super properties - automatically included with every event
+    final posthog = Posthog();
+    await posthog.register('app_version', packageInfo.version);
+    await posthog.register('build_number', packageInfo.buildNumber);
+    await posthog.register('platform', Platform.operatingSystem);
+    await posthog.register('theme_color', sharedPrefs.getColorPreset().name);
+    await posthog.register('theme_brightness', sharedPrefs.getBrightnessPreset().name);
+
+    debugPrint('PostHog: Analytics initialized successfully');
+  } catch (e, stackTrace) {
+    // Analytics is non-critical - log error but allow app to continue
+    debugPrint('PostHog: Initialization failed - analytics disabled for this session');
+    debugPrint('Error: $e');
+    debugPrintStack(stackTrace: stackTrace);
+  }
 }
 
 Future<void> _initializeSharedPrefs(GetIt getIt) async {
@@ -86,6 +131,8 @@ Future<void> _initializeDio(GetIt getIt) async {
   final dio = Dio(
     BaseOptions(
       baseUrl: envConfig.igdbBaseUrl,
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
       headers: {
         'Client-ID': envConfig.twitchClientId,
       },
@@ -114,6 +161,8 @@ Future<void> _initializeRepositories(GetIt getIt) async {
 }
 
 Future<void> _initializeServices(GetIt getIt) async {
+  getIt.registerSingleton<AnalyticsService>(AnalyticsService());
+
   getIt.registerSingleton<IGDBService>(
     IGDBService(
       repository: getIt.get<IGDBRepository>(),
@@ -228,25 +277,4 @@ Future<void> _initializeTimeZoneSettings() async {
 
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation(timeZoneName));
-}
-
-Future<void> _setupFirebase() async {
-  final isAndroid = Platform.isAndroid;
-  final isIOS = Platform.isIOS;
-  final isMobile = isAndroid || isIOS;
-
-  if (!isMobile) return;
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  // // Pass all uncaught "fatal" errors from the framework to Crashlytics
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  //
-  // // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  // PlatformDispatcher.instance.onError = (error, stack) {
-  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //   return true;
-  // };
 }

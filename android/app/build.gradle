@@ -1,8 +1,5 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -72,7 +69,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders = [posthogDebug: "true"]
+        }
         release {
+            manifestPlaceholders = [posthogDebug: "false"]
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release

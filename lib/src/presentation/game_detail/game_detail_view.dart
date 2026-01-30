@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:spaced_flex/spaced_flex.dart';
 
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/battery_optimization_dialog.dart';
@@ -34,6 +36,22 @@ class GameDetailView extends StatefulWidget {
 }
 
 class _GameDetailViewState extends State<GameDetailView> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Track screen and game view
+    final analytics = GetIt.instance.get<AnalyticsService>();
+    analytics.trackScreenViewed(
+      screenName: 'GameDetail',
+      properties: {'game_name': widget.game.name},
+    );
+    analytics.trackGameViewed(
+      gameId: widget.game.id,
+      gameName: widget.game.name,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     dev.log(widget.game.toString());

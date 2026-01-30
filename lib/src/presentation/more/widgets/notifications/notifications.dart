@@ -287,6 +287,9 @@ class _NotificationsState extends State<Notifications>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _checkPermissionStatus();
+    GetIt.instance.get<AnalyticsService>().trackScreenViewed(
+      screenName: 'NotificationSettings',
+    );
   }
 
   @override

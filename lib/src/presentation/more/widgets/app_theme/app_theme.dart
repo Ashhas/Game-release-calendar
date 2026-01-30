@@ -9,6 +9,12 @@ class AppTheme extends StatefulWidget {
 
 class _AppThemeState extends State<AppTheme> {
   @override
+  void initState() {
+    super.initState();
+    GetIt.instance.get<AnalyticsService>().trackScreenViewed(screenName: 'Theme');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

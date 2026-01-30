@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
@@ -46,9 +47,11 @@ class ThemeState {
 
 class ThemeCubit extends Cubit<ThemeState> {
   final SharedPrefsService prefsService;
+  final AnalyticsService? _analyticsService;
 
-  ThemeCubit(this.prefsService)
-      : super(
+  ThemeCubit(this.prefsService, {AnalyticsService? analyticsService})
+      : _analyticsService = analyticsService,
+        super(
           ThemeState(
             colorPreset: _getStoredColorPreset(prefsService),
             brightnessMode: _getStoredBrightnessMode(prefsService),
@@ -74,6 +77,8 @@ class ThemeCubit extends Cubit<ThemeState> {
       emit(newState);
       await _persistState();
       dev.log('Color preset changed to: ${preset.displayName}');
+
+      _analyticsService?.trackThemeColorChanged(colorName: preset.displayName);
     } catch (e) {
       dev.log('Error saving color preset: $e');
     }
@@ -88,6 +93,10 @@ class ThemeCubit extends Cubit<ThemeState> {
       emit(newState);
       await _persistState();
       dev.log('Brightness mode changed to: ${mode.displayName}');
+
+      _analyticsService?.trackThemeBrightnessChanged(
+        brightnessMode: mode.displayName,
+      );
     } catch (e) {
       dev.log('Error saving brightness mode: $e');
     }

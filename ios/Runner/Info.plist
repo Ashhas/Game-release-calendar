@@ -47,5 +47,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- PostHog Analytics - configured programmatically via Posthog().setup() in main.dart -->
+	<!-- API key stored in env/env.json for security -->
+	<key>com.posthog.posthog.DEBUG</key>
+	<string>$(POSTHOG_DEBUG)</string>
 </dict>
 </plist>

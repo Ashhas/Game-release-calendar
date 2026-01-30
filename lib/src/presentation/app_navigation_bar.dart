@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
+import 'package:get_it/get_it.dart';
 
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_update_cubit/game_update_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_cubit.dart';
@@ -22,6 +24,12 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
   int _currentPageIndex = 0;
   Key _rebuildScreenKey = UniqueKey();
 
+  final _analyticsService = GetIt.instance.get<AnalyticsService>();
+
+  /// Screen names for analytics tracking, indexed to match tab positions.
+  /// Index 0 = Upcoming, Index 1 = Reminders, Index 2 = More
+  static const _screenNames = ['Upcoming', 'Reminders', 'More'];
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +41,9 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       context.read<GameUpdateCubit>().startBackgroundUpdate();
       // Initialize badge status
       context.read<GameUpdatesBadgeCubit>().checkBadgeStatus();
+
+      // Track initial screen view
+      _analyticsService.trackScreenViewed(screenName: _screenNames.first);
     });
   }
 
@@ -45,6 +56,11 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
           // Clear focus when navigating away from the search screen (Upcoming tab)
           if (_currentPageIndex == 0 && index != 0) {
             FocusScope.of(context).unfocus();
+          }
+
+          // Track screen view when switching tabs
+          if (_currentPageIndex != index) {
+            _analyticsService.trackScreenViewed(screenName: _screenNames[index]);
           }
 
           setState(() {

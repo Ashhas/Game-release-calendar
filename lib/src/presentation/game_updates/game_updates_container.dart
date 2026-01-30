@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
@@ -17,8 +19,21 @@ import 'dart:convert';
 
 import 'package:riverpod/riverpod.dart';
 
-class GameUpdatesContainer extends StatelessWidget {
+class GameUpdatesContainer extends StatefulWidget {
   const GameUpdatesContainer({super.key});
+
+  @override
+  State<GameUpdatesContainer> createState() => _GameUpdatesContainerState();
+}
+
+class _GameUpdatesContainerState extends State<GameUpdatesContainer> {
+  @override
+  void initState() {
+    super.initState();
+    GetIt.instance.get<AnalyticsService>().trackScreenViewed(
+      screenName: 'GameUpdates',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,20 @@
 part of '../more_container.dart';
 
-class PrivacyPolicy extends StatelessWidget {
+class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({super.key});
+
+  @override
+  State<PrivacyPolicy> createState() => _PrivacyPolicyState();
+}
+
+class _PrivacyPolicyState extends State<PrivacyPolicy> {
+  @override
+  void initState() {
+    super.initState();
+    GetIt.instance.get<AnalyticsService>().trackScreenViewed(
+      screenName: 'PrivacyPolicy',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

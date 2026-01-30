@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riverpod/riverpod.dart';
 
+import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/exceptions/app_exceptions.dart';
@@ -15,10 +16,13 @@ import '../../../domain/enums/filter/release_precision_filter.dart';
 class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   UpcomingGamesCubit({
     required IGDBService igdbService,
+    AnalyticsService? analyticsService,
   })  : _igdbService = igdbService,
+        _analyticsService = analyticsService,
         super(UpcomingGamesState());
 
   final IGDBService _igdbService;
+  final AnalyticsService? _analyticsService;
   Timer? _debounce;
 
   @override
@@ -41,6 +45,9 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
         getGames();
         return;
       }
+
+      // Track search only for non-empty queries
+      _analyticsService?.trackSearchPerformed(query: state.nameQuery);
 
       _fetchGames();
     });
@@ -88,6 +95,13 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
           releasePrecisionChoice: precisionChoice,
         ),
       ),
+    );
+
+    _analyticsService?.trackFilterApplied(
+      platforms: platformChoices.map((p) => p.name).toList(),
+      dateFilter: setDateChoice?.name,
+      categoryIds: categoryId.toList(),
+      precisionFilter: precisionChoice?.name,
     );
   }
 
