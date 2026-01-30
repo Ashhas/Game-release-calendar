@@ -1,5 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:dartx/dartx.dart';
 
@@ -8,6 +10,7 @@ import 'package:game_release_calendar/src/presentation/reminders/state/reminders
 import 'package:game_release_calendar/src/utils/release_date_comparator.dart';
 import '../../../data/services/shared_prefs_service.dart';
 import '../../common/state/notification_cubit/notifications_cubit.dart';
+import '../../common/state/notification_cubit/notifications_state.dart';
 
 class RemindersCubit extends Cubit<RemindersState> {
   RemindersCubit({
@@ -18,7 +21,7 @@ class RemindersCubit extends Cubit<RemindersState> {
         _notificationsCubit = notificationsCubit,
         _prefsService = prefsService,
         super(RemindersState()) {
-    _notificationsCubit.stream.listen((state) {
+    _notificationsSubscription = _notificationsCubit.stream.listen((state) {
       state.notifications.whenData((_) {
         loadGames();
       });
@@ -28,6 +31,13 @@ class RemindersCubit extends Cubit<RemindersState> {
   final Box<GameReminder> _remindersBox;
   final NotificationsCubit _notificationsCubit;
   final SharedPrefsService _prefsService;
+  StreamSubscription<NotificationsState>? _notificationsSubscription;
+
+  @override
+  Future<void> close() {
+    _notificationsSubscription?.cancel();
+    return super.close();
+  }
   final prefDataViewKey = 'preferred_data_view_index';
 
   Future<void> loadGames() async {

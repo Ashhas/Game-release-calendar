@@ -8,7 +8,7 @@ part of 'platform.dart';
 
 class PlatformAdapter extends TypeAdapter<Platform> {
   @override
-  final int typeId = 1;
+  final typeId = 1;
 
   @override
   Platform read(BinaryReader reader) {
@@ -17,7 +17,7 @@ class PlatformAdapter extends TypeAdapter<Platform> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Platform(
-      id: fields[0] as int?,
+      id: (fields[0] as num?)?.toInt(),
       abbreviation: fields[1] as String?,
       name: fields[2] as String?,
       url: fields[3] as String?,

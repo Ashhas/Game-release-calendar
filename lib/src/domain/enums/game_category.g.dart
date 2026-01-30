@@ -8,7 +8,7 @@ part of 'game_category.dart';
 
 class GameCategoryAdapter extends TypeAdapter<GameCategory> {
   @override
-  final int typeId = 8;
+  final typeId = 8;
 
   @override
   GameCategory read(BinaryReader reader) {
@@ -55,52 +55,36 @@ class GameCategoryAdapter extends TypeAdapter<GameCategory> {
     switch (obj) {
       case GameCategory.mainGame:
         writer.writeByte(0);
-        break;
       case GameCategory.dlcAddon:
         writer.writeByte(1);
-        break;
       case GameCategory.expansion:
         writer.writeByte(2);
-        break;
       case GameCategory.bundle:
         writer.writeByte(3);
-        break;
       case GameCategory.standaloneExpansion:
         writer.writeByte(4);
-        break;
       case GameCategory.mod:
         writer.writeByte(5);
-        break;
       case GameCategory.episode:
         writer.writeByte(6);
-        break;
       case GameCategory.season:
         writer.writeByte(7);
-        break;
       case GameCategory.remake:
         writer.writeByte(8);
-        break;
       case GameCategory.remaster:
         writer.writeByte(9);
-        break;
       case GameCategory.expandedGame:
         writer.writeByte(10);
-        break;
       case GameCategory.port:
         writer.writeByte(11);
-        break;
       case GameCategory.fork:
         writer.writeByte(12);
-        break;
       case GameCategory.pack:
         writer.writeByte(13);
-        break;
       case GameCategory.update:
         writer.writeByte(14);
-        break;
       case GameCategory.fangame:
         writer.writeByte(15);
-        break;
     }
   }
 

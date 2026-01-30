@@ -33,7 +33,7 @@ class MockUpcomingGamesCubit extends UpcomingGamesCubit {
   }
 
   @override
-  void getGames() {
+  Future<void> getGames() async {
     // Mock implementation - do nothing
   }
 }

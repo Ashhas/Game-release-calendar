@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -32,7 +34,6 @@ class NotificationClient {
     );
 
     if (notificationDate == null) {
-      print('DEBUG: Notification not scheduled for ${game.name} - date is in the past or null');
       return;
     }
 
@@ -40,8 +41,6 @@ class NotificationClient {
       notificationDate,
       tz.local,
     );
-
-    print('DEBUG: Scheduling notification for ${game.name} at $notificationTime');
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
       releaseDate.id,
@@ -55,6 +54,14 @@ class NotificationClient {
           channelDescription: 'Notifications for game release days',
           importance: Importance.high,
           priority: Priority.high,
+          category: AndroidNotificationCategory.reminder,
+          visibility: NotificationVisibility.public,
+          enableLights: true,
+          ledColor: Color(0xFF819FC3),
+          ledOnMs: 1000,
+          ledOffMs: 500,
+          ticker: 'Game releasing today!',
+          autoCancel: false,
         ),
       ),
       payload: jsonEncode(
@@ -70,8 +77,6 @@ class NotificationClient {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
-
-    print('DEBUG: Notification scheduled successfully for ${game.name}');
   }
 
   /// Schedules a notification using the [GameReminder] Object
@@ -101,6 +106,14 @@ class NotificationClient {
           channelDescription: 'Notifications for game release days',
           importance: Importance.high,
           priority: Priority.high,
+          category: AndroidNotificationCategory.reminder,
+          visibility: NotificationVisibility.public,
+          enableLights: true,
+          ledColor: Color(0xFF819FC3),
+          ledOnMs: 1000,
+          ledOffMs: 500,
+          ticker: 'Game releasing today!',
+          autoCancel: false,
         ),
       ),
       payload: jsonEncode(gameReminder.toJson()),
@@ -112,16 +125,6 @@ class NotificationClient {
 
   Future<void> cancelNotification(int gameId) async {
     await _flutterLocalNotificationsPlugin.cancel(gameId);
-    print('DEBUG: Cancelled notification for gameId: $gameId');
-  }
-
-  /// Debug method to check current pending notifications
-  Future<void> debugPendingNotifications() async {
-    final pending = await retrievePendingNotifications();
-    print('DEBUG: Current pending notifications: ${pending.length}');
-    for (final notification in pending) {
-      print('  - ID: ${notification.id}, Title: ${notification.title}, Body: ${notification.body}');
-    }
   }
 
   /// Test method to send an immediate notification
@@ -137,9 +140,17 @@ class NotificationClient {
           channelDescription: 'Notifications for game release days',
           importance: Importance.high,
           priority: Priority.high,
+          category: AndroidNotificationCategory.reminder,
+          visibility: NotificationVisibility.public,
+          enableLights: true,
+          ledColor: Color(0xFF819FC3),
+          ledOnMs: 1000,
+          ledOffMs: 500,
+          ticker: 'Test notification',
+          autoCancel: false,
         ),
       ),
     );
-    print('DEBUG: Test notification sent');
+    debugPrint('DEBUG: Test notification sent');
   }
 }

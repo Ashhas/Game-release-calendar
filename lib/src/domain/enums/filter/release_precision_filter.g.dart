@@ -9,7 +9,7 @@ part of 'release_precision_filter.dart';
 class ReleasePrecisionFilterAdapter
     extends TypeAdapter<ReleasePrecisionFilter> {
   @override
-  final int typeId = 15;
+  final typeId = 15;
 
   @override
   ReleasePrecisionFilter read(BinaryReader reader) {
@@ -36,22 +36,16 @@ class ReleasePrecisionFilterAdapter
     switch (obj) {
       case ReleasePrecisionFilter.all:
         writer.writeByte(0);
-        break;
       case ReleasePrecisionFilter.exactDate:
         writer.writeByte(1);
-        break;
       case ReleasePrecisionFilter.yearMonth:
         writer.writeByte(2);
-        break;
       case ReleasePrecisionFilter.quarter:
         writer.writeByte(3);
-        break;
       case ReleasePrecisionFilter.yearOnly:
         writer.writeByte(4);
-        break;
       case ReleasePrecisionFilter.tbd:
         writer.writeByte(5);
-        break;
     }
   }
 

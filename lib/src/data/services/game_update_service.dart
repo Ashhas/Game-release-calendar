@@ -1,5 +1,6 @@
+import 'dart:developer' as developer;
 
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
@@ -181,7 +182,13 @@ class GameUpdateService {
         await gameRemindersBox.put(reminderKey, updatedReminder);
       }
 
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error updating bookmarked game ${existingGame.id}',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 
@@ -201,7 +208,13 @@ class GameUpdateService {
       for (final reminder in gameReminders) {
         await _updateGameReminder(reminder, updatedGame);
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error handling release date change for game ${existingGame.id}',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 
@@ -240,7 +253,13 @@ class GameUpdateService {
       // Release date changed, need to reschedule notification
       await _rescheduleNotification(
           existingReminder, updatedGame, updatedReleaseDate);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error updating game reminder ${existingReminder.id}',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 
@@ -274,7 +293,13 @@ class GameUpdateService {
 
       await _saveUpdatedReminder(existingReminder, updatedReminder);
 
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error rescheduling notification for reminder ${existingReminder.id}',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 
@@ -289,7 +314,13 @@ class GameUpdateService {
       // Update the reminder in the box
       await gameRemindersBox.put(reminderKey, updatedReminder);
 
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error saving updated reminder ${existingReminder.id}',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 
@@ -305,7 +336,13 @@ class GameUpdateService {
 
       await gameRemindersBox.delete(reminderKey);
 
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error removing game reminder ${reminder.id}',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 
@@ -340,9 +377,14 @@ class GameUpdateService {
           await gameUpdateLogBox.delete(key);
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       // Log error but don't fail the update process
-      print('Error logging game update: $e');
+      developer.log(
+        'Error logging game update',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'GameUpdateService',
+      );
     }
   }
 

@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';

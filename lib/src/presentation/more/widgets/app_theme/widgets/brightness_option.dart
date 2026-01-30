@@ -4,14 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
 
-/// A list tile widget for selecting brightness modes in the theme settings
+/// A list tile widget for selecting brightness modes in the theme settings.
+/// Must be used within a RadioGroup<AppThemePreset> ancestor.
 class BrightnessOption extends StatelessWidget {
   const BrightnessOption({
     super.key,
     required this.preset,
     required this.title,
     required this.icon,
-    required this.currentBrightnessMode,
     this.subtitle,
   });
 
@@ -19,7 +19,6 @@ class BrightnessOption extends StatelessWidget {
   final String title;
   final String? subtitle;
   final IconData icon;
-  final AppThemePreset currentBrightnessMode;
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +26,7 @@ class BrightnessOption extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle!) : null,
-      trailing: Radio<AppThemePreset>(
-        value: preset,
-        groupValue: currentBrightnessMode,
-        onChanged: (value) {
-          if (value != null) {
-            context.read<ThemeCubit>().setBrightnessMode(value);
-          }
-        },
-      ),
+      trailing: Radio<AppThemePreset>(value: preset),
       onTap: () {
         context.read<ThemeCubit>().setBrightnessMode(preset);
       },

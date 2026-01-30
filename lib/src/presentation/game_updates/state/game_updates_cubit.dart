@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';

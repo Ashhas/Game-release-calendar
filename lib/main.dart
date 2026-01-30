@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -27,21 +27,12 @@ import 'package:game_release_calendar/src/data/services/notification_service.dar
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
 import 'package:game_release_calendar/src/data/services/game_update_service.dart';
-import 'package:game_release_calendar/src/domain/enums/game_category.dart';
-import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
-import 'package:game_release_calendar/src/domain/enums/supported_game_platform.dart';
-import 'package:game_release_calendar/src/domain/models/artwork.dart';
-import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
-import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
-
-import 'package:game_release_calendar/src/domain/models/platform.dart'
-    as GamePlatform;
-import 'package:game_release_calendar/src/domain/enums/release_region.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
+import 'package:game_release_calendar/hive_registrar.g.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -147,18 +138,7 @@ Future<void> _initializeServices(GetIt getIt) async {
 Future<void> _initializeHive(GetIt getIt) async {
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
-  Hive.registerAdapter(GameAdapter());
-  Hive.registerAdapter(GamePlatform.PlatformAdapter());
-  Hive.registerAdapter(CoverAdapter());
-  Hive.registerAdapter(ReleaseDateAdapter());
-  Hive.registerAdapter(GameReminderAdapter());
-  Hive.registerAdapter(ReleaseDateCategoryAdapter());
-  Hive.registerAdapter(SupportedGamePlatformAdapter());
-  Hive.registerAdapter(ArtworkAdapter());
-  Hive.registerAdapter(GameCategoryAdapter());
-  Hive.registerAdapter(ReleaseRegionAdapter());
-  Hive.registerAdapter(GameUpdateTypeAdapter());
-  Hive.registerAdapter(GameUpdateLogAdapter());
+  Hive.registerAdapters();
 
   final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
   getIt.registerSingleton<Box<Game>>(
@@ -210,6 +190,9 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
     importance: Importance.high,
     enableVibration: true,
     playSound: true,
+    showBadge: true,
+    enableLights: true,
+    ledColor: Color(0xFF819FC3),
   );
 
   final androidPlugin = notificationsPluginInstance
@@ -225,14 +208,17 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
     // Request exact alarm permission for Android 12+
     await androidPlugin.requestExactAlarmsPermission();
 
-    print('DEBUG: Notification permissions and channel setup complete');
   }
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
     notificationsPluginInstance,
   );
-  getIt.registerSingleton<NotificationClient>(
-    NotificationClient(),
+
+  final notificationClient = NotificationClient();
+  getIt.registerSingleton<NotificationClient>(notificationClient);
+
+  getIt.registerSingleton<NotificationsCubit>(
+    NotificationsCubit(notificationClient: notificationClient),
   );
 }
 

@@ -8,7 +8,7 @@ part of 'cover.dart';
 
 class CoverAdapter extends TypeAdapter<Cover> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   Cover read(BinaryReader reader) {
@@ -17,7 +17,7 @@ class CoverAdapter extends TypeAdapter<Cover> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Cover(
-      id: fields[0] as int?,
+      id: (fields[0] as num?)?.toInt(),
       url: fields[1] as String?,
       imageId: fields[2] as String?,
     );

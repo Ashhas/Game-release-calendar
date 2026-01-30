@@ -7,16 +7,18 @@ import 'package:game_release_calendar/src/domain/models/twitch_token.dart';
 
 class TwitchAuthService {
   TwitchAuthService({
-    required Dio dio,
     required String clientId,
     required String clientSecret,
     required String twitchOauthTokenURL,
-  })  : _dio = dio,
-        _clientId = clientId,
+  })  : _clientId = clientId,
         _clientSecret = clientSecret,
         _twitchOauthTokenURL = twitchOauthTokenURL,
-        _storage = const FlutterSecureStorage();
-  final Dio _dio;
+        _storage = const FlutterSecureStorage(
+          aOptions: AndroidOptions(
+            encryptedSharedPreferences: true,
+          ),
+        );
+
   final String _clientId;
   final String _clientSecret;
   final String _twitchOauthTokenURL;
@@ -29,7 +31,6 @@ class TwitchAuthService {
     required String twitchOauthTokenURL,
   }) async {
     final authService = TwitchAuthService(
-      dio: dio,
       clientId: clientId,
       clientSecret: clientSecret,
       twitchOauthTokenURL: twitchOauthTokenURL,
@@ -38,7 +39,7 @@ class TwitchAuthService {
     await authService.requestTokenAndStore();
 
     final token = await authService.getStoredToken();
-    if (token != null) {
+    if (token != null && token.isNotEmpty) {
       dio.options.headers['Client-ID'] = clientId;
       dio.options.headers['Authorization'] = 'Bearer $token';
     }
@@ -49,7 +50,14 @@ class TwitchAuthService {
   /// Authenticate and store token
   Future<void> requestTokenAndStore() async {
     try {
-      final response = await _dio.post(
+      // Use a separate Dio instance for OAuth to avoid baseUrl conflicts
+      final authDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      );
+      final response = await authDio.post(
         _twitchOauthTokenURL,
         queryParameters: {
           'client_id': _clientId,
@@ -64,10 +72,8 @@ class TwitchAuthService {
           key: 'twitch_access_token',
           value: twitchToken.accessToken,
         );
-        developer.log('Token stored successfully');
       } else {
-        developer
-            .log('Failed to authenticate with Twitch: ${response.statusCode}');
+        developer.log('Failed to authenticate with Twitch: ${response.statusCode}');
       }
     } on DioException catch (e) {
       developer.log('DioError while authenticating with Twitch: $e');

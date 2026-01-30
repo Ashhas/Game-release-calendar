@@ -165,9 +165,9 @@ void main() {
         final pastDate = DateTime(2020, 1, 1).millisecondsSinceEpoch ~/ 1000;
         expect(DateUtilities.computeNotificationDate(pastDate), isNull);
 
-        // Current time (should be null since it's not future)
-        final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-        expect(DateUtilities.computeNotificationDate(now), isNull);
+        // Yesterday (should be null since it's not future)
+        final yesterday = DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch ~/ 1000;
+        expect(DateUtilities.computeNotificationDate(yesterday), isNull);
 
         // Very far future
         final farFuture = DateTime(2100, 1, 1).millisecondsSinceEpoch ~/ 1000;

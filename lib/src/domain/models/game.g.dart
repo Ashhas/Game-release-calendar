@@ -8,7 +8,7 @@ part of 'game.dart';
 
 class GameAdapter extends TypeAdapter<Game> {
   @override
-  final int typeId = 0;
+  final typeId = 0;
 
   @override
   Game read(BinaryReader reader) {
@@ -17,10 +17,10 @@ class GameAdapter extends TypeAdapter<Game> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Game(
-      id: fields[0] as int,
-      createdAt: fields[1] as int,
+      id: (fields[0] as num).toInt(),
+      createdAt: (fields[1] as num).toInt(),
       name: fields[2] as String,
-      updatedAt: fields[3] as int,
+      updatedAt: (fields[3] as num).toInt(),
       url: fields[4] as String,
       checksum: fields[5] as String,
       ageRatings: (fields[6] as List?)?.cast<int>(),
@@ -28,7 +28,7 @@ class GameAdapter extends TypeAdapter<Game> {
       category: fields[8] as GameCategory?,
       cover: fields[9] as Cover?,
       externalGames: (fields[10] as List?)?.cast<int>(),
-      firstReleaseDate: fields[11] as int?,
+      firstReleaseDate: (fields[11] as num?)?.toInt(),
       genres: (fields[12] as List?)?.cast<int>(),
       platforms: (fields[13] as List?)?.cast<Platform>(),
       releaseDates: (fields[14] as List?)?.cast<ReleaseDate>(),
@@ -41,10 +41,10 @@ class GameAdapter extends TypeAdapter<Game> {
       websites: (fields[21] as List?)?.cast<int>(),
       languageSupports: (fields[22] as List?)?.cast<int>(),
       gameModes: (fields[23] as List?)?.cast<int>(),
-      status: fields[24] as int?,
+      status: (fields[24] as num?)?.toInt(),
       multiplayerModes: (fields[25] as List?)?.cast<int>(),
       videos: (fields[26] as List?)?.cast<int>(),
-      versionParent: fields[27] as int?,
+      versionParent: (fields[27] as num?)?.toInt(),
       versionTitle: fields[28] as String?,
     );
   }

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:toastification/toastification.dart';
 
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
-import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/game_update_service.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
@@ -32,10 +31,8 @@ class App extends StatelessWidget {
     return ToastificationWrapper(
       child: MultiBlocProvider(
         providers: [
-        BlocProvider<NotificationsCubit>(
-          create: (_) => NotificationsCubit(
-            notificationClient: GetIt.instance.get<NotificationClient>(),
-          ),
+        BlocProvider<NotificationsCubit>.value(
+          value: GetIt.instance.get<NotificationsCubit>(),
         ),
         BlocProvider<UpcomingGamesCubit>(
           create: (_) => UpcomingGamesCubit(
@@ -48,15 +45,15 @@ class App extends StatelessWidget {
           ),
         ),
         BlocProvider<GameDetailCubit>(
-          create: (context) => GameDetailCubit(
+          create: (_) => GameDetailCubit(
             remindersBox: GetIt.instance.get<Box<GameReminder>>(),
-            notificationsCubit: context.read<NotificationsCubit>(),
+            notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
           ),
         ),
         BlocProvider<RemindersCubit>(
-          create: (context) => RemindersCubit(
+          create: (_) => RemindersCubit(
             remindersBox: GetIt.instance.get<Box<GameReminder>>(),
-            notificationsCubit: context.read<NotificationsCubit>(),
+            notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
             prefsService: GetIt.instance.get<SharedPrefsService>(),
           ),
         ),

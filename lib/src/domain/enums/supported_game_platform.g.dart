@@ -8,7 +8,7 @@ part of 'supported_game_platform.dart';
 
 class SupportedGamePlatformAdapter extends TypeAdapter<SupportedGamePlatform> {
   @override
-  final int typeId = 5;
+  final typeId = 5;
 
   @override
   SupportedGamePlatform read(BinaryReader reader) {
@@ -133,169 +133,114 @@ class SupportedGamePlatformAdapter extends TypeAdapter<SupportedGamePlatform> {
     switch (obj) {
       case SupportedGamePlatform.android:
         writer.writeByte(0);
-        break;
       case SupportedGamePlatform.ios:
         writer.writeByte(1);
-        break;
       case SupportedGamePlatform.linux:
         writer.writeByte(2);
-        break;
       case SupportedGamePlatform.mac:
         writer.writeByte(3);
-        break;
       case SupportedGamePlatform.metaQuest2:
         writer.writeByte(4);
-        break;
       case SupportedGamePlatform.metaQuest3:
         writer.writeByte(5);
-        break;
       case SupportedGamePlatform.windows:
         writer.writeByte(6);
-        break;
       case SupportedGamePlatform.playstation:
         writer.writeByte(7);
-        break;
       case SupportedGamePlatform.playstation2:
         writer.writeByte(8);
-        break;
       case SupportedGamePlatform.playstation3:
         writer.writeByte(9);
-        break;
       case SupportedGamePlatform.playstation4:
         writer.writeByte(10);
-        break;
       case SupportedGamePlatform.playstation5:
         writer.writeByte(11);
-        break;
       case SupportedGamePlatform.xbox:
         writer.writeByte(12);
-        break;
       case SupportedGamePlatform.xbox360:
         writer.writeByte(13);
-        break;
       case SupportedGamePlatform.xboxOne:
         writer.writeByte(14);
-        break;
       case SupportedGamePlatform.xboxSeriesX:
         writer.writeByte(15);
-        break;
       case SupportedGamePlatform.nintendoSwitch:
         writer.writeByte(16);
-        break;
       case SupportedGamePlatform.wii:
         writer.writeByte(17);
-        break;
       case SupportedGamePlatform.wiiU:
         writer.writeByte(18);
-        break;
       case SupportedGamePlatform.nintendoDS:
         writer.writeByte(19);
-        break;
       case SupportedGamePlatform.nintendo3DS:
         writer.writeByte(20);
-        break;
       case SupportedGamePlatform.segaGenesis:
         writer.writeByte(21);
-        break;
       case SupportedGamePlatform.dreamcast:
         writer.writeByte(22);
-        break;
       case SupportedGamePlatform.gameBoy:
         writer.writeByte(23);
-        break;
       case SupportedGamePlatform.gameBoyAdvance:
         writer.writeByte(24);
-        break;
       case SupportedGamePlatform.gameBoyColor:
         writer.writeByte(25);
-        break;
       case SupportedGamePlatform.stadia:
         writer.writeByte(26);
-        break;
       case SupportedGamePlatform.oculusRift:
         writer.writeByte(27);
-        break;
       case SupportedGamePlatform.commodore64:
         writer.writeByte(28);
-        break;
       case SupportedGamePlatform.amiga:
         writer.writeByte(29);
-        break;
       case SupportedGamePlatform.atari2600:
         writer.writeByte(30);
-        break;
       case SupportedGamePlatform.atari7800:
         writer.writeByte(31);
-        break;
       case SupportedGamePlatform.atariLynx:
         writer.writeByte(32);
-        break;
       case SupportedGamePlatform.atariJaguar:
         writer.writeByte(33);
-        break;
       case SupportedGamePlatform.atariST:
         writer.writeByte(34);
-        break;
       case SupportedGamePlatform.nes:
         writer.writeByte(35);
-        break;
       case SupportedGamePlatform.snes:
         writer.writeByte(36);
-        break;
       case SupportedGamePlatform.nintendo64:
         writer.writeByte(37);
-        break;
       case SupportedGamePlatform.gameCube:
         writer.writeByte(38);
-        break;
       case SupportedGamePlatform.segaSaturn:
         writer.writeByte(39);
-        break;
       case SupportedGamePlatform.segaCD:
         writer.writeByte(40);
-        break;
       case SupportedGamePlatform.sega32X:
         writer.writeByte(41);
-        break;
       case SupportedGamePlatform.neoGeo:
         writer.writeByte(42);
-        break;
       case SupportedGamePlatform.pcEngine:
         writer.writeByte(43);
-        break;
       case SupportedGamePlatform.threeDO:
         writer.writeByte(44);
-        break;
       case SupportedGamePlatform.mobile:
         writer.writeByte(45);
-        break;
       case SupportedGamePlatform.webBrowser:
         writer.writeByte(46);
-        break;
       case SupportedGamePlatform.nintendoSwitch2:
         writer.writeByte(47);
-        break;
       case SupportedGamePlatform.oculusQuest:
         writer.writeByte(48);
-        break;
       case SupportedGamePlatform.oculusVR:
         writer.writeByte(49);
-        break;
       case SupportedGamePlatform.steamVR:
         writer.writeByte(50);
-        break;
       case SupportedGamePlatform.psvr:
         writer.writeByte(51);
-        break;
       case SupportedGamePlatform.psvr2:
         writer.writeByte(52);
-        break;
       case SupportedGamePlatform.vita:
         writer.writeByte(53);
-        break;
       case SupportedGamePlatform.noSuchPlatform:
         writer.writeByte(100);
-        break;
     }
   }
 

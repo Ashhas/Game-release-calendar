@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,785 +9,420 @@ part of 'game_update_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$GameUpdateState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() idle,
-    required TResult Function(int totalGames, int processedGames) loading,
-    required TResult Function() completed,
-    required TResult Function() updated,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? idle,
-    TResult? Function(int totalGames, int processedGames)? loading,
-    TResult? Function()? completed,
-    TResult? Function()? updated,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function(int totalGames, int processedGames)? loading,
-    TResult Function()? completed,
-    TResult Function()? updated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Idle value) idle,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Completed value) completed,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_Error value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Idle value)? idle,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Completed value)? completed,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_Error value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Idle value)? idle,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Completed value)? completed,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameUpdateState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameUpdateState()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $GameUpdateStateCopyWith<$Res> {
-  factory $GameUpdateStateCopyWith(
-          GameUpdateState value, $Res Function(GameUpdateState) then) =
-      _$GameUpdateStateCopyWithImpl<$Res, GameUpdateState>;
+class $GameUpdateStateCopyWith<$Res>  {
+$GameUpdateStateCopyWith(GameUpdateState _, $Res Function(GameUpdateState) __);
 }
 
-/// @nodoc
-class _$GameUpdateStateCopyWithImpl<$Res, $Val extends GameUpdateState>
-    implements $GameUpdateStateCopyWith<$Res> {
-  _$GameUpdateStateCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [GameUpdateState].
+extension GameUpdateStatePatterns on GameUpdateState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Idle value)?  idle,TResult Function( _Loading value)?  loading,TResult Function( _Completed value)?  completed,TResult Function( _Updated value)?  updated,TResult Function( _Error value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Idle() when idle != null:
+return idle(_that);case _Loading() when loading != null:
+return loading(_that);case _Completed() when completed != null:
+return completed(_that);case _Updated() when updated != null:
+return updated(_that);case _Error() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Idle value)  idle,required TResult Function( _Loading value)  loading,required TResult Function( _Completed value)  completed,required TResult Function( _Updated value)  updated,required TResult Function( _Error value)  error,}){
+final _that = this;
+switch (_that) {
+case _Idle():
+return idle(_that);case _Loading():
+return loading(_that);case _Completed():
+return completed(_that);case _Updated():
+return updated(_that);case _Error():
+return error(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Idle value)?  idle,TResult? Function( _Loading value)?  loading,TResult? Function( _Completed value)?  completed,TResult? Function( _Updated value)?  updated,TResult? Function( _Error value)?  error,}){
+final _that = this;
+switch (_that) {
+case _Idle() when idle != null:
+return idle(_that);case _Loading() when loading != null:
+return loading(_that);case _Completed() when completed != null:
+return completed(_that);case _Updated() when updated != null:
+return updated(_that);case _Error() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  idle,TResult Function( int totalGames,  int processedGames)?  loading,TResult Function()?  completed,TResult Function()?  updated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Idle() when idle != null:
+return idle();case _Loading() when loading != null:
+return loading(_that.totalGames,_that.processedGames);case _Completed() when completed != null:
+return completed();case _Updated() when updated != null:
+return updated();case _Error() when error != null:
+return error(_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  idle,required TResult Function( int totalGames,  int processedGames)  loading,required TResult Function()  completed,required TResult Function()  updated,required TResult Function( String message)  error,}) {final _that = this;
+switch (_that) {
+case _Idle():
+return idle();case _Loading():
+return loading(_that.totalGames,_that.processedGames);case _Completed():
+return completed();case _Updated():
+return updated();case _Error():
+return error(_that.message);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  idle,TResult? Function( int totalGames,  int processedGames)?  loading,TResult? Function()?  completed,TResult? Function()?  updated,TResult? Function( String message)?  error,}) {final _that = this;
+switch (_that) {
+case _Idle() when idle != null:
+return idle();case _Loading() when loading != null:
+return loading(_that.totalGames,_that.processedGames);case _Completed() when completed != null:
+return completed();case _Updated() when updated != null:
+return updated();case _Error() when error != null:
+return error(_that.message);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$IdleImplCopyWith<$Res> {
-  factory _$$IdleImplCopyWith(
-          _$IdleImpl value, $Res Function(_$IdleImpl) then) =
-      __$$IdleImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$IdleImplCopyWithImpl<$Res>
-    extends _$GameUpdateStateCopyWithImpl<$Res, _$IdleImpl>
-    implements _$$IdleImplCopyWith<$Res> {
-  __$$IdleImplCopyWithImpl(_$IdleImpl _value, $Res Function(_$IdleImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$IdleImpl implements _Idle {
-  const _$IdleImpl();
-
-  @override
-  String toString() {
-    return 'GameUpdateState.idle()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$IdleImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() idle,
-    required TResult Function(int totalGames, int processedGames) loading,
-    required TResult Function() completed,
-    required TResult Function() updated,
-    required TResult Function(String message) error,
-  }) {
-    return idle();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? idle,
-    TResult? Function(int totalGames, int processedGames)? loading,
-    TResult? Function()? completed,
-    TResult? Function()? updated,
-    TResult? Function(String message)? error,
-  }) {
-    return idle?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function(int totalGames, int processedGames)? loading,
-    TResult Function()? completed,
-    TResult Function()? updated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (idle != null) {
-      return idle();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Idle value) idle,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Completed value) completed,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_Error value) error,
-  }) {
-    return idle(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Idle value)? idle,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Completed value)? completed,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_Error value)? error,
-  }) {
-    return idle?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Idle value)? idle,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Completed value)? completed,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (idle != null) {
-      return idle(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Idle implements GameUpdateState {
-  const factory _Idle() = _$IdleImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int totalGames, int processedGames});
-}
-
-/// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$GameUpdateStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? totalGames = null,
-    Object? processedGames = null,
-  }) {
-    return _then(_$LoadingImpl(
-      totalGames: null == totalGames
-          ? _value.totalGames
-          : totalGames // ignore: cast_nullable_to_non_nullable
-              as int,
-      processedGames: null == processedGames
-          ? _value.processedGames
-          : processedGames // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl({required this.totalGames, required this.processedGames});
 
-  @override
-  final int totalGames;
-  @override
-  final int processedGames;
+class _Idle implements GameUpdateState {
+  const _Idle();
+  
 
-  @override
-  String toString() {
-    return 'GameUpdateState.loading(totalGames: $totalGames, processedGames: $processedGames)';
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LoadingImpl &&
-            (identical(other.totalGames, totalGames) ||
-                other.totalGames == totalGames) &&
-            (identical(other.processedGames, processedGames) ||
-                other.processedGames == processedGames));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, totalGames, processedGames);
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
-      __$$LoadingImplCopyWithImpl<_$LoadingImpl>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() idle,
-    required TResult Function(int totalGames, int processedGames) loading,
-    required TResult Function() completed,
-    required TResult Function() updated,
-    required TResult Function(String message) error,
-  }) {
-    return loading(totalGames, processedGames);
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? idle,
-    TResult? Function(int totalGames, int processedGames)? loading,
-    TResult? Function()? completed,
-    TResult? Function()? updated,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call(totalGames, processedGames);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function(int totalGames, int processedGames)? loading,
-    TResult Function()? completed,
-    TResult Function()? updated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(totalGames, processedGames);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Idle value) idle,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Completed value) completed,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_Error value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Idle value)? idle,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Completed value)? completed,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_Error value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Idle value)? idle,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Completed value)? completed,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Idle);
 }
 
-abstract class _Loading implements GameUpdateState {
-  const factory _Loading(
-      {required final int totalGames,
-      required final int processedGames}) = _$LoadingImpl;
 
-  int get totalGames;
-  int get processedGames;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'GameUpdateState.idle()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Loading implements GameUpdateState {
+  const _Loading({required this.totalGames, required this.processedGames});
+  
+
+ final  int totalGames;
+ final  int processedGames;
+
+/// Create a copy of GameUpdateState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadingCopyWith<_Loading> get copyWith => __$LoadingCopyWithImpl<_Loading>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading&&(identical(other.totalGames, totalGames) || other.totalGames == totalGames)&&(identical(other.processedGames, processedGames) || other.processedGames == processedGames));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,totalGames,processedGames);
+
+@override
+String toString() {
+  return 'GameUpdateState.loading(totalGames: $totalGames, processedGames: $processedGames)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$CompletedImplCopyWith<$Res> {
-  factory _$$CompletedImplCopyWith(
-          _$CompletedImpl value, $Res Function(_$CompletedImpl) then) =
-      __$$CompletedImplCopyWithImpl<$Res>;
+abstract mixin class _$LoadingCopyWith<$Res> implements $GameUpdateStateCopyWith<$Res> {
+  factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) _then) = __$LoadingCopyWithImpl;
+@useResult
+$Res call({
+ int totalGames, int processedGames
+});
+
+
+
+
+}
+/// @nodoc
+class __$LoadingCopyWithImpl<$Res>
+    implements _$LoadingCopyWith<$Res> {
+  __$LoadingCopyWithImpl(this._self, this._then);
+
+  final _Loading _self;
+  final $Res Function(_Loading) _then;
+
+/// Create a copy of GameUpdateState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? totalGames = null,Object? processedGames = null,}) {
+  return _then(_Loading(
+totalGames: null == totalGames ? _self.totalGames : totalGames // ignore: cast_nullable_to_non_nullable
+as int,processedGames: null == processedGames ? _self.processedGames : processedGames // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
 }
 
-/// @nodoc
-class __$$CompletedImplCopyWithImpl<$Res>
-    extends _$GameUpdateStateCopyWithImpl<$Res, _$CompletedImpl>
-    implements _$$CompletedImplCopyWith<$Res> {
-  __$$CompletedImplCopyWithImpl(
-      _$CompletedImpl _value, $Res Function(_$CompletedImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$CompletedImpl implements _Completed {
-  const _$CompletedImpl();
 
-  @override
-  String toString() {
-    return 'GameUpdateState.completed()';
-  }
+class _Completed implements GameUpdateState {
+  const _Completed();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CompletedImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() idle,
-    required TResult Function(int totalGames, int processedGames) loading,
-    required TResult Function() completed,
-    required TResult Function() updated,
-    required TResult Function(String message) error,
-  }) {
-    return completed();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? idle,
-    TResult? Function(int totalGames, int processedGames)? loading,
-    TResult? Function()? completed,
-    TResult? Function()? updated,
-    TResult? Function(String message)? error,
-  }) {
-    return completed?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function(int totalGames, int processedGames)? loading,
-    TResult Function()? completed,
-    TResult Function()? updated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (completed != null) {
-      return completed();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Idle value) idle,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Completed value) completed,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_Error value) error,
-  }) {
-    return completed(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Idle value)? idle,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Completed value)? completed,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_Error value)? error,
-  }) {
-    return completed?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Idle value)? idle,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Completed value)? completed,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (completed != null) {
-      return completed(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Completed);
 }
 
-abstract class _Completed implements GameUpdateState {
-  const factory _Completed() = _$CompletedImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameUpdateState.completed()';
 }
 
-/// @nodoc
-abstract class _$$UpdatedImplCopyWith<$Res> {
-  factory _$$UpdatedImplCopyWith(
-          _$UpdatedImpl value, $Res Function(_$UpdatedImpl) then) =
-      __$$UpdatedImplCopyWithImpl<$Res>;
+
 }
 
-/// @nodoc
-class __$$UpdatedImplCopyWithImpl<$Res>
-    extends _$GameUpdateStateCopyWithImpl<$Res, _$UpdatedImpl>
-    implements _$$UpdatedImplCopyWith<$Res> {
-  __$$UpdatedImplCopyWithImpl(
-      _$UpdatedImpl _value, $Res Function(_$UpdatedImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-}
+
 
 /// @nodoc
 
-class _$UpdatedImpl implements _Updated {
-  const _$UpdatedImpl();
 
-  @override
-  String toString() {
-    return 'GameUpdateState.updated()';
-  }
+class _Updated implements GameUpdateState {
+  const _Updated();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$UpdatedImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() idle,
-    required TResult Function(int totalGames, int processedGames) loading,
-    required TResult Function() completed,
-    required TResult Function() updated,
-    required TResult Function(String message) error,
-  }) {
-    return updated();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? idle,
-    TResult? Function(int totalGames, int processedGames)? loading,
-    TResult? Function()? completed,
-    TResult? Function()? updated,
-    TResult? Function(String message)? error,
-  }) {
-    return updated?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function(int totalGames, int processedGames)? loading,
-    TResult Function()? completed,
-    TResult Function()? updated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (updated != null) {
-      return updated();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Idle value) idle,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Completed value) completed,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_Error value) error,
-  }) {
-    return updated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Idle value)? idle,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Completed value)? completed,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_Error value)? error,
-  }) {
-    return updated?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Idle value)? idle,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Completed value)? completed,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (updated != null) {
-      return updated(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Updated);
 }
 
-abstract class _Updated implements GameUpdateState {
-  const factory _Updated() = _$UpdatedImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameUpdateState.updated()';
 }
 
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
+
 }
 
-/// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$GameUpdateStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$ErrorImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
+
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl(this.message);
 
-  @override
-  final String message;
+class _Error implements GameUpdateState {
+  const _Error(this.message);
+  
 
-  @override
-  String toString() {
-    return 'GameUpdateState.error(message: $message)';
-  }
+ final  String message;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
-            (identical(other.message, message) || other.message == message));
-  }
+/// Create a copy of GameUpdateState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ErrorCopyWith<_Error> get copyWith => __$ErrorCopyWithImpl<_Error>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() idle,
-    required TResult Function(int totalGames, int processedGames) loading,
-    required TResult Function() completed,
-    required TResult Function() updated,
-    required TResult Function(String message) error,
-  }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? idle,
-    TResult? Function(int totalGames, int processedGames)? loading,
-    TResult? Function()? completed,
-    TResult? Function()? updated,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function(int totalGames, int processedGames)? loading,
-    TResult Function()? completed,
-    TResult Function()? updated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Idle value) idle,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Completed value) completed,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_Error value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Idle value)? idle,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Completed value)? completed,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_Error value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Idle value)? idle,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Completed value)? completed,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.message, message) || other.message == message));
 }
 
-abstract class _Error implements GameUpdateState {
-  const factory _Error(final String message) = _$ErrorImpl;
 
-  String get message;
+@override
+int get hashCode => Object.hash(runtimeType,message);
 
-  /// Create a copy of GameUpdateState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'GameUpdateState.error(message: $message)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ErrorCopyWith<$Res> implements $GameUpdateStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class __$ErrorCopyWithImpl<$Res>
+    implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
+
+  final _Error _self;
+  final $Res Function(_Error) _then;
+
+/// Create a copy of GameUpdateState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_Error(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

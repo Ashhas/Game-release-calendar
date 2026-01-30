@@ -16,6 +16,7 @@ class MockIGDBRepository implements IGDBRepository {
   final List<Game> _mockGames;
   final List<String> _queriesReceived = <String>[];
 
+  // ignore: prefer_const_constructor_declarations
   MockIGDBRepository(this._mockGames);
 
   List<String> get queriesReceived => _queriesReceived;

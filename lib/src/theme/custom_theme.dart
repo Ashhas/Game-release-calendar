@@ -75,7 +75,7 @@ class CustomTheme {
           elevation: 0,
           scrolledUnderElevation: 0,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
@@ -152,7 +152,7 @@ class CustomTheme {
           elevation: 0,
           scrolledUnderElevation: 0,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),

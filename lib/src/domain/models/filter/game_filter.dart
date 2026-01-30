@@ -7,7 +7,7 @@ import 'package:game_release_calendar/src/domain/enums/filter/release_precision_
 part 'game_filter.freezed.dart';
 
 @freezed
-class GameFilter with _$GameFilter {
+abstract class GameFilter with _$GameFilter {
   const factory GameFilter({
     required Set<PlatformFilter> platformChoices,
     required Set<int> categoryIds,

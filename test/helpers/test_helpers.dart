@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';

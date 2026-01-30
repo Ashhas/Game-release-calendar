@@ -8,7 +8,7 @@ part of 'game_update_type.dart';
 
 class GameUpdateTypeAdapter extends TypeAdapter<GameUpdateType> {
   @override
-  final int typeId = 12;
+  final typeId = 12;
 
   @override
   GameUpdateType read(BinaryReader reader) {
@@ -39,28 +39,20 @@ class GameUpdateTypeAdapter extends TypeAdapter<GameUpdateType> {
     switch (obj) {
       case GameUpdateType.releaseDate:
         writer.writeByte(0);
-        break;
       case GameUpdateType.coverImage:
         writer.writeByte(1);
-        break;
       case GameUpdateType.gameInfo:
         writer.writeByte(2);
-        break;
       case GameUpdateType.platforms:
         writer.writeByte(3);
-        break;
       case GameUpdateType.descriptionUpdate:
         writer.writeByte(4);
-        break;
       case GameUpdateType.status:
         writer.writeByte(5);
-        break;
       case GameUpdateType.artwork:
         writer.writeByte(6);
-        break;
       case GameUpdateType.checksum:
         writer.writeByte(7);
-        break;
     }
   }
 

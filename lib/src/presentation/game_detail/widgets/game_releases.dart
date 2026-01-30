@@ -188,6 +188,9 @@ class _GameReleasesState extends State<GameReleases> {
     required ReleaseDate releaseDate,
   }) async {
     try {
+      // Check battery optimization on first reminder
+      await BatteryOptimizationDialog.showIfNeeded(context);
+
       await _gameDetailCubit.saveReminder(
         game: widget.game,
         releaseDate: releaseDate,

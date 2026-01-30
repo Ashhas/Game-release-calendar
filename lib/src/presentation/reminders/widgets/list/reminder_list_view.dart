@@ -5,7 +5,6 @@ import 'package:dartx/dartx.dart';
 import 'package:intl/intl.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
-import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/utils/date_range_utility.dart';
 import 'package:game_release_calendar/src/utils/date_utilities.dart';
@@ -17,10 +16,7 @@ part 'section/day_section.dart';
 part 'game_tile/game_tile.dart';
 
 class RemindersListView extends StatefulWidget {
-  const RemindersListView({
-    required this.reminders,
-    super.key,
-  });
+  const RemindersListView({required this.reminders, super.key});
 
   final Map<DateTime, List<GameReminder>> reminders;
 
@@ -40,20 +36,11 @@ class _RemindersListViewState extends State<RemindersListView> {
       slivers: [
         if (entries.isEmpty)
           const SliverFillRemaining(
-            child: Center(
-              child: Text(
-                'No reminders found',
-              ),
-            ),
+            child: Center(child: Text('No reminders found')),
           )
         else
           for (var entry in entries)
-            DaySection(
-              groupedReminders: entry,
-              key: ValueKey(
-                entry.key,
-              ),
-            ),
+            DaySection(groupedReminders: entry, key: ValueKey(entry.key)),
       ],
     );
   }

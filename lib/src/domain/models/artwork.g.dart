@@ -8,7 +8,7 @@ part of 'artwork.dart';
 
 class ArtworkAdapter extends TypeAdapter<Artwork> {
   @override
-  final int typeId = 7;
+  final typeId = 7;
 
   @override
   Artwork read(BinaryReader reader) {
@@ -17,15 +17,15 @@ class ArtworkAdapter extends TypeAdapter<Artwork> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Artwork(
-      id: fields[0] as int,
+      id: (fields[0] as num).toInt(),
       imageId: fields[1] as String,
       url: fields[2] as String,
-      game: fields[7] as int,
+      game: (fields[7] as num).toInt(),
       alphaChannel: fields[3] as bool?,
       animated: fields[4] as bool?,
       checksum: fields[8] as String?,
-      width: fields[5] as int?,
-      height: fields[6] as int?,
+      width: (fields[5] as num?)?.toInt(),
+      height: (fields[6] as num?)?.toInt(),
     );
   }
 

@@ -1,7 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
@@ -48,8 +48,6 @@ class GameDetailCubit extends Cubit<GameDetailState> {
       await _notificationsCubit.scheduleNotificationFromReminder(
         gameReminder: reminder,
       );
-
-      developer.log('Reminder saved successfully for game: ${game.name}');
     } catch (e, stackTrace) {
       developer.log('Error saving reminder: $e', stackTrace: stackTrace);
       rethrow;
@@ -64,9 +62,6 @@ class GameDetailCubit extends Cubit<GameDetailState> {
       await _notificationsCubit.cancelNotification(
         releaseDateId,
       );
-
-      developer
-          .log('Reminder removed successfully for releaseId: $releaseDateId');
     } catch (e, stackTrace) {
       developer.log('Error removing reminder: $e', stackTrace: stackTrace);
       rethrow;

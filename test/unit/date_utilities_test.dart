@@ -23,16 +23,17 @@ void main() {
 
     group('computeNotificationDate', () {
       test('should return DateTime at 10:00 AM for future dates', () {
-        // Future date: December 31, 2025
-        final futureEpoch = 1767139200;
+        // Use a date far enough in the future (1 year from now)
+        final futureDate = DateTime.now().add(const Duration(days: 365));
+        final futureEpoch = futureDate.millisecondsSinceEpoch ~/ 1000;
         final result = DateUtilities.computeNotificationDate(futureEpoch);
 
         expect(result, isNotNull);
         expect(result!.hour, equals(10));
         expect(result.minute, equals(0));
-        expect(result.year, equals(2025));
-        expect(result.month, equals(12));
-        expect(result.day, equals(31));
+        expect(result.year, equals(futureDate.year));
+        expect(result.month, equals(futureDate.month));
+        expect(result.day, equals(futureDate.day));
       });
 
       test('should return null for past dates', () {

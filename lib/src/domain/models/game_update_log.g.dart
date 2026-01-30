@@ -8,7 +8,7 @@ part of 'game_update_log.dart';
 
 class GameUpdateLogAdapter extends TypeAdapter<GameUpdateLog> {
   @override
-  final int typeId = 13;
+  final typeId = 13;
 
   @override
   GameUpdateLog read(BinaryReader reader) {
@@ -18,7 +18,7 @@ class GameUpdateLogAdapter extends TypeAdapter<GameUpdateLog> {
     };
     return GameUpdateLog(
       id: fields[0] as String,
-      gameId: fields[1] as int,
+      gameId: (fields[1] as num).toInt(),
       gameName: fields[2] as String,
       gamePayload: fields[3] as Game,
       updateType: fields[4] as GameUpdateType,

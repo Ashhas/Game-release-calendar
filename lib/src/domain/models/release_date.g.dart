@@ -8,7 +8,7 @@ part of 'release_date.dart';
 
 class ReleaseDateAdapter extends TypeAdapter<ReleaseDate> {
   @override
-  final int typeId = 3;
+  final typeId = 3;
 
   @override
   ReleaseDate read(BinaryReader reader) {
@@ -17,16 +17,16 @@ class ReleaseDateAdapter extends TypeAdapter<ReleaseDate> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ReleaseDate(
-      id: fields[0] as int,
-      date: fields[1] as int?,
+      id: (fields[0] as num).toInt(),
+      date: (fields[1] as num?)?.toInt(),
       human: fields[2] as String?,
       category: fields[3] as ReleaseDateCategory?,
-      year: fields[4] as int?,
-      month: fields[5] as int?,
-      quarter: fields[6] as int?,
+      year: (fields[4] as num?)?.toInt(),
+      month: (fields[5] as num?)?.toInt(),
+      quarter: (fields[6] as num?)?.toInt(),
       platform: fields[7] as SupportedGamePlatform?,
       region: fields[8] as ReleaseRegion?,
-      dateFormat: fields[9] as int?,
+      dateFormat: (fields[9] as num?)?.toInt(),
     );
   }
 

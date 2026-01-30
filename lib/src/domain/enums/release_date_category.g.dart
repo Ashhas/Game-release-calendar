@@ -8,7 +8,7 @@ part of 'release_date_category.dart';
 
 class ReleaseDateCategoryAdapter extends TypeAdapter<ReleaseDateCategory> {
   @override
-  final int typeId = 4;
+  final typeId = 4;
 
   @override
   ReleaseDateCategory read(BinaryReader reader) {
@@ -33,19 +33,14 @@ class ReleaseDateCategoryAdapter extends TypeAdapter<ReleaseDateCategory> {
     switch (obj) {
       case ReleaseDateCategory.exactDate:
         writer.writeByte(0);
-        break;
       case ReleaseDateCategory.yearMonth:
         writer.writeByte(1);
-        break;
       case ReleaseDateCategory.quarter:
         writer.writeByte(2);
-        break;
       case ReleaseDateCategory.year:
         writer.writeByte(3);
-        break;
       case ReleaseDateCategory.tbd:
         writer.writeByte(4);
-        break;
     }
   }
 

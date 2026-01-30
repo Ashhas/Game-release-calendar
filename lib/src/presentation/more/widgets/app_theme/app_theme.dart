@@ -102,24 +102,33 @@ class _AppThemeState extends State<AppTheme> {
               SizedBox(height: context.spacings.m),
 
               // Brightness Options
-              BrightnessOption(
-                preset: AppThemePreset.light,
-                title: 'Light',
-                icon: Icons.light_mode,
-                currentBrightnessMode: themeState.brightnessMode,
-              ),
-              BrightnessOption(
-                preset: AppThemePreset.dark,
-                title: 'Dark',
-                icon: Icons.dark_mode,
-                currentBrightnessMode: themeState.brightnessMode,
-              ),
-              BrightnessOption(
-                preset: AppThemePreset.system,
-                title: 'System',
-                subtitle: 'Follow system appearance',
-                icon: Icons.brightness_auto,
-                currentBrightnessMode: themeState.brightnessMode,
+              RadioGroup<AppThemePreset>(
+                groupValue: themeState.brightnessMode,
+                onChanged: (value) {
+                  if (value != null) {
+                    context.read<ThemeCubit>().setBrightnessMode(value);
+                  }
+                },
+                child: Column(
+                  children: [
+                    BrightnessOption(
+                      preset: AppThemePreset.light,
+                      title: 'Light',
+                      icon: Icons.light_mode,
+                    ),
+                    BrightnessOption(
+                      preset: AppThemePreset.dark,
+                      title: 'Dark',
+                      icon: Icons.dark_mode,
+                    ),
+                    BrightnessOption(
+                      preset: AppThemePreset.system,
+                      title: 'System',
+                      subtitle: 'Follow system appearance',
+                      icon: Icons.brightness_auto,
+                    ),
+                  ],
+                ),
               ),
             ],
           );

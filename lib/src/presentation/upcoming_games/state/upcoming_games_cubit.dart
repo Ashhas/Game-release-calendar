@@ -21,8 +21,14 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   final IGDBService _igdbService;
   Timer? _debounce;
 
-  void getGames() async {
-    _fetchGames();
+  @override
+  Future<void> close() {
+    _debounce?.cancel();
+    return super.close();
+  }
+
+  Future<void> getGames() async {
+    await _fetchGames();
   }
 
   /// Based on search-input, fetch games from IGDB API
@@ -86,7 +92,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   }
 
   /// Default function to fetch games from IGDB API and update state
-  void _fetchGames() async {
+  Future<void> _fetchGames() async {
     emit(state.copyWith(games: const AsyncValue.loading()));
 
     try {

@@ -8,7 +8,7 @@ part of 'release_region.dart';
 
 class ReleaseRegionAdapter extends TypeAdapter<ReleaseRegion> {
   @override
-  final int typeId = 9;
+  final typeId = 9;
 
   @override
   ReleaseRegion read(BinaryReader reader) {
@@ -45,37 +45,26 @@ class ReleaseRegionAdapter extends TypeAdapter<ReleaseRegion> {
     switch (obj) {
       case ReleaseRegion.europe:
         writer.writeByte(0);
-        break;
       case ReleaseRegion.northAmerica:
         writer.writeByte(1);
-        break;
       case ReleaseRegion.australia:
         writer.writeByte(2);
-        break;
       case ReleaseRegion.newZealand:
         writer.writeByte(3);
-        break;
       case ReleaseRegion.japan:
         writer.writeByte(4);
-        break;
       case ReleaseRegion.china:
         writer.writeByte(5);
-        break;
       case ReleaseRegion.asia:
         writer.writeByte(6);
-        break;
       case ReleaseRegion.worldwide:
         writer.writeByte(7);
-        break;
       case ReleaseRegion.korea:
         writer.writeByte(8);
-        break;
       case ReleaseRegion.brazil:
         writer.writeByte(9);
-        break;
       case ReleaseRegion.unknown:
         writer.writeByte(10);
-        break;
     }
   }
 

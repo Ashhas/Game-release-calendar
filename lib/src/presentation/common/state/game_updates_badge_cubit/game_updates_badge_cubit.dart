@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';

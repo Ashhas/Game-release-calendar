@@ -8,7 +8,7 @@ part of 'game_reminder.dart';
 
 class GameReminderAdapter extends TypeAdapter<GameReminder> {
   @override
-  final int typeId = 6;
+  final typeId = 6;
 
   @override
   GameReminder read(BinaryReader reader) {
@@ -17,8 +17,8 @@ class GameReminderAdapter extends TypeAdapter<GameReminder> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return GameReminder(
-      id: fields[0] as int,
-      gameId: fields[1] as int,
+      id: (fields[0] as num).toInt(),
+      gameId: (fields[1] as num).toInt(),
       gameName: fields[2] as String,
       gamePayload: fields[3] as Game,
       releaseDate: fields[4] as ReleaseDate,

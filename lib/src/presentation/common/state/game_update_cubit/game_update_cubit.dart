@@ -7,10 +7,17 @@ import 'package:game_release_calendar/src/presentation/common/state/game_update_
 
 class GameUpdateCubit extends Cubit<GameUpdateState> {
   final GameUpdateService gameUpdateService;
+  Timer? _resetTimer;
 
   GameUpdateCubit({
     required this.gameUpdateService,
   }) : super(const GameUpdateState.idle());
+
+  @override
+  Future<void> close() {
+    _resetTimer?.cancel();
+    return super.close();
+  }
 
   Future<void> startBackgroundUpdate() async {
 
@@ -39,7 +46,8 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
           : const GameUpdateState.completed());
 
       // Reset to idle after a short delay
-      Timer(const Duration(seconds: 2), () {
+      _resetTimer?.cancel();
+      _resetTimer = Timer(const Duration(seconds: 2), () {
         state.whenOrNull(
           completed: () => emit(const GameUpdateState.idle()),
           updated: () => emit(const GameUpdateState.idle()),
@@ -49,7 +57,8 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
       emit(GameUpdateState.error(e.toString()));
 
       // Reset to idle after showing error
-      Timer(const Duration(seconds: 3), () {
+      _resetTimer?.cancel();
+      _resetTimer = Timer(const Duration(seconds: 3), () {
         state.whenOrNull(
           error: (_) => emit(const GameUpdateState.idle()),
         );

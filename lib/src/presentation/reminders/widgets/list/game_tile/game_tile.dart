@@ -1,10 +1,7 @@
 part of '../reminder_list_view.dart';
 
 class GameTile extends StatelessWidget {
-  const GameTile({
-    required this.reminder,
-    super.key,
-  });
+  const GameTile({required this.reminder, super.key});
 
   final GameReminder reminder;
 
@@ -44,7 +41,8 @@ class GameTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-              'Release date: ${_formatReleaseDate(reminder.releaseDate.date)}'),
+            'Release date: ${_formatReleaseDate(reminder.releaseDate.date)}',
+          ),
           if (reminder.releaseDate.platform != null)
             Wrap(
               spacing: 4.0,
@@ -68,12 +66,6 @@ class GameTile extends StatelessWidget {
           context.read<RemindersCubit>().removeReminder(reminder.id);
         },
         tooltip: 'Remove reminder',
-      ),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => GameDetailView(game: reminder.gamePayload),
-        ),
       ),
     );
   }

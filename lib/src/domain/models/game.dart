@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
@@ -208,38 +208,31 @@ class Game {
     };
   }
 
+  String _formatDate(int? epochSeconds) {
+    if (epochSeconds == null) return 'null';
+    return DateTime.fromMillisecondsSinceEpoch(epochSeconds * 1000)
+        .toIso8601String()
+        .split('T')
+        .first;
+  }
+
   @override
   String toString() {
+    final platformNames = platforms?.map((p) => p.abbreviation ?? p.name).join(', ');
+    final artworksList = artworks
+        ?.map((a) => '    {id: ${a.id}, imageId: ${a.imageId}, gameId: ${a.game}, url: ${a.url}}')
+        .join(',\n');
+
     return 'Game(\n'
         '  id: $id,\n'
-        '  createdAt: $createdAt,\n'
-        '  name: $name,\n'
-        '  updatedAt: $updatedAt,\n'
-        '  url: $url,\n'
-        '  checksum: $checksum,\n'
-        '  ageRatings: $ageRatings,\n'
-        '  artworks: $artworks,\n'
-        '  category: $category,\n'
-        '  cover: ${cover?.toString()},\n'
-        '  externalGames: $externalGames,\n'
-        '  firstReleaseDate: $firstReleaseDate,\n'
-        '  genres: $genres,\n'
-        '  platforms: ${platforms?.map((p) => p.toString()).toList()},\n'
-        '  releaseDates: ${releaseDates?.map((r) => r.toString()).toList()},\n'
-        '  screenshots: $screenshots,\n'
-        '  similarGames: $similarGames,\n'
-        '  slug: $slug,\n'
-        '  description: $description,\n'
-        '  tags: $tags,\n'
-        '  themes: $themes,\n'
-        '  websites: $websites,\n'
-        '  languageSupports: $languageSupports,\n'
-        '  gameModes: $gameModes,\n'
-        '  status: $status,\n'
-        '  multiplayerModes: $multiplayerModes,\n'
-        '  videos: $videos,\n'
-        '  versionParent: $versionParent,\n'
-        '  versionTitle: $versionTitle\n'
+        '  name: "$name",\n'
+        '  category: ${category?.name ?? "unknown"},\n'
+        '  platforms: [$platformNames],\n'
+        '  firstReleaseDate: ${_formatDate(firstReleaseDate)},\n'
+        '  artworks: [\n$artworksList\n  ],\n'
+        '  createdAt: ${_formatDate(createdAt)},\n'
+        '  updatedAt: ${_formatDate(updatedAt)},\n'
+        '  url: $url\n'
         ')';
   }
 }

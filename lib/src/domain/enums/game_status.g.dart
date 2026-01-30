@@ -8,7 +8,7 @@ part of 'game_status.dart';
 
 class GameStatusAdapter extends TypeAdapter<GameStatus> {
   @override
-  final int typeId = 14;
+  final typeId = 14;
 
   @override
   GameStatus read(BinaryReader reader) {
@@ -39,28 +39,20 @@ class GameStatusAdapter extends TypeAdapter<GameStatus> {
     switch (obj) {
       case GameStatus.released:
         writer.writeByte(0);
-        break;
       case GameStatus.alpha:
         writer.writeByte(1);
-        break;
       case GameStatus.beta:
         writer.writeByte(2);
-        break;
       case GameStatus.earlyAccess:
         writer.writeByte(3);
-        break;
       case GameStatus.offline:
         writer.writeByte(4);
-        break;
       case GameStatus.cancelled:
         writer.writeByte(5);
-        break;
       case GameStatus.rumored:
         writer.writeByte(6);
-        break;
       case GameStatus.delisted:
         writer.writeByte(7);
-        break;
     }
   }
 
