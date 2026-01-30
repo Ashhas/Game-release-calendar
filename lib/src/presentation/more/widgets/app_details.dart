@@ -55,7 +55,7 @@ class _AppDetailsState extends State<AppDetails> {
             child: GestureDetector(
               onTap: _handleIconTap,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(context.spacings.l),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
                 child: Image.asset(
                   'assets/images/app_icon.png',
                   width: 100.0,

@@ -40,15 +40,31 @@ Future<void> main() async {
 
   final getIt = GetIt.instance;
 
-  await _initializeSharedPrefs(getIt);
-  await _loadEnvVariables(getIt);
+  // Phase 1: Parallel initialization of independent tasks
+  // These complete before Phase 2, which depends on their GetIt registrations
+  final packageInfoFuture = PackageInfo.fromPlatform(); // Awaited separately to capture result
+  await Future.wait([
+    _initializeSharedPrefs(getIt),
+    _loadEnvVariables(getIt),
+    _initializeHive(getIt),
+    _initializeTimeZoneSettings(),
+  ]);
+
+  // Register PackageInfo (awaited separately to get the result)
+  final packageInfo = await packageInfoFuture;
+  getIt.registerSingleton<PackageInfo>(packageInfo);
+
+  // Phase 2: Initialize networking (depends on env config)
   await _initializeDio(getIt);
   await _initializeTwitchAuthService(getIt);
+  _addAuthRetryInterceptor(getIt); // Add 401 retry after auth service exists
+
+  // Phase 3: Initialize remaining services (depends on networking + Hive)
   await _initializeRepositories(getIt);
-  await _initializeHive(getIt);
-  await _initializeTimeZoneSettings();
   await _initializeNotificationService(getIt);
   await _initializeServices(getIt);
+
+  // Phase 4: Non-critical analytics (can fail without breaking app)
   await _initializePostHog(getIt);
 
   runApp(
@@ -158,6 +174,40 @@ Future<void> _initializeDio(GetIt getIt) async {
   getIt.registerSingleton<Dio>(dio);
 }
 
+/// Adds an interceptor to automatically refresh token on 401 errors.
+///
+/// This handles token expiry gracefully by refreshing and retrying the request.
+void _addAuthRetryInterceptor(GetIt getIt) {
+  final dio = getIt.get<Dio>();
+  final authService = getIt.get<TwitchAuthService>();
+
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onError: (error, handler) async {
+        if (error.response?.statusCode == 401) {
+          debugPrint('Auth: Token expired, attempting refresh...');
+
+          final refreshed = await authService.refreshToken();
+
+          if (refreshed) {
+            debugPrint('Auth: Token refreshed, retrying request');
+            try {
+              final retryResponse = await dio.fetch(error.requestOptions);
+              return handler.resolve(retryResponse);
+            } catch (retryError) {
+              debugPrint('Auth: Retry failed after token refresh - $retryError');
+              return handler.next(error);
+            }
+          } else {
+            debugPrint('Auth: Token refresh failed, cannot retry request');
+          }
+        }
+        return handler.next(error);
+      },
+    ),
+  );
+}
+
 Future<void> _initializeRepositories(GetIt getIt) async {
   getIt.registerSingleton<IGDBRepository>(
     IGDBRepositoryImpl(
@@ -175,10 +225,7 @@ Future<void> _initializeServices(GetIt getIt) async {
     ),
   );
 
-  final packageInfo = await PackageInfo.fromPlatform();
-  getIt.registerSingleton<PackageInfo>(
-    packageInfo,
-  );
+  // Note: PackageInfo is registered earlier in main() for parallel initialization
 
   getIt.registerSingleton<GameUpdateService>(
     GameUpdateService(
