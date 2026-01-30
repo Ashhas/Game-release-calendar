@@ -110,17 +110,21 @@ void main() {
         expect(find.byIcon(Icons.expand_more), findsWidgets);
       });
 
-      testWidgets('should show all filter options when expanded', (WidgetTester tester) async {
+      testWidgets('should show simplified filter options when expanded', (WidgetTester tester) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        expect(find.text('All Release Types'), findsOneWidget);
+
+        // Only 2 options now: All and Exact Dates Only
+        expect(find.text('All (incl. TBD periods)'), findsOneWidget);
         expect(find.text('Exact Dates Only'), findsOneWidget);
-        expect(find.text('Year & Month'), findsOneWidget);
-        expect(find.text('Quarters (Q1, Q2, etc.)'), findsOneWidget);
-        expect(find.text('Year Only'), findsOneWidget);
-        expect(find.text('To Be Determined'), findsOneWidget);
+
+        // These options should no longer exist
+        expect(find.text('Year & Month'), findsNothing);
+        expect(find.text('Quarters (Q1, Q2, etc.)'), findsNothing);
+        expect(find.text('Year Only'), findsNothing);
+        expect(find.text('To Be Determined'), findsNothing);
       });
 
       testWidgets('should collapse when header is tapped again', (WidgetTester tester) async {
@@ -155,21 +159,21 @@ void main() {
         expect(exactDateChip.selected, isTrue);
       });
 
-      testWidgets('should select "Quarters" when tapped', (WidgetTester tester) async {
+      testWidgets('should select "All (incl. TBD periods)" when tapped', (WidgetTester tester) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text('Quarters (Q1, Q2, etc.)'));
+        await tester.tap(find.text('All (incl. TBD periods)'));
         await tester.pumpAndSettle();
-        final quarterChip = tester.widget<ChoiceChip>(
+        final allChip = tester.widget<ChoiceChip>(
           find.byWidgetPredicate((widget) =>
             widget is ChoiceChip &&
-            (widget.label as Text).data == 'Quarters (Q1, Q2, etc.)'
+            (widget.label as Text).data == 'All (incl. TBD periods)'
           )
         );
-        expect(quarterChip.selected, isTrue);
+        expect(allChip.selected, isTrue);
       });
 
       testWidgets('should show selected filter as chip when collapsed', (WidgetTester tester) async {
@@ -177,21 +181,21 @@ void main() {
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Year & Month'));
+        await tester.tap(find.text('Exact Dates Only'));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
         expect(find.byType(Chip), findsOneWidget);
-        expect(find.text('Year & Month'), findsOneWidget);
+        expect(find.text('Exact Dates Only'), findsOneWidget);
       });
 
-      testWidgets('should not show chip for "All Release Types" selection', (WidgetTester tester) async {
+      testWidgets('should not show chip for "All" selection', (WidgetTester tester) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('All Release Types'));
+        await tester.tap(find.text('All (incl. TBD periods)'));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text('Release Date Type'));
@@ -226,18 +230,18 @@ void main() {
 
     group('visual styling', () {
       testWidgets('selected chip should have primary color', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.quarter));
+        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        final quarterChip = tester.widget<ChoiceChip>(
+        final exactDateChip = tester.widget<ChoiceChip>(
           find.byWidgetPredicate((widget) =>
             widget is ChoiceChip &&
-            (widget.label as Text).data == 'Quarters (Q1, Q2, etc.)'
+            (widget.label as Text).data == 'Exact Dates Only'
           )
         );
 
-        expect(quarterChip.selected, isTrue);
+        expect(exactDateChip.selected, isTrue);
       });
 
       testWidgets('unselected chips should not be selected', (WidgetTester tester) async {
@@ -245,25 +249,17 @@ void main() {
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        final quarterChip = tester.widget<ChoiceChip>(
+        final allChip = tester.widget<ChoiceChip>(
           find.byWidgetPredicate((widget) =>
             widget is ChoiceChip &&
-            (widget.label as Text).data == 'Quarters (Q1, Q2, etc.)'
+            (widget.label as Text).data == 'All (incl. TBD periods)'
           )
         );
-        expect(quarterChip.selected, isFalse);
-
-        final yearMonthChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'Year & Month'
-          )
-        );
-        expect(yearMonthChip.selected, isFalse);
+        expect(allChip.selected, isFalse);
       });
 
       testWidgets('should show compact chip when collapsed and selected', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.tbd));
+        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
 
         final chip = tester.widget<Chip>(find.byType(Chip));
         expect(chip.visualDensity, equals(VisualDensity.compact));
@@ -285,20 +281,20 @@ void main() {
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Year Only'));
+        await tester.tap(find.text('Exact Dates Only'));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        final yearOnlyChip = tester.widget<ChoiceChip>(
+        final exactDateChip = tester.widget<ChoiceChip>(
           find.byWidgetPredicate((widget) =>
             widget is ChoiceChip &&
-            (widget.label as Text).data == 'Year Only'
+            (widget.label as Text).data == 'Exact Dates Only'
           )
         );
-        expect(yearOnlyChip.selected, isTrue);
+        expect(exactDateChip.selected, isTrue);
       });
     });
 
@@ -313,7 +309,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(ChoiceChip), findsWidgets);
-        expect(find.text('All Release Types'), findsOneWidget);
+        expect(find.text('All (incl. TBD periods)'), findsOneWidget);
         expect(find.text('Exact Dates Only'), findsOneWidget);
       });
 
@@ -324,9 +320,9 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(Wrap), findsWidgets);
-        expect(find.byType(ChoiceChip), findsWidgets);
+        expect(find.byType(ChoiceChip), findsWidgets); // Multiple ChoiceChips in filter sheet
         expect(find.text('Exact Dates Only'), findsOneWidget);
-        expect(find.text('Year & Month'), findsOneWidget);
+        expect(find.text('All (incl. TBD periods)'), findsOneWidget);
         expect(find.byType(Padding), findsWidgets);
       });
 
@@ -351,10 +347,10 @@ void main() {
       });
 
       testWidgets('should handle filter changes from external sources', (WidgetTester tester) async {
-        mockCubit.updateMockFilters(precisionChoice: ReleasePrecisionFilter.yearMonth);
+        mockCubit.updateMockFilters(precisionChoice: ReleasePrecisionFilter.exactDate);
         await tester.pumpWidget(buildTestWidget());
         expect(find.byType(Chip), findsOneWidget);
-        expect(find.text('Year & Month'), findsOneWidget);
+        expect(find.text('Exact Dates Only'), findsOneWidget);
       });
     });
 

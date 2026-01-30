@@ -24,13 +24,13 @@ class UpcomingGamesContainer extends StatelessWidget {
         body: BlocBuilder<UpcomingGamesCubit, UpcomingGamesState>(
           builder: (context, state) {
             return state.games.when(
-              data: (games) => games.isEmpty
+              data: (sections) => sections.isEmpty
                   ? EmptyGameList(
                       nameQuery: state.nameQuery,
                       onClearSearch: () =>
                           context.read<UpcomingGamesCubit>().clearSearch(),
                     )
-                  : GameList(games: games),
+                  : GameList(sections: sections),
               loading: () => const LoadingGameList(),
               error: (error, _) => ErrorGameList(
                 error: error is Exception ? error : Exception(error.toString()),

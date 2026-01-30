@@ -1,4 +1,7 @@
+import 'package:game_release_calendar/src/domain/enums/date_precision.dart';
+import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/game_section.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
 import 'package:game_release_calendar/src/utils/date_utilities.dart';
@@ -7,6 +10,102 @@ import 'package:game_release_calendar/src/utils/date_utilities.dart';
 class GameDateGrouper {
   static DateTime get tbdDate => Constants.maxDateLimit;
 
+  /// Groups games into sections by date AND precision level.
+  /// TBD sections (month/quarter/year) appear before their day-specific counterparts.
+  static List<GameSection> groupGamesIntoSections(List<Game> games) {
+    final Map<String, GameSection> sectionMap = {};
+
+    for (final game in games) {
+      final precision = _getGamePrecision(game);
+      final sectionDate = _getSectionDate(game, precision);
+      final key = '${sectionDate.millisecondsSinceEpoch}_${precision.name}';
+
+      if (sectionMap.containsKey(key)) {
+        sectionMap[key]!.games.add(game);
+      } else {
+        sectionMap[key] = GameSection(
+          date: sectionDate,
+          precision: precision,
+          games: [game],
+        );
+      }
+    }
+
+    // Sort sections: by date first, then exact dates before TBD sections
+    final sections = sectionMap.values.toList()
+      ..sort((a, b) {
+        // First compare by date
+        final dateComparison = a.date.compareTo(b.date);
+        if (dateComparison != 0) return dateComparison;
+
+        // Same date: exact dates come first, then TBD sections below
+        return a.precision.sortOrder.compareTo(b.precision.sortOrder);
+      });
+
+    // Sort games within each section by name
+    for (final section in sections) {
+      section.games.sort((a, b) => a.name.compareTo(b.name));
+    }
+
+    return sections;
+  }
+
+  /// Determines the precision level for a game based on its release date info.
+  static DatePrecision _getGamePrecision(Game game) {
+    if (game.firstReleaseDate == null) {
+      return DatePrecision.tbd;
+    }
+
+    final category = DateUtilities.getMostSpecificReleaseCategory(game);
+
+    switch (category) {
+      case ReleaseDateCategory.exactDate:
+        return DatePrecision.exactDay;
+      case ReleaseDateCategory.yearMonth:
+        return DatePrecision.month;
+      case ReleaseDateCategory.quarter:
+        return DatePrecision.quarter;
+      case ReleaseDateCategory.year:
+        return DatePrecision.year;
+      case ReleaseDateCategory.tbd:
+        return DatePrecision.tbd;
+    }
+  }
+
+  /// Gets the section date for a game based on its precision.
+  /// For TBD periods, normalizes to the start of that period.
+  static DateTime _getSectionDate(Game game, DatePrecision precision) {
+    if (game.firstReleaseDate == null) {
+      return tbdDate;
+    }
+
+    final releaseDate = DateTime.fromMillisecondsSinceEpoch(
+      game.firstReleaseDate! * 1000,
+    );
+
+    switch (precision) {
+      case DatePrecision.exactDay:
+        return DateTime(releaseDate.year, releaseDate.month, releaseDate.day);
+      case DatePrecision.month:
+        // End of month - TBD sections appear after exact dates for that month
+        // Using day 0 of next month gives last day of current month
+        return DateTime(releaseDate.year, releaseDate.month + 1, 0);
+      case DatePrecision.quarter:
+        // End of quarter - TBD sections appear after exact dates for that quarter
+        final quarterEndMonth = ((releaseDate.month - 1) ~/ 3) * 3 + 3;
+        return DateTime(releaseDate.year, quarterEndMonth + 1, 0);
+      case DatePrecision.year:
+        // End of year - TBD sections appear after exact dates for that year
+        return DateTime(releaseDate.year, 12, 31);
+      case DatePrecision.tbd:
+        return tbdDate;
+    }
+  }
+
+  /// Public method to get precision for a game (used by UI for styling)
+  static DatePrecision getGamePrecision(Game game) => _getGamePrecision(game);
+
+  @Deprecated('Use groupGamesIntoSections instead for proper TBD handling')
   static Map<DateTime, List<Game>> groupGamesByReleaseDate(List<Game> games) {
     Map<DateTime, List<Game>> groupedGames = {};
 

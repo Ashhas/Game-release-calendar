@@ -151,13 +151,10 @@ class _PrecisionFilters extends StatefulWidget {
 class _PrecisionFiltersState extends State<_PrecisionFilters> {
   bool _isExpanded = false;
 
+  // Simplified options: show all games (including TBD sections) or exact dates only
   final _options = <ReleasePrecisionFilter, String>{
-    ReleasePrecisionFilter.all: 'All Release Types',
+    ReleasePrecisionFilter.all: 'All (incl. TBD periods)',
     ReleasePrecisionFilter.exactDate: 'Exact Dates Only',
-    ReleasePrecisionFilter.yearMonth: 'Year & Month',
-    ReleasePrecisionFilter.quarter: 'Quarters (Q1, Q2, etc.)',
-    ReleasePrecisionFilter.yearOnly: 'Year Only',
-    ReleasePrecisionFilter.tbd: 'To Be Determined',
   };
 
   @override

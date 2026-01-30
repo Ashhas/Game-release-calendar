@@ -100,8 +100,8 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
         nameQuery: state.nameQuery,
         filter: state.selectedFilters,
       );
-      final filteredList = GameDateGrouper.groupGamesByReleaseDate(games);
-      emit(state.copyWith(games: AsyncValue.data(filteredList)));
+      final sections = GameDateGrouper.groupGamesIntoSections(games);
+      emit(state.copyWith(games: AsyncValue.data(sections)));
     } catch (e) {
       emit(state.copyWith(games: AsyncValue.error(e, StackTrace.current)));
     }

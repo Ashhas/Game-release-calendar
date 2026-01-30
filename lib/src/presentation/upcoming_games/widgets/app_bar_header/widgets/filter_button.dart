@@ -8,6 +8,7 @@ import 'package:game_release_calendar/src/presentation/upcoming_games/state/upco
 import 'package:game_release_calendar/src/presentation/common/widgets/styled_icon_button.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import '../../filter/filter_bottom_sheet.dart';
 
 class FilterButton extends StatelessWidget {
@@ -19,7 +20,8 @@ class FilterButton extends StatelessWidget {
       final platformCount = filters.platformChoices.length;
       final categoryCount = filters.categoryIds.length;
       final dateCount = _shouldCountDateFilter(filters.releaseDateChoice) ? 1 : 0;
-      return platformCount + categoryCount + dateCount;
+      final precisionCount = _shouldCountPrecisionFilter(filters.releasePrecisionChoice) ? 1 : 0;
+      return platformCount + categoryCount + dateCount + precisionCount;
     } catch (e) {
       debugPrint('Error calculating filter count: $e');
       return 0;
@@ -28,6 +30,11 @@ class FilterButton extends StatelessWidget {
 
   static bool _shouldCountDateFilter(DateFilterChoice? dateChoice) {
     return dateChoice != null && dateChoice != DateFilterChoice.allTime;
+  }
+
+  static bool _shouldCountPrecisionFilter(ReleasePrecisionFilter? precisionChoice) {
+    // Count as active filter if set to something other than "all"
+    return precisionChoice != null && precisionChoice != ReleasePrecisionFilter.all;
   }
 
 

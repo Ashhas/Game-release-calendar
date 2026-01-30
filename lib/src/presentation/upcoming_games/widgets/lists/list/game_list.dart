@@ -7,7 +7,9 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
+import 'package:game_release_calendar/src/domain/enums/date_precision.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/game_section.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/date_scrollbar/date_scrollbar.dart';
@@ -25,11 +27,11 @@ part 'physics/snap_scroll_physics.dart';
 
 class GameList extends StatefulWidget {
   const GameList({
-    required this.games,
+    required this.sections,
     super.key,
   });
 
-  final Map<DateTime, List<Game>> games;
+  final List<GameSection> sections;
 
   @override
   State<GameList> createState() => _GameListState();
@@ -37,9 +39,9 @@ class GameList extends StatefulWidget {
 
 class _GameListState extends State<GameList> with WidgetsBindingObserver {
   final ScrollController _scrollController = ScrollController();
-  final Map<DateTime, GlobalKey> _sectionKeys = {};
+  final Map<String, GlobalKey> _sectionKeys = {};
 
-  late Map<DateTime, List<Game>> _activeList;
+  late List<GameSection> _activeSections;
   int _requestLimit = Constants.gameRequestLimit;
   int _offset = Constants.gameRequestLimit;
   bool _isLastPage = false;
@@ -50,7 +52,7 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    _activeList = Map.of(widget.games);
+    _activeSections = List.of(widget.sections);
     _scrollController.addListener(_onScroll);
     _generateSectionKeys();
     _loadScrollbarSettings();
@@ -73,8 +75,8 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
 
   void _generateSectionKeys() {
     _sectionKeys.clear();
-    for (final date in _activeList.keys) {
-      _sectionKeys[date] = GlobalKey();
+    for (final section in _activeSections) {
+      _sectionKeys[section.key] = GlobalKey();
     }
   }
 
@@ -110,17 +112,28 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
   }
 
   void _extendUpcomingGamesList(List<Game> newGames) {
-    final newGroupedGames = GameDateGrouper.groupGamesByReleaseDate(newGames);
+    final newSections = GameDateGrouper.groupGamesIntoSections(newGames);
 
-    newGroupedGames.forEach((date, games) {
-      _activeList.update(
-        date,
-        (existingGames) => existingGames..addAll(games),
-        ifAbsent: () {
-          _sectionKeys[date] = GlobalKey();
-          return games;
-        },
+    for (final newSection in newSections) {
+      final existingIndex = _activeSections.indexWhere(
+        (s) => s.key == newSection.key,
       );
+
+      if (existingIndex != -1) {
+        // Add games to existing section
+        _activeSections[existingIndex].games.addAll(newSection.games);
+      } else {
+        // Add new section and generate key
+        _sectionKeys[newSection.key] = GlobalKey();
+        _activeSections.add(newSection);
+      }
+    }
+
+    // Re-sort sections after adding new ones
+    _activeSections.sort((a, b) {
+      final dateComparison = a.date.compareTo(b.date);
+      if (dateComparison != 0) return dateComparison;
+      return a.precision.sortOrder.compareTo(b.precision.sortOrder);
     });
 
     setState(() {});
@@ -154,8 +167,8 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
     }
   }
 
-  void _scrollToDate(DateTime date) {
-    final key = _sectionKeys[date];
+  void _scrollToSection(String sectionKey) {
+    final key = _sectionKeys[sectionKey];
     if (key?.currentContext != null) {
       Scrollable.ensureVisible(
         key!.currentContext!,
@@ -167,14 +180,16 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final sortedEntries = _activeList.entries.toList()
-      ..sort((a, b) => a.key.compareTo(b.key));
-    final availableDates = _extractSortedDates(sortedEntries);
+    // Extract unique dates for the scrollbar (exact dates only for simplicity)
+    final availableDates = _activeSections
+        .where((s) => s.precision == DatePrecision.exactDay)
+        .map((s) => s.date)
+        .toList();
 
     return Stack(
       children: [
         _GameListScrollView(
-          entries: sortedEntries,
+          sections: _activeSections,
           scrollController: _scrollController,
           sectionKeys: _sectionKeys,
           isLoading: _isLoading,
@@ -188,15 +203,18 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
             child: DateScrollbar(
               dates: availableDates,
               scrollController: _scrollController,
-              onDateTap: _scrollToDate,
+              onDateTap: (date) {
+                // Find the section key for this date
+                final matchingSection = _activeSections.where(
+                  (s) => s.date.isAtSameDayAs(date) && s.precision == DatePrecision.exactDay,
+                );
+                if (matchingSection.isNotEmpty) {
+                  _scrollToSection(matchingSection.first.key);
+                }
+              },
             ),
           ),
       ],
     );
-  }
-
-  List<DateTime> _extractSortedDates(
-      List<MapEntry<DateTime, List<Game>>> entries) {
-    return entries.map((entry) => entry.key).toList()..sort();
   }
 }

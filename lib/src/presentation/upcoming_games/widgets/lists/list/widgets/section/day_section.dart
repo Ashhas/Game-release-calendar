@@ -1,10 +1,10 @@
 part of '../../game_list.dart';
 
 class DaySection extends StatelessWidget {
-  final MapEntry<DateTime, List<Game>> groupedGames;
+  final GameSection section;
 
   const DaySection({
-    required this.groupedGames,
+    required this.section,
     super.key,
   });
 
@@ -15,16 +15,17 @@ class DaySection extends StatelessWidget {
         SliverPersistentHeader(
           pinned: true,
           delegate: _DayHeaderDelegate(
-            date: groupedGames.key,
+            section: section,
             colorScheme: Theme.of(context).colorScheme,
           ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (_, index) => GameTile(
-              game: groupedGames.value[index],
+              game: section.games[index],
+              isTbd: section.isTbd,
             ),
-            childCount: groupedGames.value.length,
+            childCount: section.games.length,
           ),
         ),
       ],
@@ -33,24 +34,33 @@ class DaySection extends StatelessWidget {
 }
 
 class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final DateTime date;
+  final GameSection section;
   final ColorScheme colorScheme;
 
   const _DayHeaderDelegate({
-    required this.date,
+    required this.section,
     required this.colorScheme,
   });
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final timeTillRelease = DateRangeUtility.getDayDifferenceLabel(
-      date,
-      currentDate: DateTime.now(),
-    );
+    final isTbdSection = section.isTbd;
+    final isCompleteTbd = section.precision == DatePrecision.tbd;
+
+    // For exact dates, show time until release
+    String? timeTillRelease;
+    if (!isTbdSection && !isCompleteTbd) {
+      timeTillRelease = DateRangeUtility.getDayDifferenceLabel(
+        section.date,
+        currentDate: DateTime.now(),
+      );
+    }
 
     return Container(
-      color: colorScheme.surface,
+      color: isTbdSection
+          ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.7)
+          : colorScheme.surface,
       padding: EdgeInsets.symmetric(
         horizontal: context.spacings.m,
         vertical: context.spacings.xs,
@@ -61,13 +71,13 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GameDateGrouper.tbdDate.isAtSameDayAs(date)
-              ? const Text('TBD')
-              : Text(
-                  DateFormat('EEEE, MMMM d y').format(date),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-          if (!GameDateGrouper.tbdDate.isAtSameDayAs(date))
+          Text(
+            _getHeaderText(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontStyle: isTbdSection ? FontStyle.italic : null,
+            ),
+          ),
+          if (timeTillRelease != null)
             Text(
               timeTillRelease,
               style: Theme.of(context).textTheme.bodySmall,
@@ -75,6 +85,21 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
         ],
       ),
     );
+  }
+
+  String _getHeaderText() {
+    switch (section.precision) {
+      case DatePrecision.exactDay:
+        if (GameDateGrouper.tbdDate.isAtSameDayAs(section.date)) {
+          return 'TBD';
+        }
+        return DateFormat('EEEE, MMMM d y').format(section.date);
+      case DatePrecision.month:
+      case DatePrecision.quarter:
+      case DatePrecision.year:
+      case DatePrecision.tbd:
+        return section.headerText;
+    }
   }
 
   @override
@@ -85,6 +110,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant _DayHeaderDelegate oldDelegate) {
-    return oldDelegate.date != date || oldDelegate.colorScheme != colorScheme;
+    return oldDelegate.section != section ||
+           oldDelegate.colorScheme != colorScheme;
   }
 }

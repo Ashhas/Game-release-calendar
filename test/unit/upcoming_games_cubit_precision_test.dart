@@ -234,8 +234,8 @@ void main() {
         expect(gamesData, isNotNull);
 
         // Should only have exact date games (Final Fantasy Tactics in our mock data)
-        final gameGroups = gamesData!.value;
-        final allGames = gameGroups.values.expand((games) => games).toList();
+        final sections = gamesData!.value;
+        final allGames = sections.expand((section) => section.games).toList();
 
         // Should contain Final Fantasy Tactics (exact date)
         expect(allGames.any((game) => game.name == 'Final Fantasy Tactics'), isTrue);
@@ -259,8 +259,8 @@ void main() {
         expect(cubit.state.games, isA<AsyncData>());
 
         final gamesData = cubit.state.games.asData;
-        final gameGroups = gamesData!.value;
-        final allGames = gameGroups.values.expand((games) => games).toList();
+        final sections = gamesData!.value;
+        final allGames = sections.expand((section) => section.games).toList();
 
         // Should contain quarter games (Cyberpunk 2078)
         expect(allGames.any((game) => game.name == 'Cyberpunk 2078'), isTrue);
@@ -283,8 +283,8 @@ void main() {
         expect(cubit.state.games, isA<AsyncData>());
 
         final gamesData = cubit.state.games.asData;
-        final gameGroups = gamesData!.value;
-        final allGames = gameGroups.values.expand((games) => games).toList();
+        final sections = gamesData!.value;
+        final allGames = sections.expand((section) => section.games).toList();
 
         // Should contain all games
         expect(allGames.length, equals(4));
@@ -308,8 +308,8 @@ void main() {
         expect(cubit.state.games, isA<AsyncData>());
 
         final gamesData = cubit.state.games.asData;
-        final gameGroups = gamesData!.value;
-        final allGames = gameGroups.values.expand((games) => games).toList();
+        final sections = gamesData!.value;
+        final allGames = sections.expand((section) => section.games).toList();
 
         // Should contain all games when no precision filter
         expect(allGames.length, equals(4));
@@ -508,8 +508,8 @@ void main() {
         await Future.delayed(Duration(milliseconds: 50));
 
         final gamesData = cubit.state.games.asData;
-        final gameGroups = gamesData!.value;
-        final allGames = gameGroups.values.expand((games) => games).toList();
+        final sections = gamesData!.value;
+        final allGames = sections.expand((section) => section.games).toList();
 
         // Should find Final Fantasy Tactics despite having null category
         final ffTactics = allGames.where((game) => game.name == 'Final Fantasy Tactics');
