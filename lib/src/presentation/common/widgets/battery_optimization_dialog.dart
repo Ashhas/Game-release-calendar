@@ -11,6 +11,7 @@ class BatteryOptimizationDialog extends StatelessWidget {
   ///
   /// Only shows once unless:
   /// - The app is not exempt and hasn't been prompted yet
+  /// - The user hasn't explicitly declined
   /// - The user explicitly requests it via settings
   ///
   /// Returns `true` if the app is already exempt or the user granted permission,
@@ -21,6 +22,13 @@ class BatteryOptimizationDialog extends StatelessWidget {
         await BatteryOptimizationHelper.isIgnoringBatteryOptimizations();
     if (isExempt) {
       return true;
+    }
+
+    // User explicitly declined - respect their choice
+    final hasDeclined =
+        await BatteryOptimizationHelper.hasUserDeclinedOptimization();
+    if (hasDeclined) {
+      return false;
     }
 
     // Already prompted the user once - don't nag
@@ -64,15 +72,23 @@ class BatteryOptimizationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Improve Notification Reliability'),
+      title: const Text('Enable Background Updates'),
       content: const Text(
-        'To ensure your game release reminders arrive on time, '
-        'allow this app to run without battery restrictions.',
+        'GameWatch can check for game release date changes in the background, '
+        'even when you\'re not using the app. This helps you stay informed '
+        'about delays or new release dates.\n\n'
+        'To enable this feature, allow the app to run without battery restrictions.',
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Not Now'),
+          onPressed: () async {
+            // Save user's choice to decline
+            await BatteryOptimizationHelper.setUserDeclinedOptimization();
+            if (context.mounted) {
+              Navigator.of(context).pop(false);
+            }
+          },
+          child: const Text('No Thanks'),
         ),
         FilledButton(
           onPressed: () async {

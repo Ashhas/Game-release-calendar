@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// methods to check and request exemption from battery optimization.
 class BatteryOptimizationHelper {
   static const String _hasPromptedKey = 'battery_optimization_prompted';
+  static const String _userDeclinedKey = 'battery_optimization_declined';
 
   /// Checks if the app is currently exempt from battery optimization.
   ///
@@ -69,6 +70,26 @@ class BatteryOptimizationHelper {
   /// Resets the prompt flag (useful for testing or settings).
   static Future<void> resetPromptFlag() async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_hasPromptedKey);
+  }
+
+  /// Checks if the user has explicitly declined the battery optimization.
+  static Future<bool> hasUserDeclinedOptimization() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_userDeclinedKey) ?? false;
+  }
+
+  /// Marks that the user has declined the battery optimization.
+  /// This will prevent the dialog from showing again.
+  static Future<void> setUserDeclinedOptimization() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_userDeclinedKey, true);
+  }
+
+  /// Resets the user's decline choice (useful for settings to re-enable prompts).
+  static Future<void> resetUserDeclinedChoice() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userDeclinedKey);
     await prefs.remove(_hasPromptedKey);
   }
 }
