@@ -29,7 +29,7 @@ class _FooterState extends State<Footer> {
               foregroundColor: colorScheme.primary,
             ),
             onPressed: widget.onResetFilter,
-            child: const Text('Clear'),
+            child: const Text('Reset'),
           ),
         ),
         SizedBox(width: context.spacings.s),
