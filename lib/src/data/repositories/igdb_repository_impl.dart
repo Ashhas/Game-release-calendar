@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/exceptions/app_exceptions.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/utils/retry_helper.dart';
 import 'igdb_repository.dart';
 

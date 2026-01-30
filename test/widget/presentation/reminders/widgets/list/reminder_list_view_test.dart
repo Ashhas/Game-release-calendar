@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/reminders/widgets/list/reminder_list_view.dart';
-import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
-import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
 import 'package:game_release_calendar/src/domain/models/cover.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
-import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
+import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
+import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/list/reminder_list_view.dart';
 import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 class FakeRemindersCubit implements RemindersCubit {

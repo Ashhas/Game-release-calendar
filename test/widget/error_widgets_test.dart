@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:game_release_calendar/src/presentation/common/widgets/error_widgets.dart';
+
 import 'package:game_release_calendar/src/domain/exceptions/app_exceptions.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/error_widgets.dart';
 import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 void main() {

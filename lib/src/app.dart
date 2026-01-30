@@ -7,20 +7,20 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:toastification/toastification.dart';
 
 import 'package:game_release_calendar/src/data/services/analytics_service.dart';
+import 'package:game_release_calendar/src/data/services/game_update_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
-import 'package:game_release_calendar/src/data/services/game_update_service.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/app_navigation_bar.dart';
-import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_update_cubit/game_update_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/toast/global_state_listener.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/state/game_updates_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
-import 'package:game_release_calendar/src/presentation/common/toast/global_state_listener.dart';
 import 'package:game_release_calendar/src/theme/custom_theme.dart';
 import 'package:game_release_calendar/src/theme/state/theme_cubit.dart';
 

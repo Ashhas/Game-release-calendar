@@ -3,6 +3,8 @@ part of '../more_container.dart';
 class OptionsList extends StatelessWidget {
   const OptionsList({super.key});
 
+  static const _supportEmail = 'ashhas.studio@gmail.com';
+
   @override
   Widget build(BuildContext context) {
     final appVersion = GetIt.instance.get<PackageInfo>().version;
@@ -59,18 +61,39 @@ class OptionsList extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.support_agent),
           title: const Text('Support'),
-          onTap: () {
-            final emailLaunchUri = Uri(
-              scheme: 'mailto',
-              path: 'ashhas.studio@gmail.com',
-              queryParameters: {
-                'subject': 'GameWatch\tSupport',
-              },
-            );
-            UrlHelper.launchUri(emailLaunchUri);
-          },
+          onTap: () => _handleSupportTap(context),
         ),
       ],
     );
+  }
+
+  Future<void> _handleSupportTap(BuildContext context) async {
+    final appVersion = GetIt.instance.get<PackageInfo>().version;
+    final emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: _supportEmail,
+      queryParameters: {
+        'subject': '[GameWatch v$appVersion] Support Request',
+      },
+    );
+
+    final launched = await UrlHelper.launchUri(emailLaunchUri);
+
+    if (!launched && context.mounted) {
+      // No email app available - copy email to clipboard and show message
+      await Clipboard.setData(ClipboardData(text: _supportEmail));
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Email copied: $_supportEmail'),
+            action: SnackBarAction(
+              label: 'OK',
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@
 // Check in to version control
 
 import 'package:hive_ce/hive.dart';
+
 import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/domain/enums/game_status.dart';

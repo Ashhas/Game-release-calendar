@@ -2,12 +2,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
+
+import 'package:game_release_calendar/src/data/services/game_update_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
-import 'package:game_release_calendar/src/data/services/game_update_service.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
+import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 class FakeSharedPrefsService implements SharedPrefsService {

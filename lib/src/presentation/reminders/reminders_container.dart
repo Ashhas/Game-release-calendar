@@ -1,26 +1,26 @@
 import 'dart:convert';
 
-import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
-import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_state.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
+import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/alert_badge.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/game_updates_container.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';
 import 'package:game_release_calendar/src/presentation/reminders/widgets/list/reminder_list_view.dart';
-import 'package:game_release_calendar/src/presentation/reminders/widgets/two_column_grid_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/widgets/three_column_grid_view.dart';
+import 'package:game_release_calendar/src/presentation/reminders/widgets/two_column_grid_view.dart';
 import 'package:game_release_calendar/src/presentation/reminders/widgets/view_toggle_tab.dart';
+import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 import '../../domain/models/notifications/game_reminder.dart';
 

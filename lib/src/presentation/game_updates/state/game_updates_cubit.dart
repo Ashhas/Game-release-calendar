@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
 import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
+import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
 import 'game_updates_state.dart';
 
 class GameUpdatesCubit extends Cubit<GameUpdatesState> {

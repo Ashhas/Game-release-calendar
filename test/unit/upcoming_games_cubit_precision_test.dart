@@ -1,15 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
-import 'package:game_release_calendar/src/data/services/igdb_service.dart';
+import 'package:riverpod/riverpod.dart';
+
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
-import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
-import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
+import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/domain/enums/game_category.dart';
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 
 // Mock repository for integration testing
 class MockIGDBRepository implements IGDBRepository {

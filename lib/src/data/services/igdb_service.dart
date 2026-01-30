@@ -1,7 +1,7 @@
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
 import 'package:game_release_calendar/src/utils/search_helper.dart';
 import '../../utils/date_range_utility.dart';

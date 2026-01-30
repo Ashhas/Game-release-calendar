@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 import 'package:game_release_calendar/src/theme/app_colors.dart';
+import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 extension ThemeExtension on BuildContext {
   AppColors get appColors => Theme.of(this).extension<AppColors>()!;

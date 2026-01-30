@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
-import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 import 'package:game_release_calendar/src/theme/app_colors.dart';
+import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
+import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 
 class CustomTheme {
   CustomTheme._();

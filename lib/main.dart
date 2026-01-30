@@ -18,22 +18,22 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'package:game_release_calendar/hive_registrar.g.dart';
 import 'package:game_release_calendar/src/app.dart';
 import 'package:game_release_calendar/src/config/env_config.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
 import 'package:game_release_calendar/src/data/repositories/igdb_repository_impl.dart';
 import 'package:game_release_calendar/src/data/services/analytics_service.dart';
+import 'package:game_release_calendar/src/data/services/game_update_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/data/services/shared_prefs_service.dart';
 import 'package:game_release_calendar/src/data/services/twitch_service.dart';
-import 'package:game_release_calendar/src/data/services/game_update_service.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
-import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
-import 'package:game_release_calendar/hive_registrar.g.dart';
+import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +59,12 @@ Future<void> main() async {
 }
 
 Future<void> _initializePostHog(GetIt getIt) async {
+  // Skip analytics entirely in debug/development mode
+  if (kDebugMode) {
+    debugPrint('PostHog: Disabled in debug mode');
+    return;
+  }
+
   try {
     final envConfig = getIt.get<EnvConfig>();
     final packageInfo = getIt.get<PackageInfo>();
@@ -73,7 +79,7 @@ Future<void> _initializePostHog(GetIt getIt) async {
     // Configure PostHog analytics
     final config = PostHogConfig(envConfig.posthogApiKey);
     config.host = envConfig.posthogHost;
-    config.debug = kDebugMode;
+    config.debug = false; // Never log in production
     config.captureApplicationLifecycleEvents = true;
 
     // Enable session replay to understand user behavior and reproduce issues

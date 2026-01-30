@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/list/game_list.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:game_release_calendar/src/domain/enums/date_precision.dart';
+import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/models/game_section.dart';
-import 'package:game_release_calendar/src/domain/models/cover.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/list/game_list.dart';
 import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 import '../../../../../helpers/test_helpers.dart';
 

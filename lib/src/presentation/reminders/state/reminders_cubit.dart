@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:dartx/dartx.dart';
 
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_state.dart';

@@ -1,23 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+import 'package:riverpod/riverpod.dart';
+
 import 'package:game_release_calendar/src/data/services/analytics_service.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/platform.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_state.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/game_image.dart';
+import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/state/game_updates_cubit.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/state/game_updates_state.dart';
-import 'package:game_release_calendar/src/presentation/game_detail/game_detail_view.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
-import 'package:intl/intl.dart';
-import 'dart:convert';
-
-import 'package:riverpod/riverpod.dart';
 
 class GameUpdatesContainer extends StatefulWidget {
   const GameUpdatesContainer({super.key});

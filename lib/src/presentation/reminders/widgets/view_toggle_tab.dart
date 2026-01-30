@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 
 class ViewToggleTab extends StatelessWidget {

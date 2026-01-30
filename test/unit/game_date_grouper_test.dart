@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
+
 import 'package:game_release_calendar/src/domain/enums/release_date_category.dart';
-import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
 import 'package:game_release_calendar/src/utils/constants.dart';
+import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 
 void main() {
   group('GameDateGrouper', () {

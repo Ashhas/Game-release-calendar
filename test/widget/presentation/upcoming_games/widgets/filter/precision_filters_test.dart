@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter/filter_bottom_sheet.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/filter/filter_bottom_sheet.dart';
 import 'package:game_release_calendar/src/theme/spacing/app_spacings.dart';
 import '../../../../../helpers/test_helpers.dart';
 

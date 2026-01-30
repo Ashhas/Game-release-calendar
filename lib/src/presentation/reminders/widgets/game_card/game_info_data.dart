@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 
 class GameInfoData extends StatelessWidget {

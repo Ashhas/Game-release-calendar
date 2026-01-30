@@ -1,15 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
-import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/game_section.dart';
-import 'package:game_release_calendar/src/domain/models/cover.dart';
-import 'package:game_release_calendar/src/domain/models/platform.dart';
-import 'package:game_release_calendar/src/domain/models/release_date.dart';
+
 import 'package:game_release_calendar/src/domain/enums/date_precision.dart';
 import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
 import 'package:game_release_calendar/src/domain/enums/filter/platform_filter.dart';
+import 'package:game_release_calendar/src/domain/models/cover.dart';
+import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/game_section.dart';
+import 'package:game_release_calendar/src/domain/models/platform.dart';
+import 'package:game_release_calendar/src/domain/models/release_date.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 
 void main() {
   group('UpcomingGamesState', () {

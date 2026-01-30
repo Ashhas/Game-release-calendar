@@ -5,8 +5,8 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/domain/exceptions/app_exceptions.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
 import '../../../domain/enums/filter/date_filter_choice.dart';

@@ -1,7 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:game_release_calendar/src/domain/models/game.dart';
-import 'package:game_release_calendar/src/domain/models/cover.dart';
+
 import 'package:game_release_calendar/src/domain/enums/game_category.dart';
+import 'package:game_release_calendar/src/domain/models/cover.dart';
+import 'package:game_release_calendar/src/domain/models/game.dart';
 
 void main() {
   group('Game Model', () {

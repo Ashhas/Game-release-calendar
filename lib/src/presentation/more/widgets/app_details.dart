@@ -54,9 +54,13 @@ class _AppDetailsState extends State<AppDetails> {
             padding: EdgeInsets.symmetric(vertical: context.spacings.l),
             child: GestureDetector(
               onTap: _handleIconTap,
-              child: const Icon(
-                Icons.emoji_symbols,
-                size: 100.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(context.spacings.l),
+                child: Image.asset(
+                  'assets/images/app_icon.png',
+                  width: 100.0,
+                  height: 100.0,
+                ),
               ),
             ),
           ),

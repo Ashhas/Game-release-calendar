@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/empty_list/empty_game_list.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/error_list/error_game_list.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/list/game_list.dart';
-import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/loading_list/loading_game_list.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/app_bar_header/app_bar_header.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/empty_list/empty_game_list.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/error_list/error_game_list.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/list/game_list.dart';
+import 'package:game_release_calendar/src/presentation/upcoming_games/widgets/lists/loading_list/loading_game_list.dart';
 
 class UpcomingGamesContainer extends StatelessWidget {
   const UpcomingGamesContainer({super.key});

@@ -3,13 +3,13 @@ import 'dart:developer' as developer;
 import 'package:hive_ce/hive.dart';
 
 import 'package:game_release_calendar/src/data/repositories/igdb_repository.dart';
+import 'package:game_release_calendar/src/data/services/notification_service.dart';
+import 'package:game_release_calendar/src/domain/enums/game_status.dart';
+import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
+import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/domain/models/release_date.dart';
-import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
-import 'package:game_release_calendar/src/domain/enums/game_update_type.dart';
-import 'package:game_release_calendar/src/domain/enums/game_status.dart';
-import 'package:game_release_calendar/src/data/services/notification_service.dart';
 import 'package:game_release_calendar/src/utils/date_utilities.dart';
 
 class GameUpdateService {
