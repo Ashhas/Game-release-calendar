@@ -15,7 +15,7 @@ on:
           - production
 
 env:
-  FLUTTER_VERSION: 3.29.1
+  FLUTTER_VERSION: 3.38.8
   JAVA_VERSION: '17'
   PACKAGE_NAME: com.ashhas.gamewatch
   ARTIFACT_RETENTION_DAYS: 30

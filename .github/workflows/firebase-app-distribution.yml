@@ -10,7 +10,7 @@ on:
         default: 'New test build'
 
 env:
-  FLUTTER_VERSION: 3.29.1
+  FLUTTER_VERSION: 3.38.8
   JAVA_VERSION: '17'
   ARTIFACT_RETENTION_DAYS: 30
 
