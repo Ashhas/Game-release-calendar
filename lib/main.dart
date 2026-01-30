@@ -210,53 +210,62 @@ Future<void> _initializeHive(GetIt getIt) async {
 }
 
 Future<void> _initializeNotificationService(GetIt getIt) async {
-  const notificationIconSource = 'ic_game_pad';
   final notificationsPluginInstance = FlutterLocalNotificationsPlugin();
 
-  const initializationSettingsAndroid = AndroidInitializationSettings(
-    notificationIconSource,
-  );
-  const initializationSettingsIOS = DarwinInitializationSettings(
-    requestSoundPermission: true,
-    requestBadgePermission: true,
-    requestAlertPermission: true,
-  );
-  const initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsIOS,
-  );
+  try {
+    const notificationIconSource = 'ic_game_pad';
 
-  await notificationsPluginInstance.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse: (_) {},
-  );
+    const initializationSettingsAndroid = AndroidInitializationSettings(
+      notificationIconSource,
+    );
+    const initializationSettingsIOS = DarwinInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+    );
+    const initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
 
-  // Create notification channel for Android
-  const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'release_day_channel',
-    'Game Release Notifications',
-    description: 'Notifications for game release days',
-    importance: Importance.high,
-    enableVibration: true,
-    playSound: true,
-    showBadge: true,
-    enableLights: true,
-    ledColor: Color(0xFF819FC3),
-  );
+    await notificationsPluginInstance.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (_) {},
+    );
 
-  final androidPlugin = notificationsPluginInstance
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    // Create notification channel for Android
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'release_day_channel',
+      'Game Release Notifications',
+      description: 'Notifications for game release days',
+      importance: Importance.high,
+      enableVibration: true,
+      playSound: true,
+      showBadge: true,
+      enableLights: true,
+      ledColor: Color(0xFF819FC3),
+    );
 
-  if (androidPlugin != null) {
-    // Create the notification channel
-    await androidPlugin.createNotificationChannel(channel);
+    final androidPlugin = notificationsPluginInstance
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
-    // Request notification permissions
-    await androidPlugin.requestNotificationsPermission();
+    if (androidPlugin != null) {
+      // Create the notification channel
+      await androidPlugin.createNotificationChannel(channel);
 
-    // Request exact alarm permission for Android 12+
-    await androidPlugin.requestExactAlarmsPermission();
+      // Request notification permissions
+      await androidPlugin.requestNotificationsPermission();
 
+      // Request exact alarm permission for Android 12+
+      await androidPlugin.requestExactAlarmsPermission();
+    }
+
+    debugPrint('Notifications: Initialized successfully');
+  } catch (e, stackTrace) {
+    // Notification setup is non-critical - app should still work without it
+    debugPrint('Notifications: Initialization failed - notifications disabled');
+    debugPrint('Error: $e');
+    debugPrintStack(stackTrace: stackTrace);
   }
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
