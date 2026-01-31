@@ -91,12 +91,14 @@ void main() {
         expect(find.text('Release Date Type'), findsOneWidget);
       });
 
-      testWidgets('should not show chip when no selection and collapsed', (
+      testWidgets('should show chip with default selection when collapsed', (
         WidgetTester tester,
       ) async {
+        // Default selection is normalized to 'all', so chip should show
         await tester.pumpWidget(buildTestWidget());
 
-        expect(find.byType(Chip), findsNothing);
+        expect(find.byType(Chip), findsOneWidget);
+        expect(find.text('All (incl. TBD periods)'), findsOneWidget);
       });
 
       testWidgets(
@@ -221,10 +223,13 @@ void main() {
         expect(find.text('Exact Dates Only'), findsOneWidget);
       });
 
-      testWidgets('should not show chip for "All" selection', (
+      testWidgets('should show chip for "All" selection when collapsed', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget());
+        // Start with exactDate, then switch to All
+        await tester.pumpWidget(
+          buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+        );
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
@@ -233,7 +238,10 @@ void main() {
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
-        expect(find.byType(Chip), findsNothing);
+
+        // Chip should show for "All" selection
+        expect(find.byType(Chip), findsOneWidget);
+        expect(find.text('All (incl. TBD periods)'), findsOneWidget);
       });
 
       testWidgets('should allow deselecting a filter', (
@@ -413,10 +421,12 @@ void main() {
       testWidgets('should handle null initial selection gracefully', (
         WidgetTester tester,
       ) async {
+        // null selection is normalized to 'all' by the cubit, so chip shows
         await tester.pumpWidget(buildTestWidget(initialSelection: null));
 
         expect(find.text('Release Date Type'), findsOneWidget);
-        expect(find.byType(Chip), findsNothing);
+        expect(find.byType(Chip), findsOneWidget);
+        expect(find.text('All (incl. TBD periods)'), findsOneWidget);
       });
 
       testWidgets('should handle filter changes from external sources', (
