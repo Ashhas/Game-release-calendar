@@ -38,6 +38,8 @@ dependencies:
   connectivity_plus: ^6.1.0
   posthog_flutter: ^5.0.0
   toastification: ^2.3.0
+  firebase_core: ^3.8.1
+  firebase_crashlytics: ^4.2.1
   cached_network_image: ^3.4.1
 
 dev_dependencies:

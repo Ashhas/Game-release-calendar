@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
@@ -18,6 +20,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'package:game_release_calendar/firebase_options.dart';
 import 'package:game_release_calendar/hive_registrar.g.dart';
 import 'package:game_release_calendar/src/app.dart';
 import 'package:game_release_calendar/src/config/env_config.dart';
@@ -37,6 +40,23 @@ import 'package:game_release_calendar/src/utils/time_zone_mapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase first (required for Crashlytics)
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    if (kDebugMode) {
+      debugPrint('Firebase: Initialized successfully');
+    }
+  } catch (e, stackTrace) {
+    if (kDebugMode) {
+      debugPrint('Firebase: Initialization failed - crash reporting will be disabled');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+    // Continue without Firebase - app can still function
+  }
 
   final getIt = GetIt.instance;
 
@@ -64,8 +84,9 @@ Future<void> main() async {
   await _initializeNotificationService(getIt);
   await _initializeServices(getIt);
 
-  // Phase 4: Non-critical analytics (can fail without breaking app)
+  // Phase 4: Non-critical analytics and crash reporting (can fail without breaking app)
   await _initializePostHog(getIt);
+  await _initializeCrashlytics(getIt);
 
   runApp(
     PostHogWidget(
@@ -81,6 +102,22 @@ Future<void> _initializePostHog(GetIt getIt) async {
     return;
   }
 
+  final sharedPrefs = getIt.get<SharedPrefsService>();
+
+  // GDPR: Only initialize if user has given explicit consent
+  if (!sharedPrefs.getAnalyticsConsent()) {
+    if (kDebugMode) {
+      debugPrint('PostHog: User has not consented to analytics');
+    }
+    return;
+  }
+
+  await _setupPostHog(getIt);
+}
+
+/// Sets up PostHog analytics. Called after user consent is given.
+/// Can be called from settings when user enables analytics.
+Future<void> _setupPostHog(GetIt getIt) async {
   try {
     final envConfig = getIt.get<EnvConfig>();
     final packageInfo = getIt.get<PackageInfo>();
@@ -88,20 +125,19 @@ Future<void> _initializePostHog(GetIt getIt) async {
 
     // Skip initialization if API key is not configured
     if (envConfig.posthogApiKey.isEmpty) {
-      debugPrint('PostHog: API key not configured, analytics disabled');
+      if (kDebugMode) {
+        debugPrint('PostHog: API key not configured, analytics disabled');
+      }
       return;
     }
 
-    // Configure PostHog analytics
+    // Configure PostHog analytics (privacy-focused, no session replay)
     final config = PostHogConfig(envConfig.posthogApiKey);
     config.host = envConfig.posthogHost;
-    config.debug = false; // Never log in production
+    config.debug = false;
     config.captureApplicationLifecycleEvents = true;
-
-    // Enable session replay to understand user behavior and reproduce issues
-    config.sessionReplay = true;
-    config.sessionReplayConfig.maskAllTexts = false;
-    config.sessionReplayConfig.maskAllImages = false;
+    config.sessionReplay = false; // Disabled for GDPR compliance
+    config.personProfiles = PostHogPersonProfiles.never; // Anonymous events only
 
     await Posthog().setup(config);
 
@@ -113,12 +149,110 @@ Future<void> _initializePostHog(GetIt getIt) async {
     await posthog.register('theme_color', sharedPrefs.getColorPreset().name);
     await posthog.register('theme_brightness', sharedPrefs.getBrightnessPreset().name);
 
-    debugPrint('PostHog: Analytics initialized successfully');
+    if (kDebugMode) {
+      debugPrint('PostHog: Analytics initialized successfully');
+    }
   } catch (e, stackTrace) {
     // Analytics is non-critical - log error but allow app to continue
-    debugPrint('PostHog: Initialization failed - analytics disabled for this session');
-    debugPrint('Error: $e');
-    debugPrintStack(stackTrace: stackTrace);
+    if (kDebugMode) {
+      debugPrint('PostHog: Initialization failed - analytics disabled for this session');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+  }
+}
+
+/// Initializes PostHog after user gives consent. Call from consent dialog.
+/// Returns true if initialization succeeded.
+Future<bool> initializePostHogAfterConsent() async {
+  if (kDebugMode) return false;
+  try {
+    await _setupPostHog(GetIt.instance);
+    return true;
+  } catch (e) {
+    // Error logging already handled in _setupPostHog
+    return false;
+  }
+}
+
+Future<void> _initializeCrashlytics(GetIt getIt) async {
+  // Skip crash reporting in debug mode
+  if (kDebugMode) {
+    debugPrint('Crashlytics: Disabled in debug mode');
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    return;
+  }
+
+  final sharedPrefs = getIt.get<SharedPrefsService>();
+
+  // GDPR: Only enable if user has given explicit consent
+  if (!sharedPrefs.getCrashLogsConsent()) {
+    if (kDebugMode) {
+      debugPrint('Crashlytics: User has not consented to crash logs');
+    }
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    return;
+  }
+
+  await _setupCrashlytics();
+}
+
+/// Sets up Firebase Crashlytics. Called after user consent is given.
+Future<void> _setupCrashlytics() async {
+  try {
+    // Enable crash collection
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
+    // Pass all uncaught "fatal" errors to Crashlytics
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+    // Pass all uncaught asynchronous errors to Crashlytics
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+
+    if (kDebugMode) {
+      debugPrint('Crashlytics: Crash reporting initialized successfully');
+    }
+  } catch (e, stackTrace) {
+    if (kDebugMode) {
+      debugPrint('Crashlytics: Initialization failed');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+  }
+}
+
+/// Initializes Crashlytics after user gives consent.
+/// Returns true if initialization succeeded.
+Future<bool> initializeCrashlyticsAfterConsent() async {
+  if (kDebugMode) return false;
+  try {
+    await _setupCrashlytics();
+    return true;
+  } catch (e) {
+    // Error logging already handled in _setupCrashlytics
+    return false;
+  }
+}
+
+/// Disables Crashlytics when user revokes consent.
+/// Returns true if successfully disabled.
+Future<bool> disableCrashlytics() async {
+  try {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    if (kDebugMode) {
+      debugPrint('Crashlytics: Crash reporting disabled');
+    }
+    return true;
+  } catch (e, stackTrace) {
+    if (kDebugMode) {
+      debugPrint('Crashlytics: Failed to disable crash reporting');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+    return false;
   }
 }
 
@@ -184,25 +318,36 @@ void _addAuthRetryInterceptor(GetIt getIt) {
   dio.interceptors.add(
     InterceptorsWrapper(
       onError: (error, handler) async {
-        if (error.response?.statusCode == 401) {
+        if (error.response?.statusCode != 401) {
+          return handler.next(error);
+        }
+
+        if (kDebugMode) {
           debugPrint('Auth: Token expired, attempting refresh...');
+        }
 
-          final refreshed = await authService.refreshToken();
+        final refreshed = await authService.refreshToken();
 
-          if (refreshed) {
-            debugPrint('Auth: Token refreshed, retrying request');
-            try {
-              final retryResponse = await dio.fetch(error.requestOptions);
-              return handler.resolve(retryResponse);
-            } catch (retryError) {
-              debugPrint('Auth: Retry failed after token refresh - $retryError');
-              return handler.next(error);
-            }
-          } else {
+        if (!refreshed) {
+          if (kDebugMode) {
             debugPrint('Auth: Token refresh failed, cannot retry request');
           }
+          return handler.next(error);
         }
-        return handler.next(error);
+
+        if (kDebugMode) {
+          debugPrint('Auth: Token refreshed, retrying request');
+        }
+
+        try {
+          final retryResponse = await dio.fetch(error.requestOptions);
+          return handler.resolve(retryResponse);
+        } catch (retryError) {
+          if (kDebugMode) {
+            debugPrint('Auth: Retry failed after token refresh - $retryError');
+          }
+          return handler.next(error);
+        }
       },
     ),
   );
@@ -313,12 +458,16 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
       await androidPlugin.requestExactAlarmsPermission();
     }
 
-    debugPrint('Notifications: Initialized successfully');
+    if (kDebugMode) {
+      debugPrint('Notifications: Initialized successfully');
+    }
   } catch (e, stackTrace) {
     // Notification setup is non-critical - app should still work without it
-    debugPrint('Notifications: Initialization failed - notifications disabled');
-    debugPrint('Error: $e');
-    debugPrintStack(stackTrace: stackTrace);
+    if (kDebugMode) {
+      debugPrint('Notifications: Initialization failed - notifications disabled');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
   }
 
   getIt.registerSingleton<FlutterLocalNotificationsPlugin>(

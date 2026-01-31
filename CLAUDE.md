@@ -331,3 +331,55 @@ These reminders are positioned here to be impossible to miss:
 Widget-returning methods are rebuilt on EVERY parent rebuild, causing severe performance issues. Proper StatelessWidget classes only rebuild when their properties change.
 
 **Remember: Performance is non-negotiable in Flutter applications.**
+
+---
+
+## Git Commit Conventions
+
+When asked for a commit message, always use **Conventional Commits** format:
+
+### Format
+```
+<type>(<scope>): <subject>
+
+<body>
+```
+
+### Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation only
+- `style`: Code style (formatting, semicolons, etc.)
+- `refactor`: Code change that neither fixes a bug nor adds a feature
+- `perf`: Performance improvement
+- `test`: Adding or updating tests
+- `chore`: Build process, dependencies, or tooling changes
+- `ci`: CI/CD configuration changes
+
+### Rules
+- **Subject line**: Max 50 characters, imperative mood, no period at end
+- **Body**: Wrap at 72 characters, explain *what* and *why* (not *how*)
+- **Scope** (optional): Component or area affected (e.g., `auth`, `ui`, `api`)
+
+### Examples
+```
+feat: add GDPR-compliant analytics consent flow
+
+feat(privacy): add crash logs toggle to settings
+
+fix(notifications): resolve scheduling issue on Android 12+
+
+refactor: extract game card to separate widget
+
+chore: update Flutter SDK to 3.19
+```
+
+### Multi-line Example
+```
+feat: add GDPR-compliant analytics and crash reporting
+
+- Add consent dialog shown on first app launch
+- Create Privacy settings screen with toggles
+- Configure PostHog for anonymous events only
+- Initialize services only after explicit consent
+```

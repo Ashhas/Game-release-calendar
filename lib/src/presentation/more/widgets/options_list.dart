@@ -36,13 +36,13 @@ class OptionsList extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.description_outlined),
-          title: const Text('Privacy Policy'),
+          leading: const Icon(Icons.shield_outlined),
+          title: const Text('Privacy'),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => const PrivacyPolicy(),
+                builder: (_) => const Privacy(),
               ),
             );
           },

@@ -17,6 +17,7 @@ import 'package:game_release_calendar/src/presentation/common/state/game_update_
 import 'package:game_release_calendar/src/presentation/common/state/game_updates_badge_cubit/game_updates_badge_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
 import 'package:game_release_calendar/src/presentation/common/toast/global_state_listener.dart';
+import 'package:game_release_calendar/src/presentation/common/widgets/analytics_consent_dialog.dart';
 import 'package:game_release_calendar/src/presentation/game_detail/state/game_detail_cubit.dart';
 import 'package:game_release_calendar/src/presentation/game_updates/state/game_updates_cubit.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
@@ -93,8 +94,10 @@ class App extends StatelessWidget {
                 themeMode: themeState.themeMode,
                 themeAnimationDuration: const Duration(milliseconds: 200),
                 themeAnimationCurve: Curves.easeInOut,
-                home: GlobalStateListener(
-                  child: AppNavigationBar(),
+                home: const _ConsentGate(
+                  child: GlobalStateListener(
+                    child: AppNavigationBar(),
+                  ),
                 ),
               );
             },
@@ -103,5 +106,35 @@ class App extends StatelessWidget {
       ),
       ),
     );
+  }
+}
+
+/// Shows analytics consent dialog on first launch before showing the main app.
+class _ConsentGate extends StatefulWidget {
+  const _ConsentGate({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_ConsentGate> createState() => _ConsentGateState();
+}
+
+class _ConsentGateState extends State<_ConsentGate> {
+  @override
+  void initState() {
+    super.initState();
+    // Show consent dialog after first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkConsent();
+    });
+  }
+
+  Future<void> _checkConsent() async {
+    await AnalyticsConsentDialog.showIfNeeded(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }

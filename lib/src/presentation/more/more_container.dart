@@ -11,6 +11,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod/riverpod.dart';
 
+import 'package:game_release_calendar/main.dart';
 import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/domain/models/notifications/game_reminder.dart';
 import 'package:game_release_calendar/src/presentation/common/state/notification_cubit/notifications_cubit.dart';
@@ -28,6 +29,8 @@ import 'widgets/app_theme/widgets/color_scheme_card.dart';
 part 'widgets/app_details.dart';
 
 part 'widgets/privacy_policy.dart';
+
+part 'widgets/privacy/privacy.dart';
 
 part 'widgets/options_list.dart';
 

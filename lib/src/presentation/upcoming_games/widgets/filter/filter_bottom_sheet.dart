@@ -105,9 +105,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
           ),
           SizedBox(height: context.spacings.m),
-          Footer(
-            onApplyFilter: () => _applyFilters(context),
-            onResetFilter: () => _resetFilters(),
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewPaddingOf(context).bottom,
+            ),
+            child: Footer(
+              onApplyFilter: () => _applyFilters(context),
+              onResetFilter: () => _resetFilters(),
+            ),
           ),
         ],
       ),

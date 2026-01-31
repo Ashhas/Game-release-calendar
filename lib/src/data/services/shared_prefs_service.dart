@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
@@ -8,6 +10,9 @@ class SharedPrefsService {
   final _brightnessPresetKey = 'app_brightness_preset';
   final _experimentalFeaturesEnabledKey = 'experimental_features_enabled';
   final _scrollbarEnabledKey = 'experimental_scrollbar_enabled';
+  final _analyticsConsentKey = 'analytics_consent';
+  final _analyticsConsentAskedKey = 'analytics_consent_asked';
+  final _crashLogsConsentKey = 'crash_logs_consent';
 
   static SharedPreferences? _prefs;
 
@@ -113,6 +118,81 @@ class SharedPrefsService {
     try {
       return _prefs?.getBool(_scrollbarEnabledKey) ?? false;
     } catch (e) {
+      return false;
+    }
+  }
+
+  /// Returns true if user has consented to analytics. Defaults to false (opt-in).
+  bool getAnalyticsConsent() {
+    try {
+      return _prefs?.getBool(_analyticsConsentKey) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('SharedPrefsService: Failed to read analytics consent - $e');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  Future<bool> setAnalyticsConsent(bool consented) async {
+    try {
+      return await _prefs?.setBool(_analyticsConsentKey, consented) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('SharedPrefsService: Failed to save analytics consent - $e');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  /// Returns true if we've already asked the user for analytics consent.
+  bool hasAskedAnalyticsConsent() {
+    try {
+      return _prefs?.getBool(_analyticsConsentAskedKey) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('SharedPrefsService: Failed to read consent asked status - $e');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  Future<bool> setAnalyticsConsentAsked(bool asked) async {
+    try {
+      return await _prefs?.setBool(_analyticsConsentAskedKey, asked) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('SharedPrefsService: Failed to save consent asked status - $e');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  /// Returns true if user has consented to crash logs. Defaults to false (opt-in).
+  bool getCrashLogsConsent() {
+    try {
+      return _prefs?.getBool(_crashLogsConsentKey) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('SharedPrefsService: Failed to read crash logs consent - $e');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  Future<bool> setCrashLogsConsent(bool consented) async {
+    try {
+      return await _prefs?.setBool(_crashLogsConsentKey, consented) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('SharedPrefsService: Failed to save crash logs consent - $e');
+        debugPrintStack(stackTrace: stackTrace);
+      }
       return false;
     }
   }

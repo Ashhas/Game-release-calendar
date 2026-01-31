@@ -70,11 +70,18 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 text: 'IGDB (Internet Game Database):\n'
                     '- Game information is retrieved from IGDB via Twitch API. No personal data is shared with these services.\n'
                     '- IGDB\'s privacy policy: https://www.igdb.com/privacy_policy\n\n'
-                    'Firebase Services:\n'
-                    '- We use Firebase Crashlytics to collect crash reports and improve app stability.\n'
-                    '- We use Firebase Analytics to understand app usage patterns.\n'
-                    '- This data is anonymous and used only for app improvement.\n'
-                    '- Google\'s privacy policy: https://policies.google.com/privacy\n\n',
+                    'Analytics (PostHog):\n'
+                    '- If you consent, we use PostHog to collect anonymous usage data.\n'
+                    '- We collect: screens visited, app version, platform, and anonymous usage patterns.\n'
+                    '- We do NOT collect: personal information, your game reminders, or screen recordings.\n'
+                    '- Analytics requires your explicit consent (opt-in). You can enable or disable it anytime in Privacy settings.\n'
+                    '- Data is processed in the EU. PostHog\'s privacy policy: https://posthog.com/privacy\n\n'
+                    'Crash Reporting (Firebase Crashlytics):\n'
+                    '- If you consent, we use Firebase Crashlytics to collect anonymized crash reports.\n'
+                    '- We collect: crash stack traces, device type, OS version, and app state at time of crash.\n'
+                    '- We do NOT collect: personal information, your game reminders, or any user-generated content.\n'
+                    '- Crash reporting requires your explicit consent (opt-in). You can enable or disable it anytime in Privacy settings.\n'
+                    '- Firebase\'s privacy policy: https://firebase.google.com/support/privacy\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
@@ -84,7 +91,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               TextSpan(
                 text:
                     '- We do not sell, trade, or share your personal information with third parties for marketing purposes.\n'
-                    '- Anonymous crash and analytics data may be shared with Firebase for app improvement.\n\n',
+                    '- If you consent to analytics, anonymous usage data is shared with PostHog (EU-based) for app improvement.\n'
+                    '- If you consent to crash reporting, anonymized crash data is shared with Firebase Crashlytics for stability improvement.\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
@@ -94,10 +102,12 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               TextSpan(
                 text: 'Data Storage:\n'
                     '- Game tracking data is stored locally on your device using Hive database.\n'
-                    '- No personal data is stored on external servers.\n\n'
+                    '- No personal data is stored on external servers.\n'
+                    '- Analytics data (if consented) is stored on PostHog servers in the EU.\n'
+                    '- Crash data (if consented) is stored on Firebase servers.\n\n'
                     'Security Measures:\n'
                     '- Local data is secured within your device\'s app sandbox.\n'
-                    '- Crash reports are anonymized before transmission to Firebase.\n\n',
+                    '- Analytics and crash data is anonymized and transmitted securely.\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               TextSpan(
