@@ -8,8 +8,6 @@ class LoadingGameList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppLoadingWidget(
-      message: 'Loading games...',
-    );
+    return const AppLoadingWidget(message: 'Loading games...');
   }
 }

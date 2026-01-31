@@ -27,7 +27,9 @@ class CustomTheme {
       onSurface: const Color(0xFF1A1A1A),
       onPrimary: const Color(0xFFFFFFFF),
       onSecondary: const Color(0xFFFFFFFF),
-      onTertiary: const Color(0xFF000000), // Black text on light blue background
+      onTertiary: const Color(
+        0xFF000000,
+      ), // Black text on light blue background
       onError: const Color(0xFFFFFFFF),
     );
     return colorScheme;
@@ -38,7 +40,10 @@ class CustomTheme {
     // Use #2A3F4D for Blue Grey theme (#819FC3), otherwise derive from accent color
     final primaryContainer = accentColor == const Color(0xFF819FC3)
         ? const Color(0xFF2A3F4D)
-        : Color.alphaBlend(accentColor.withValues(alpha: 0.16), const Color(0xFF121212));
+        : Color.alphaBlend(
+            accentColor.withValues(alpha: 0.16),
+            const Color(0xFF121212),
+          );
 
     return ColorScheme.dark(
       primary: accentColor, // Exact color passed in
@@ -68,69 +73,78 @@ class CustomTheme {
     }
 
     return ThemeData(
-        useMaterial3: true,
-        colorScheme: colorScheme,
-        appBarTheme: const AppBarTheme(
-          centerTitle: false,
-          elevation: 0,
-          scrolledUnderElevation: 0,
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      appBarTheme: const AppBarTheme(
+        centerTitle: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(borderRadiusValue),
+          ),
         ),
-        cardTheme: CardThemeData(
-          elevation: 0,
+      ),
+      chipTheme: ChipThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(borderRadiusValue),
+          ),
+        ),
+        backgroundColor: colorScheme.primaryContainer,
+        labelStyle: TextStyle(color: colorScheme.primary),
+        side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: colorScheme.outline),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(
+            color: colorScheme.outline.withValues(alpha: 0.3),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(borderRadiusValue),
+            ),
           ),
         ),
-        chipTheme: ChipThemeData(
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
-          ),
-          backgroundColor: colorScheme.primaryContainer,
-          labelStyle: TextStyle(color: colorScheme.primary),
-          side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide(color: colorScheme.outline),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide(color: colorScheme.outline.withValues(alpha: 0.3)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide(color: colorScheme.primary, width: 2),
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(borderRadiusValue),
             ),
           ),
         ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(borderRadiusValue),
             ),
           ),
         ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
-            ),
-          ),
-        ),
-        extensions: <ThemeExtension>[
-          AppSpacings.defaultValues,
-          AppColors.light,
-        ],
-      );
+      ),
+      extensions: <ThemeExtension>[AppSpacings.defaultValues, AppColors.light],
+    );
   }
 
   /// Generates dark theme with optional custom color scheme
@@ -145,69 +159,78 @@ class CustomTheme {
     }
 
     return ThemeData(
-        useMaterial3: true,
-        colorScheme: colorScheme,
-        appBarTheme: const AppBarTheme(
-          centerTitle: false,
-          elevation: 0,
-          scrolledUnderElevation: 0,
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      appBarTheme: const AppBarTheme(
+        centerTitle: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(borderRadiusValue),
+          ),
         ),
-        cardTheme: CardThemeData(
-          elevation: 0,
+      ),
+      chipTheme: ChipThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(borderRadiusValue),
+          ),
+        ),
+        backgroundColor: colorScheme.primaryContainer,
+        labelStyle: TextStyle(color: colorScheme.primary),
+        side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: colorScheme.outline),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(
+            color: colorScheme.outline.withValues(alpha: 0.3),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(borderRadiusValue),
+            ),
           ),
         ),
-        chipTheme: ChipThemeData(
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
-          ),
-          backgroundColor: colorScheme.primaryContainer,
-          labelStyle: TextStyle(color: colorScheme.primary),
-          side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide(color: colorScheme.outline),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide(color: colorScheme.outline.withValues(alpha: 0.3)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide(color: colorScheme.primary, width: 2),
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(borderRadiusValue),
             ),
           ),
         ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(borderRadiusValue),
             ),
           ),
         ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
-            ),
-          ),
-        ),
-        extensions: <ThemeExtension>[
-          AppSpacings.defaultValues,
-          AppColors.dark,
-        ],
-      );
+      ),
+      extensions: <ThemeExtension>[AppSpacings.defaultValues, AppColors.dark],
+    );
   }
 
   /// Generates theme from preset
@@ -224,7 +247,9 @@ class CustomTheme {
 
   /// Gets the appropriate theme data for the given preset and system brightness
   static ThemeData getThemeForPreset(
-      AppThemePreset preset, Brightness systemBrightness) {
+    AppThemePreset preset,
+    Brightness systemBrightness,
+  ) {
     // For system theme, use system brightness with default colors
     if (preset == AppThemePreset.system) {
       return systemBrightness == Brightness.light ? lightTheme() : darkTheme();

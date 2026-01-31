@@ -142,24 +142,24 @@ class GameDateGrouper {
         // Use the exact same logic as game tiles: get formatted release dates
         final formattedA = DateUtilities.formatGameReleaseDate(a);
         final formattedB = DateUtilities.formatGameReleaseDate(b);
-        
+
         // Get categories for comparison (most specific first)
         final categoryA = DateUtilities.getMostSpecificReleaseCategory(a);
         final categoryB = DateUtilities.getMostSpecificReleaseCategory(b);
-        
+
         // Primary sort: by category precision (lower value = more specific = comes first)
         final categoryComparison = categoryA.value.compareTo(categoryB.value);
         if (categoryComparison != 0) {
           return categoryComparison;
         }
-        
+
         // Secondary sort: within same category, sort by the actual formatted string
         // This ensures consistent ordering with what users see in the UI
         final formatComparison = formattedA.compareTo(formattedB);
         if (formatComparison != 0) {
           return formatComparison;
         }
-        
+
         // Tertiary sort: if everything else is identical, sort by game name
         return a.name.compareTo(b.name);
       });
@@ -201,7 +201,7 @@ class GameDateGrouper {
         final bIsExact = b.releaseDate.hasExactDate;
 
         if (aIsExact && !bIsExact) return -1; // a comes first
-        if (!aIsExact && bIsExact) return 1;  // b comes first
+        if (!aIsExact && bIsExact) return 1; // b comes first
 
         // Secondary sort: by game name if both have same precision
         return a.gameName.compareTo(b.gameName);

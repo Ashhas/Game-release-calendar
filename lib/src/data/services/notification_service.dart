@@ -15,15 +15,15 @@ import '../../domain/models/notifications/game_reminder.dart';
 
 class NotificationClient {
   NotificationClient() {
-    _flutterLocalNotificationsPlugin =
-        GetIt.instance.get<FlutterLocalNotificationsPlugin>();
+    _flutterLocalNotificationsPlugin = GetIt.instance
+        .get<FlutterLocalNotificationsPlugin>();
   }
 
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   Future<List<PendingNotificationRequest>>
-      retrievePendingNotifications() async =>
-          await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  retrievePendingNotifications() async =>
+      await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
 
   /// Schedules a notification using the [Game] Object
   Future<void> scheduleNotificationFromGame({

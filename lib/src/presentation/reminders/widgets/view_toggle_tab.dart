@@ -6,10 +6,7 @@ import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:game_release_calendar/src/presentation/reminders/state/reminders_cubit.dart';
 
 class ViewToggleTab extends StatelessWidget {
-  const ViewToggleTab({
-    super.key,
-    required this.selectedIndex,
-  });
+  const ViewToggleTab({super.key, required this.selectedIndex});
 
   final int selectedIndex;
 
@@ -19,22 +16,12 @@ class ViewToggleTab extends StatelessWidget {
       width: 35,
       borderRadius: 12,
       dataTabs: [
-        DataTab(
-          icon: Icons.grid_view,
-        ),
-        DataTab(
-          icon: Icons.grid_on,
-        ),
-        DataTab(
-          icon: Icons.list,
-        ),
+        DataTab(icon: Icons.grid_view),
+        DataTab(icon: Icons.grid_on),
+        DataTab(icon: Icons.list),
       ],
-      selectedBackgroundColors: [
-        Theme.of(context).colorScheme.tertiary,
-      ],
-      unSelectedBackgroundColors: const [
-        Color(0x805E5E5E),
-      ],
+      selectedBackgroundColors: [Theme.of(context).colorScheme.tertiary],
+      unSelectedBackgroundColors: const [Color(0x805E5E5E)],
       selectedTextStyle: TextStyle(
         color: Theme.of(context).colorScheme.onPrimaryContainer,
       ),

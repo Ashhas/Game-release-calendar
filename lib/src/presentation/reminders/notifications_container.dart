@@ -11,18 +11,16 @@ class NotificationsContainer extends StatelessWidget {
         builder: (_, state) {
           return state.notifications.when(
             data: (notifications) {
-              final notificationsList = notifications.sortedBy((notification) =>
-                  GameReminder.fromJson(jsonDecode(notification.payload!))
-                      .releaseDate
-                      .date ??
-                  0);
+              final notificationsList = notifications.sortedBy(
+                (notification) =>
+                    GameReminder.fromJson(
+                      jsonDecode(notification.payload!),
+                    ).releaseDate.date ??
+                    0,
+              );
 
               if (notificationsList.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No reminders set',
-                  ),
-                );
+                return Center(child: Text('No reminders set'));
               }
 
               return ListView.builder(
@@ -66,9 +64,7 @@ class NotificationsContainer extends StatelessWidget {
               );
             },
             loading: () {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             },
             error: (error, _) {
               return Text('Error: $error');

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AlertBadge extends StatelessWidget {
-  const AlertBadge({
-    super.key,
-    required this.child,
-    this.showBadge = false,
-  });
+  const AlertBadge({super.key, required this.child, this.showBadge = false});
 
   final Widget child;
   final bool showBadge;

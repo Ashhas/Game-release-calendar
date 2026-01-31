@@ -20,10 +20,12 @@ class RetryHelper {
 
         // Don't retry authentication errors or no internet
         if (lastException is AuthenticationException ||
-            lastException is NoInternetException) break;
+            lastException is NoInternetException)
+          break;
 
         // Wait before retry
-        final delay = delayFunction?.call(attempt) ?? Duration(seconds: attempt + 1);
+        final delay =
+            delayFunction?.call(attempt) ?? Duration(seconds: attempt + 1);
         await Future.delayed(delay);
       }
     }

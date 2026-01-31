@@ -47,7 +47,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
-                text: 'Types of Information Collected:\n'
+                text:
+                    'Types of Information Collected:\n'
                     '- GameWatch collects the games you want to track. We do not collect any personal information such as your name, email address, phone number, or location data.\n\n'
                     'How Information is Collected:\n'
                     '- The information about the games you want to track is collected when you click/select the games within the app.\n\n',
@@ -58,7 +59,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
-                text: 'Purpose of Information Usage:\n'
+                text:
+                    'Purpose of Information Usage:\n'
                     '- The information collected is used solely to enhance your user experience by allowing you to track game release dates and receive notifications when a game has been released.\n\n',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
@@ -67,7 +69,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
-                text: 'IGDB (Internet Game Database):\n'
+                text:
+                    'IGDB (Internet Game Database):\n'
                     '- Game information is retrieved from IGDB via Twitch API. No personal data is shared with these services.\n'
                     '- IGDB\'s privacy policy: https://www.igdb.com/privacy_policy\n\n'
                     'Analytics (PostHog):\n'
@@ -100,7 +103,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
-                text: 'Data Storage:\n'
+                text:
+                    'Data Storage:\n'
                     '- Game tracking data is stored locally on your device using Hive database.\n'
                     '- No personal data is stored on external servers.\n'
                     '- Analytics data (if consented) is stored on PostHog servers in the EU.\n'
@@ -115,7 +119,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               TextSpan(
-                text: 'Your Rights:\n'
+                text:
+                    'Your Rights:\n'
                     '- You have the right to choose which games you want to track and can remove any game from your tracked list at any time.\n'
                     '- You can delete all app data by uninstalling the app.\n\n'
                     'Exercising Your Rights:\n'

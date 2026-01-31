@@ -11,8 +11,10 @@ void main() {
     group('DateUtilities edge cases', () {
       test('should handle negative timestamps gracefully', () {
         final negativeTimestamp = -1000000;
-        final result = DateUtilities.secondSinceEpochToDateTime(negativeTimestamp);
-        
+        final result = DateUtilities.secondSinceEpochToDateTime(
+          negativeTimestamp,
+        );
+
         // Should not throw and should return a valid DateTime
         expect(result, isA<DateTime>());
         expect(result.year, lessThan(1970)); // Before epoch
@@ -21,14 +23,14 @@ void main() {
       test('should handle very large timestamps', () {
         final largeTimestamp = 9999999999; // Far future
         final result = DateUtilities.secondSinceEpochToDateTime(largeTimestamp);
-        
+
         expect(result, isA<DateTime>());
         expect(result.year, greaterThan(2000));
       });
 
       test('should handle zero timestamp', () {
         final result = DateUtilities.secondSinceEpochToDateTime(0);
-        
+
         expect(result.year, equals(1970));
         expect(result.month, equals(1));
         expect(result.day, equals(1));
@@ -62,8 +64,14 @@ void main() {
           );
 
           // Should not throw
-          expect(() => DateUtilities.formatGameReleaseDate(game), returnsNormally);
-          expect(() => DateUtilities.getMostSpecificReleaseCategory(game), returnsNormally);
+          expect(
+            () => DateUtilities.formatGameReleaseDate(game),
+            returnsNormally,
+          );
+          expect(
+            () => DateUtilities.getMostSpecificReleaseCategory(game),
+            returnsNormally,
+          );
         }
       });
 
@@ -87,7 +95,7 @@ void main() {
 
       test('should handle extreme dateFormat values', () {
         final extremeValues = [-1000, -1, 999, 1000000];
-        
+
         for (final dateFormat in extremeValues) {
           final game = _createGame(
             firstReleaseDate: 1751241600,
@@ -102,8 +110,14 @@ void main() {
           );
 
           // Should not throw and should fallback gracefully
-          expect(() => DateUtilities.formatGameReleaseDate(game), returnsNormally);
-          expect(() => DateUtilities.getMostSpecificReleaseCategory(game), returnsNormally);
+          expect(
+            () => DateUtilities.formatGameReleaseDate(game),
+            returnsNormally,
+          );
+          expect(
+            () => DateUtilities.getMostSpecificReleaseCategory(game),
+            returnsNormally,
+          );
         }
       });
 
@@ -145,7 +159,7 @@ void main() {
         // February 29, 2024 (leap year)
         final leapYearDate = DateTime(2024, 2, 29);
         final timestamp = leapYearDate.millisecondsSinceEpoch ~/ 1000;
-        
+
         final game = _createGame(
           firstReleaseDate: timestamp,
           releaseDates: [
@@ -167,7 +181,11 @@ void main() {
         expect(DateUtilities.computeNotificationDate(pastDate), isNull);
 
         // Yesterday (should be null since it's not future)
-        final yesterday = DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch ~/ 1000;
+        final yesterday =
+            DateTime.now()
+                .subtract(const Duration(days: 1))
+                .millisecondsSinceEpoch ~/
+            1000;
         expect(DateUtilities.computeNotificationDate(yesterday), isNull);
 
         // Very far future
@@ -186,17 +204,33 @@ void main() {
         final game = _createGame(
           firstReleaseDate: 1751241600,
           releaseDates: [
-            ReleaseDate(id: 1, date: 1751241600, category: ReleaseDateCategory.exactDate),
-            ReleaseDate(id: 2, date: 1751241600, category: ReleaseDateCategory.quarter),
-            ReleaseDate(id: 3, date: 1751241600, category: ReleaseDateCategory.year),
-            ReleaseDate(id: 4, date: 1751241600, category: ReleaseDateCategory.tbd),
+            ReleaseDate(
+              id: 1,
+              date: 1751241600,
+              category: ReleaseDateCategory.exactDate,
+            ),
+            ReleaseDate(
+              id: 2,
+              date: 1751241600,
+              category: ReleaseDateCategory.quarter,
+            ),
+            ReleaseDate(
+              id: 3,
+              date: 1751241600,
+              category: ReleaseDateCategory.year,
+            ),
+            ReleaseDate(
+              id: 4,
+              date: 1751241600,
+              category: ReleaseDateCategory.tbd,
+            ),
           ],
         );
 
         // Should not throw and should use most specific (exactDate)
         final grouped = GameDateGrouper.groupGamesByReleaseDate([game]);
         expect(grouped.isNotEmpty, isTrue);
-        
+
         final category = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(category, equals(ReleaseDateCategory.exactDate));
       });
@@ -212,7 +246,7 @@ void main() {
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate([game]);
         expect(grouped.isNotEmpty, isTrue);
-        
+
         final category = DateUtilities.getMostSpecificReleaseCategory(game);
         expect(category, equals(ReleaseDateCategory.tbd));
       });
@@ -223,7 +257,8 @@ void main() {
           releaseDates: [
             ReleaseDate(
               id: 1,
-              date: 1753833600, // July 15, 2025 - different from firstReleaseDate
+              date:
+                  1753833600, // July 15, 2025 - different from firstReleaseDate
               category: ReleaseDateCategory.exactDate,
             ),
           ],
@@ -231,16 +266,21 @@ void main() {
 
         // Should use firstReleaseDate for grouping but release date category for formatting
         final grouped = GameDateGrouper.groupGamesByReleaseDate([game]);
-        expect(grouped.containsKey(DateTime(2025, 6, 30)), isTrue); // Grouped by firstReleaseDate
+        expect(
+          grouped.containsKey(DateTime(2025, 6, 30)),
+          isTrue,
+        ); // Grouped by firstReleaseDate
         expect(grouped.containsKey(DateTime(2025, 7, 15)), isFalse);
       });
 
       test('should handle very large numbers of release dates per game', () {
-        final manyReleaseDates = List.generate(1000, (index) =>
-          ReleaseDate(
+        final manyReleaseDates = List.generate(
+          1000,
+          (index) => ReleaseDate(
             id: index,
             date: 1751241600,
-            category: ReleaseDateCategory.values[index % ReleaseDateCategory.values.length],
+            category: ReleaseDateCategory
+                .values[index % ReleaseDateCategory.values.length],
           ),
         );
 
@@ -257,21 +297,30 @@ void main() {
 
         expect(stopwatch.elapsedMilliseconds, lessThan(100));
         expect(grouped.isNotEmpty, isTrue);
-        expect(category, equals(ReleaseDateCategory.exactDate)); // Most specific
+        expect(
+          category,
+          equals(ReleaseDateCategory.exactDate),
+        ); // Most specific
       });
 
       test('should handle timestamp overflow/underflow scenarios', () {
         final extremeGames = [
           _createGame(firstReleaseDate: -2147483648), // Min 32-bit int
-          _createGame(firstReleaseDate: 2147483647),  // Max 32-bit int
-          _createGame(firstReleaseDate: 0),           // Epoch
-          _createGame(firstReleaseDate: -1),          // Just before epoch
+          _createGame(firstReleaseDate: 2147483647), // Max 32-bit int
+          _createGame(firstReleaseDate: 0), // Epoch
+          _createGame(firstReleaseDate: -1), // Just before epoch
         ];
 
         // Should not throw for any extreme values
         for (final game in extremeGames) {
-          expect(() => GameDateGrouper.groupGamesByReleaseDate([game]), returnsNormally);
-          expect(() => DateUtilities.formatGameReleaseDate(game), returnsNormally);
+          expect(
+            () => GameDateGrouper.groupGamesByReleaseDate([game]),
+            returnsNormally,
+          );
+          expect(
+            () => DateUtilities.formatGameReleaseDate(game),
+            returnsNormally,
+          );
         }
       });
     });
@@ -294,23 +343,29 @@ void main() {
 
       test('should handle JSON with missing required fields', () {
         final incompleteJson = <String, dynamic>{}; // No id field
-        
+
         // Should throw or handle gracefully
-        expect(() => ReleaseDate.fromJson(incompleteJson), throwsA(isA<TypeError>()));
+        expect(
+          () => ReleaseDate.fromJson(incompleteJson),
+          throwsA(isA<TypeError>()),
+        );
       });
 
       test('should handle JSON with null required fields', () {
         final nullIdJson = {'id': null};
-        
-        expect(() => ReleaseDate.fromJson(nullIdJson), throwsA(isA<TypeError>()));
+
+        expect(
+          () => ReleaseDate.fromJson(nullIdJson),
+          throwsA(isA<TypeError>()),
+        );
       });
 
       test('should handle very large ID values', () {
         final largeId = 9223372036854775807; // Max 64-bit int
         final releaseDate = ReleaseDate(id: largeId);
-        
+
         expect(releaseDate.id, equals(largeId));
-        
+
         final json = releaseDate.toJson();
         final roundTrip = ReleaseDate.fromJson(json);
         expect(roundTrip.id, equals(largeId));
@@ -328,13 +383,13 @@ void main() {
         ];
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(mixedGames);
-        
+
         // Should group all games without throwing
         expect(grouped.isNotEmpty, isTrue);
-        
+
         // TBD games should be properly grouped
         expect(grouped.containsKey(GameDateGrouper.tbdDate), isTrue);
-        
+
         // Valid dates should be grouped correctly
         final validDateGames = grouped.entries
             .where((entry) => entry.key != GameDateGrouper.tbdDate)
@@ -344,11 +399,13 @@ void main() {
 
       test('should maintain performance with pathological data', () {
         // Create scenario with many duplicate timestamps and complex release date arrays
-        final pathologicalGames = List.generate(100, (index) =>
-          _createGame(
+        final pathologicalGames = List.generate(
+          100,
+          (index) => _createGame(
             firstReleaseDate: 1751241600, // All same timestamp
-            releaseDates: List.generate(10, (rdIndex) =>
-              ReleaseDate(
+            releaseDates: List.generate(
+              10,
+              (rdIndex) => ReleaseDate(
                 id: index * 10 + rdIndex,
                 date: 1751241600,
                 human: index % 2 == 0 ? 'Q${(rdIndex % 4) + 1} 2025' : null,
@@ -360,17 +417,26 @@ void main() {
         );
 
         final stopwatch = Stopwatch()..start();
-        final grouped = GameDateGrouper.groupGamesByReleaseDate(pathologicalGames);
+        final grouped = GameDateGrouper.groupGamesByReleaseDate(
+          pathologicalGames,
+        );
         stopwatch.stop();
 
-        expect(stopwatch.elapsedMilliseconds, lessThan(500)); // Should complete in reasonable time
+        expect(
+          stopwatch.elapsedMilliseconds,
+          lessThan(500),
+        ); // Should complete in reasonable time
         expect(grouped[DateTime(2025, 6, 30)]?.length, equals(100));
-        
+
         // Verify sorting is still correct despite complexity
         final sortedGames = grouped[DateTime(2025, 6, 30)]!;
         for (int i = 0; i < sortedGames.length - 1; i++) {
-          final currentCategory = DateUtilities.getMostSpecificReleaseCategory(sortedGames[i]);
-          final nextCategory = DateUtilities.getMostSpecificReleaseCategory(sortedGames[i + 1]);
+          final currentCategory = DateUtilities.getMostSpecificReleaseCategory(
+            sortedGames[i],
+          );
+          final nextCategory = DateUtilities.getMostSpecificReleaseCategory(
+            sortedGames[i + 1],
+          );
           expect(currentCategory.value, lessThanOrEqualTo(nextCategory.value));
         }
       });
@@ -381,8 +447,14 @@ void main() {
           _createGame(name: 'Spécial Châractérs', firstReleaseDate: 1751241600),
           _createGame(name: '日本のゲーム', firstReleaseDate: 1751241600),
           _createGame(name: 'Игра на русском', firstReleaseDate: 1751241600),
-          _createGame(name: 'DROP TABLE games;--', firstReleaseDate: 1751241600), // SQL injection attempt
-          _createGame(name: '<script>alert("xss")</script>', firstReleaseDate: 1751241600), // XSS attempt
+          _createGame(
+            name: 'DROP TABLE games;--',
+            firstReleaseDate: 1751241600,
+          ), // SQL injection attempt
+          _createGame(
+            name: '<script>alert("xss")</script>',
+            firstReleaseDate: 1751241600,
+          ), // XSS attempt
         ];
 
         final grouped = GameDateGrouper.groupGamesByReleaseDate(unicodeGames);
@@ -390,7 +462,7 @@ void main() {
 
         // Should handle all names without throwing
         expect(sortedGames.length, equals(6));
-        
+
         // Names should be preserved exactly
         final names = sortedGames.map((game) => game.name).toSet();
         expect(names.contains('🎮 Game with Emoji'), isTrue);
@@ -406,11 +478,13 @@ void main() {
 
         // This simulates what might happen if the list is modified during processing
         // Though in practice this shouldn't happen with proper state management
-        final grouped = GameDateGrouper.groupGamesByReleaseDate(List.from(games));
-        
+        final grouped = GameDateGrouper.groupGamesByReleaseDate(
+          List.from(games),
+        );
+
         // Modify original list (shouldn't affect result since we made a copy)
         games.clear();
-        
+
         expect(grouped[DateTime(2025, 6, 30)]?.length, equals(2));
       });
     });
@@ -418,15 +492,17 @@ void main() {
     group('Memory and resource management', () {
       test('should not leak memory with large datasets', () {
         // Create and process large dataset
-        final largeDataset = List.generate(10000, (index) =>
-          _createGame(
+        final largeDataset = List.generate(
+          10000,
+          (index) => _createGame(
             name: 'Game $index',
             firstReleaseDate: 1751241600 + (index * 86400), // One game per day
             releaseDates: [
               ReleaseDate(
                 id: index,
                 date: 1751241600 + (index * 86400),
-                category: ReleaseDateCategory.values[index % ReleaseDateCategory.values.length],
+                category: ReleaseDateCategory
+                    .values[index % ReleaseDateCategory.values.length],
               ),
             ],
           ),
@@ -438,10 +514,10 @@ void main() {
 
         // Should complete in reasonable time
         expect(stopwatch.elapsedMilliseconds, lessThan(2000));
-        
+
         // Should create many groups (one per day)
         expect(grouped.length, greaterThan(1000));
-        
+
         // Cleanup - allow for garbage collection
         largeDataset.clear();
       });
@@ -449,21 +525,33 @@ void main() {
       test('should handle deeply nested release date structures', () {
         final game = _createGame(
           firstReleaseDate: 1751241600,
-          releaseDates: List.generate(1000, (index) =>
-            ReleaseDate(
+          releaseDates: List.generate(
+            1000,
+            (index) => ReleaseDate(
               id: index,
               date: 1751241600,
-              human: 'Complex release date $index with very long description that might consume significant memory',
-              category: ReleaseDateCategory.values[index % ReleaseDateCategory.values.length],
+              human:
+                  'Complex release date $index with very long description that might consume significant memory',
+              category: ReleaseDateCategory
+                  .values[index % ReleaseDateCategory.values.length],
               dateFormat: index % 10,
             ),
           ),
         );
 
         // Should handle without memory issues
-        expect(() => DateUtilities.getMostSpecificReleaseCategory(game), returnsNormally);
-        expect(() => DateUtilities.formatGameReleaseDate(game), returnsNormally);
-        expect(() => GameDateGrouper.groupGamesByReleaseDate([game]), returnsNormally);
+        expect(
+          () => DateUtilities.getMostSpecificReleaseCategory(game),
+          returnsNormally,
+        );
+        expect(
+          () => DateUtilities.formatGameReleaseDate(game),
+          returnsNormally,
+        );
+        expect(
+          () => GameDateGrouper.groupGamesByReleaseDate([game]),
+          returnsNormally,
+        );
       });
     });
   });

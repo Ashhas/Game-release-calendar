@@ -4,10 +4,7 @@ class RemindersState {
   final List<GameReminder> reminders;
   final int reminderViewIndex;
 
-  const RemindersState({
-    this.reminders = const [],
-    this.reminderViewIndex = 0,
-  });
+  const RemindersState({this.reminders = const [], this.reminderViewIndex = 0});
 
   RemindersState copyWith({
     List<GameReminder>? reminders,

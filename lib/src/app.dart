@@ -31,79 +31,85 @@ class App extends StatelessWidget {
   @override
   Widget build(_) {
     return ToastificationWrapper(
+      config: const ToastificationConfig(
+        itemWidth: 140,
+        alignment: Alignment.bottomCenter,
+      ),
       child: MultiBlocProvider(
         providers: [
-        BlocProvider<NotificationsCubit>.value(
-          value: GetIt.instance.get<NotificationsCubit>(),
-        ),
-        BlocProvider<UpcomingGamesCubit>(
-          create: (_) => UpcomingGamesCubit(
-            igdbService: GetIt.instance.get<IGDBService>(),
-            analyticsService: GetIt.instance.get<AnalyticsService>(),
+          BlocProvider<NotificationsCubit>.value(
+            value: GetIt.instance.get<NotificationsCubit>(),
           ),
-        ),
-        BlocProvider<ThemeCubit>(
-          create: (_) => ThemeCubit(
-            GetIt.instance.get<SharedPrefsService>(),
-            analyticsService: GetIt.instance.get<AnalyticsService>(),
+          BlocProvider<UpcomingGamesCubit>(
+            create: (_) => UpcomingGamesCubit(
+              igdbService: GetIt.instance.get<IGDBService>(),
+              analyticsService: GetIt.instance.get<AnalyticsService>(),
+            ),
           ),
-        ),
-        BlocProvider<GameDetailCubit>(
-          create: (_) => GameDetailCubit(
-            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
-            notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
-            analyticsService: GetIt.instance.get<AnalyticsService>(),
+          BlocProvider<ThemeCubit>(
+            create: (_) => ThemeCubit(
+              GetIt.instance.get<SharedPrefsService>(),
+              analyticsService: GetIt.instance.get<AnalyticsService>(),
+            ),
           ),
-        ),
-        BlocProvider<RemindersCubit>(
-          create: (_) => RemindersCubit(
-            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
-            notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
-            prefsService: GetIt.instance.get<SharedPrefsService>(),
+          BlocProvider<GameDetailCubit>(
+            create: (_) => GameDetailCubit(
+              remindersBox: GetIt.instance.get<Box<GameReminder>>(),
+              notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
+              analyticsService: GetIt.instance.get<AnalyticsService>(),
+            ),
           ),
-        ),
-        BlocProvider<GameUpdateCubit>(
-          create: (_) => GameUpdateCubit(
-            gameUpdateService: GetIt.instance.get<GameUpdateService>(),
+          BlocProvider<RemindersCubit>(
+            create: (_) => RemindersCubit(
+              remindersBox: GetIt.instance.get<Box<GameReminder>>(),
+              notificationsCubit: GetIt.instance.get<NotificationsCubit>(),
+              prefsService: GetIt.instance.get<SharedPrefsService>(),
+            ),
           ),
-        ),
-        BlocProvider<GameUpdatesCubit>(
-          create: (_) => GameUpdatesCubit(
-            gameUpdateLogBox: GetIt.instance.get<Box<GameUpdateLog>>(),
+          BlocProvider<GameUpdateCubit>(
+            create: (_) => GameUpdateCubit(
+              gameUpdateService: GetIt.instance.get<GameUpdateService>(),
+            ),
           ),
-        ),
-        BlocProvider<GameUpdatesBadgeCubit>(
-          create: (_) => GameUpdatesBadgeCubit(
-            remindersBox: GetIt.instance.get<Box<GameReminder>>(),
-            gameUpdateLogBox: GetIt.instance.get<Box<GameUpdateLog>>(),
-            prefsService: GetIt.instance.get<SharedPrefsService>(),
+          BlocProvider<GameUpdatesCubit>(
+            create: (_) => GameUpdatesCubit(
+              gameUpdateLogBox: GetIt.instance.get<Box<GameUpdateLog>>(),
+            ),
           ),
-        ),
-      ],
-      child: Builder(
-        builder: (_) {
-          return BlocBuilder<ThemeCubit, ThemeState>(
-            buildWhen: (previous, current) =>
-                previous.seedColor != current.seedColor ||
-                previous.themeMode != current.themeMode,
-            builder: (__, themeState) {
-              return MaterialApp(
-                title: GetIt.instance.get<PackageInfo>().appName,
-                theme: CustomTheme.lightTheme(seedColor: themeState.seedColor),
-                darkTheme: CustomTheme.darkTheme(seedColor: themeState.seedColor),
-                themeMode: themeState.themeMode,
-                themeAnimationDuration: const Duration(milliseconds: 200),
-                themeAnimationCurve: Curves.easeInOut,
-                home: const _ConsentGate(
-                  child: GlobalStateListener(
-                    child: AppNavigationBar(),
+          BlocProvider<GameUpdatesBadgeCubit>(
+            create: (_) => GameUpdatesBadgeCubit(
+              remindersBox: GetIt.instance.get<Box<GameReminder>>(),
+              gameUpdateLogBox: GetIt.instance.get<Box<GameUpdateLog>>(),
+              prefsService: GetIt.instance.get<SharedPrefsService>(),
+            ),
+          ),
+        ],
+        child: Builder(
+          builder: (_) {
+            return BlocBuilder<ThemeCubit, ThemeState>(
+              buildWhen: (previous, current) =>
+                  previous.seedColor != current.seedColor ||
+                  previous.themeMode != current.themeMode,
+              builder: (__, themeState) {
+                return MaterialApp(
+                  title: GetIt.instance.get<PackageInfo>().appName,
+                  theme: CustomTheme.lightTheme(
+                    seedColor: themeState.seedColor,
                   ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+                  darkTheme: CustomTheme.darkTheme(
+                    seedColor: themeState.seedColor,
+                  ),
+                  themeMode: themeState.themeMode,
+                  themeAnimationDuration: const Duration(milliseconds: 200),
+                  themeAnimationCurve: Curves.easeInOut,
+                  home: const _ConsentGate(
+                    child: GlobalStateListener(child: AppNavigationBar()),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

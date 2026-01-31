@@ -1,10 +1,7 @@
 part of 'game_card.dart';
 
 class PlatformChip extends StatelessWidget {
-  const PlatformChip({
-    super.key,
-    required this.platformAbbreviation,
-  });
+  const PlatformChip({super.key, required this.platformAbbreviation});
 
   final String platformAbbreviation;
 
@@ -18,9 +15,9 @@ class PlatformChip extends StatelessWidget {
       ),
       child: Text(
         platformAbbreviation,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Colors.white,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.labelMedium?.copyWith(color: Colors.white),
       ),
     );
   }

@@ -22,19 +22,19 @@ class _CollapsibleFilterSection<T> extends StatefulWidget {
   final bool isExpandedByDefault;
 
   @override
-  State<_CollapsibleFilterSection<T>> createState() => _CollapsibleFilterSectionState<T>();
+  State<_CollapsibleFilterSection<T>> createState() =>
+      _CollapsibleFilterSectionState<T>();
 }
 
-class _CollapsibleFilterSectionState<T> extends State<_CollapsibleFilterSection<T>> {
+class _CollapsibleFilterSectionState<T>
+    extends State<_CollapsibleFilterSection<T>> {
   late bool _isExpanded;
-
 
   @override
   void initState() {
     super.initState();
     _isExpanded = widget.isExpandedByDefault;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +225,9 @@ class _CollapsibleSectionContent<T> extends StatelessWidget {
             label: Text(
               itemDisplayName(item),
               style: TextStyle(
-                color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                color: isSelected
+                    ? colorScheme.onPrimary
+                    : colorScheme.onSurfaceVariant,
               ),
             ),
             selected: isSelected,

@@ -133,7 +133,10 @@ void main() {
         expect(cubit.state.selectedFilters.releasePrecisionChoice, isNull);
         expect(cubit.state.selectedFilters.platformChoices, isEmpty);
         expect(cubit.state.selectedFilters.categoryIds, isEmpty);
-        expect(cubit.state.selectedFilters.releaseDateChoice, equals(DateFilterChoice.allTime));
+        expect(
+          cubit.state.selectedFilters.releaseDateChoice,
+          equals(DateFilterChoice.allTime),
+        );
       });
 
       test('should have empty name query initially', () {
@@ -156,8 +159,10 @@ void main() {
           precisionChoice: ReleasePrecisionFilter.exactDate,
         );
 
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.exactDate));
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.exactDate),
+        );
       });
 
       test('should update state with quarter precision filter', () async {
@@ -168,8 +173,10 @@ void main() {
           precisionChoice: ReleasePrecisionFilter.quarter,
         );
 
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.quarter));
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.quarter),
+        );
       });
 
       test('should update state with null precision filter', () async {
@@ -192,24 +199,40 @@ void main() {
         expect(cubit.state.selectedFilters.releasePrecisionChoice, isNull);
       });
 
-      test('should preserve other filters when updating precision filter', () async {
-        const testPlatformChoices = <PlatformFilter>{PlatformFilter.playstation5};
-        const testCategoryIds = <int>{1, 2, 3};
-        const testDateChoice = DateFilterChoice.thisMonth;
+      test(
+        'should preserve other filters when updating precision filter',
+        () async {
+          const testPlatformChoices = <PlatformFilter>{
+            PlatformFilter.playstation5,
+          };
+          const testCategoryIds = <int>{1, 2, 3};
+          const testDateChoice = DateFilterChoice.thisMonth;
 
-        await cubit.applySearchFilters(
-          platformChoices: testPlatformChoices,
-          setDateChoice: testDateChoice,
-          categoryId: testCategoryIds,
-          precisionChoice: ReleasePrecisionFilter.yearMonth,
-        );
+          await cubit.applySearchFilters(
+            platformChoices: testPlatformChoices,
+            setDateChoice: testDateChoice,
+            categoryId: testCategoryIds,
+            precisionChoice: ReleasePrecisionFilter.yearMonth,
+          );
 
-        expect(cubit.state.selectedFilters.platformChoices, equals(testPlatformChoices));
-        expect(cubit.state.selectedFilters.categoryIds, equals(testCategoryIds));
-        expect(cubit.state.selectedFilters.releaseDateChoice, equals(testDateChoice));
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.yearMonth));
-      });
+          expect(
+            cubit.state.selectedFilters.platformChoices,
+            equals(testPlatformChoices),
+          );
+          expect(
+            cubit.state.selectedFilters.categoryIds,
+            equals(testCategoryIds),
+          );
+          expect(
+            cubit.state.selectedFilters.releaseDateChoice,
+            equals(testDateChoice),
+          );
+          expect(
+            cubit.state.selectedFilters.releasePrecisionChoice,
+            equals(ReleasePrecisionFilter.yearMonth),
+          );
+        },
+      );
     });
 
     group('getGames with precision filtering', () {
@@ -239,7 +262,10 @@ void main() {
         final allGames = sections.expand((section) => section.games).toList();
 
         // Should contain Final Fantasy Tactics (exact date)
-        expect(allGames.any((game) => game.name == 'Final Fantasy Tactics'), isTrue);
+        expect(
+          allGames.any((game) => game.name == 'Final Fantasy Tactics'),
+          isTrue,
+        );
 
         // Should not contain quarter games
         expect(allGames.any((game) => game.name == 'Cyberpunk 2078'), isFalse);
@@ -267,7 +293,10 @@ void main() {
         expect(allGames.any((game) => game.name == 'Cyberpunk 2078'), isTrue);
 
         // Should not contain exact date games
-        expect(allGames.any((game) => game.name == 'Final Fantasy Tactics'), isFalse);
+        expect(
+          allGames.any((game) => game.name == 'Final Fantasy Tactics'),
+          isFalse,
+        );
       });
 
       test('should fetch all games when precision filter is "all"', () async {
@@ -289,7 +318,10 @@ void main() {
 
         // Should contain all games
         expect(allGames.length, equals(4));
-        expect(allGames.any((game) => game.name == 'Final Fantasy Tactics'), isTrue);
+        expect(
+          allGames.any((game) => game.name == 'Final Fantasy Tactics'),
+          isTrue,
+        );
         expect(allGames.any((game) => game.name == 'Cyberpunk 2078'), isTrue);
         expect(allGames.any((game) => game.name == 'Elder Scrolls VI'), isTrue);
         expect(allGames.any((game) => game.name == 'Half-Life 3'), isTrue);
@@ -337,8 +369,10 @@ void main() {
 
         // Should have applied both name query and precision filter
         expect(cubit.state.nameQuery, equals('Final Fantasy'));
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.exactDate));
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.exactDate),
+        );
       });
 
       test('should handle empty search with precision filter', () async {
@@ -355,8 +389,10 @@ void main() {
 
         // Should show default games with precision filter applied
         expect(cubit.state.games, isA<AsyncData>());
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.quarter));
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.quarter),
+        );
       });
     });
 
@@ -376,20 +412,23 @@ void main() {
         // In our mock, this will still return filtered games based on precision
       });
 
-      test('should handle offset games with different precision filters', () async {
-        // Test with TBD filter
-        await cubit.applySearchFilters(
-          platformChoices: <PlatformFilter>{},
-          setDateChoice: null,
-          categoryId: <int>{},
-          precisionChoice: ReleasePrecisionFilter.tbd,
-        );
+      test(
+        'should handle offset games with different precision filters',
+        () async {
+          // Test with TBD filter
+          await cubit.applySearchFilters(
+            platformChoices: <PlatformFilter>{},
+            setDateChoice: null,
+            categoryId: <int>{},
+            precisionChoice: ReleasePrecisionFilter.tbd,
+          );
 
-        final games = await cubit.getGamesWithOffset(0);
+          final games = await cubit.getGamesWithOffset(0);
 
-        // Should filter by TBD precision
-        expect(games, isNotNull);
-      });
+          // Should filter by TBD precision
+          expect(games, isNotNull);
+        },
+      );
     });
 
     group('clearSearch integration', () {
@@ -409,65 +448,82 @@ void main() {
 
         // Name query should be cleared but precision filter should remain
         expect(cubit.state.nameQuery, isEmpty);
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.yearMonth));
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.yearMonth),
+        );
       });
     });
 
     group('error handling', () {
-      test('should handle service errors gracefully with precision filter', () async {
-        // Create a service that throws errors
-        final errorRepository = MockIGDBRepository([]);
-        final errorService = IGDBService(repository: errorRepository);
-        final errorCubit = UpcomingGamesCubit(igdbService: errorService);
+      test(
+        'should handle service errors gracefully with precision filter',
+        () async {
+          // Create a service that throws errors
+          final errorRepository = MockIGDBRepository([]);
+          final errorService = IGDBService(repository: errorRepository);
+          final errorCubit = UpcomingGamesCubit(igdbService: errorService);
 
+          await errorCubit.applySearchFilters(
+            platformChoices: <PlatformFilter>{},
+            setDateChoice: null,
+            categoryId: <int>{},
+            precisionChoice: ReleasePrecisionFilter.exactDate,
+          );
 
-        await errorCubit.applySearchFilters(
-          platformChoices: <PlatformFilter>{},
-          setDateChoice: null,
-          categoryId: <int>{},
-          precisionChoice: ReleasePrecisionFilter.exactDate,
-        );
+          errorCubit.getGames();
+          await Future.delayed(Duration(milliseconds: 50));
 
-        errorCubit.getGames();
-        await Future.delayed(Duration(milliseconds: 50));
+          // Should handle the error gracefully
+          expect(
+            errorCubit.state.selectedFilters.releasePrecisionChoice,
+            equals(ReleasePrecisionFilter.exactDate),
+          );
 
-        // Should handle the error gracefully
-        expect(errorCubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.exactDate));
-
-        errorCubit.close();
-      });
+          errorCubit.close();
+        },
+      );
     });
 
     group('state consistency', () {
-      test('should maintain filter state through multiple operations', () async {
-        // Apply initial filters
-        await cubit.applySearchFilters(
-          platformChoices: <PlatformFilter>{PlatformFilter.pc},
-          setDateChoice: DateFilterChoice.thisMonth,
-          categoryId: <int>{1},
-          precisionChoice: ReleasePrecisionFilter.quarter,
-        );
+      test(
+        'should maintain filter state through multiple operations',
+        () async {
+          // Apply initial filters
+          await cubit.applySearchFilters(
+            platformChoices: <PlatformFilter>{PlatformFilter.pc},
+            setDateChoice: DateFilterChoice.thisMonth,
+            categoryId: <int>{1},
+            precisionChoice: ReleasePrecisionFilter.quarter,
+          );
 
-        // Perform multiple operations
-        await cubit.updateNameQuery('Test');
-        cubit.searchGames();
-        await Future.delayed(Duration(milliseconds: 500));
+          // Perform multiple operations
+          await cubit.updateNameQuery('Test');
+          cubit.searchGames();
+          await Future.delayed(Duration(milliseconds: 500));
 
-        cubit.clearSearch();
-        await Future.delayed(Duration(milliseconds: 50));
+          cubit.clearSearch();
+          await Future.delayed(Duration(milliseconds: 50));
 
-        cubit.getGames();
-        await Future.delayed(Duration(milliseconds: 50));
+          cubit.getGames();
+          await Future.delayed(Duration(milliseconds: 50));
 
-        // Filters should remain consistent
-        expect(cubit.state.selectedFilters.platformChoices, contains(PlatformFilter.pc));
-        expect(cubit.state.selectedFilters.releaseDateChoice, equals(DateFilterChoice.thisMonth));
-        expect(cubit.state.selectedFilters.categoryIds, contains(1));
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.quarter));
-      });
+          // Filters should remain consistent
+          expect(
+            cubit.state.selectedFilters.platformChoices,
+            contains(PlatformFilter.pc),
+          );
+          expect(
+            cubit.state.selectedFilters.releaseDateChoice,
+            equals(DateFilterChoice.thisMonth),
+          );
+          expect(cubit.state.selectedFilters.categoryIds, contains(1));
+          expect(
+            cubit.state.selectedFilters.releasePrecisionChoice,
+            equals(ReleasePrecisionFilter.quarter),
+          );
+        },
+      );
 
       test('should handle rapid filter changes', () async {
         // Rapidly change precision filters
@@ -497,30 +553,35 @@ void main() {
     });
 
     group('real-world scenarios', () {
-      test('should handle Final Fantasy Tactics exact date filtering correctly', () async {
-        await cubit.applySearchFilters(
-          platformChoices: <PlatformFilter>{},
-          setDateChoice: null,
-          categoryId: <int>{},
-          precisionChoice: ReleasePrecisionFilter.exactDate,
-        );
+      test(
+        'should handle Final Fantasy Tactics exact date filtering correctly',
+        () async {
+          await cubit.applySearchFilters(
+            platformChoices: <PlatformFilter>{},
+            setDateChoice: null,
+            categoryId: <int>{},
+            precisionChoice: ReleasePrecisionFilter.exactDate,
+          );
 
-        cubit.getGames();
-        await Future.delayed(Duration(milliseconds: 50));
+          cubit.getGames();
+          await Future.delayed(Duration(milliseconds: 50));
 
-        final gamesData = cubit.state.games.asData;
-        final sections = gamesData!.value;
-        final allGames = sections.expand((section) => section.games).toList();
+          final gamesData = cubit.state.games.asData;
+          final sections = gamesData!.value;
+          final allGames = sections.expand((section) => section.games).toList();
 
-        // Should find Final Fantasy Tactics despite having null category
-        final ffTactics = allGames.where((game) => game.name == 'Final Fantasy Tactics');
-        expect(ffTactics.length, equals(1));
+          // Should find Final Fantasy Tactics despite having null category
+          final ffTactics = allGames.where(
+            (game) => game.name == 'Final Fantasy Tactics',
+          );
+          expect(ffTactics.length, equals(1));
 
-        final game = ffTactics.first;
-        final releaseDate = game.releaseDates!.first;
-        expect(releaseDate.category, isNull); // Verifies the bug scenario
-        expect(releaseDate.dateFormat, equals(0)); // But has exact dateFormat
-      });
+          final game = ffTactics.first;
+          final releaseDate = game.releaseDates!.first;
+          expect(releaseDate.category, isNull); // Verifies the bug scenario
+          expect(releaseDate.dateFormat, equals(0)); // But has exact dateFormat
+        },
+      );
 
       test('should handle combined filtering scenarios', () async {
         // Test combination of name search and precision filter
@@ -537,8 +598,10 @@ void main() {
 
         // Should apply both filters
         expect(cubit.state.nameQuery, equals('Cyberpunk'));
-        expect(cubit.state.selectedFilters.releasePrecisionChoice,
-               equals(ReleasePrecisionFilter.quarter));
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.quarter),
+        );
         expect(cubit.state.games, isA<AsyncData>());
       });
 

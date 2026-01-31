@@ -3,18 +3,12 @@ import 'package:riverpod/riverpod.dart';
 import 'package:game_release_calendar/src/domain/models/game_update_log.dart';
 
 class GameUpdatesState {
-  const GameUpdatesState({
-    this.updateLogs = const AsyncValue.loading(),
-  });
+  const GameUpdatesState({this.updateLogs = const AsyncValue.loading()});
 
   final AsyncValue<List<GameUpdateLog>> updateLogs;
 
-  GameUpdatesState copyWith({
-    AsyncValue<List<GameUpdateLog>>? updateLogs,
-  }) {
-    return GameUpdatesState(
-      updateLogs: updateLogs ?? this.updateLogs,
-    );
+  GameUpdatesState copyWith({AsyncValue<List<GameUpdateLog>>? updateLogs}) {
+    return GameUpdatesState(updateLogs: updateLogs ?? this.updateLogs);
   }
 
   @override

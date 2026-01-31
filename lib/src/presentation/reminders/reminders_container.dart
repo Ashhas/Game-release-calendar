@@ -65,7 +65,9 @@ class _RemindersContainerState extends State<RemindersContainer> {
                   context.read<GameUpdatesBadgeCubit>().markAsReadToday();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const GameUpdatesContainer()),
+                    MaterialPageRoute(
+                      builder: (_) => const GameUpdatesContainer(),
+                    ),
                   );
                 },
                 icon: AlertBadge(
@@ -75,11 +77,7 @@ class _RemindersContainerState extends State<RemindersContainer> {
               );
             },
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              right: context.spacings.xs,
-            ),
-          )
+          Padding(padding: EdgeInsets.only(right: context.spacings.xs)),
         ],
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -88,9 +86,7 @@ class _RemindersContainerState extends State<RemindersContainer> {
           final remindersList = state.reminders;
 
           if (remindersList.isEmpty) {
-            return const Center(
-              child: Text('No reminders set'),
-            );
+            return const Center(child: Text('No reminders set'));
           }
 
           return CustomScrollView(
@@ -105,9 +101,7 @@ class _RemindersContainerState extends State<RemindersContainer> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      ViewToggleTab(
-                        selectedIndex: state.reminderViewIndex,
-                      ),
+                      ViewToggleTab(selectedIndex: state.reminderViewIndex),
                       SizedBox(height: context.spacings.xs),
                     ],
                   ),
@@ -120,7 +114,9 @@ class _RemindersContainerState extends State<RemindersContainer> {
               if (state.reminderViewIndex == 2)
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: context.spacings.m),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.spacings.m,
+                    ),
                     child: RemindersListView(
                       reminders: GameDateGrouper.groupRemindersByReleaseDate(
                         remindersList,
@@ -128,9 +124,7 @@ class _RemindersContainerState extends State<RemindersContainer> {
                     ),
                   ),
                 ),
-              SliverToBoxAdapter(
-                child: SizedBox(height: context.spacings.s),
-              ),
+              SliverToBoxAdapter(child: SizedBox(height: context.spacings.s)),
             ],
           );
         },

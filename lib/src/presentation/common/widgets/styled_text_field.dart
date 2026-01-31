@@ -57,9 +57,9 @@ class StyledTextField extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: colorScheme.primary,
-            ),
+        hintStyle: Theme.of(
+          context,
+        ).textTheme.bodyLarge?.copyWith(color: colorScheme.primary),
         prefixIcon: leading != null
             ? IconTheme(
                 data: IconThemeData(color: colorScheme.primary),
@@ -92,10 +92,7 @@ class StyledTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
-          borderSide: BorderSide(
-            color: colorScheme.primary,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
@@ -105,16 +102,11 @@ class StyledTextField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
-          borderSide: BorderSide(
-            color: colorScheme.error,
-          ),
+          borderSide: BorderSide(color: colorScheme.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(60)),
-          borderSide: BorderSide(
-            color: colorScheme.error,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: colorScheme.error, width: 2),
         ),
       ),
     );

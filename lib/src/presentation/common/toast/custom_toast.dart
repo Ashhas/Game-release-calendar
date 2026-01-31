@@ -29,11 +29,7 @@ class CustomToast extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color: textColor,
-              size: 16,
-            ),
+            Icon(icon, color: textColor, size: 16),
             const SizedBox(width: 4),
             Flexible(
               child: Text(

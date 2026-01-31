@@ -12,10 +12,10 @@ class GameUpdatesBadgeCubit extends Cubit<GameUpdatesBadgeState> {
     required Box<GameReminder> remindersBox,
     required Box<GameUpdateLog> gameUpdateLogBox,
     required SharedPrefsService prefsService,
-  })  : _remindersBox = remindersBox,
-        _gameUpdateLogBox = gameUpdateLogBox,
-        _prefsService = prefsService,
-        super(const GameUpdatesBadgeState());
+  }) : _remindersBox = remindersBox,
+       _gameUpdateLogBox = gameUpdateLogBox,
+       _prefsService = prefsService,
+       super(const GameUpdatesBadgeState());
 
   final Box<GameReminder> _remindersBox;
   final Box<GameUpdateLog> _gameUpdateLogBox;
@@ -47,20 +47,24 @@ class GameUpdatesBadgeCubit extends Cubit<GameUpdatesBadgeState> {
       final isReadToday = _isReadToday(lastReadDate);
 
       // Check if there are new items since last read this session
-      final hasNewItemsSinceRead = todayReleasesCount > _releasesCountWhenRead ||
-                                   todayUpdateLogsCount > _updateLogsCountWhenRead;
+      final hasNewItemsSinceRead =
+          todayReleasesCount > _releasesCountWhenRead ||
+          todayUpdateLogsCount > _updateLogsCountWhenRead;
 
       // Show badge if:
       // 1. Has content AND not read today (first time today)
       // 2. OR has content AND read today BUT new items appeared this session
-      final shouldShowBadge = hasContent && (!isReadToday || hasNewItemsSinceRead);
+      final shouldShowBadge =
+          hasContent && (!isReadToday || hasNewItemsSinceRead);
 
-      emit(GameUpdatesBadgeState(
-        shouldShowBadge: shouldShowBadge,
-        lastReadDate: lastReadDate,
-        todayReleasesCount: todayReleasesCount,
-        todayUpdateLogsCount: todayUpdateLogsCount,
-      ));
+      emit(
+        GameUpdatesBadgeState(
+          shouldShowBadge: shouldShowBadge,
+          lastReadDate: lastReadDate,
+          todayReleasesCount: todayReleasesCount,
+          todayUpdateLogsCount: todayUpdateLogsCount,
+        ),
+      );
     } catch (e) {
       // If there's an error, don't show badge to be safe
       emit(const GameUpdatesBadgeState());
@@ -77,10 +81,7 @@ class GameUpdatesBadgeCubit extends Cubit<GameUpdatesBadgeState> {
       _releasesCountWhenRead = _getTodayReleasesCount();
       _updateLogsCountWhenRead = _getTodayUpdateLogsCount();
 
-      emit(state.copyWith(
-        lastReadDate: now,
-        shouldShowBadge: false,
-      ));
+      emit(state.copyWith(lastReadDate: now, shouldShowBadge: false));
     } catch (e) {
       // If saving fails, at least hide the badge in the UI and store counts
       _releasesCountWhenRead = _getTodayReleasesCount();
@@ -101,7 +102,9 @@ class GameUpdatesBadgeCubit extends Cubit<GameUpdatesBadgeState> {
       // Only count games with exact release dates, not vague dates like Q4 or "March 2024"
       if (!reminder.releaseDate.hasExactDate) return false;
 
-      final releaseDateTime = DateUtilities.secondSinceEpochToDateTime(releaseDate);
+      final releaseDateTime = DateUtilities.secondSinceEpochToDateTime(
+        releaseDate,
+      );
       final releaseDateOnly = DateTime(
         releaseDateTime.year,
         releaseDateTime.month,

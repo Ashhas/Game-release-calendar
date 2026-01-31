@@ -9,9 +9,7 @@ import '../../utils/date_range_utility.dart';
 class IGDBService {
   final IGDBRepository repository;
 
-  const IGDBService({
-    required this.repository,
-  });
+  const IGDBService({required this.repository});
 
   Future<List<Game>> getGames({
     required String? nameQuery,
@@ -19,19 +17,16 @@ class IGDBService {
     int offset = 0,
   }) async {
     final games = await repository.getGames(
-      _buildQuery(
-        nameQuery,
-        filter,
-        offset: offset,
-      ),
+      _buildQuery(nameQuery, filter, offset: offset),
     );
 
     if (filter.releasePrecisionChoice != null &&
         filter.releasePrecisionChoice != ReleasePrecisionFilter.all) {
       return games.where((game) {
         return game.releaseDates?.any((releaseDate) {
-          return filter.releasePrecisionChoice!.matches(releaseDate);
-        }) ?? false;
+              return filter.releasePrecisionChoice!.matches(releaseDate);
+            }) ??
+            false;
       }).toList();
     }
 
@@ -47,9 +42,10 @@ class IGDBService {
       final normalizedQuery = SearchHelper.addAccentedVariants(nameQuery);
       if (normalizedQuery.isNotEmpty) {
         final limitedVariants = normalizedQuery.take(8).toList();
-        final searchTerms = [nameQuery, ...limitedVariants]
-            .map((term) => 'name ~ *"$term"*')
-            .join(' | ');
+        final searchTerms = [
+          nameQuery,
+          ...limitedVariants,
+        ].map((term) => 'name ~ *"$term"*').join(' | ');
         filterConditions.add('($searchTerms)');
       } else {
         filterConditions.add('name ~ *"$nameQuery"*');
@@ -57,14 +53,16 @@ class IGDBService {
     }
 
     if (filter.categoryIds.isNotEmpty) {
-      final categoryIds =
-          filter.categoryIds.map((categoryId) => categoryId).join(', ');
+      final categoryIds = filter.categoryIds
+          .map((categoryId) => categoryId)
+          .join(', ');
       filterConditions.add('category = ($categoryIds)');
     }
 
     if (filter.platformChoices.isNotEmpty) {
-      final platformIds =
-          filter.platformChoices.map((choice) => choice.id).join(', ');
+      final platformIds = filter.platformChoices
+          .map((choice) => choice.id)
+          .join(', ');
       filterConditions.add('platforms = ($platformIds)');
     }
 
@@ -79,20 +77,26 @@ class IGDBService {
     if (startTimestamp != null) {
       final fromTimestamp = startTimestamp.millisecondsSinceEpoch ~/ 1000;
       filterConditions.add(
-          '(first_release_date >= $fromTimestamp | first_release_date = null)');
+        '(first_release_date >= $fromTimestamp | first_release_date = null)',
+      );
     } else {
       DateTime dateOnly = DateTime.now();
-      DateTime withoutTime =
-          DateTime(dateOnly.year, dateOnly.month, dateOnly.day);
+      DateTime withoutTime = DateTime(
+        dateOnly.year,
+        dateOnly.month,
+        dateOnly.day,
+      );
       final currentTimestamp = withoutTime.millisecondsSinceEpoch ~/ 1000;
       filterConditions.add(
-          '(first_release_date >= $currentTimestamp | first_release_date = null)');
+        '(first_release_date >= $currentTimestamp | first_release_date = null)',
+      );
     }
 
     if (endTimestamp != null && endTimestamp != Constants.maxDateLimit) {
       final toTimestamp = endTimestamp.millisecondsSinceEpoch ~/ 1000;
       filterConditions.add(
-          '(first_release_date < $toTimestamp | first_release_date = null)');
+        '(first_release_date < $toTimestamp | first_release_date = null)',
+      );
     }
 
     final whereClause = filterConditions.isNotEmpty
@@ -104,7 +108,7 @@ class IGDBService {
       whereClause,
       'limit ${Constants.gameRequestLimit};',
       'offset $offset;',
-      'sort first_release_date asc;'
+      'sort first_release_date asc;',
     ].join(' ');
 
     return query;

@@ -33,12 +33,7 @@ class Platform {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'abbreviation': abbreviation,
-      'name': name,
-      'url': url,
-    };
+    return {'id': id, 'abbreviation': abbreviation, 'name': name, 'url': url};
   }
 
   @override

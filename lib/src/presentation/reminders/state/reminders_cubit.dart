@@ -17,10 +17,10 @@ class RemindersCubit extends Cubit<RemindersState> {
     required NotificationsCubit notificationsCubit,
     required Box<GameReminder> remindersBox,
     required SharedPrefsService prefsService,
-  })  : _remindersBox = remindersBox,
-        _notificationsCubit = notificationsCubit,
-        _prefsService = prefsService,
-        super(RemindersState()) {
+  }) : _remindersBox = remindersBox,
+       _notificationsCubit = notificationsCubit,
+       _prefsService = prefsService,
+       super(RemindersState()) {
     _notificationsSubscription = _notificationsCubit.stream.listen((state) {
       state.notifications.whenData((_) {
         loadGames();
@@ -38,6 +38,7 @@ class RemindersCubit extends Cubit<RemindersState> {
     _notificationsSubscription?.cancel();
     return super.close();
   }
+
   final prefDataViewKey = 'preferred_data_view_index';
 
   Future<void> loadGames() async {
@@ -46,12 +47,16 @@ class RemindersCubit extends Cubit<RemindersState> {
     emit(state.copyWith(reminders: sortedReminders));
   }
 
-
   List<GameReminder> _sortReminders(List<GameReminder> reminders) {
     return reminders
-        .sortedBy((reminder) =>
-            ReleaseDateComparator.getSortableTimestamp(reminder.releaseDate.date))
-        .thenBy((reminder) => reminder.releaseDate.hasExactDate ? 0 : 1) // Exact dates first
+        .sortedBy(
+          (reminder) => ReleaseDateComparator.getSortableTimestamp(
+            reminder.releaseDate.date,
+          ),
+        )
+        .thenBy(
+          (reminder) => reminder.releaseDate.hasExactDate ? 0 : 1,
+        ) // Exact dates first
         .thenBy((reminder) => reminder.gameName);
   }
 
@@ -61,10 +66,7 @@ class RemindersCubit extends Cubit<RemindersState> {
   }
 
   Future<void> storePreferredDataView(int viewIndex) async {
-    _prefsService.setInt(
-      'prefDataViewKey',
-      viewIndex,
-    );
+    _prefsService.setInt('prefDataViewKey', viewIndex);
     emit(state.copyWith(reminderViewIndex: viewIndex));
   }
 

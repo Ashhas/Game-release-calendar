@@ -19,7 +19,10 @@ void main() {
 
       expect(state.games, equals(const AsyncValue.data(<GameSection>[])));
       expect(state.nameQuery, equals(''));
-      expect(state.selectedFilters.releaseDateChoice, equals(DateFilterChoice.allTime));
+      expect(
+        state.selectedFilters.releaseDateChoice,
+        equals(DateFilterChoice.allTime),
+      );
       expect(state.selectedFilters.platformChoices, isEmpty);
       expect(state.selectedFilters.categoryIds, isEmpty);
     });
@@ -80,9 +83,15 @@ void main() {
         final updatedState = initialState.copyWith(games: newGamesValue);
 
         expect(updatedState.games, equals(newGamesValue));
-        expect(updatedState.selectedFilters, equals(initialState.selectedFilters));
+        expect(
+          updatedState.selectedFilters,
+          equals(initialState.selectedFilters),
+        );
         expect(updatedState.nameQuery, equals(initialState.nameQuery));
-        expect(initialState.games, equals(const AsyncValue.data(<GameSection>[])));
+        expect(
+          initialState.games,
+          equals(const AsyncValue.data(<GameSection>[])),
+        );
       });
 
       test('creates new instance with updated filters', () {
@@ -108,7 +117,10 @@ void main() {
 
         expect(updatedState.nameQuery, equals(newQuery));
         expect(updatedState.games, equals(initialState.games));
-        expect(updatedState.selectedFilters, equals(initialState.selectedFilters));
+        expect(
+          updatedState.selectedFilters,
+          equals(initialState.selectedFilters),
+        );
       });
 
       test('preserves existing values when parameters are null', () {
@@ -134,7 +146,10 @@ void main() {
         final updatedState = initialState.copyWith();
 
         expect(updatedState.games, equals(initialState.games));
-        expect(updatedState.selectedFilters, equals(initialState.selectedFilters));
+        expect(
+          updatedState.selectedFilters,
+          equals(initialState.selectedFilters),
+        );
         expect(updatedState.nameQuery, equals(initialState.nameQuery));
       });
 
@@ -212,10 +227,16 @@ void main() {
 
         final state = UpcomingGamesState(selectedFilters: complexFilter);
 
-        expect(state.selectedFilters.releaseDateChoice, equals(DateFilterChoice.next3Months));
+        expect(
+          state.selectedFilters.releaseDateChoice,
+          equals(DateFilterChoice.next3Months),
+        );
         expect(state.selectedFilters.platformChoices.length, equals(3));
         expect(state.selectedFilters.categoryIds.length, equals(5));
-        expect(state.selectedFilters.platformChoices.contains(PlatformFilter.ps5), isTrue);
+        expect(
+          state.selectedFilters.platformChoices.contains(PlatformFilter.ps5),
+          isTrue,
+        );
         expect(state.selectedFilters.categoryIds.contains(3), isTrue);
       });
     });
@@ -245,12 +266,7 @@ Game _createTestGame(int id) {
       ),
     ],
     releaseDates: [
-      ReleaseDate(
-        id: id,
-        date: 1751241600,
-        category: null,
-        dateFormat: 0,
-      ),
+      ReleaseDate(id: id, date: 1751241600, category: null, dateFormat: 0),
     ],
   );
 }

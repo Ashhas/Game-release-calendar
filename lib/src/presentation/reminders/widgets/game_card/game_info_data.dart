@@ -27,17 +27,19 @@ class GameInfoData extends StatelessWidget {
         children: [
           Text(
             description,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Colors.white,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(color: Colors.white),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           Text(
             isReleased ? 'Released' : label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: isReleased ? Theme.of(context).colorScheme.primary : Colors.white,
-                ),
+              color: isReleased
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.white,
+            ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),

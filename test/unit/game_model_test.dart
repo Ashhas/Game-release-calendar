@@ -31,15 +31,17 @@ void main() {
 
       final imageUrl = cover.imageUrl();
       expect(
-          imageUrl,
-          equals(
-              'https://images.igdb.com/igdb/image/upload/t_cover_big/test123.jpg'));
+        imageUrl,
+        equals(
+          'https://images.igdb.com/igdb/image/upload/t_cover_big/test123.jpg',
+        ),
+      );
 
       final customSizeUrl = cover.imageUrl(size: 'thumb');
       expect(
-          customSizeUrl,
-          equals(
-              'https://images.igdb.com/igdb/image/upload/t_thumb/test123.jpg'));
+        customSizeUrl,
+        equals('https://images.igdb.com/igdb/image/upload/t_thumb/test123.jpg'),
+      );
     });
 
     test('should validate basic game properties', () {

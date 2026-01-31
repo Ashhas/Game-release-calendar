@@ -15,16 +15,16 @@ class _TooltipContent extends StatelessWidget {
         Text(
           DateFormat('MMM').format(currentDate),
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: onInverseSurface,
-                fontSize: 10,
-              ),
+            color: onInverseSurface,
+            fontSize: 10,
+          ),
         ),
         Text(
           DateFormat('d').format(currentDate),
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: onInverseSurface,
-                fontWeight: FontWeight.bold,
-              ),
+            color: onInverseSurface,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );

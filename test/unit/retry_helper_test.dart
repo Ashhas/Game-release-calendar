@@ -20,16 +20,13 @@ void main() {
     test('should retry on network failure and eventually succeed', () async {
       int callCount = 0;
 
-      final result = await RetryHelper.retry(
-        () async {
-          callCount++;
-          if (callCount < 3) {
-            throw const NetworkException('Network failed');
-          }
-          return 'success';
-        },
-        delayFunction: (_) => Duration(milliseconds: 1),
-      );
+      final result = await RetryHelper.retry(() async {
+        callCount++;
+        if (callCount < 3) {
+          throw const NetworkException('Network failed');
+        }
+        return 'success';
+      }, delayFunction: (_) => Duration(milliseconds: 1));
 
       expect(result, equals('success'));
       expect(callCount, equals(3));

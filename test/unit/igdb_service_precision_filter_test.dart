@@ -231,7 +231,10 @@ void main() {
         );
 
         expect(result.length, equals(10)); // All games should be returned
-        expect(result.map((g) => g.id).toList(), equals([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+        expect(
+          result.map((g) => g.id).toList(),
+          equals([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+        );
       });
 
       test('should return all games when precision filter is null', () async {
@@ -264,30 +267,36 @@ void main() {
         );
 
         expect(result.length, equals(3));
-        expect(result.map((g) => g.id).toList(), containsAll([1, 7, 10])); // Games with exact dates
+        expect(
+          result.map((g) => g.id).toList(),
+          containsAll([1, 7, 10]),
+        ); // Games with exact dates
 
         // Verify Final Fantasy Tactics is included (the original bug scenario)
         final finalFantasyTactics = result.firstWhere((game) => game.id == 1);
         expect(finalFantasyTactics.name, equals('Final Fantasy Tactics'));
       });
 
-      test('should include multi-platform game with at least one exact date', () async {
-        final filter = GameFilter(
-          platformChoices: {},
-          categoryIds: {},
-          releasePrecisionChoice: ReleasePrecisionFilter.exactDate,
-        );
+      test(
+        'should include multi-platform game with at least one exact date',
+        () async {
+          final filter = GameFilter(
+            platformChoices: {},
+            categoryIds: {},
+            releasePrecisionChoice: ReleasePrecisionFilter.exactDate,
+          );
 
-        final result = await igdbService.getGames(
-          nameQuery: null,
-          filter: filter,
-        );
+          final result = await igdbService.getGames(
+            nameQuery: null,
+            filter: filter,
+          );
 
-        // Game 7 has mixed release dates - one exact, one quarter
-        // It should be included because it has at least one exact date
-        final multiPlatformGame = result.where((game) => game.id == 7);
-        expect(multiPlatformGame.length, equals(1));
-      });
+          // Game 7 has mixed release dates - one exact, one quarter
+          // It should be included because it has at least one exact date
+          final multiPlatformGame = result.where((game) => game.id == 7);
+          expect(multiPlatformGame.length, equals(1));
+        },
+      );
     });
 
     group('quarter filter', () {
@@ -304,7 +313,10 @@ void main() {
         );
 
         expect(result.length, equals(3));
-        expect(result.map((g) => g.id).toList(), containsAll([2, 3, 7])); // Games with quarter dates
+        expect(
+          result.map((g) => g.id).toList(),
+          containsAll([2, 3, 7]),
+        ); // Games with quarter dates
       });
 
       test('should handle different quarter text patterns', () async {
@@ -322,7 +334,10 @@ void main() {
         final gameNames = result.map((g) => g.name).toList();
         expect(gameNames, contains('Game Q1 2025')); // Q1 pattern
         expect(gameNames, contains('Game Q4 2025')); // Q4 pattern
-        expect(gameNames, contains('Game Multi Platform')); // Has quarter release date
+        expect(
+          gameNames,
+          contains('Game Multi Platform'),
+        ); // Has quarter release date
       });
     });
 
@@ -378,7 +393,10 @@ void main() {
         );
 
         expect(result.length, equals(1));
-        expect(result.map((g) => g.id).toList(), containsAll([6])); // Only games with actual TBD release dates
+        expect(
+          result.map((g) => g.id).toList(),
+          containsAll([6]),
+        ); // Only games with actual TBD release dates
       });
 
       test('should only include games with actual TBD release dates', () async {
@@ -449,8 +467,14 @@ void main() {
           releasePrecisionChoice: ReleasePrecisionFilter.quarter,
         );
 
-        final exactResult = await igdbService.getGames(nameQuery: null, filter: exactFilter);
-        final quarterResult = await igdbService.getGames(nameQuery: null, filter: quarterFilter);
+        final exactResult = await igdbService.getGames(
+          nameQuery: null,
+          filter: exactFilter,
+        );
+        final quarterResult = await igdbService.getGames(
+          nameQuery: null,
+          filter: quarterFilter,
+        );
 
         // Game 7 has both exact and quarter dates - should appear in both filters
         final gameInExact = exactResult.any((g) => g.id == 7);
@@ -499,34 +523,42 @@ void main() {
     });
 
     group('real-world IGDB data scenarios', () {
-      test('should handle Final Fantasy Tactics original bug scenario', () async {
-        final filter = GameFilter(
-          platformChoices: {},
-          categoryIds: {},
-          releasePrecisionChoice: ReleasePrecisionFilter.exactDate,
-        );
+      test(
+        'should handle Final Fantasy Tactics original bug scenario',
+        () async {
+          final filter = GameFilter(
+            platformChoices: {},
+            categoryIds: {},
+            releasePrecisionChoice: ReleasePrecisionFilter.exactDate,
+          );
 
-        final result = await igdbService.getGames(
-          nameQuery: null,
-          filter: filter,
-        );
+          final result = await igdbService.getGames(
+            nameQuery: null,
+            filter: filter,
+          );
 
-        // Verify Final Fantasy Tactics appears in exact date filter
-        final finalFantasyTactics = result.where((game) =>
-          game.name == 'Final Fantasy Tactics' &&
-          game.id == 1
-        );
+          // Verify Final Fantasy Tactics appears in exact date filter
+          final finalFantasyTactics = result.where(
+            (game) => game.name == 'Final Fantasy Tactics' && game.id == 1,
+          );
 
-        expect(finalFantasyTactics.length, equals(1));
+          expect(finalFantasyTactics.length, equals(1));
 
-        final game = finalFantasyTactics.first;
-        final releaseDate = game.releaseDates!.first;
+          final game = finalFantasyTactics.first;
+          final releaseDate = game.releaseDates!.first;
 
-        // Verify it has the problematic data structure that was fixed
-        expect(releaseDate.category, isNull); // Category was null
-        expect(releaseDate.dateFormat, equals(0)); // But dateFormat indicates exact
-        expect(releaseDate.human, equals('Sep 30, 2025')); // Human text is specific date
-      });
+          // Verify it has the problematic data structure that was fixed
+          expect(releaseDate.category, isNull); // Category was null
+          expect(
+            releaseDate.dateFormat,
+            equals(0),
+          ); // But dateFormat indicates exact
+          expect(
+            releaseDate.human,
+            equals('Sep 30, 2025'),
+          ); // Human text is specific date
+        },
+      );
 
       test('should handle quarter with wrong category correctly', () async {
         final filter = GameFilter(
@@ -547,7 +579,10 @@ void main() {
         final game = q1Game.first;
         final releaseDate = game.releaseDates!.first;
         expect(releaseDate.human, equals('Q1 2025'));
-        expect(releaseDate.category, equals(ReleaseDateCategory.tbd)); // Wrong category
+        expect(
+          releaseDate.category,
+          equals(ReleaseDateCategory.tbd),
+        ); // Wrong category
         expect(releaseDate.dateFormat, equals(4)); // But dateFormat is quarter
       });
 
@@ -566,7 +601,8 @@ void main() {
               id: 999,
               human: 'Q3 2025', // Quarter text (highest priority)
               dateFormat: 0, // Exact format (should be ignored)
-              category: ReleaseDateCategory.year, // Year category (should be ignored)
+              category:
+                  ReleaseDateCategory.year, // Year category (should be ignored)
             ),
           ],
         );
@@ -587,8 +623,14 @@ void main() {
           releasePrecisionChoice: ReleasePrecisionFilter.exactDate,
         );
 
-        final quarterResult = await testService.getGames(nameQuery: null, filter: quarterFilter);
-        final exactResult = await testService.getGames(nameQuery: null, filter: exactFilter);
+        final quarterResult = await testService.getGames(
+          nameQuery: null,
+          filter: quarterFilter,
+        );
+        final exactResult = await testService.getGames(
+          nameQuery: null,
+          filter: exactFilter,
+        );
 
         // Should appear in quarter filter (human text priority)
         expect(quarterResult.length, equals(1));
@@ -602,22 +644,25 @@ void main() {
     group('performance and boundary conditions', () {
       test('should handle large number of games efficiently', () async {
         // Test with a larger dataset to ensure filtering doesn't have performance issues
-        final largeGameList = List.generate(1000, (index) => Game(
-          id: index + 1000,
-          createdAt: 1640995200,
-          name: 'Performance Test Game $index',
-          updatedAt: 1640995200,
-          url: 'perf-test-$index',
-          checksum: 'perf$index',
-          category: GameCategory.mainGame,
-          releaseDates: [
-            ReleaseDate(
-              id: index + 1000,
-              dateFormat: index % 5, // Cycle through different formats
-              category: null,
-            ),
-          ],
-        ));
+        final largeGameList = List.generate(
+          1000,
+          (index) => Game(
+            id: index + 1000,
+            createdAt: 1640995200,
+            name: 'Performance Test Game $index',
+            updatedAt: 1640995200,
+            url: 'perf-test-$index',
+            checksum: 'perf$index',
+            category: GameCategory.mainGame,
+            releaseDates: [
+              ReleaseDate(
+                id: index + 1000,
+                dateFormat: index % 5, // Cycle through different formats
+                category: null,
+              ),
+            ],
+          ),
+        );
 
         final testRepository = MockIGDBRepository(largeGameList);
         final testService = IGDBService(repository: testRepository);
@@ -629,7 +674,10 @@ void main() {
         );
 
         final stopwatch = Stopwatch()..start();
-        final result = await testService.getGames(nameQuery: null, filter: filter);
+        final result = await testService.getGames(
+          nameQuery: null,
+          filter: filter,
+        );
         stopwatch.stop();
 
         // Should complete in reasonable time (less than 100ms for 1000 games)
@@ -649,7 +697,10 @@ void main() {
           releasePrecisionChoice: ReleasePrecisionFilter.exactDate,
         );
 
-        final result = await testService.getGames(nameQuery: null, filter: filter);
+        final result = await testService.getGames(
+          nameQuery: null,
+          filter: filter,
+        );
 
         expect(result, isEmpty);
       });

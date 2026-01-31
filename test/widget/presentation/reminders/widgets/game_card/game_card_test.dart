@@ -16,111 +16,99 @@ void main() {
     // ignore: avoid_returning_widgets
     Widget createTestWidget({required GameReminder reminder}) {
       return MaterialApp(
-        theme: ThemeData(
-          extensions: [AppSpacings.defaultValues],
-        ),
-        home: Scaffold(
-          body: GameCard(reminder: reminder),
-        ),
+        theme: ThemeData(extensions: [AppSpacings.defaultValues]),
+        home: Scaffold(body: GameCard(reminder: reminder)),
       );
     }
 
     testWidgets('should display game information', (WidgetTester tester) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       expect(find.text(reminder.gameName), findsOneWidget);
     });
-    
+
     testWidgets('should display game cover art', (WidgetTester tester) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
-    
+
     testWidgets('should handle missing cover art', (WidgetTester tester) async {
       final reminder = _createTestGameReminderWithoutCover();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
-    
-    testWidgets('should display platform information', (WidgetTester tester) async {
+
+    testWidgets('should display platform information', (
+      WidgetTester tester,
+    ) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
-    
+
     testWidgets('should display release date', (WidgetTester tester) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
-    
+
     testWidgets('should handle tap events', (WidgetTester tester) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       await tester.tap(find.byType(GameCard));
       await tester.pump();
-      
+
       expect(tester.takeException(), isNull);
     });
-    
-    testWidgets('should display remove button when callback provided', (WidgetTester tester) async {
+
+    testWidgets('should display remove button when callback provided', (
+      WidgetTester tester,
+    ) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(
         MaterialApp(
-          theme: ThemeData(
-            extensions: [AppSpacings.defaultValues],
-          ),
+          theme: ThemeData(extensions: [AppSpacings.defaultValues]),
           home: Scaffold(
-            body: GameCard(
-              reminder: reminder,
-              onRemove: () {},
-            ),
+            body: GameCard(reminder: reminder, onRemove: () {}),
           ),
         ),
       );
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
-    
+
     testWidgets('should handle vertical layout', (WidgetTester tester) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(
         MaterialApp(
-          theme: ThemeData(
-            extensions: [AppSpacings.defaultValues],
-          ),
-          home: Scaffold(
-            body: GameCard(
-              reminder: reminder,
-              isVertical: true,
-            ),
-          ),
+          theme: ThemeData(extensions: [AppSpacings.defaultValues]),
+          home: Scaffold(body: GameCard(reminder: reminder, isVertical: true)),
         ),
       );
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
-    
+
     testWidgets('should be accessible', (WidgetTester tester) async {
       final reminder = _createTestGameReminder();
-      
+
       await tester.pumpWidget(createTestWidget(reminder: reminder));
-      
+
       expect(find.byType(GameCard), findsOneWidget);
     });
   });
@@ -141,7 +129,7 @@ GameReminder _createTestGameReminder() {
       url: '//images.igdb.com/igdb/image/upload/t_thumb/test123.jpg',
     ),
   );
-  
+
   final releaseDate = ReleaseDate(
     id: 1,
     date: 1751241600,
@@ -150,7 +138,7 @@ GameReminder _createTestGameReminder() {
     platform: SupportedGamePlatform.windows,
     dateFormat: 0,
   );
-  
+
   return GameReminder(
     id: 1,
     gameId: 1,
@@ -173,7 +161,7 @@ GameReminder _createTestGameReminderWithoutCover() {
     firstReleaseDate: 1751241600,
     cover: null,
   );
-  
+
   final releaseDate = ReleaseDate(
     id: 1,
     date: 1751241600,
@@ -182,7 +170,7 @@ GameReminder _createTestGameReminderWithoutCover() {
     platform: SupportedGamePlatform.windows,
     dateFormat: 0,
   );
-  
+
   return GameReminder(
     id: 1,
     gameId: 1,

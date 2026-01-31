@@ -3,10 +3,7 @@ part of '../reminders_container.dart';
 class GameReminderTile extends StatefulWidget {
   final GameReminder reminder;
 
-  const GameReminderTile({
-    Key? key,
-    required this.reminder,
-  }) : super(key: key);
+  const GameReminderTile({Key? key, required this.reminder}) : super(key: key);
 
   @override
   _GameReminderTileState createState() => _GameReminderTileState();

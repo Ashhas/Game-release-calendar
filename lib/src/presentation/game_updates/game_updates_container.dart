@@ -56,19 +56,16 @@ class _GameUpdatesContainerState extends State<GameUpdatesContainer> {
               Tab(text: "What's New"),
             ],
             labelColor: Theme.of(context).colorScheme.primary,
-            unselectedLabelColor: Theme.of(context).colorScheme.onSurfaceVariant,
+            unselectedLabelColor: Theme.of(
+              context,
+            ).colorScheme.onSurfaceVariant,
             indicatorColor: Theme.of(context).colorScheme.primary,
             indicatorWeight: 3,
             dividerColor: Colors.transparent,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: const TabBarView(
-          children: [
-            _ReleaseTodayTab(),
-            _WhatsNewTab(),
-          ],
-        ),
+        body: const TabBarView(children: [_ReleaseTodayTab(), _WhatsNewTab()]),
       ),
     );
   }
@@ -88,15 +85,23 @@ class _ReleaseTodayTab extends StatelessWidget {
 
             // Filter games releasing today with exact dates only
             final todaysReleases = notifications.where((notification) {
-              final reminder = GameReminder.fromJson(jsonDecode(notification.payload!));
+              final reminder = GameReminder.fromJson(
+                jsonDecode(notification.payload!),
+              );
               final releaseDate = reminder.releaseDate.date;
               if (releaseDate == null) return false;
 
               // Only include games with exact release dates, not vague dates like Q4 or "March 2024"
               if (!reminder.releaseDate.hasExactDate) return false;
 
-              final gameReleaseDate = DateTime.fromMillisecondsSinceEpoch(releaseDate * 1000);
-              final gameDate = DateTime(gameReleaseDate.year, gameReleaseDate.month, gameReleaseDate.day);
+              final gameReleaseDate = DateTime.fromMillisecondsSinceEpoch(
+                releaseDate * 1000,
+              );
+              final gameDate = DateTime(
+                gameReleaseDate.year,
+                gameReleaseDate.month,
+                gameReleaseDate.day,
+              );
               return gameDate.isAtSameMomentAs(today);
             }).toList();
 
@@ -117,9 +122,12 @@ class _ReleaseTodayTab extends StatelessWidget {
                     SizedBox(height: context.spacings.m),
                     Text(
                       'No games releasing today',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
                     ),
                     SizedBox(height: context.spacings.s),
                     Text(
@@ -158,7 +166,8 @@ class _ReleaseTodayTab extends StatelessWidget {
                       bottom: context.spacings.xl,
                     ),
                     itemCount: todaysReleaseReminders.length,
-                    separatorBuilder: (_, __) => SizedBox(height: context.spacings.m),
+                    separatorBuilder: (_, __) =>
+                        SizedBox(height: context.spacings.m),
                     itemBuilder: (_, index) {
                       final reminder = todaysReleaseReminders[index];
 
@@ -169,7 +178,8 @@ class _ReleaseTodayTab extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => GameDetailView(game: reminder.gamePayload),
+                              builder: (_) =>
+                                  GameDetailView(game: reminder.gamePayload),
                             ),
                           );
                         },
@@ -181,9 +191,8 @@ class _ReleaseTodayTab extends StatelessWidget {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => Center(
-            child: Text('Error loading releases: $error'),
-          ),
+          error: (error, _) =>
+              Center(child: Text('Error loading releases: $error')),
         );
       },
     );
@@ -226,9 +235,12 @@ class _WhatsNewTabState extends State<_WhatsNewTab> {
                     SizedBox(height: context.spacings.m),
                     Text(
                       'No game updates yet',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
                     ),
                     SizedBox(height: context.spacings.s),
                     Text(
@@ -268,7 +280,8 @@ class _WhatsNewTabState extends State<_WhatsNewTab> {
                       bottom: context.spacings.xl,
                     ),
                     itemCount: updateLogs.length,
-                    separatorBuilder: (_, __) => SizedBox(height: context.spacings.m),
+                    separatorBuilder: (_, __) =>
+                        SizedBox(height: context.spacings.m),
                     itemBuilder: (_, index) {
                       final updateLog = updateLogs[index];
 
@@ -279,7 +292,8 @@ class _WhatsNewTabState extends State<_WhatsNewTab> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => GameDetailView(game: updateLog.gamePayload),
+                              builder: (_) =>
+                                  GameDetailView(game: updateLog.gamePayload),
                             ),
                           );
                         },
@@ -340,11 +354,12 @@ class _GameUpdateCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Determine data source and extract values
-    final displayName = gameUpdateLog?.gameName ??
-                       gameReminder?.gameName ?? '';
+    final displayName = gameUpdateLog?.gameName ?? gameReminder?.gameName ?? '';
 
     final game = gameUpdateLog?.gamePayload ?? gameReminder?.gamePayload;
-    final imageUrl = game?.cover?.imageUrl(size: 'cover_small') ?? Constants.placeholderImageUrl;
+    final imageUrl =
+        game?.cover?.imageUrl(size: 'cover_small') ??
+        Constants.placeholderImageUrl;
 
     // Format update type
     final displayUpdateType = gameUpdateLog?.updateType.displayText ?? '';
@@ -363,7 +378,8 @@ class _GameUpdateCard extends StatelessWidget {
           updateLog.newValue != null &&
           updateLog.oldValue!.isNotEmpty &&
           updateLog.newValue!.isNotEmpty) {
-        subtitle = '$baseSubtitle\n${updateLog.oldValue} → ${updateLog.newValue}';
+        subtitle =
+            '$baseSubtitle\n${updateLog.oldValue} → ${updateLog.newValue}';
       } else {
         subtitle = baseSubtitle;
       }
@@ -376,9 +392,11 @@ class _GameUpdateCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.all(Radius.circular(context.spacings.s)),
-        border: Border.fromBorderSide(BorderSide(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
-        )),
+        border: Border.fromBorderSide(
+          BorderSide(
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
+          ),
+        ),
       ),
       child: InkWell(
         onTap: onTap,
@@ -407,14 +425,24 @@ class _GameUpdateCard extends StatelessWidget {
                     width: 60,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.all(Radius.circular(context.spacings.xxs)),
-                      border: Border.fromBorderSide(BorderSide(
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-                      )),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(context.spacings.xxs),
+                      ),
+                      border: Border.fromBorderSide(
+                        BorderSide(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.outline.withValues(alpha: 0.2),
+                        ),
+                      ),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(context.spacings.xxs)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(context.spacings.xxs),
+                      ),
                       child: GameImage(
                         imageUrl: imageUrl,
                         width: 60,
@@ -431,9 +459,8 @@ class _GameUpdateCard extends StatelessWidget {
                       children: [
                         Text(
                           displayName,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -441,9 +468,12 @@ class _GameUpdateCard extends StatelessWidget {
                           SizedBox(height: context.spacings.xxs),
                           Text(
                             subtitle,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
                           ),
                         ],
                       ],
@@ -473,11 +503,18 @@ class _GameUpdateCard extends StatelessWidget {
     }
 
     if (platforms.length == 2) {
-      final names = platforms.map((p) => p.abbreviation ?? p.name ?? '').where((name) => name.isNotEmpty).toList();
+      final names = platforms
+          .map((p) => p.abbreviation ?? p.name ?? '')
+          .where((name) => name.isNotEmpty)
+          .toList();
       return names.join(' • ');
     }
 
-    final firstTwo = platforms.take(2).map((p) => p.abbreviation ?? p.name ?? '').where((name) => name.isNotEmpty).toList();
+    final firstTwo = platforms
+        .take(2)
+        .map((p) => p.abbreviation ?? p.name ?? '')
+        .where((name) => name.isNotEmpty)
+        .toList();
     return '${firstTwo.join(' • ')} & ${platforms.length - 2} more';
   }
 }

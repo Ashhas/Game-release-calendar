@@ -146,13 +146,13 @@ class Game {
       name: json['name'],
       platforms: json['platforms'] != null
           ? (json['platforms'] as List)
-              .map((e) => Platform.fromJson(e))
-              .toList()
+                .map((e) => Platform.fromJson(e))
+                .toList()
           : null,
       releaseDates: json['release_dates'] != null
           ? (json['release_dates'] as List)
-              .map((e) => ReleaseDate.fromJson(e))
-              .toList()
+                .map((e) => ReleaseDate.fromJson(e))
+                .toList()
           : null,
       screenshots: json['screenshots']?.cast<int>(),
       similarGames: json['similar_games']?.cast<int>(),
@@ -210,17 +210,21 @@ class Game {
 
   String _formatDate(int? epochSeconds) {
     if (epochSeconds == null) return 'null';
-    return DateTime.fromMillisecondsSinceEpoch(epochSeconds * 1000)
-        .toIso8601String()
-        .split('T')
-        .first;
+    return DateTime.fromMillisecondsSinceEpoch(
+      epochSeconds * 1000,
+    ).toIso8601String().split('T').first;
   }
 
   @override
   String toString() {
-    final platformNames = platforms?.map((p) => p.abbreviation ?? p.name).join(', ');
+    final platformNames = platforms
+        ?.map((p) => p.abbreviation ?? p.name)
+        .join(', ');
     final artworksList = artworks
-        ?.map((a) => '    {id: ${a.id}, imageId: ${a.imageId}, gameId: ${a.game}, url: ${a.url}}')
+        ?.map(
+          (a) =>
+              '    {id: ${a.id}, imageId: ${a.imageId}, gameId: ${a.game}, url: ${a.url}}',
+        )
         .join(',\n');
 
     return 'Game(\n'

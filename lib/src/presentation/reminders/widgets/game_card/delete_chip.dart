@@ -1,10 +1,7 @@
 part of 'game_card.dart';
 
 class DeleteChip extends StatelessWidget {
-  const DeleteChip({
-    super.key,
-    required this.onRemove,
-  });
+  const DeleteChip({super.key, required this.onRemove});
 
   final VoidCallback? onRemove;
 

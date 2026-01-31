@@ -17,9 +17,9 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   UpcomingGamesCubit({
     required IGDBService igdbService,
     AnalyticsService? analyticsService,
-  })  : _igdbService = igdbService,
-        _analyticsService = analyticsService,
-        super(UpcomingGamesState());
+  }) : _igdbService = igdbService,
+       _analyticsService = analyticsService,
+       super(UpcomingGamesState());
 
   final IGDBService _igdbService;
   final AnalyticsService? _analyticsService;

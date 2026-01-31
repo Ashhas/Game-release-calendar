@@ -11,7 +11,9 @@ class _AppThemeState extends State<AppTheme> {
   @override
   void initState() {
     super.initState();
-    GetIt.instance.get<AnalyticsService>().trackScreenViewed(screenName: 'Theme');
+    GetIt.instance.get<AnalyticsService>().trackScreenViewed(
+      screenName: 'Theme',
+    );
   }
 
   @override
@@ -20,9 +22,9 @@ class _AppThemeState extends State<AppTheme> {
       appBar: AppBar(
         title: Text(
           'Theme',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -34,16 +36,16 @@ class _AppThemeState extends State<AppTheme> {
               // Color Scheme Section
               Text(
                 'Color Scheme',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: context.spacings.xs),
               Text(
                 'Choose your preferred color palette',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               SizedBox(height: context.spacings.m),
 
@@ -60,7 +62,8 @@ class _AppThemeState extends State<AppTheme> {
                     preset: AppThemePreset.blueGrey,
                     title: 'Blue Grey',
                     color: const Color(0xFF819FC3),
-                    isSelected: themeState.colorPreset == AppThemePreset.blueGrey,
+                    isSelected:
+                        themeState.colorPreset == AppThemePreset.blueGrey,
                   ),
                   ColorSchemeCard(
                     preset: AppThemePreset.indigo,
@@ -94,16 +97,16 @@ class _AppThemeState extends State<AppTheme> {
               // Brightness Section
               Text(
                 'Appearance',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: context.spacings.xs),
               Text(
                 'Choose between light, dark, or system preference',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               SizedBox(height: context.spacings.m),
 

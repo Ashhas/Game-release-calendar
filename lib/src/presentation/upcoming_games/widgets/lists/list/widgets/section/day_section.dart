@@ -3,10 +3,7 @@ part of '../../game_list.dart';
 class DaySection extends StatelessWidget {
   final GameSection section;
 
-  const DaySection({
-    required this.section,
-    super.key,
-  });
+  const DaySection({required this.section, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +18,8 @@ class DaySection extends StatelessWidget {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) => GameTile(
-              game: section.games[index],
-              isTbd: section.isTbd,
-            ),
+            (_, index) =>
+                GameTile(game: section.games[index], isTbd: section.isTbd),
             childCount: section.games.length,
           ),
         ),
@@ -37,14 +32,14 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
   final GameSection section;
   final ColorScheme colorScheme;
 
-  const _DayHeaderDelegate({
-    required this.section,
-    required this.colorScheme,
-  });
+  const _DayHeaderDelegate({required this.section, required this.colorScheme});
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final isTbdSection = section.isTbd;
     final isCompleteTbd = section.precision == DatePrecision.tbd;
 
@@ -78,10 +73,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
           if (timeTillRelease != null)
-            Text(
-              timeTillRelease,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            Text(timeTillRelease, style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );
@@ -111,6 +103,6 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant _DayHeaderDelegate oldDelegate) {
     return oldDelegate.section != section ||
-           oldDelegate.colorScheme != colorScheme;
+        oldDelegate.colorScheme != colorScheme;
   }
 }

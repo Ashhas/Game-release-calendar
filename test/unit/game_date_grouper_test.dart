@@ -19,9 +19,21 @@ void main() {
     group('groupGamesByReleaseDate', () {
       test('should group games by release date correctly', () {
         final games = [
-          _createGame(id: 1, name: 'Game A', firstReleaseDate: 1751241600), // June 27, 2025
-          _createGame(id: 2, name: 'Game B', firstReleaseDate: 1751241600), // June 27, 2025
-          _createGame(id: 3, name: 'Game C', firstReleaseDate: 1753833600), // July 15, 2025
+          _createGame(
+            id: 1,
+            name: 'Game A',
+            firstReleaseDate: 1751241600,
+          ), // June 27, 2025
+          _createGame(
+            id: 2,
+            name: 'Game B',
+            firstReleaseDate: 1751241600,
+          ), // June 27, 2025
+          _createGame(
+            id: 3,
+            name: 'Game C',
+            firstReleaseDate: 1753833600,
+          ), // July 15, 2025
         ];
 
         final result = GameDateGrouper.groupGamesByReleaseDate(games);
@@ -365,8 +377,9 @@ void main() {
     group('edge cases', () {
       test('should handle games with identical data correctly', () {
         final timestamp = 1751241600;
-        final games = List.generate(3, (index) => 
-          _createGame(
+        final games = List.generate(
+          3,
+          (index) => _createGame(
             id: index,
             name: 'Identical Game', // Same name
             firstReleaseDate: timestamp, // Same timestamp
@@ -400,7 +413,7 @@ void main() {
         );
 
         final result = GameDateGrouper.groupGamesByReleaseDate([game]);
-        
+
         expect(result.keys.length, equals(1));
         expect(result.keys.first.year, equals(2100));
       });
@@ -409,7 +422,11 @@ void main() {
         final games = [
           _createGame(id: 1, name: 'Valid Game', firstReleaseDate: 1751241600),
           _createGame(id: 2, name: 'Null Game 1', firstReleaseDate: null),
-          _createGame(id: 3, name: 'Another Valid', firstReleaseDate: 1753833600),
+          _createGame(
+            id: 3,
+            name: 'Another Valid',
+            firstReleaseDate: 1753833600,
+          ),
           _createGame(id: 4, name: 'Null Game 2', firstReleaseDate: null),
         ];
 
@@ -444,24 +461,18 @@ Game _createGame({
 }
 
 /// Helper function to create test reminders
-GameReminder _createReminder({
-  required int id,
-  int? releaseTimestamp,
-}) {
+GameReminder _createReminder({required int id, int? releaseTimestamp}) {
   final testGame = _createGame(id: id, name: 'Test Game $id');
-  final testReleaseDate = ReleaseDate(
-    id: id,
-    date: releaseTimestamp,
-  );
-  
+  final testReleaseDate = ReleaseDate(id: id, date: releaseTimestamp);
+
   return GameReminder(
     id: id,
     gameId: id,
     gameName: 'Test Game $id',
     gamePayload: testGame,
     releaseDate: testReleaseDate,
-    releaseDateCategory: releaseTimestamp != null 
-        ? ReleaseDateCategory.exactDate 
+    releaseDateCategory: releaseTimestamp != null
+        ? ReleaseDateCategory.exactDate
         : ReleaseDateCategory.tbd,
     notificationDate: DateTime.now().add(Duration(days: 1)),
   );

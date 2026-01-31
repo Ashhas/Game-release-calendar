@@ -5,11 +5,7 @@ import 'package:game_release_calendar/src/presentation/common/widgets/error_widg
 /// Widget displayed when the games list is empty
 /// Handles both search and no-search empty states
 class EmptyGameList extends StatelessWidget {
-  const EmptyGameList({
-    super.key,
-    required this.nameQuery,
-    this.onClearSearch,
-  });
+  const EmptyGameList({super.key, required this.nameQuery, this.onClearSearch});
 
   final String nameQuery;
   final VoidCallback? onClearSearch;

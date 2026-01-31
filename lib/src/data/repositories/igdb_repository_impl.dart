@@ -11,38 +11,33 @@ import 'igdb_repository.dart';
 class IGDBRepositoryImpl implements IGDBRepository {
   final Dio dio;
 
-  const IGDBRepositoryImpl({
-    required this.dio,
-  });
+  const IGDBRepositoryImpl({required this.dio});
 
   @override
   Future<List<Game>> getGames(String query) async {
     return RetryHelper.retry(() async {
       try {
-        final response = await dio.post(
-          '/games',
-          data: query,
-        );
+        final response = await dio.post('/games', data: query);
 
         if (response.statusCode == 200) {
           if (response.data is List) {
             return List<Game>.from(
               response.data.map(
-                (gameJson) => Game.fromJson(
-                  gameJson as Map<String, dynamic>,
-                ),
+                (gameJson) => Game.fromJson(gameJson as Map<String, dynamic>),
               ),
             );
           } else {
             throw const ParseException(
-                'Invalid response format: expected List');
+              'Invalid response format: expected List',
+            );
           }
         } else {
           throw ApiException('Failed to retrieve games', response.statusCode);
         }
       } on DioException catch (e) {
-        developer
-            .log('DioError while retrieving games: ${e.type} - ${e.message}');
+        developer.log(
+          'DioError while retrieving games: ${e.type} - ${e.message}',
+        );
         throw _handleDioException(e);
       } catch (e) {
         if (e is AppException) {

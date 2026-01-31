@@ -18,7 +18,10 @@ class ReminderActionButton extends StatelessWidget {
   static const String _removeReminderText = 'Remove';
   static const String _outOfDateText = 'Out of Date';
 
-  ButtonStyle _getButtonStyle(BuildContext context, _ReminderButtonState state) {
+  ButtonStyle _getButtonStyle(
+    BuildContext context,
+    _ReminderButtonState state,
+  ) {
     final colorScheme = Theme.of(context).colorScheme;
 
     switch (state) {
@@ -72,11 +75,7 @@ class ReminderActionButton extends StatelessWidget {
   }
 }
 
-enum _ReminderButtonState {
-  setReminder,
-  removeReminder,
-  outOfDate,
-}
+enum _ReminderButtonState { setReminder, removeReminder, outOfDate }
 
 class _ReminderButton extends StatelessWidget {
   const _ReminderButton({
@@ -88,7 +87,8 @@ class _ReminderButton extends StatelessWidget {
 
   final _ReminderButtonState state;
   final VoidCallback onPressed;
-  final ButtonStyle Function(BuildContext context, _ReminderButtonState state) getButtonStyle;
+  final ButtonStyle Function(BuildContext context, _ReminderButtonState state)
+  getButtonStyle;
   final String Function(_ReminderButtonState state) getButtonText;
 
   static const int _maxLines = 1;
@@ -121,10 +121,7 @@ class _ReminderButton extends StatelessWidget {
 }
 
 class GameReleases extends StatefulWidget {
-  const GameReleases({
-    super.key,
-    required this.game,
-  });
+  const GameReleases({super.key, required this.game});
 
   final Game game;
 
@@ -146,9 +143,7 @@ class _GameReleasesState extends State<GameReleases> {
     // Determine which platforms are already scheduled
     _gameDetailCubit = context.read<GameDetailCubit>();
     _checkedStatus = _sortedReleaseDates
-        .map((rd) => _gameDetailCubit.isReminderSaved(
-              rd.id,
-            ))
+        .map((rd) => _gameDetailCubit.isReminderSaved(rd.id))
         .toList();
   }
 
@@ -161,32 +156,21 @@ class _GameReleasesState extends State<GameReleases> {
         .thenBy((rd) => rd.region?.name ?? 'ZZ');
   }
 
-  Future<void> _onReminderTileTapped(
-    int index,
-    ReleaseDate releaseDate,
-  ) async {
-    final isSaved = _gameDetailCubit.isReminderSaved(
-      releaseDate.id,
-    );
+  Future<void> _onReminderTileTapped(int index, ReleaseDate releaseDate) async {
+    final isSaved = _gameDetailCubit.isReminderSaved(releaseDate.id);
 
     if (!isSaved) {
-      await _saveReminder(
-        releaseDate: releaseDate,
-      );
+      await _saveReminder(releaseDate: releaseDate);
       _updateCheckedStatus(index);
       return;
     } else {
-      await _removeReminder(
-        releaseDateId: releaseDate.id,
-      );
+      await _removeReminder(releaseDateId: releaseDate.id);
       _updateCheckedStatus(index);
       return;
     }
   }
 
-  Future<void> _saveReminder({
-    required ReleaseDate releaseDate,
-  }) async {
+  Future<void> _saveReminder({required ReleaseDate releaseDate}) async {
     try {
       // Check battery optimization on first reminder
       await BatteryOptimizationDialog.showIfNeeded(context);
@@ -206,9 +190,7 @@ class _GameReleasesState extends State<GameReleases> {
     }
   }
 
-  Future<void> _removeReminder({
-    required int releaseDateId,
-  }) async {
+  Future<void> _removeReminder({required int releaseDateId}) async {
     try {
       await _gameDetailCubit.removeReminder(releaseDateId: releaseDateId);
       if (mounted) {
@@ -232,8 +214,10 @@ class _GameReleasesState extends State<GameReleases> {
   static const double _toastSpacing = 30.0;
   static const String _reminderSavedMessage = 'Reminder saved!';
   static const String _reminderRemovedMessage = 'Removed!';
-  static const String _saveErrorMessage = 'Failed to save reminder. Please try again.';
-  static const String _removeErrorMessage = 'Failed to remove reminder. Please try again.';
+  static const String _saveErrorMessage =
+      'Failed to save reminder. Please try again.';
+  static const String _removeErrorMessage =
+      'Failed to remove reminder. Please try again.';
 
   void _showToast(String message, {bool isError = false}) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -266,9 +250,11 @@ class _GameReleasesState extends State<GameReleases> {
 
             // Check if the release date has passed
             final date = rd.date;
-            final hasBeenReleased = date != null &&
-                DateUtilities.secondSinceEpochToDateTime(date)
-                    .isBefore(DateTime.now());
+            final hasBeenReleased =
+                date != null &&
+                DateUtilities.secondSinceEpochToDateTime(
+                  date,
+                ).isBefore(DateTime.now());
 
             // Build subtitle with date/TBD and optional region
             String subtitle;

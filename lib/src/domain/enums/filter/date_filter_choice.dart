@@ -1,7 +1,1 @@
-enum DateFilterChoice {
-  allTime,
-  thisWeek,
-  thisMonth,
-  nextMonth,
-  next3Months,
-}
+enum DateFilterChoice { allTime, thisWeek, thisMonth, nextMonth, next3Months }

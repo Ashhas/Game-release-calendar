@@ -32,10 +32,14 @@ void main() {
       const appException = NetworkException('Network error');
       final unknownException = Exception('Unknown');
 
-      expect(ExceptionHandler.getUserMessage(appException),
-          equals('Network error'));
-      expect(ExceptionHandler.getUserMessage(unknownException),
-          equals('Something went wrong. Please try again.'));
+      expect(
+        ExceptionHandler.getUserMessage(appException),
+        equals('Network error'),
+      );
+      expect(
+        ExceptionHandler.getUserMessage(unknownException),
+        equals('Something went wrong. Please try again.'),
+      );
     });
   });
 }

@@ -3,10 +3,7 @@ part of '../reminder_list_view.dart';
 class DaySection extends StatelessWidget {
   final MapEntry<DateTime, List<GameReminder>> groupedReminders;
 
-  const DaySection({
-    required this.groupedReminders,
-    super.key,
-  });
+  const DaySection({required this.groupedReminders, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +18,7 @@ class DaySection extends StatelessWidget {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) => GameTile(
-              reminder: groupedReminders.value[index],
-            ),
+            (_, index) => GameTile(reminder: groupedReminders.value[index]),
             childCount: groupedReminders.value.length,
           ),
         ),
@@ -36,14 +31,14 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
   final DateTime date;
   final ColorScheme colorScheme;
 
-  const _DayHeaderDelegate({
-    required this.date,
-    required this.colorScheme,
-  });
+  const _DayHeaderDelegate({required this.date, required this.colorScheme});
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final timeTillRelease = DateRangeUtility.getDayDifferenceLabel(
       date,
       currentDate: DateTime.now(),
@@ -65,10 +60,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
           if (!GameDateGrouper.tbdDate.isAtSameDayAs(date))
-            Text(
-              timeTillRelease,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            Text(timeTillRelease, style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );

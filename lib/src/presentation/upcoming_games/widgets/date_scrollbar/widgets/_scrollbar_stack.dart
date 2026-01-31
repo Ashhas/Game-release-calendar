@@ -21,7 +21,8 @@ class _ScrollbarStack extends StatelessWidget {
   final double currentScrollPosition;
   final DateTime? currentDate;
   final ScrollController scrollController;
-  final Function(DragUpdateDetails details, BoxConstraints constraints) onPanUpdate;
+  final Function(DragUpdateDetails details, BoxConstraints constraints)
+  onPanUpdate;
   final Function(DragStartDetails details) onPanStart;
   final Function(DragEndDetails details) onPanEnd;
 

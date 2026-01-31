@@ -21,8 +21,10 @@ enum ReleaseDateCategory {
   const ReleaseDateCategory(this.value, this.description);
 
   static ReleaseDateCategory fromValue(int value) {
-    return ReleaseDateCategory.values.firstWhere((e) => e.value == value,
-        orElse: () => ReleaseDateCategory.tbd);
+    return ReleaseDateCategory.values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => ReleaseDateCategory.tbd,
+    );
   }
 
   int toValue() {

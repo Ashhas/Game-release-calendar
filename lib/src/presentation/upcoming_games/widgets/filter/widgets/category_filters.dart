@@ -2,9 +2,7 @@ part of '../filter_bottom_sheet.dart';
 
 /// Category filter section with collapsible UI and chip-based selection.
 class _CategoryFilters extends StatefulWidget {
-  const _CategoryFilters({
-    required this.selectedCategoryFilterOptions,
-  });
+  const _CategoryFilters({required this.selectedCategoryFilterOptions});
 
   final Set<int> selectedCategoryFilterOptions;
 
@@ -59,10 +57,12 @@ class _CategoryFiltersState extends State<_CategoryFilters> {
   /// Converts a Set<int> to Set<GameCategory> for the collapsible component.
   Set<GameCategory> get _selectedCategories {
     return widget.selectedCategoryFilterOptions
-        .map((id) => GameCategory.values.firstWhere(
-              (category) => category.value == id,
-              orElse: () => GameCategory.mainGame,
-            ))
+        .map(
+          (id) => GameCategory.values.firstWhere(
+            (category) => category.value == id,
+            orElse: () => GameCategory.mainGame,
+          ),
+        )
         .toSet();
   }
 

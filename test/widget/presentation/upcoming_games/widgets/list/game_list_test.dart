@@ -18,15 +18,15 @@ import '../../../../../helpers/test_helpers.dart';
 class FakeUpcomingGamesCubit implements UpcomingGamesCubit {
   @override
   UpcomingGamesState get state => UpcomingGamesState();
-  
+
   @override
   Stream<UpcomingGamesState> get stream => Stream.value(state);
-  
+
   @override
   Future<List<Game>> getGamesWithOffset(int offset) async {
     return [_createTestGame()];
   }
-  
+
   @override
   // ignore: avoid_dynamic
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -48,21 +48,17 @@ void main() {
     // ignore: avoid_returning_widgets
     Widget createTestWidget({required List<GameSection> sections}) {
       return MaterialApp(
-        theme: ThemeData(
-          extensions: [
-            AppSpacings.defaultValues,
-          ],
-        ),
+        theme: ThemeData(extensions: [AppSpacings.defaultValues]),
         home: BlocProvider<UpcomingGamesCubit>.value(
           value: fakeUpcomingGamesCubit,
-          child: Scaffold(
-            body: GameList(sections: sections),
-          ),
+          child: Scaffold(body: GameList(sections: sections)),
         ),
       );
     }
 
-    testWidgets('should display grouped games by date', (WidgetTester tester) async {
+    testWidgets('should display grouped games by date', (
+      WidgetTester tester,
+    ) async {
       final today = DateTime.now();
       final tomorrow = today.add(Duration(days: 1));
 
@@ -85,20 +81,27 @@ void main() {
       expect(find.text('Game Tomorrow'), findsOneWidget);
     });
 
-    testWidgets('should handle empty sections list', (WidgetTester tester) async {
+    testWidgets('should handle empty sections list', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createTestWidget(sections: []));
 
       // Should render without crashing
       expect(find.byType(GameList), findsOneWidget);
     });
 
-    testWidgets('should display scrollable content', (WidgetTester tester) async {
+    testWidgets('should display scrollable content', (
+      WidgetTester tester,
+    ) async {
       final today = DateTime.now();
       final sections = [
         GameSection(
           date: today,
           precision: DatePrecision.exactDay,
-          games: List.generate(5, (index) => _createTestGame(id: index, name: 'Game $index')),
+          games: List.generate(
+            5,
+            (index) => _createTestGame(id: index, name: 'Game $index'),
+          ),
         ),
       ];
 
@@ -107,13 +110,18 @@ void main() {
       expect(find.byType(CustomScrollView), findsOneWidget);
     });
 
-    testWidgets('should show loading indicator when scrolling to bottom', (WidgetTester tester) async {
+    testWidgets('should show loading indicator when scrolling to bottom', (
+      WidgetTester tester,
+    ) async {
       final today = DateTime.now();
       final sections = [
         GameSection(
           date: today,
           precision: DatePrecision.exactDay,
-          games: List.generate(20, (index) => _createTestGame(id: index, name: 'Game $index')),
+          games: List.generate(
+            20,
+            (index) => _createTestGame(id: index, name: 'Game $index'),
+          ),
         ),
       ];
 
@@ -157,13 +165,18 @@ void main() {
       expect(find.byType(GameList), findsOneWidget);
     });
 
-    testWidgets('should handle large number of games', (WidgetTester tester) async {
+    testWidgets('should handle large number of games', (
+      WidgetTester tester,
+    ) async {
       final today = DateTime.now();
       final sections = [
         GameSection(
           date: today,
           precision: DatePrecision.exactDay,
-          games: List.generate(100, (index) => _createTestGame(id: index, name: 'Game $index')),
+          games: List.generate(
+            100,
+            (index) => _createTestGame(id: index, name: 'Game $index'),
+          ),
         ),
       ];
 
@@ -178,7 +191,10 @@ void main() {
         GameSection(
           date: today,
           precision: DatePrecision.exactDay,
-          games: List.generate(50, (index) => _createTestGame(id: index, name: 'Game $index')),
+          games: List.generate(
+            50,
+            (index) => _createTestGame(id: index, name: 'Game $index'),
+          ),
         ),
       ];
 
@@ -195,7 +211,9 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('should handle date scrollbar when enabled', (WidgetTester tester) async {
+    testWidgets('should handle date scrollbar when enabled', (
+      WidgetTester tester,
+    ) async {
       final today = DateTime.now();
       final sections = [
         for (int i = 0; i < 10; i++)

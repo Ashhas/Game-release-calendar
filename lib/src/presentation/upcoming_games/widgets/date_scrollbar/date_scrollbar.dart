@@ -199,8 +199,10 @@ class _DateScrollbarState extends State<DateScrollbar> {
   // Interaction Handlers
 
   void _onPanUpdate(DragUpdateDetails details, BoxConstraints constraints) {
-    final position =
-        (details.localPosition.dy / constraints.maxHeight).clamp(0.0, 1.0);
+    final position = (details.localPosition.dy / constraints.maxHeight).clamp(
+      0.0,
+      1.0,
+    );
 
     setState(() {
       _dragPosition = position;

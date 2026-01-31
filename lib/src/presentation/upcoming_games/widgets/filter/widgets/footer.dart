@@ -1,11 +1,7 @@
 part of '../filter_bottom_sheet.dart';
 
 class Footer extends StatefulWidget {
-  const Footer({
-    this.onApplyFilter,
-    this.onResetFilter,
-    super.key,
-  });
+  const Footer({this.onApplyFilter, this.onResetFilter, super.key});
 
   final VoidCallback? onApplyFilter;
   final VoidCallback? onResetFilter;

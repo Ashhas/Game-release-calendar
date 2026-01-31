@@ -17,9 +17,7 @@ class OptionsList extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => Notifications(),
-              ),
+              MaterialPageRoute(builder: (_) => Notifications()),
             );
           },
         ),
@@ -29,9 +27,7 @@ class OptionsList extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => AppTheme(),
-              ),
+              MaterialPageRoute(builder: (_) => AppTheme()),
             );
           },
         ),
@@ -41,9 +37,7 @@ class OptionsList extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => const Privacy(),
-              ),
+              MaterialPageRoute(builder: (_) => const Privacy()),
             );
           },
         ),
@@ -72,9 +66,7 @@ class OptionsList extends StatelessWidget {
     final emailLaunchUri = Uri(
       scheme: 'mailto',
       path: _supportEmail,
-      queryParameters: {
-        'subject': '[GameWatch v$appVersion] Support Request',
-      },
+      queryParameters: {'subject': '[GameWatch v$appVersion] Support Request'},
     );
 
     final launched = await UrlHelper.launchUri(emailLaunchUri);
@@ -87,10 +79,7 @@ class OptionsList extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Email copied: $_supportEmail'),
-            action: SnackBarAction(
-              label: 'OK',
-              onPressed: () {},
-            ),
+            action: SnackBarAction(label: 'OK', onPressed: () {}),
           ),
         );
       }

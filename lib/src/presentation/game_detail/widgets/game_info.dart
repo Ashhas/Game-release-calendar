@@ -1,10 +1,7 @@
 part of '../game_detail_view.dart';
 
 class GameInfo extends StatefulWidget {
-  const GameInfo({
-    required this.game,
-    super.key,
-  });
+  const GameInfo({required this.game, super.key});
 
   final Game game;
 
@@ -20,7 +17,7 @@ class _GameInfoState extends State<GameInfo> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          height: 250, 
+          height: 250,
           child: AspectRatio(
             aspectRatio: 249 / 374, // 0.666 ratio
             child: ClipRRect(
@@ -69,10 +66,7 @@ class _GameInfoState extends State<GameInfo> {
               else
                 const Text(
                   'Platform information not available',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
                 ),
             ],
           ),

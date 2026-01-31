@@ -14,8 +14,11 @@ class DateRangeUtility {
   static DateTime getStartOfThisWeek() {
     DateTime now = DateTime.now();
     int daysToSubtract = now.weekday - DateTime.monday;
-    return DateTime(now.year, now.month, now.day)
-        .subtract(Duration(days: daysToSubtract));
+    return DateTime(
+      now.year,
+      now.month,
+      now.day,
+    ).subtract(Duration(days: daysToSubtract));
   }
 
   /// Returns the end of the current week (Sunday).
@@ -57,7 +60,10 @@ class DateRangeUtility {
   static DateTime getStartOfNext3Months() {
     DateTime now = DateTime.now();
     return DateTime(
-        now.year, now.month, 1); // Start from the 1st of the current month
+      now.year,
+      now.month,
+      1,
+    ); // Start from the 1st of the current month
   }
 
   /// Returns the end of the next 3 months (3 months after the current month).
@@ -65,10 +71,14 @@ class DateRangeUtility {
     DateTime now = DateTime.now();
     DateTime threeMonthsAhead = (now.month + 3 <= 12)
         ? DateTime(now.year, now.month + 3, 1)
-        : DateTime(now.year + 1, (now.month + 3) % 12,
-            1); // Handle year transition if needed
-    return threeMonthsAhead
-        .subtract(Duration(days: 1)); // Last day of the third month
+        : DateTime(
+            now.year + 1,
+            (now.month + 3) % 12,
+            1,
+          ); // Handle year transition if needed
+    return threeMonthsAhead.subtract(
+      Duration(days: 1),
+    ); // Last day of the third month
   }
 
   static DateTimeRange getDateRangeForChoice(DateFilterChoice choice) {
@@ -107,8 +117,11 @@ class DateRangeUtility {
   }) {
     final now = currentDate ?? DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final comparisonDate =
-        DateTime(otherDate.year, otherDate.month, otherDate.day);
+    final comparisonDate = DateTime(
+      otherDate.year,
+      otherDate.month,
+      otherDate.day,
+    );
 
     final differenceInDays = comparisonDate.difference(today).inDays;
 

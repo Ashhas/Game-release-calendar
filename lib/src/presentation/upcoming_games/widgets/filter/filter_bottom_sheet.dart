@@ -15,7 +15,6 @@ part 'widgets/date_filters.dart';
 
 part 'widgets/category_filters.dart';
 
-
 part 'widgets/footer.dart';
 
 part 'widgets/top_bar.dart';
@@ -62,7 +61,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       padding: EdgeInsets.all(context.spacings.m),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(context.spacings.m)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(context.spacings.m),
+        ),
       ),
       child: Column(
         children: [
@@ -84,7 +85,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   ),
                   SizedBox(height: context.spacings.m),
                   _PrecisionFilters(
-                    selectedPrecisionFilterOption: _selectedPrecisionFilterOption,
+                    selectedPrecisionFilterOption:
+                        _selectedPrecisionFilterOption,
                     onPrecisionFilterChanged: (value) {
                       setState(() {
                         _selectedPrecisionFilterOption = value;
@@ -99,7 +101,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   _CategoryFilters(
                     selectedCategoryFilterOptions:
                         _selectedCategoryFilterOptions,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -121,11 +123,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   Future<void> _applyFilters(BuildContext context) async {
     await context.read<UpcomingGamesCubit>().applySearchFilters(
-          platformChoices: _selectedPlatformFilterOptions,
-          setDateChoice: _selectedDateFilterOption,
-          categoryId: _selectedCategoryFilterOptions,
-          precisionChoice: _selectedPrecisionFilterOption,
-        );
+      platformChoices: _selectedPlatformFilterOptions,
+      setDateChoice: _selectedDateFilterOption,
+      categoryId: _selectedCategoryFilterOptions,
+      precisionChoice: _selectedPrecisionFilterOption,
+    );
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
   }
@@ -191,7 +193,8 @@ class _PrecisionFiltersState extends State<_PrecisionFilters> {
                 ),
                 const Spacer(),
                 if (widget.selectedPrecisionFilterOption != null &&
-                    widget.selectedPrecisionFilterOption != ReleasePrecisionFilter.all &&
+                    widget.selectedPrecisionFilterOption !=
+                        ReleasePrecisionFilter.all &&
                     !_isExpanded)
                   Chip(
                     label: Text(
@@ -204,7 +207,9 @@ class _PrecisionFiltersState extends State<_PrecisionFilters> {
                     backgroundColor: colorScheme.primary,
                     visualDensity: VisualDensity.compact,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: EdgeInsets.symmetric(horizontal: context.spacings.xs),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.spacings.xs,
+                    ),
                   ),
               ],
             ),
@@ -217,19 +222,24 @@ class _PrecisionFiltersState extends State<_PrecisionFilters> {
               spacing: context.spacings.xxs,
               runSpacing: context.spacings.xxs,
               children: _options.entries.map((entry) {
-                final isSelected = widget.selectedPrecisionFilterOption == entry.key;
+                final isSelected =
+                    widget.selectedPrecisionFilterOption == entry.key;
                 return ChoiceChip(
                   label: Text(
                     entry.value,
                     style: TextStyle(
-                      color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                      color: isSelected
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurfaceVariant,
                     ),
                   ),
                   selected: isSelected,
                   selectedColor: colorScheme.primary,
                   backgroundColor: colorScheme.surfaceContainerHighest,
                   onSelected: (selected) {
-                    widget.onPrecisionFilterChanged?.call(selected ? entry.key : null);
+                    widget.onPrecisionFilterChanged?.call(
+                      selected ? entry.key : null,
+                    );
                   },
                 );
               }).toList(),

@@ -74,10 +74,7 @@ class AppErrorWidget extends StatelessWidget {
 }
 
 class AppLoadingWidget extends StatelessWidget {
-  const AppLoadingWidget({
-    super.key,
-    this.message = 'Loading...',
-  });
+  const AppLoadingWidget({super.key, this.message = 'Loading...'});
 
   final String message;
 
@@ -140,10 +137,7 @@ class AppEmptyWidget extends StatelessWidget {
             Text(message, textAlign: TextAlign.center),
             if (onAction != null && actionLabel != null) ...[
               SizedBox(height: context.spacings.l),
-              FilledButton(
-                onPressed: onAction,
-                child: Text(actionLabel!),
-              ),
+              FilledButton(onPressed: onAction, child: Text(actionLabel!)),
             ],
           ],
         ),

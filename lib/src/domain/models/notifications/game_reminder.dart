@@ -58,8 +58,9 @@ class GameReminder {
       gameName: json['gameName'],
       gamePayload: Game.fromJson(json['game']),
       releaseDate: ReleaseDate.fromJson(json['releaseDate']),
-      releaseDateCategory:
-          ReleaseDateCategory.fromValue(json['releaseDateCategory']),
+      releaseDateCategory: ReleaseDateCategory.fromValue(
+        json['releaseDateCategory'],
+      ),
       notificationDate: DateTime.parse(json['notificationDate']),
     );
   }

@@ -1,11 +1,7 @@
 part of '../../game_list.dart';
 
 class GameTile extends StatelessWidget {
-  const GameTile({
-    required this.game,
-    this.isTbd = false,
-    super.key,
-  });
+  const GameTile({required this.game, this.isTbd = false, super.key});
 
   final Game game;
   final bool isTbd;
@@ -63,9 +59,7 @@ class GameTile extends StatelessWidget {
         ),
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (_) => GameDetailView(game: game),
-          ),
+          MaterialPageRoute(builder: (_) => GameDetailView(game: game)),
         ),
       ),
     );

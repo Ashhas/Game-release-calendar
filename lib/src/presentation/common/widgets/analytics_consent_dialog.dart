@@ -42,7 +42,9 @@ class AnalyticsConsentDialog extends StatelessWidget {
 
     if (!analyticsResult || !crashResult || !askedResult) {
       if (kDebugMode) {
-        debugPrint('AnalyticsConsentDialog: Failed to save consent preferences');
+        debugPrint(
+          'AnalyticsConsentDialog: Failed to save consent preferences',
+        );
       }
     }
 

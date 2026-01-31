@@ -35,7 +35,6 @@ class GameUpdateService {
     Function(int total, int processed)? onProgress,
   }) async {
     try {
-
       final gameReminders = gameRemindersBox.values.toList();
 
       if (gameReminders.isEmpty) {
@@ -51,7 +50,6 @@ class GameUpdateService {
       }
       final bookmarkedGames = uniqueGames.values.toList();
 
-
       // Process games in batches to avoid overwhelming the API
       const batchSize = 5; // Smaller batches for better progress tracking
       int processedCount = 0;
@@ -61,13 +59,11 @@ class GameUpdateService {
       for (int i = 0; i < bookmarkedGames.length; i += batchSize) {
         final batch = bookmarkedGames.skip(i).take(batchSize).toList();
 
-
         final batchHasUpdates = await _processBatchWithProgress(batch);
         if (batchHasUpdates) hasUpdates = true;
 
         processedCount += batch.length;
         onProgress?.call(bookmarkedGames.length, processedCount);
-
 
         // Small delay between batches and yield to allow UI updates
         if (i + batchSize < bookmarkedGames.length) {
@@ -83,24 +79,20 @@ class GameUpdateService {
     }
   }
 
-  Future<bool> _processBatchWithProgress(
-    List<Game> games,
-  ) async {
+  Future<bool> _processBatchWithProgress(List<Game> games) async {
     bool batchHasUpdates = false;
     final gameIds = games.map((game) => game.id).join(',');
 
     try {
       // Build query to fetch updated game data
-      final query = 'where id = ($gameIds); '
+      final query =
+          'where id = ($gameIds); '
           'fields *, platforms.*, cover.*, release_dates.*, artworks.*, category; '
           'limit ${games.length};';
 
-
       final updatedGames = await igdbRepository.getGames(query);
 
-
-      if (updatedGames.length != games.length) {
-      }
+      if (updatedGames.length != games.length) {}
 
       for (int i = 0; i < updatedGames.length; i++) {
         final updatedGame = updatedGames[i];
@@ -108,8 +100,10 @@ class GameUpdateService {
           (game) => game.id == updatedGame.id,
         );
 
-        final gameHasUpdates =
-            await _processGameUpdate(existingGame, updatedGame);
+        final gameHasUpdates = await _processGameUpdate(
+          existingGame,
+          updatedGame,
+        );
         if (gameHasUpdates) batchHasUpdates = true;
 
         // Yield control periodically during processing
@@ -126,14 +120,18 @@ class GameUpdateService {
   Future<bool> _processGameUpdate(Game existingGame, Game updatedGame) async {
     try {
       // Check if the game data has been updated (with logging)
-      final hasDataChanged = await _hasGameDataChangedWithLogging(existingGame, updatedGame);
-      final hasReleaseDateChanged =
-          await _hasReleaseDateChangedWithLogging(existingGame, updatedGame);
+      final hasDataChanged = await _hasGameDataChangedWithLogging(
+        existingGame,
+        updatedGame,
+      );
+      final hasReleaseDateChanged = await _hasReleaseDateChangedWithLogging(
+        existingGame,
+        updatedGame,
+      );
 
       if (!hasDataChanged && !hasReleaseDateChanged) {
         return false; // No changes detected
       }
-
 
       if (hasDataChanged) {
         // Update the bookmarked game with new data
@@ -151,15 +149,15 @@ class GameUpdateService {
     }
   }
 
-
   Future<void> _updateBookmarkedGame(
-      Game existingGame, Game updatedGame) async {
+    Game existingGame,
+    Game updatedGame,
+  ) async {
     try {
       // Update all reminders that reference this game
       final remindersToUpdate = gameRemindersBox.values
           .where((reminder) => reminder.gameId == existingGame.id)
           .toList();
-
 
       for (final reminder in remindersToUpdate) {
         // Find the key for this reminder
@@ -181,7 +179,6 @@ class GameUpdateService {
         // Update the reminder in the box
         await gameRemindersBox.put(reminderKey, updatedReminder);
       }
-
     } catch (e, stackTrace) {
       developer.log(
         'Error updating bookmarked game ${existingGame.id}',
@@ -193,7 +190,9 @@ class GameUpdateService {
   }
 
   Future<void> _handleReleaseDateChange(
-      Game existingGame, Game updatedGame) async {
+    Game existingGame,
+    Game updatedGame,
+  ) async {
     try {
       // Find all reminders for this game
       final gameReminders = gameRemindersBox.values
@@ -203,7 +202,6 @@ class GameUpdateService {
       if (gameReminders.isEmpty) {
         return; // No reminders to update
       }
-
 
       for (final reminder in gameReminders) {
         await _updateGameReminder(reminder, updatedGame);
@@ -219,7 +217,9 @@ class GameUpdateService {
   }
 
   Future<void> _updateGameReminder(
-      GameReminder existingReminder, Game updatedGame) async {
+    GameReminder existingReminder,
+    Game updatedGame,
+  ) async {
     try {
       // Find the corresponding release date in the updated game
       final updatedReleaseDate = updatedGame.releaseDates?.firstWhere(
@@ -252,7 +252,10 @@ class GameUpdateService {
 
       // Release date changed, need to reschedule notification
       await _rescheduleNotification(
-          existingReminder, updatedGame, updatedReleaseDate);
+        existingReminder,
+        updatedGame,
+        updatedReleaseDate,
+      );
     } catch (e, stackTrace) {
       developer.log(
         'Error updating game reminder ${existingReminder.id}',
@@ -270,8 +273,9 @@ class GameUpdateService {
   ) async {
     try {
       // Cancel the existing notification
-      await notificationClient
-          .cancelNotification(existingReminder.releaseDate.id);
+      await notificationClient.cancelNotification(
+        existingReminder.releaseDate.id,
+      );
 
       // Schedule new notification with updated release date
       await notificationClient.scheduleNotificationFromGame(
@@ -292,7 +296,6 @@ class GameUpdateService {
       );
 
       await _saveUpdatedReminder(existingReminder, updatedReminder);
-
     } catch (e, stackTrace) {
       developer.log(
         'Error rescheduling notification for reminder ${existingReminder.id}',
@@ -304,7 +307,9 @@ class GameUpdateService {
   }
 
   Future<void> _saveUpdatedReminder(
-      GameReminder existingReminder, GameReminder updatedReminder) async {
+    GameReminder existingReminder,
+    GameReminder updatedReminder,
+  ) async {
     try {
       // Find the key for the existing reminder in the box
       final reminderKey = gameRemindersBox.keys.firstWhere(
@@ -313,7 +318,6 @@ class GameUpdateService {
 
       // Update the reminder in the box
       await gameRemindersBox.put(reminderKey, updatedReminder);
-
     } catch (e, stackTrace) {
       developer.log(
         'Error saving updated reminder ${existingReminder.id}',
@@ -335,7 +339,6 @@ class GameUpdateService {
       );
 
       await gameRemindersBox.delete(reminderKey);
-
     } catch (e, stackTrace) {
       developer.log(
         'Error removing game reminder ${reminder.id}',
@@ -372,7 +375,9 @@ class GameUpdateService {
 
       // Clean up old logs to prevent storage bloat (keep last 1000 entries)
       if (gameUpdateLogBox.length > 1000) {
-        final keysToDelete = gameUpdateLogBox.keys.take(gameUpdateLogBox.length - 1000);
+        final keysToDelete = gameUpdateLogBox.keys.take(
+          gameUpdateLogBox.length - 1000,
+        );
         for (final key in keysToDelete) {
           await gameUpdateLogBox.delete(key);
         }
@@ -389,7 +394,10 @@ class GameUpdateService {
   }
 
   /// Enhanced game data comparison with logging
-  Future<bool> _hasGameDataChangedWithLogging(Game existingGame, Game updatedGame) async {
+  Future<bool> _hasGameDataChangedWithLogging(
+    Game existingGame,
+    Game updatedGame,
+  ) async {
     bool hasLoggedChanges = false;
 
     // Only log changes users care about: title, cover, platforms, status
@@ -414,13 +422,17 @@ class GameUpdateService {
     }
 
     // Check platform changes
-    final existingPlatformIds = existingGame.platforms?.map((p) => p.id).toSet() ?? <int>{};
-    final updatedPlatformIds = updatedGame.platforms?.map((p) => p.id).toSet() ?? <int>{};
+    final existingPlatformIds =
+        existingGame.platforms?.map((p) => p.id).toSet() ?? <int>{};
+    final updatedPlatformIds =
+        updatedGame.platforms?.map((p) => p.id).toSet() ?? <int>{};
 
     if (!existingPlatformIds.containsAll(updatedPlatformIds) ||
         !updatedPlatformIds.containsAll(existingPlatformIds)) {
-      final existingNames = existingGame.platforms?.map((p) => p.name).join(', ') ?? 'None';
-      final updatedNames = updatedGame.platforms?.map((p) => p.name).join(', ') ?? 'None';
+      final existingNames =
+          existingGame.platforms?.map((p) => p.name).join(', ') ?? 'None';
+      final updatedNames =
+          updatedGame.platforms?.map((p) => p.name).join(', ') ?? 'None';
 
       await _logGameUpdate(
         updatedGame: updatedGame,
@@ -446,7 +458,8 @@ class GameUpdateService {
     }
 
     // Use checksum internally for detection but don't log it
-    final hasInternalChanges = existingGame.updatedAt != updatedGame.updatedAt ||
+    final hasInternalChanges =
+        existingGame.updatedAt != updatedGame.updatedAt ||
         existingGame.checksum != updatedGame.checksum ||
         existingGame.name != updatedGame.name ||
         existingGame.cover?.url != updatedGame.cover?.url ||
@@ -458,7 +471,10 @@ class GameUpdateService {
   }
 
   /// Enhanced release date comparison with logging
-  Future<bool> _hasReleaseDateChangedWithLogging(Game existingGame, Game updatedGame) async {
+  Future<bool> _hasReleaseDateChangedWithLogging(
+    Game existingGame,
+    Game updatedGame,
+  ) async {
     bool hasChanges = false;
 
     // Check first release date
@@ -504,5 +520,4 @@ class GameUpdateService {
 
     return hasChanges;
   }
-
 }

@@ -27,10 +27,7 @@ part 'widgets/_game_list_scroll_view.dart';
 part 'physics/snap_scroll_physics.dart';
 
 class GameList extends StatefulWidget {
-  const GameList({
-    required this.sections,
-    super.key,
-  });
+  const GameList({required this.sections, super.key});
 
   final List<GameSection> sections;
 
@@ -146,8 +143,9 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
     setState(() => _isLoading = true);
 
     try {
-      final newGames =
-          await context.read<UpcomingGamesCubit>().getGamesWithOffset(_offset);
+      final newGames = await context
+          .read<UpcomingGamesCubit>()
+          .getGamesWithOffset(_offset);
 
       if (newGames.isNotEmpty) {
         _extendUpcomingGamesList(newGames);
@@ -207,7 +205,9 @@ class _GameListState extends State<GameList> with WidgetsBindingObserver {
               onDateTap: (date) {
                 // Find the section key for this date
                 final matchingSection = _activeSections.where(
-                  (s) => s.date.isAtSameDayAs(date) && s.precision == DatePrecision.exactDay,
+                  (s) =>
+                      s.date.isAtSameDayAs(date) &&
+                      s.precision == DatePrecision.exactDay,
                 );
                 if (matchingSection.isNotEmpty) {
                   _scrollToSection(matchingSection.first.key);

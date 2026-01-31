@@ -12,7 +12,9 @@ class _ScrollTrack extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.all(Radius.circular(DateScrollbar.scrollbarWidth / 2)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(DateScrollbar.scrollbarWidth / 2),
+        ),
       ),
     );
   }

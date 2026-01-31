@@ -24,10 +24,7 @@ part 'widgets/game_info.dart';
 part 'widgets/game_releases.dart';
 
 class GameDetailView extends StatefulWidget {
-  const GameDetailView({
-    required this.game,
-    super.key,
-  });
+  const GameDetailView({required this.game, super.key});
 
   final Game game;
 

@@ -9,22 +9,40 @@ void main() {
     group('constructor and properties', () {
       test('should have correct values and display text', () {
         expect(ReleasePrecisionFilter.all.value, equals(0));
-        expect(ReleasePrecisionFilter.all.displayText, equals('All Release Types'));
+        expect(
+          ReleasePrecisionFilter.all.displayText,
+          equals('All Release Types'),
+        );
 
         expect(ReleasePrecisionFilter.exactDate.value, equals(1));
-        expect(ReleasePrecisionFilter.exactDate.displayText, equals('Exact Dates Only'));
+        expect(
+          ReleasePrecisionFilter.exactDate.displayText,
+          equals('Exact Dates Only'),
+        );
 
         expect(ReleasePrecisionFilter.yearMonth.value, equals(2));
-        expect(ReleasePrecisionFilter.yearMonth.displayText, equals('Year & Month'));
+        expect(
+          ReleasePrecisionFilter.yearMonth.displayText,
+          equals('Year & Month'),
+        );
 
         expect(ReleasePrecisionFilter.quarter.value, equals(3));
-        expect(ReleasePrecisionFilter.quarter.displayText, equals('Quarters (Q1, Q2, etc.)'));
+        expect(
+          ReleasePrecisionFilter.quarter.displayText,
+          equals('Quarters (Q1, Q2, etc.)'),
+        );
 
         expect(ReleasePrecisionFilter.yearOnly.value, equals(4));
-        expect(ReleasePrecisionFilter.yearOnly.displayText, equals('Year Only'));
+        expect(
+          ReleasePrecisionFilter.yearOnly.displayText,
+          equals('Year Only'),
+        );
 
         expect(ReleasePrecisionFilter.tbd.value, equals(5));
-        expect(ReleasePrecisionFilter.tbd.displayText, equals('To Be Determined'));
+        expect(
+          ReleasePrecisionFilter.tbd.displayText,
+          equals('To Be Determined'),
+        );
       });
 
       test('should have all enum values', () {
@@ -41,18 +59,45 @@ void main() {
 
     group('fromValue', () {
       test('should return correct filter for valid values', () {
-        expect(ReleasePrecisionFilter.fromValue(0), equals(ReleasePrecisionFilter.all));
-        expect(ReleasePrecisionFilter.fromValue(1), equals(ReleasePrecisionFilter.exactDate));
-        expect(ReleasePrecisionFilter.fromValue(2), equals(ReleasePrecisionFilter.yearMonth));
-        expect(ReleasePrecisionFilter.fromValue(3), equals(ReleasePrecisionFilter.quarter));
-        expect(ReleasePrecisionFilter.fromValue(4), equals(ReleasePrecisionFilter.yearOnly));
-        expect(ReleasePrecisionFilter.fromValue(5), equals(ReleasePrecisionFilter.tbd));
+        expect(
+          ReleasePrecisionFilter.fromValue(0),
+          equals(ReleasePrecisionFilter.all),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(1),
+          equals(ReleasePrecisionFilter.exactDate),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(2),
+          equals(ReleasePrecisionFilter.yearMonth),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(3),
+          equals(ReleasePrecisionFilter.quarter),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(4),
+          equals(ReleasePrecisionFilter.yearOnly),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(5),
+          equals(ReleasePrecisionFilter.tbd),
+        );
       });
 
       test('should return all filter for invalid values', () {
-        expect(ReleasePrecisionFilter.fromValue(-1), equals(ReleasePrecisionFilter.all));
-        expect(ReleasePrecisionFilter.fromValue(6), equals(ReleasePrecisionFilter.all));
-        expect(ReleasePrecisionFilter.fromValue(999), equals(ReleasePrecisionFilter.all));
+        expect(
+          ReleasePrecisionFilter.fromValue(-1),
+          equals(ReleasePrecisionFilter.all),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(6),
+          equals(ReleasePrecisionFilter.all),
+        );
+        expect(
+          ReleasePrecisionFilter.fromValue(999),
+          equals(ReleasePrecisionFilter.all),
+        );
       });
     });
 
@@ -69,25 +114,37 @@ void main() {
           expect(ReleasePrecisionFilter.exactDate.matches(releaseDate), isTrue);
         });
 
-        test('should not match release date with dateFormat 1 (year-month)', () {
-          final releaseDate = ReleaseDate(
-            id: 1,
-            dateFormat: 1,
-            category: null,
-          );
+        test(
+          'should not match release date with dateFormat 1 (year-month)',
+          () {
+            final releaseDate = ReleaseDate(
+              id: 1,
+              dateFormat: 1,
+              category: null,
+            );
 
-          expect(ReleasePrecisionFilter.exactDate.matches(releaseDate), isFalse);
-        });
+            expect(
+              ReleasePrecisionFilter.exactDate.matches(releaseDate),
+              isFalse,
+            );
+          },
+        );
 
-        test('should match when category is exact even with null dateFormat', () {
-          final releaseDate = ReleaseDate(
-            id: 1,
-            category: ReleaseDateCategory.exactDate,
-            dateFormat: null,
-          );
+        test(
+          'should match when category is exact even with null dateFormat',
+          () {
+            final releaseDate = ReleaseDate(
+              id: 1,
+              category: ReleaseDateCategory.exactDate,
+              dateFormat: null,
+            );
 
-          expect(ReleasePrecisionFilter.exactDate.matches(releaseDate), isTrue);
-        });
+            expect(
+              ReleasePrecisionFilter.exactDate.matches(releaseDate),
+              isTrue,
+            );
+          },
+        );
       });
 
       group('quarter filter', () {
@@ -136,7 +193,14 @@ void main() {
         });
 
         test('should match case insensitive quarter patterns', () {
-          final testCases = ['q1', 'Q1', 'q2 2025', 'Q3 2025', 'QUARTER 4', 'Quarter 1'];
+          final testCases = [
+            'q1',
+            'Q1',
+            'q2 2025',
+            'Q3 2025',
+            'QUARTER 4',
+            'Quarter 1',
+          ];
 
           for (final humanText in testCases) {
             final releaseDate = ReleaseDate(
@@ -149,13 +213,19 @@ void main() {
             expect(
               ReleasePrecisionFilter.quarter.matches(releaseDate),
               isTrue,
-              reason: 'Should match quarter pattern: $humanText'
+              reason: 'Should match quarter pattern: $humanText',
             );
           }
         });
 
         test('should not match non-quarter human text', () {
-          final nonQuarterTexts = ['March 2025', 'Spring 2025', '2025', 'TBD', 'Coming Soon'];
+          final nonQuarterTexts = [
+            'March 2025',
+            'Spring 2025',
+            '2025',
+            'TBD',
+            'Coming Soon',
+          ];
 
           for (final humanText in nonQuarterTexts) {
             final releaseDate = ReleaseDate(
@@ -168,7 +238,7 @@ void main() {
             expect(
               ReleasePrecisionFilter.quarter.matches(releaseDate),
               isFalse,
-              reason: 'Should not match non-quarter text: $humanText'
+              reason: 'Should not match non-quarter text: $humanText',
             );
           }
         });
@@ -209,11 +279,7 @@ void main() {
 
       group('yearMonth filter', () {
         test('should match release date with dateFormat 1 (year-month)', () {
-          final releaseDate = ReleaseDate(
-            id: 1,
-            dateFormat: 1,
-            category: null,
-          );
+          final releaseDate = ReleaseDate(id: 1, dateFormat: 1, category: null);
 
           expect(ReleasePrecisionFilter.yearMonth.matches(releaseDate), isTrue);
         });
@@ -231,11 +297,7 @@ void main() {
 
       group('yearOnly filter', () {
         test('should match release date with dateFormat 2 (year)', () {
-          final releaseDate = ReleaseDate(
-            id: 1,
-            dateFormat: 2,
-            category: null,
-          );
+          final releaseDate = ReleaseDate(id: 1, dateFormat: 2, category: null);
 
           expect(ReleasePrecisionFilter.yearOnly.matches(releaseDate), isTrue);
         });
@@ -262,16 +324,19 @@ void main() {
           expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isTrue);
         });
 
-        test('should match release date with all null fields (fallback to TBD)', () {
-          final releaseDate = ReleaseDate(
-            id: 1,
-            category: null,
-            dateFormat: null,
-            human: null,
-          );
+        test(
+          'should match release date with all null fields (fallback to TBD)',
+          () {
+            final releaseDate = ReleaseDate(
+              id: 1,
+              category: null,
+              dateFormat: null,
+              human: null,
+            );
 
-          expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isTrue);
-        });
+            expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isTrue);
+          },
+        );
 
         test('should match release date with unknown dateFormat', () {
           final releaseDate = ReleaseDate(
@@ -299,7 +364,7 @@ void main() {
             expect(
               ReleasePrecisionFilter.all.matches(releaseDate),
               isTrue,
-              reason: 'All filter should match any release date'
+              reason: 'All filter should match any release date',
             );
           }
         });
@@ -324,7 +389,8 @@ void main() {
           id: 1,
           human: null,
           dateFormat: 1, // Should resolve to yearMonth
-          category: ReleaseDateCategory.exactDate, // Would normally be exactDate
+          category:
+              ReleaseDateCategory.exactDate, // Would normally be exactDate
         );
 
         expect(ReleasePrecisionFilter.yearMonth.matches(releaseDate), isTrue);
@@ -355,33 +421,39 @@ void main() {
     });
 
     group('real-world data scenarios', () {
-      test('should handle Final Fantasy Tactics scenario (category null, dateFormat 0)', () {
-        // This represents the real user issue we fixed
-        final releaseDate = ReleaseDate(
-          id: 716132,
-          date: 1727654400, // Sep 30, 2025
-          human: 'Sep 30, 2025',
-          category: null, // IGDB often has null category
-          dateFormat: 0, // But dateFormat indicates exact date
-        );
+      test(
+        'should handle Final Fantasy Tactics scenario (category null, dateFormat 0)',
+        () {
+          // This represents the real user issue we fixed
+          final releaseDate = ReleaseDate(
+            id: 716132,
+            date: 1727654400, // Sep 30, 2025
+            human: 'Sep 30, 2025',
+            category: null, // IGDB often has null category
+            dateFormat: 0, // But dateFormat indicates exact date
+          );
 
-        expect(ReleasePrecisionFilter.exactDate.matches(releaseDate), isTrue);
-        expect(ReleasePrecisionFilter.quarter.matches(releaseDate), isFalse);
-        expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isFalse);
-      });
+          expect(ReleasePrecisionFilter.exactDate.matches(releaseDate), isTrue);
+          expect(ReleasePrecisionFilter.quarter.matches(releaseDate), isFalse);
+          expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isFalse);
+        },
+      );
 
-      test('should handle quarter with TBD category but quarter human text', () {
-        final releaseDate = ReleaseDate(
-          id: 1,
-          human: 'Q2 2025',
-          category: ReleaseDateCategory.tbd, // Wrong category
-          dateFormat: 4, // Quarter dateFormat
-        );
+      test(
+        'should handle quarter with TBD category but quarter human text',
+        () {
+          final releaseDate = ReleaseDate(
+            id: 1,
+            human: 'Q2 2025',
+            category: ReleaseDateCategory.tbd, // Wrong category
+            dateFormat: 4, // Quarter dateFormat
+          );
 
-        // Human text takes priority - should be quarter
-        expect(ReleasePrecisionFilter.quarter.matches(releaseDate), isTrue);
-        expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isFalse);
-      });
+          // Human text takes priority - should be quarter
+          expect(ReleasePrecisionFilter.quarter.matches(releaseDate), isTrue);
+          expect(ReleasePrecisionFilter.tbd.matches(releaseDate), isFalse);
+        },
+      );
 
       test('should handle complex mixed data from IGDB API', () {
         final testCases = [
@@ -420,13 +492,14 @@ void main() {
 
         for (final testCase in testCases) {
           final releaseDate = testCase['releaseDate'] as ReleaseDate;
-          final expectedFilter = testCase['expectedFilter'] as ReleasePrecisionFilter;
+          final expectedFilter =
+              testCase['expectedFilter'] as ReleasePrecisionFilter;
           final name = testCase['name'] as String;
 
           expect(
             expectedFilter.matches(releaseDate),
             isTrue,
-            reason: 'Test case: $name'
+            reason: 'Test case: $name',
           );
         }
       });

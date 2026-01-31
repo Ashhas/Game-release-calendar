@@ -11,25 +11,19 @@ void main() {
     // ignore: avoid_returning_widgets
     Widget createTestWidget({required Widget child}) {
       return MaterialApp(
-        theme: ThemeData(
-          extensions: [
-            AppSpacings.defaultValues,
-          ],
-        ),
+        theme: ThemeData(extensions: [AppSpacings.defaultValues]),
         home: child,
       );
     }
 
-    testWidgets('AppErrorWidget should display error message',
-        (WidgetTester tester) async {
+    testWidgets('AppErrorWidget should display error message', (
+      WidgetTester tester,
+    ) async {
       const exception = NetworkException('Network failed');
 
       await tester.pumpWidget(
         createTestWidget(
-          child: AppErrorWidget(
-            error: exception,
-            title: 'Test Error',
-          ),
+          child: AppErrorWidget(error: exception, title: 'Test Error'),
         ),
       );
 
@@ -38,8 +32,9 @@ void main() {
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
 
-    testWidgets('AppErrorWidget should show retry button when retryable',
-        (WidgetTester tester) async {
+    testWidgets('AppErrorWidget should show retry button when retryable', (
+      WidgetTester tester,
+    ) async {
       const exception = NetworkException('Network failed');
       bool retryPressed = false;
 
@@ -60,8 +55,9 @@ void main() {
       expect(retryPressed, isTrue);
     });
 
-    testWidgets('AppLoadingWidget should display loading message',
-        (WidgetTester tester) async {
+    testWidgets('AppLoadingWidget should display loading message', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           child: const AppLoadingWidget(message: 'Loading games...'),
@@ -72,8 +68,9 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('AppEmptyWidget should display empty state',
-        (WidgetTester tester) async {
+    testWidgets('AppEmptyWidget should display empty state', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           child: const AppEmptyWidget(
@@ -88,16 +85,14 @@ void main() {
       expect(find.byIcon(Icons.inbox), findsOneWidget);
     });
 
-    testWidgets('AppErrorWidget should handle non-retryable errors',
-        (WidgetTester tester) async {
+    testWidgets('AppErrorWidget should handle non-retryable errors', (
+      WidgetTester tester,
+    ) async {
       const exception = NetworkException('Generic error');
 
       await tester.pumpWidget(
         createTestWidget(
-          child: AppErrorWidget(
-            error: exception,
-            title: 'Fatal Error',
-          ),
+          child: AppErrorWidget(error: exception, title: 'Fatal Error'),
         ),
       );
 
@@ -106,35 +101,33 @@ void main() {
       expect(find.text('Try Again'), findsNothing);
     });
 
-    testWidgets('AppErrorWidget should handle null retry callback',
-        (WidgetTester tester) async {
+    testWidgets('AppErrorWidget should handle null retry callback', (
+      WidgetTester tester,
+    ) async {
       const exception = NetworkException('Network failed');
 
       await tester.pumpWidget(
         createTestWidget(
-          child: AppErrorWidget(
-            error: exception,
-            onRetry: null,
-          ),
+          child: AppErrorWidget(error: exception, onRetry: null),
         ),
       );
 
       expect(find.text('Try Again'), findsNothing);
     });
 
-    testWidgets('AppLoadingWidget should handle null message',
-        (WidgetTester tester) async {
+    testWidgets('AppLoadingWidget should handle null message', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: const AppLoadingWidget(),
-        ),
+        createTestWidget(child: const AppLoadingWidget()),
       );
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('AppEmptyWidget should handle optional action button',
-        (WidgetTester tester) async {
+    testWidgets('AppEmptyWidget should handle optional action button', (
+      WidgetTester tester,
+    ) async {
       bool actionPressed = false;
 
       await tester.pumpWidget(
@@ -156,8 +149,9 @@ void main() {
       expect(actionPressed, isTrue);
     });
 
-    testWidgets('AppEmptyWidget should work without action',
-        (WidgetTester tester) async {
+    testWidgets('AppEmptyWidget should work without action', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           child: const AppEmptyWidget(

@@ -35,9 +35,9 @@ class PillTabBar extends StatelessWidget {
         dividerColor: Colors.transparent,
         labelColor: colorScheme.onPrimary,
         unselectedLabelColor: colorScheme.onSurfaceVariant,
-        labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+        labelStyle: Theme.of(
+          context,
+        ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
         unselectedLabelStyle: Theme.of(context).textTheme.labelLarge,
         tabs: tabs.map((label) => Tab(text: label)).toList(),
       ),
@@ -48,9 +48,6 @@ class PillTabBar extends StatelessWidget {
 /// Extension to create PillTabBar easily from TabController
 extension PillTabBarExtension on TabController {
   Widget pillTabBar(List<String> labels) {
-    return PillTabBar(
-      tabController: this,
-      tabs: labels,
-    );
+    return PillTabBar(tabController: this, tabs: labels);
   }
 }

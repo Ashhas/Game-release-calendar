@@ -50,7 +50,8 @@ class SharedPrefsService {
 
   Future<bool> setBrightnessPreset(AppThemePreset preset) async {
     try {
-      return await _prefs?.setString(_brightnessPresetKey, preset.name) ?? false;
+      return await _prefs?.setString(_brightnessPresetKey, preset.name) ??
+          false;
     } catch (e) {
       return false;
     }
@@ -153,7 +154,9 @@ class SharedPrefsService {
       return _prefs?.getBool(_analyticsConsentAskedKey) ?? false;
     } catch (e, stackTrace) {
       if (kDebugMode) {
-        debugPrint('SharedPrefsService: Failed to read consent asked status - $e');
+        debugPrint(
+          'SharedPrefsService: Failed to read consent asked status - $e',
+        );
         debugPrintStack(stackTrace: stackTrace);
       }
       return false;
@@ -165,7 +168,9 @@ class SharedPrefsService {
       return await _prefs?.setBool(_analyticsConsentAskedKey, asked) ?? false;
     } catch (e, stackTrace) {
       if (kDebugMode) {
-        debugPrint('SharedPrefsService: Failed to save consent asked status - $e');
+        debugPrint(
+          'SharedPrefsService: Failed to save consent asked status - $e',
+        );
         debugPrintStack(stackTrace: stackTrace);
       }
       return false;
@@ -178,7 +183,9 @@ class SharedPrefsService {
       return _prefs?.getBool(_crashLogsConsentKey) ?? false;
     } catch (e, stackTrace) {
       if (kDebugMode) {
-        debugPrint('SharedPrefsService: Failed to read crash logs consent - $e');
+        debugPrint(
+          'SharedPrefsService: Failed to read crash logs consent - $e',
+        );
         debugPrintStack(stackTrace: stackTrace);
       }
       return false;
@@ -190,7 +197,9 @@ class SharedPrefsService {
       return await _prefs?.setBool(_crashLogsConsentKey, consented) ?? false;
     } catch (e, stackTrace) {
       if (kDebugMode) {
-        debugPrint('SharedPrefsService: Failed to save crash logs consent - $e');
+        debugPrint(
+          'SharedPrefsService: Failed to save crash logs consent - $e',
+        );
         debugPrintStack(stackTrace: stackTrace);
       }
       return false;

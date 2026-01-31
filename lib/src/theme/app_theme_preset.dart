@@ -60,8 +60,8 @@ extension AppThemePresetExtension on AppThemePreset {
   /// Returns true if this is a brightness preset (light/dark/system)
   bool get isBrightnessPreset {
     return this == AppThemePreset.light ||
-           this == AppThemePreset.dark ||
-           this == AppThemePreset.system;
+        this == AppThemePreset.dark ||
+        this == AppThemePreset.system;
   }
 
   /// Returns true if this is a color preset

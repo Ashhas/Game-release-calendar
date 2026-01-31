@@ -15,15 +15,13 @@ class TwitchAuthService {
     required String clientId,
     required String clientSecret,
     required String twitchOauthTokenURL,
-  })  : _dio = dio,
-        _clientId = clientId,
-        _clientSecret = clientSecret,
-        _twitchOauthTokenURL = twitchOauthTokenURL,
-        _storage = const FlutterSecureStorage(
-          aOptions: AndroidOptions(
-            encryptedSharedPreferences: true,
-          ),
-        );
+  }) : _dio = dio,
+       _clientId = clientId,
+       _clientSecret = clientSecret,
+       _twitchOauthTokenURL = twitchOauthTokenURL,
+       _storage = const FlutterSecureStorage(
+         aOptions: AndroidOptions(encryptedSharedPreferences: true),
+       );
 
   final Dio _dio;
   final String _clientId;
@@ -110,7 +108,9 @@ class TwitchAuthService {
         developer.log('TwitchAuth: Token refreshed successfully');
         return true;
       } else {
-        developer.log('TwitchAuth: Failed to refresh token: ${response.statusCode}');
+        developer.log(
+          'TwitchAuth: Failed to refresh token: ${response.statusCode}',
+        );
         return false;
       }
     } on DioException catch (e) {

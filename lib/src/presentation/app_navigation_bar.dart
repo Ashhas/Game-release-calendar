@@ -60,7 +60,9 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
 
           // Track screen view when switching tabs
           if (_currentPageIndex != index) {
-            _analyticsService.trackScreenViewed(screenName: _screenNames[index]);
+            _analyticsService.trackScreenViewed(
+              screenName: _screenNames[index],
+            );
           }
 
           setState(() {

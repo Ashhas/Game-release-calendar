@@ -29,7 +29,9 @@ class _ScrollThumb extends StatelessWidget {
         height: _getScrollThumbHeight(),
         decoration: BoxDecoration(
           color: thumbColor,
-          borderRadius: BorderRadius.all(Radius.circular(DateScrollbar.thumbWidth / 2)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(DateScrollbar.thumbWidth / 2),
+          ),
         ),
       ),
     );
@@ -52,7 +54,9 @@ class _ScrollThumb extends StatelessWidget {
     final viewportRatio = position.viewportDimension / totalContent;
 
     const minThumbHeight = 20.0;
-    return (constraints.maxHeight * viewportRatio)
-        .clamp(minThumbHeight, constraints.maxHeight);
+    return (constraints.maxHeight * viewportRatio).clamp(
+      minThumbHeight,
+      constraints.maxHeight,
+    );
   }
 }

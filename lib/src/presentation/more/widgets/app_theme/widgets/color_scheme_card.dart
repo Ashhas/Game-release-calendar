@@ -35,14 +35,20 @@ class ColorSchemeCard extends StatelessWidget {
           padding: EdgeInsets.all(context.spacings.s),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
-            border: Border.fromBorderSide(BorderSide(
-              color: isSelected
-                  ? color  // Use the card's own color
-                  : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-              width: isSelected ? 2 : 1,
-            )),
+            border: Border.fromBorderSide(
+              BorderSide(
+                color: isSelected
+                    ? color // Use the card's own color
+                    : Theme.of(
+                        context,
+                      ).colorScheme.outline.withValues(alpha: 0.3),
+                width: isSelected ? 2 : 1,
+              ),
+            ),
             color: isSelected
-                ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+                ? Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer.withValues(alpha: 0.3)
                 : Theme.of(context).colorScheme.surface,
           ),
           child: Row(
@@ -53,15 +59,17 @@ class ColorSchemeCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
               if (isSelected)
                 Icon(
                   Icons.check_circle,
-                  color: color,  // Use the card's own color
+                  color: color, // Use the card's own color
                   size: 20,
                 ),
             ],

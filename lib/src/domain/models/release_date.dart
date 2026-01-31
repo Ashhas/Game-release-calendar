@@ -56,17 +56,17 @@ class ReleaseDate {
       id: json['id'],
       date: json['date'],
       human: json['human'],
-      category: json['category'] != null 
-          ? ReleaseDateCategory.fromValue(json['category']) 
+      category: json['category'] != null
+          ? ReleaseDateCategory.fromValue(json['category'])
           : null,
       year: json['y'],
       month: json['m'],
       quarter: json['q'],
-      platform: json['platform'] != null 
-          ? SupportedGamePlatform.fromValue(json['platform']) 
+      platform: json['platform'] != null
+          ? SupportedGamePlatform.fromValue(json['platform'])
           : null,
-      region: json['region'] != null 
-          ? ReleaseRegion.fromValue(json['region']) 
+      region: json['region'] != null
+          ? ReleaseRegion.fromValue(json['region'])
           : null,
       dateFormat: json['date_format'],
     );
@@ -88,7 +88,8 @@ class ReleaseDate {
   }
 
   bool get hasExactDate {
-    return _resolveActualCategory() == ReleaseDateCategory.exactDate && date != null;
+    return _resolveActualCategory() == ReleaseDateCategory.exactDate &&
+        date != null;
   }
 
   ReleaseDateCategory _resolveActualCategory() {

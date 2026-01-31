@@ -33,15 +33,15 @@ class GameCard extends StatelessWidget {
 
     return Card(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(context.spacings.s))),
+        borderRadius: BorderRadius.all(Radius.circular(context.spacings.s)),
+      ),
       color: cardColor,
       child: Stack(
         fit: StackFit.expand,
         children: [
           GameCoverArt(
-            imageUrl: reminder.gamePayload.cover?.imageUrl(
-                  size: 'cover_big',
-                ) ??
+            imageUrl:
+                reminder.gamePayload.cover?.imageUrl(size: 'cover_big') ??
                 Constants.placeholderImageUrl,
             isVertical: isVertical,
           ),
@@ -73,7 +73,9 @@ class GameCard extends StatelessWidget {
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(context.spacings.s)),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(context.spacings.s),
+                  ),
                   color: Colors.black.withValues(alpha: 0.7),
                 ),
               ),
@@ -83,8 +85,11 @@ class GameCard extends StatelessWidget {
               bottom: 50,
               left: context.spacings.xxs,
               child: PlatformChip(
-                platformAbbreviation:
-                    reminder.releaseDate.platform!.abbreviation.toString(),
+                platformAbbreviation: reminder
+                    .releaseDate
+                    .platform!
+                    .abbreviation
+                    .toString(),
               ),
             ),
           Positioned(
@@ -98,13 +103,7 @@ class GameCard extends StatelessWidget {
             ),
           ),
           if (onRemove != null)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: DeleteChip(
-                onRemove: onRemove,
-              ),
-            ),
+            Positioned(top: 0, right: 0, child: DeleteChip(onRemove: onRemove)),
         ],
       ),
     );

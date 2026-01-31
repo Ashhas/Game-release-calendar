@@ -64,7 +64,9 @@ class _DateFiltersState extends State<_DateFilters> {
                     backgroundColor: colorScheme.primary,
                     visualDensity: VisualDensity.compact,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: EdgeInsets.symmetric(horizontal: context.spacings.xs),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.spacings.xs,
+                    ),
                   ),
               ],
             ),
@@ -82,14 +84,18 @@ class _DateFiltersState extends State<_DateFilters> {
                   label: Text(
                     entry.value,
                     style: TextStyle(
-                      color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                      color: isSelected
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurfaceVariant,
                     ),
                   ),
                   selected: isSelected,
                   selectedColor: colorScheme.primary,
                   backgroundColor: colorScheme.surfaceContainerHighest,
                   onSelected: (selected) {
-                    widget.onDateFilterChanged?.call(selected ? entry.key : null);
+                    widget.onDateFilterChanged?.call(
+                      selected ? entry.key : null,
+                    );
                   },
                 );
               }).toList(),

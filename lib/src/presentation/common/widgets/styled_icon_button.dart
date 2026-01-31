@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
 /// Size options for StyledIconButton
-enum StyledButtonSize {
-  small,
-  medium,
-  large,
-}
+enum StyledButtonSize { small, medium, large }
 
 /// A styled icon button with border and background
 /// Replaces MoonButton.icon with native Flutter components
@@ -74,10 +70,16 @@ class StyledIconButton extends StatelessWidget {
     final isEnabled = enabled && onTap != null;
 
     final effectiveBackgroundColor = backgroundColor ?? colorScheme.surface;
-    final effectiveIconColor = iconColor ??
-        (isEnabled ? colorScheme.onSurface : colorScheme.onSurface.withValues(alpha: 0.38));
-    final effectiveBorderColor = borderColor ??
-        (isEnabled ? colorScheme.outline : colorScheme.outline.withValues(alpha: 0.12));
+    final effectiveIconColor =
+        iconColor ??
+        (isEnabled
+            ? colorScheme.onSurface
+            : colorScheme.onSurface.withValues(alpha: 0.38));
+    final effectiveBorderColor =
+        borderColor ??
+        (isEnabled
+            ? colorScheme.outline
+            : colorScheme.outline.withValues(alpha: 0.12));
 
     Widget button = Material(
       color: Colors.transparent,
@@ -86,10 +88,9 @@ class StyledIconButton extends StatelessWidget {
           color: effectiveBackgroundColor,
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           border: showBorder
-              ? Border.fromBorderSide(BorderSide(
-                  color: effectiveBorderColor,
-                  width: 1,
-                ))
+              ? Border.fromBorderSide(
+                  BorderSide(color: effectiveBorderColor, width: 1),
+                )
               : null,
         ),
         child: InkWell(
@@ -99,21 +100,14 @@ class StyledIconButton extends StatelessWidget {
             width: _buttonSize,
             height: _buttonSize,
             padding: _padding(context),
-            child: Icon(
-              icon,
-              size: _iconSize,
-              color: effectiveIconColor,
-            ),
+            child: Icon(icon, size: _iconSize, color: effectiveIconColor),
           ),
         ),
       ),
     );
 
     if (tooltip != null && tooltip!.isNotEmpty) {
-      button = Tooltip(
-        message: tooltip!,
-        child: button,
-      );
+      button = Tooltip(message: tooltip!, child: button);
     }
 
     return button;

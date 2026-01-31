@@ -8,9 +8,7 @@ class ChipWithBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Chip with BottomSheet"),
-      ),
+      appBar: AppBar(title: const Text("Chip with BottomSheet")),
       body: Center(
         child: FilterChip(
           label: const Text('Open BottomSheet'),

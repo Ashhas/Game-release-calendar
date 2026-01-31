@@ -8,10 +8,7 @@ import 'package:game_release_calendar/src/presentation/reminders/widgets/game_ca
 import 'package:game_release_calendar/src/theme/theme_extensions.dart';
 
 class ThreeColumnGridView extends StatelessWidget {
-  const ThreeColumnGridView({
-    super.key,
-    required this.reminders,
-  });
+  const ThreeColumnGridView({super.key, required this.reminders});
 
   final List<GameReminder> reminders;
 

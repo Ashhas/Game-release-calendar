@@ -9,10 +9,7 @@ import 'package:game_release_calendar/src/presentation/common/toast/toast_helper
 /// Global listener for app-wide state changes that trigger toast notifications
 /// This widget listens to multiple cubits and shows appropriate toasts
 class GlobalStateListener extends StatefulWidget {
-  const GlobalStateListener({
-    super.key,
-    required this.child,
-  });
+  const GlobalStateListener({super.key, required this.child});
 
   final Widget child;
 

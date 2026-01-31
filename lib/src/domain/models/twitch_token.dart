@@ -17,10 +17,10 @@ class TwitchToken {
   // Optionally, if you plan to convert this object to JSON (e.g., for storage),
   // you can include a method to do so:
   Map<String, dynamic> toJson() => {
-        'access_token': accessToken,
-        'expires_in': expiresIn,
-        'token_type': tokenType,
-      };
+    'access_token': accessToken,
+    'expires_in': expiresIn,
+    'token_type': tokenType,
+  };
 
   // Similarly, you can include a factory constructor to instantiate from JSON:
   factory TwitchToken.fromJson(Map<String, dynamic> json) {

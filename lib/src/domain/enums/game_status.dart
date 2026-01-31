@@ -37,9 +37,7 @@ enum GameStatus {
     if (value == null) return null;
 
     try {
-      return GameStatus.values.firstWhere(
-        (status) => status.value == value,
-      );
+      return GameStatus.values.firstWhere((status) => status.value == value);
     } catch (_) {
       return null;
     }
@@ -47,7 +45,8 @@ enum GameStatus {
 
   static String getStatusText(int? status) {
     final gameStatus = fromValue(status);
-    return gameStatus?.displayText ?? (status != null ? 'Status $status' : 'Unknown');
+    return gameStatus?.displayText ??
+        (status != null ? 'Status $status' : 'Unknown');
   }
 
   @override

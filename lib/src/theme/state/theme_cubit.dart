@@ -10,10 +10,7 @@ import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 /// Theme state that handles both color scheme and brightness
 class ThemeState {
-  const ThemeState({
-    required this.colorPreset,
-    required this.brightnessMode,
-  });
+  const ThemeState({required this.colorPreset, required this.brightnessMode});
 
   final AppThemePreset colorPreset;
   final AppThemePreset brightnessMode;
@@ -51,13 +48,13 @@ class ThemeCubit extends Cubit<ThemeState> {
   final AnalyticsService? _analyticsService;
 
   ThemeCubit(this.prefsService, {AnalyticsService? analyticsService})
-      : _analyticsService = analyticsService,
-        super(
-          ThemeState(
-            colorPreset: _getStoredColorPreset(prefsService),
-            brightnessMode: _getStoredBrightnessMode(prefsService),
-          ),
-        );
+    : _analyticsService = analyticsService,
+      super(
+        ThemeState(
+          colorPreset: _getStoredColorPreset(prefsService),
+          brightnessMode: _getStoredBrightnessMode(prefsService),
+        ),
+      );
 
   static AppThemePreset _getStoredColorPreset(SharedPrefsService prefs) {
     final stored = prefs.getColorPreset();
@@ -137,10 +134,12 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   /// Resets to default theme (system + blueGrey)
   Future<void> resetToDefault() async {
-    emit(const ThemeState(
-      colorPreset: AppThemePreset.blueGrey,
-      brightnessMode: AppThemePreset.system,
-    ));
+    emit(
+      const ThemeState(
+        colorPreset: AppThemePreset.blueGrey,
+        brightnessMode: AppThemePreset.system,
+      ),
+    );
     await _persistState();
   }
 }

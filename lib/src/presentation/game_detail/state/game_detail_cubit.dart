@@ -17,10 +17,10 @@ class GameDetailCubit extends Cubit<GameDetailState> {
     required Box<GameReminder> remindersBox,
     required NotificationsCubit notificationsCubit,
     required AnalyticsService analyticsService,
-  })  : _remindersBox = remindersBox,
-        _notificationsCubit = notificationsCubit,
-        _analyticsService = analyticsService,
-        super(GameDetailState());
+  }) : _remindersBox = remindersBox,
+       _notificationsCubit = notificationsCubit,
+       _analyticsService = analyticsService,
+       super(GameDetailState());
 
   final Box<GameReminder> _remindersBox;
   final NotificationsCubit _notificationsCubit;
@@ -65,14 +65,10 @@ class GameDetailCubit extends Cubit<GameDetailState> {
     }
   }
 
-  Future<void> removeReminder({
-    required int releaseDateId,
-  }) async {
+  Future<void> removeReminder({required int releaseDateId}) async {
     try {
       await _remindersBox.delete(releaseDateId);
-      await _notificationsCubit.cancelNotification(
-        releaseDateId,
-      );
+      await _notificationsCubit.cancelNotification(releaseDateId);
 
       _analyticsService.trackReminderRemoved(releaseDateId: releaseDateId);
     } catch (e, stackTrace) {
@@ -83,9 +79,6 @@ class GameDetailCubit extends Cubit<GameDetailState> {
 
   /// Track when a user views a game's details
   void trackGameViewed(Game game) {
-    _analyticsService.trackGameViewed(
-      gameId: game.id,
-      gameName: game.name,
-    );
+    _analyticsService.trackGameViewed(gameId: game.id, gameName: game.name);
   }
 }

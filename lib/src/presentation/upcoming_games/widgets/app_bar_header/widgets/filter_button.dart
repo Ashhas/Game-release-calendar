@@ -19,8 +19,11 @@ class FilterButton extends StatelessWidget {
       final filters = state.selectedFilters;
       final platformCount = filters.platformChoices.length;
       final categoryCount = filters.categoryIds.length;
-      final dateCount = _shouldCountDateFilter(filters.releaseDateChoice) ? 1 : 0;
-      final precisionCount = _shouldCountPrecisionFilter(filters.releasePrecisionChoice) ? 1 : 0;
+      final dateCount = _shouldCountDateFilter(filters.releaseDateChoice)
+          ? 1
+          : 0;
+      final precisionCount =
+          _shouldCountPrecisionFilter(filters.releasePrecisionChoice) ? 1 : 0;
       return platformCount + categoryCount + dateCount + precisionCount;
     } catch (e) {
       debugPrint('Error calculating filter count: $e');
@@ -32,11 +35,13 @@ class FilterButton extends StatelessWidget {
     return dateChoice != null && dateChoice != DateFilterChoice.allTime;
   }
 
-  static bool _shouldCountPrecisionFilter(ReleasePrecisionFilter? precisionChoice) {
+  static bool _shouldCountPrecisionFilter(
+    ReleasePrecisionFilter? precisionChoice,
+  ) {
     // Count as active filter if set to something other than "all"
-    return precisionChoice != null && precisionChoice != ReleasePrecisionFilter.all;
+    return precisionChoice != null &&
+        precisionChoice != ReleasePrecisionFilter.all;
   }
-
 
   void _openFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -82,8 +87,7 @@ class FilterButton extends StatelessWidget {
                 icon: LucideIcons.list_filter,
                 iconColor: hasActiveFilters ? colorScheme.primary : null,
               ),
-              if (hasActiveFilters)
-                _FilterBadge(count: activeFilterCount),
+              if (hasActiveFilters) _FilterBadge(count: activeFilterCount),
             ],
           ),
         );

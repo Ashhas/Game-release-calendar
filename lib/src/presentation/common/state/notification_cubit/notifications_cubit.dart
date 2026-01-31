@@ -12,10 +12,9 @@ import '../../../../domain/models/notifications/game_reminder.dart';
 import 'notifications_state.dart';
 
 class NotificationsCubit extends Cubit<NotificationsState> {
-  NotificationsCubit({
-    required NotificationClient notificationClient,
-  })  : _notificationClient = notificationClient,
-        super(NotificationsState());
+  NotificationsCubit({required NotificationClient notificationClient})
+    : _notificationClient = notificationClient,
+      super(NotificationsState());
 
   final NotificationClient _notificationClient;
 
@@ -44,33 +43,27 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<void> retrievePendingNotifications() async {
-    emit(
-      state.copyWith(reminders: AsyncValue.loading()),
-    );
+    emit(state.copyWith(reminders: AsyncValue.loading()));
 
-    final pendingNotifications =
-        await _notificationClient.retrievePendingNotifications();
+    final pendingNotifications = await _notificationClient
+        .retrievePendingNotifications();
 
     // Sort based on ScheduledNotification's scheduledDateTime but keep the original PendingNotificationRequest objects
-    final sortedNotifications = pendingNotifications.sortedBy(
-      (notification) {
-        final scheduledNotification =
-            _parseScheduledNotificationPayload(notification);
-        return scheduledNotification.releaseDate.date ?? 0;
-      },
-    ).thenBy(
-      (notification) {
-        final scheduledNotification =
-            _parseScheduledNotificationPayload(notification);
-        return scheduledNotification.gameName;
-      },
-    );
+    final sortedNotifications = pendingNotifications
+        .sortedBy((notification) {
+          final scheduledNotification = _parseScheduledNotificationPayload(
+            notification,
+          );
+          return scheduledNotification.releaseDate.date ?? 0;
+        })
+        .thenBy((notification) {
+          final scheduledNotification = _parseScheduledNotificationPayload(
+            notification,
+          );
+          return scheduledNotification.gameName;
+        });
 
-    emit(
-      state.copyWith(
-        reminders: AsyncValue.data(sortedNotifications),
-      ),
-    );
+    emit(state.copyWith(reminders: AsyncValue.data(sortedNotifications)));
   }
 
   Future<void> cancelNotification(int reminderId) async {
@@ -107,7 +100,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   GameReminder _parseScheduledNotificationPayload(
-      PendingNotificationRequest notification) {
+    PendingNotificationRequest notification,
+  ) {
     return GameReminder.fromJson(jsonDecode(notification.payload!));
   }
 }

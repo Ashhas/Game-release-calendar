@@ -10,7 +10,7 @@ void main() {
     group('constructor', () {
       test('should create ReleaseDate with required fields only', () {
         final releaseDate = ReleaseDate(id: 1);
-        
+
         expect(releaseDate.id, equals(1));
         expect(releaseDate.date, isNull);
         expect(releaseDate.human, isNull);
@@ -36,7 +36,7 @@ void main() {
           region: ReleaseRegion.worldwide,
           dateFormat: 4,
         );
-        
+
         expect(releaseDate.id, equals(716132));
         expect(releaseDate.date, equals(1751241600));
         expect(releaseDate.human, equals('Q2 2025'));
@@ -64,9 +64,9 @@ void main() {
           'region': 8, // Worldwide region
           'date_format': 4,
         };
-        
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(releaseDate.id, equals(716132));
         expect(releaseDate.date, equals(1751241600));
         expect(releaseDate.human, equals('Q2 2025'));
@@ -81,9 +81,9 @@ void main() {
 
       test('should parse minimal JSON correctly', () {
         final json = {'id': 1};
-        
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(releaseDate.id, equals(1));
         expect(releaseDate.date, isNull);
         expect(releaseDate.human, isNull);
@@ -97,13 +97,10 @@ void main() {
       });
 
       test('should handle null category gracefully', () {
-        final json = {
-          'id': 1,
-          'category': null,
-        };
-        
+        final json = {'id': 1, 'category': null};
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(releaseDate.category, isNull);
       });
 
@@ -112,21 +109,18 @@ void main() {
           'id': 1,
           'category': 999, // Invalid category value
         };
-        
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         // Should fallback to TBD for invalid values
         expect(releaseDate.category, equals(ReleaseDateCategory.tbd));
       });
 
       test('should handle null platform gracefully', () {
-        final json = {
-          'id': 1,
-          'platform': null,
-        };
-        
+        final json = {'id': 1, 'platform': null};
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(releaseDate.platform, isNull);
       });
 
@@ -135,68 +129,62 @@ void main() {
           'id': 1,
           'platform': 999, // Invalid platform value
         };
-        
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         // Should handle invalid platform gracefully by returning fallback
         expect(releaseDate.platform, isNotNull);
       });
 
       test('should handle null region gracefully', () {
-        final json = {
-          'id': 1,
-          'region': null,
-        };
-        
+        final json = {'id': 1, 'region': null};
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(releaseDate.region, isNull);
       });
 
       test('should handle missing date_format field', () {
-        final json = {
-          'id': 1,
-          'date': 1751241600,
-        };
-        
+        final json = {'id': 1, 'date': 1751241600};
+
         final releaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(releaseDate.dateFormat, isNull);
       });
 
       test('should parse date_format field correctly', () {
         final dateFormatTests = [0, 1, 2, 3, 4, null];
-        
+
         for (final dateFormat in dateFormatTests) {
-          final json = {
-            'id': 1,
-            'date_format': dateFormat,
-          };
-          
+          final json = {'id': 1, 'date_format': dateFormat};
+
           final releaseDate = ReleaseDate.fromJson(json);
           expect(releaseDate.dateFormat, equals(dateFormat));
         }
       });
 
-      test('should handle user data scenario (category 4 with quarter human)', () {
-        // This represents the user's original issue
-        final json = {
-          'id': 716132,
-          'category': 4, // TBD category (incorrect)
-          'date': 1751241600,
-          'human': 'Q2 2025', // But human shows quarter
-          'date_format': 4, // And date_format indicates quarter
-          'm': 6,
-          'y': 2025,
-        };
-        
-        final releaseDate = ReleaseDate.fromJson(json);
-        
-        expect(releaseDate.category, equals(ReleaseDateCategory.tbd));
-        expect(releaseDate.human, equals('Q2 2025'));
-        expect(releaseDate.dateFormat, equals(4));
-        expect(releaseDate.date, equals(1751241600));
-      });
+      test(
+        'should handle user data scenario (category 4 with quarter human)',
+        () {
+          // This represents the user's original issue
+          final json = {
+            'id': 716132,
+            'category': 4, // TBD category (incorrect)
+            'date': 1751241600,
+            'human': 'Q2 2025', // But human shows quarter
+            'date_format': 4, // And date_format indicates quarter
+            'm': 6,
+            'y': 2025,
+          };
+
+          final releaseDate = ReleaseDate.fromJson(json);
+
+          expect(releaseDate.category, equals(ReleaseDateCategory.tbd));
+          expect(releaseDate.human, equals('Q2 2025'));
+          expect(releaseDate.dateFormat, equals(4));
+          expect(releaseDate.date, equals(1751241600));
+        },
+      );
     });
 
     group('toJson', () {
@@ -213,9 +201,9 @@ void main() {
           region: ReleaseRegion.worldwide,
           dateFormat: 4,
         );
-        
+
         final json = releaseDate.toJson();
-        
+
         expect(json['id'], equals(716132));
         expect(json['date'], equals(1751241600));
         expect(json['human'], equals('Q2 2025'));
@@ -230,9 +218,9 @@ void main() {
 
       test('should serialize minimal ReleaseDate correctly', () {
         final releaseDate = ReleaseDate(id: 1);
-        
+
         final json = releaseDate.toJson();
-        
+
         expect(json['id'], equals(1));
         expect(json['date'], isNull);
         expect(json['human'], isNull);
@@ -246,13 +234,10 @@ void main() {
       });
 
       test('should preserve dateFormat field in serialization', () {
-        final releaseDate = ReleaseDate(
-          id: 1,
-          dateFormat: 3,
-        );
-        
+        final releaseDate = ReleaseDate(id: 1, dateFormat: 3);
+
         final json = releaseDate.toJson();
-        
+
         expect(json['date_format'], equals(3));
       });
     });
@@ -271,9 +256,9 @@ void main() {
           region: ReleaseRegion.worldwide,
           dateFormat: 4,
         );
-        
+
         final stringOutput = releaseDate.toString();
-        
+
         expect(stringOutput, contains('id: 716132'));
         expect(stringOutput, contains('date: 1751241600'));
         expect(stringOutput, contains('human: Q2 2025'));
@@ -288,9 +273,9 @@ void main() {
 
       test('should handle null values in toString', () {
         final releaseDate = ReleaseDate(id: 1);
-        
+
         final stringOutput = releaseDate.toString();
-        
+
         expect(stringOutput, contains('id: 1'));
         expect(stringOutput, contains('date: null'));
         expect(stringOutput, contains('dateFormat: null'));
@@ -298,35 +283,65 @@ void main() {
     });
 
     group('JSON round trip', () {
-      test('should maintain data integrity through JSON serialization cycle', () {
-        final originalReleaseDate = ReleaseDate(
-          id: 716132,
-          date: 1751241600,
-          human: 'Q2 2025',
-          category: ReleaseDateCategory.quarter,
-          year: 2025,
-          month: 6,
-          quarter: 2,
-          platform: SupportedGamePlatform.windows,
-          region: ReleaseRegion.worldwide,
-          dateFormat: 4,
-        );
-        
-        // Convert to JSON and back
-        final json = originalReleaseDate.toJson();
-        final deserializedReleaseDate = ReleaseDate.fromJson(json);
-        
-        expect(deserializedReleaseDate.id, equals(originalReleaseDate.id));
-        expect(deserializedReleaseDate.date, equals(originalReleaseDate.date));
-        expect(deserializedReleaseDate.human, equals(originalReleaseDate.human));
-        expect(deserializedReleaseDate.category, equals(originalReleaseDate.category));
-        expect(deserializedReleaseDate.year, equals(originalReleaseDate.year));
-        expect(deserializedReleaseDate.month, equals(originalReleaseDate.month));
-        expect(deserializedReleaseDate.quarter, equals(originalReleaseDate.quarter));
-        expect(deserializedReleaseDate.platform, equals(originalReleaseDate.platform));
-        expect(deserializedReleaseDate.region, equals(originalReleaseDate.region));
-        expect(deserializedReleaseDate.dateFormat, equals(originalReleaseDate.dateFormat));
-      });
+      test(
+        'should maintain data integrity through JSON serialization cycle',
+        () {
+          final originalReleaseDate = ReleaseDate(
+            id: 716132,
+            date: 1751241600,
+            human: 'Q2 2025',
+            category: ReleaseDateCategory.quarter,
+            year: 2025,
+            month: 6,
+            quarter: 2,
+            platform: SupportedGamePlatform.windows,
+            region: ReleaseRegion.worldwide,
+            dateFormat: 4,
+          );
+
+          // Convert to JSON and back
+          final json = originalReleaseDate.toJson();
+          final deserializedReleaseDate = ReleaseDate.fromJson(json);
+
+          expect(deserializedReleaseDate.id, equals(originalReleaseDate.id));
+          expect(
+            deserializedReleaseDate.date,
+            equals(originalReleaseDate.date),
+          );
+          expect(
+            deserializedReleaseDate.human,
+            equals(originalReleaseDate.human),
+          );
+          expect(
+            deserializedReleaseDate.category,
+            equals(originalReleaseDate.category),
+          );
+          expect(
+            deserializedReleaseDate.year,
+            equals(originalReleaseDate.year),
+          );
+          expect(
+            deserializedReleaseDate.month,
+            equals(originalReleaseDate.month),
+          );
+          expect(
+            deserializedReleaseDate.quarter,
+            equals(originalReleaseDate.quarter),
+          );
+          expect(
+            deserializedReleaseDate.platform,
+            equals(originalReleaseDate.platform),
+          );
+          expect(
+            deserializedReleaseDate.region,
+            equals(originalReleaseDate.region),
+          );
+          expect(
+            deserializedReleaseDate.dateFormat,
+            equals(originalReleaseDate.dateFormat),
+          );
+        },
+      );
 
       test('should handle null dateFormat in round trip', () {
         final originalReleaseDate = ReleaseDate(
@@ -334,10 +349,10 @@ void main() {
           date: 1751241600,
           dateFormat: null,
         );
-        
+
         final json = originalReleaseDate.toJson();
         final deserializedReleaseDate = ReleaseDate.fromJson(json);
-        
+
         expect(deserializedReleaseDate.dateFormat, isNull);
       });
     });
@@ -352,7 +367,7 @@ void main() {
           quarter: 0,
           dateFormat: 0,
         );
-        
+
         expect(releaseDate.id, equals(0));
         expect(releaseDate.date, equals(0));
         expect(releaseDate.year, equals(0));
@@ -362,12 +377,8 @@ void main() {
       });
 
       test('should handle negative values correctly', () {
-        final releaseDate = ReleaseDate(
-          id: -1,
-          date: -1,
-          dateFormat: -1,
-        );
-        
+        final releaseDate = ReleaseDate(id: -1, date: -1, dateFormat: -1);
+
         expect(releaseDate.id, equals(-1));
         expect(releaseDate.date, equals(-1));
         expect(releaseDate.dateFormat, equals(-1));
@@ -380,7 +391,7 @@ void main() {
           date: largeNumber,
           dateFormat: largeNumber,
         );
-        
+
         expect(releaseDate.id, equals(largeNumber));
         expect(releaseDate.date, equals(largeNumber));
         expect(releaseDate.dateFormat, equals(largeNumber));
@@ -410,17 +421,20 @@ void main() {
         expect(releaseDate.hasExactDate, isFalse);
       });
 
-      test('should return false for date with quarter human text even with exact dateFormat', () {
-        final releaseDate = ReleaseDate(
-          id: 1,
-          date: 1727654400,
-          human: 'Q1 2025', // Human text takes priority
-          dateFormat: 0, // Would normally indicate exact
-          category: null,
-        );
+      test(
+        'should return false for date with quarter human text even with exact dateFormat',
+        () {
+          final releaseDate = ReleaseDate(
+            id: 1,
+            date: 1727654400,
+            human: 'Q1 2025', // Human text takes priority
+            dateFormat: 0, // Would normally indicate exact
+            category: null,
+          );
 
-        expect(releaseDate.hasExactDate, isFalse);
-      });
+          expect(releaseDate.hasExactDate, isFalse);
+        },
+      );
 
       test('should return true when category is exact and date exists', () {
         final releaseDate = ReleaseDate(
@@ -434,16 +448,19 @@ void main() {
         expect(releaseDate.hasExactDate, isTrue);
       });
 
-      test('should return false when date is null even with exact category', () {
-        final releaseDate = ReleaseDate(
-          id: 1,
-          date: null, // No date
-          category: ReleaseDateCategory.exactDate,
-          dateFormat: 0,
-        );
+      test(
+        'should return false when date is null even with exact category',
+        () {
+          final releaseDate = ReleaseDate(
+            id: 1,
+            date: null, // No date
+            category: ReleaseDateCategory.exactDate,
+            dateFormat: 0,
+          );
 
-        expect(releaseDate.hasExactDate, isFalse);
-      });
+          expect(releaseDate.hasExactDate, isFalse);
+        },
+      );
 
       test('should handle Final Fantasy Tactics scenario correctly', () {
         // Real scenario that was failing before the fix
@@ -473,7 +490,7 @@ void main() {
           expect(
             releaseDate.hasExactDate,
             isFalse,
-            reason: 'Should be false for quarter text: $humanText'
+            reason: 'Should be false for quarter text: $humanText',
           );
         }
       });
@@ -586,7 +603,8 @@ void main() {
 
       test('should handle edge case of exact current moment', () {
         final now = DateTime.now();
-        final yesterdayTimestamp = now.subtract(Duration(days: 1)).millisecondsSinceEpoch ~/ 1000;
+        final yesterdayTimestamp =
+            now.subtract(Duration(days: 1)).millisecondsSinceEpoch ~/ 1000;
 
         final releaseDate = ReleaseDate(
           id: 1,
@@ -619,7 +637,10 @@ void main() {
           category: ReleaseDateCategory.exactDate, // Would normally be exact
         );
 
-        expect(releaseDate.hasExactDate, isFalse); // Should resolve to year-month
+        expect(
+          releaseDate.hasExactDate,
+          isFalse,
+        ); // Should resolve to year-month
       });
 
       test('should use category when human and dateFormat are null', () {
@@ -686,7 +707,8 @@ void main() {
           expect(
             releaseDate.hasExactDate,
             equals(shouldBeExact),
-            reason: 'Release date ${releaseDate.id} exact date detection mismatch'
+            reason:
+                'Release date ${releaseDate.id} exact date detection mismatch',
           );
         }
       });

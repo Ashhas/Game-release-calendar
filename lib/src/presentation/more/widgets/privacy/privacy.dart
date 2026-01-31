@@ -126,9 +126,7 @@ class _PrivacyState extends State<Privacy> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const PrivacyPolicy(),
-                ),
+                MaterialPageRoute(builder: (_) => const PrivacyPolicy()),
               );
             },
           ),
@@ -137,13 +135,17 @@ class _PrivacyState extends State<Privacy> {
           _SectionHeader(title: 'Analytics and Crash logs'),
           SwitchListTile(
             title: const Text('Send crash logs'),
-            subtitle: const Text('Send anonymized crash logs to the developers.'),
+            subtitle: const Text(
+              'Send anonymized crash logs to the developers.',
+            ),
             value: _crashLogsEnabled,
             onChanged: _toggleCrashLogs,
           ),
           SwitchListTile(
             title: const Text('Allow analytics'),
-            subtitle: const Text('Send anonymized usage data to improve app features.'),
+            subtitle: const Text(
+              'Send anonymized usage data to improve app features.',
+            ),
             value: _analyticsEnabled,
             onChanged: _toggleAnalytics,
           ),

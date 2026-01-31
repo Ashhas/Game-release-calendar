@@ -9,7 +9,8 @@ class _InteractionArea extends StatelessWidget {
   });
 
   final BoxConstraints constraints;
-  final Function(DragUpdateDetails details, BoxConstraints constraints) onPanUpdate;
+  final Function(DragUpdateDetails details, BoxConstraints constraints)
+  onPanUpdate;
   final Function(DragStartDetails details) onPanStart;
   final Function(DragEndDetails details) onPanEnd;
 

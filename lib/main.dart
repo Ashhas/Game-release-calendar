@@ -51,7 +51,9 @@ Future<void> main() async {
     }
   } catch (e, stackTrace) {
     if (kDebugMode) {
-      debugPrint('Firebase: Initialization failed - crash reporting will be disabled');
+      debugPrint(
+        'Firebase: Initialization failed - crash reporting will be disabled',
+      );
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: stackTrace);
     }
@@ -62,7 +64,8 @@ Future<void> main() async {
 
   // Phase 1: Parallel initialization of independent tasks
   // These complete before Phase 2, which depends on their GetIt registrations
-  final packageInfoFuture = PackageInfo.fromPlatform(); // Awaited separately to capture result
+  final packageInfoFuture =
+      PackageInfo.fromPlatform(); // Awaited separately to capture result
   await Future.wait([
     _initializeSharedPrefs(getIt),
     _loadEnvVariables(getIt),
@@ -88,11 +91,7 @@ Future<void> main() async {
   await _initializePostHog(getIt);
   await _initializeCrashlytics(getIt);
 
-  runApp(
-    PostHogWidget(
-      child: const App(),
-    ),
-  );
+  runApp(PostHogWidget(child: const App()));
 }
 
 Future<void> _initializePostHog(GetIt getIt) async {
@@ -137,7 +136,8 @@ Future<void> _setupPostHog(GetIt getIt) async {
     config.debug = false;
     config.captureApplicationLifecycleEvents = true;
     config.sessionReplay = false; // Disabled for GDPR compliance
-    config.personProfiles = PostHogPersonProfiles.never; // Anonymous events only
+    config.personProfiles =
+        PostHogPersonProfiles.never; // Anonymous events only
 
     await Posthog().setup(config);
 
@@ -147,7 +147,10 @@ Future<void> _setupPostHog(GetIt getIt) async {
     await posthog.register('build_number', packageInfo.buildNumber);
     await posthog.register('platform', Platform.operatingSystem);
     await posthog.register('theme_color', sharedPrefs.getColorPreset().name);
-    await posthog.register('theme_brightness', sharedPrefs.getBrightnessPreset().name);
+    await posthog.register(
+      'theme_brightness',
+      sharedPrefs.getBrightnessPreset().name,
+    );
 
     if (kDebugMode) {
       debugPrint('PostHog: Analytics initialized successfully');
@@ -155,7 +158,9 @@ Future<void> _setupPostHog(GetIt getIt) async {
   } catch (e, stackTrace) {
     // Analytics is non-critical - log error but allow app to continue
     if (kDebugMode) {
-      debugPrint('PostHog: Initialization failed - analytics disabled for this session');
+      debugPrint(
+        'PostHog: Initialization failed - analytics disabled for this session',
+      );
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: stackTrace);
     }
@@ -289,9 +294,7 @@ Future<void> _initializeDio(GetIt getIt) async {
       baseUrl: envConfig.igdbBaseUrl,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
-      headers: {
-        'Client-ID': envConfig.twitchClientId,
-      },
+      headers: {'Client-ID': envConfig.twitchClientId},
     ),
   );
   dio.interceptors.add(
@@ -355,9 +358,7 @@ void _addAuthRetryInterceptor(GetIt getIt) {
 
 Future<void> _initializeRepositories(GetIt getIt) async {
   getIt.registerSingleton<IGDBRepository>(
-    IGDBRepositoryImpl(
-      dio: getIt.get<Dio>(),
-    ),
+    IGDBRepositoryImpl(dio: getIt.get<Dio>()),
   );
 }
 
@@ -365,9 +366,7 @@ Future<void> _initializeServices(GetIt getIt) async {
   getIt.registerSingleton<AnalyticsService>(AnalyticsService());
 
   getIt.registerSingleton<IGDBService>(
-    IGDBService(
-      repository: getIt.get<IGDBRepository>(),
-    ),
+    IGDBService(repository: getIt.get<IGDBRepository>()),
   );
 
   // Note: PackageInfo is registered earlier in main() for parallel initialization
@@ -388,23 +387,15 @@ Future<void> _initializeHive(GetIt getIt) async {
   Hive.registerAdapters();
 
   final Box<Game> gameBox = await Hive.openBox<Game>('game_bookmark_box');
-  getIt.registerSingleton<Box<Game>>(
-    gameBox,
-  );
+  getIt.registerSingleton<Box<Game>>(gameBox);
 
-  final box = await Hive.openBox<GameReminder>(
-    'game_scheduled_box',
-  );
-  getIt.registerSingleton<Box<GameReminder>>(
-    box,
-  );
+  final box = await Hive.openBox<GameReminder>('game_scheduled_box');
+  getIt.registerSingleton<Box<GameReminder>>(box);
 
   final gameUpdateLogBox = await Hive.openBox<GameUpdateLog>(
     'game_updates_log_box',
   );
-  getIt.registerSingleton<Box<GameUpdateLog>>(
-    gameUpdateLogBox,
-  );
+  getIt.registerSingleton<Box<GameUpdateLog>>(gameUpdateLogBox);
 }
 
 Future<void> _initializeNotificationService(GetIt getIt) async {
@@ -445,7 +436,9 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
     );
 
     final androidPlugin = notificationsPluginInstance
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
 
     if (androidPlugin != null) {
       // Create the notification channel
@@ -464,7 +457,9 @@ Future<void> _initializeNotificationService(GetIt getIt) async {
   } catch (e, stackTrace) {
     // Notification setup is non-critical - app should still work without it
     if (kDebugMode) {
-      debugPrint('Notifications: Initialization failed - notifications disabled');
+      debugPrint(
+        'Notifications: Initialization failed - notifications disabled',
+      );
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: stackTrace);
     }

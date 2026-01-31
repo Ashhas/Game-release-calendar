@@ -13,12 +13,13 @@ class UpcomingGamesState {
     this.games = const AsyncValue.data([]),
     GameFilter? selectedFilters,
     this.nameQuery = '',
-  }) : selectedFilters = selectedFilters ??
-            GameFilter(
-              releaseDateChoice: DateFilterChoice.allTime,
-              platformChoices: {},
-              categoryIds: {},
-            );
+  }) : selectedFilters =
+           selectedFilters ??
+           GameFilter(
+             releaseDateChoice: DateFilterChoice.allTime,
+             platformChoices: {},
+             categoryIds: {},
+           );
 
   UpcomingGamesState copyWith({
     AsyncValue<List<GameSection>>? games,

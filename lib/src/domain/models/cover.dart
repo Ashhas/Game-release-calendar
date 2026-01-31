@@ -13,11 +13,7 @@ class Cover {
   @HiveField(2)
   final String? imageId;
 
-  const Cover({
-    required this.id,
-    required this.url,
-    required this.imageId,
-  });
+  const Cover({required this.id, required this.url, required this.imageId});
 
   factory Cover.fromJson(Map<String, dynamic> json) {
     return Cover(
@@ -30,11 +26,7 @@ class Cover {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'url': url,
-      'image_id': imageId,
-    };
+    return {'id': id, 'url': url, 'image_id': imageId};
   }
 
   @override

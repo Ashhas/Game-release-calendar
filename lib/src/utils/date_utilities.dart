@@ -26,11 +26,7 @@ class DateUtilities {
 
   static DateTime secondSinceEpochToDateTime(int value) {
     final dateTime = DateTime.fromMillisecondsSinceEpoch(value * 1000);
-    return DateTime(
-      dateTime.year,
-      dateTime.month,
-      dateTime.day,
-    );
+    return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
 
   // Release Date Formatting Functions
@@ -107,10 +103,11 @@ class DateUtilities {
     ReleaseDateCategory mostSpecific = ReleaseDateCategory.tbd;
     for (final releaseDate in game.releaseDates!) {
       // Use dateFormat to determine category if available and more reliable
-      ReleaseDateCategory effectiveCategory = _getCategoryFromDateFormat(releaseDate) 
-          ?? releaseDate.category 
-          ?? ReleaseDateCategory.tbd;
-      
+      ReleaseDateCategory effectiveCategory =
+          _getCategoryFromDateFormat(releaseDate) ??
+          releaseDate.category ??
+          ReleaseDateCategory.tbd;
+
       if (effectiveCategory.value < mostSpecific.value) {
         mostSpecific = effectiveCategory;
       }
@@ -121,22 +118,26 @@ class DateUtilities {
 
   /// Maps IGDB date_format to ReleaseDateCategory
   /// Also handles cases where category field is incorrect but we have better information
-  static ReleaseDateCategory? _getCategoryFromDateFormat(ReleaseDate releaseDate) {
+  static ReleaseDateCategory? _getCategoryFromDateFormat(
+    ReleaseDate releaseDate,
+  ) {
     // If we have a human-readable format, try to infer from that first
     if (releaseDate.human != null) {
       final humanLower = releaseDate.human!.toLowerCase();
-      if (humanLower.contains('q1') || humanLower.contains('q2') || 
-          humanLower.contains('q3') || humanLower.contains('q4')) {
+      if (humanLower.contains('q1') ||
+          humanLower.contains('q2') ||
+          humanLower.contains('q3') ||
+          humanLower.contains('q4')) {
         return ReleaseDateCategory.quarter;
       }
     }
-    
+
     // Use dateFormat if available
     if (releaseDate.dateFormat != null) {
       switch (releaseDate.dateFormat!) {
         case 0: // YYYYMMDDHHMMSS
           return ReleaseDateCategory.exactDate;
-        case 1: // YYYYMM  
+        case 1: // YYYYMM
           return ReleaseDateCategory.yearMonth;
         case 2: // YYYY
           return ReleaseDateCategory.year;
@@ -147,7 +148,7 @@ class DateUtilities {
           return null;
       }
     }
-    
+
     return null;
   }
 

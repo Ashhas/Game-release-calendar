@@ -153,28 +153,31 @@ void main() {
       });
 
       test(
-          'should use most specific category when multiple release dates exist',
-          () {
-        final game = _createGame(
-          firstReleaseDate: 1751241600,
-          releaseDates: [
-            ReleaseDate(
-              id: 1,
-              date: 1751241600,
-              category: ReleaseDateCategory.year, // Less specific
-            ),
-            ReleaseDate(
-              id: 2,
-              date: 1751241600,
-              category: ReleaseDateCategory.exactDate, // More specific
-            ),
-          ],
-        );
+        'should use most specific category when multiple release dates exist',
+        () {
+          final game = _createGame(
+            firstReleaseDate: 1751241600,
+            releaseDates: [
+              ReleaseDate(
+                id: 1,
+                date: 1751241600,
+                category: ReleaseDateCategory.year, // Less specific
+              ),
+              ReleaseDate(
+                id: 2,
+                date: 1751241600,
+                category: ReleaseDateCategory.exactDate, // More specific
+              ),
+            ],
+          );
 
-        final result = DateUtilities.formatGameReleaseDate(game);
-        expect(result,
-            matches(r'\d{2}-\d{2}-2025')); // Should use exact date format
-      });
+          final result = DateUtilities.formatGameReleaseDate(game);
+          expect(
+            result,
+            matches(r'\d{2}-\d{2}-2025'),
+          ); // Should use exact date format
+        },
+      );
 
       test('should prioritize human-readable quarter format over category', () {
         final game = _createGame(
@@ -217,22 +220,22 @@ void main() {
           (
             'Q1 2025',
             DateTime(2025, 2, 15).millisecondsSinceEpoch ~/ 1000,
-            'Q1 2025'
+            'Q1 2025',
           ),
           (
             'q2 2025',
             DateTime(2025, 5, 15).millisecondsSinceEpoch ~/ 1000,
-            'Q2 2025'
+            'Q2 2025',
           ), // Case insensitive
           (
             'Quarter Q3 2025',
             DateTime(2025, 8, 15).millisecondsSinceEpoch ~/ 1000,
-            'Q3 2025'
+            'Q3 2025',
           ),
           (
             'q4 coming',
             DateTime(2025, 11, 15).millisecondsSinceEpoch ~/ 1000,
-            'Q4 2025'
+            'Q4 2025',
           ),
         ];
 
@@ -251,8 +254,11 @@ void main() {
           );
 
           final result = DateUtilities.formatGameReleaseDate(game);
-          expect(result, equals(expectedQuarter),
-              reason: 'Should detect quarter in "$humanText"');
+          expect(
+            result,
+            equals(expectedQuarter),
+            reason: 'Should detect quarter in "$humanText"',
+          );
         }
       });
     });
@@ -272,31 +278,33 @@ void main() {
         expect(result, equals(ReleaseDateCategory.tbd));
       });
 
-      test('should return most specific category from multiple release dates',
-          () {
-        final game = _createGame(
-          releaseDates: [
-            ReleaseDate(
-              id: 1,
-              date: 1751241600,
-              category: ReleaseDateCategory.year,
-            ),
-            ReleaseDate(
-              id: 2,
-              date: 1751241600,
-              category: ReleaseDateCategory.exactDate, // Most specific
-            ),
-            ReleaseDate(
-              id: 3,
-              date: 1751241600,
-              category: ReleaseDateCategory.quarter,
-            ),
-          ],
-        );
+      test(
+        'should return most specific category from multiple release dates',
+        () {
+          final game = _createGame(
+            releaseDates: [
+              ReleaseDate(
+                id: 1,
+                date: 1751241600,
+                category: ReleaseDateCategory.year,
+              ),
+              ReleaseDate(
+                id: 2,
+                date: 1751241600,
+                category: ReleaseDateCategory.exactDate, // Most specific
+              ),
+              ReleaseDate(
+                id: 3,
+                date: 1751241600,
+                category: ReleaseDateCategory.quarter,
+              ),
+            ],
+          );
 
-        final result = DateUtilities.getMostSpecificReleaseCategory(game);
-        expect(result, equals(ReleaseDateCategory.exactDate));
-      });
+          final result = DateUtilities.getMostSpecificReleaseCategory(game);
+          expect(result, equals(ReleaseDateCategory.exactDate));
+        },
+      );
 
       test('should use dateFormat mapping over unreliable category', () {
         final game = _createGame(
@@ -345,11 +353,7 @@ void main() {
         for (final (dateFormat, expectedCategory) in mappingTests) {
           final game = _createGame(
             releaseDates: [
-              ReleaseDate(
-                id: 1,
-                date: 1751241600,
-                dateFormat: dateFormat,
-              ),
+              ReleaseDate(id: 1, date: 1751241600, dateFormat: dateFormat),
             ],
           );
 
@@ -404,10 +408,7 @@ void main() {
 }
 
 /// Helper function to create test games with minimal required fields
-Game _createGame({
-  int? firstReleaseDate,
-  List<ReleaseDate>? releaseDates,
-}) {
+Game _createGame({int? firstReleaseDate, List<ReleaseDate>? releaseDates}) {
   return Game(
     id: 1,
     createdAt: 1742318018,

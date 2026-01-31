@@ -20,11 +20,7 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         const FilterButton(),
-        Padding(
-          padding: EdgeInsets.only(
-            right: context.spacings.m,
-          ),
-        )
+        Padding(padding: EdgeInsets.only(right: context.spacings.m)),
       ],
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(context.spacings.xxxl),

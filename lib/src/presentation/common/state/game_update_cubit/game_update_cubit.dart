@@ -9,9 +9,8 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
   final GameUpdateService gameUpdateService;
   Timer? _resetTimer;
 
-  GameUpdateCubit({
-    required this.gameUpdateService,
-  }) : super(const GameUpdateState.idle());
+  GameUpdateCubit({required this.gameUpdateService})
+    : super(const GameUpdateState.idle());
 
   @override
   Future<void> close() {
@@ -20,30 +19,29 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
   }
 
   Future<void> startBackgroundUpdate() async {
-
-    if (state.maybeWhen(
-      loading: (_, __) => true,
-      orElse: () => false,
-    )) {
+    if (state.maybeWhen(loading: (_, __) => true, orElse: () => false)) {
       return;
     }
 
     try {
-
       // Run the update with progress callbacks
-      final hasUpdates =
-          await gameUpdateService.checkAndUpdateBookmarkedGamesWithProgress(
-        onProgress: (total, processed) {
-          emit(GameUpdateState.loading(
-            totalGames: total,
-            processedGames: processed,
-          ));
-        },
-      );
+      final hasUpdates = await gameUpdateService
+          .checkAndUpdateBookmarkedGamesWithProgress(
+            onProgress: (total, processed) {
+              emit(
+                GameUpdateState.loading(
+                  totalGames: total,
+                  processedGames: processed,
+                ),
+              );
+            },
+          );
 
-      emit(hasUpdates
-          ? const GameUpdateState.updated()
-          : const GameUpdateState.completed());
+      emit(
+        hasUpdates
+            ? const GameUpdateState.updated()
+            : const GameUpdateState.completed(),
+      );
 
       // Reset to idle after a short delay
       _resetTimer?.cancel();
@@ -59,9 +57,7 @@ class GameUpdateCubit extends Cubit<GameUpdateState> {
       // Reset to idle after showing error
       _resetTimer?.cancel();
       _resetTimer = Timer(const Duration(seconds: 3), () {
-        state.whenOrNull(
-          error: (_) => emit(const GameUpdateState.idle()),
-        );
+        state.whenOrNull(error: (_) => emit(const GameUpdateState.idle()));
       });
     }
   }

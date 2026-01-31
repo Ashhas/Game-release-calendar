@@ -15,13 +15,15 @@ class MockUpcomingGamesCubit extends UpcomingGamesCubit {
   MockUpcomingGamesCubit() : super(igdbService: FakeIGDBService());
 
   void updateMockFilters({ReleasePrecisionFilter? precisionChoice}) {
-    emit(state.copyWith(
-      selectedFilters: GameFilter(
-        platformChoices: {},
-        categoryIds: {},
-        releasePrecisionChoice: precisionChoice,
+    emit(
+      state.copyWith(
+        selectedFilters: GameFilter(
+          platformChoices: {},
+          categoryIds: {},
+          releasePrecisionChoice: precisionChoice,
+        ),
       ),
-    ));
+    );
   }
 
   @override
@@ -60,9 +62,7 @@ void main() {
       }
 
       return MaterialApp(
-        theme: ThemeData(
-          extensions: [AppSpacings.defaultValues],
-        ),
+        theme: ThemeData(extensions: [AppSpacings.defaultValues]),
         home: Scaffold(
           body: BlocProvider<UpcomingGamesCubit>.value(
             value: mockCubit,
@@ -73,35 +73,48 @@ void main() {
     }
 
     group('initial state', () {
-      testWidgets('should display "Release Date Type" header', (WidgetTester tester) async {
+      testWidgets('should display "Release Date Type" header', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         expect(find.text('Release Date Type'), findsOneWidget);
       });
 
-      testWidgets('should display expand icon when collapsed', (WidgetTester tester) async {
+      testWidgets('should display expand icon when collapsed', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         expect(find.byIcon(Icons.expand_more), findsWidgets);
         expect(find.text('Release Date Type'), findsOneWidget);
       });
 
-      testWidgets('should not show chip when no selection and collapsed', (WidgetTester tester) async {
+      testWidgets('should not show chip when no selection and collapsed', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         expect(find.byType(Chip), findsNothing);
       });
 
-      testWidgets('should show selected filter chip when collapsed and has selection', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
+      testWidgets(
+        'should show selected filter chip when collapsed and has selection',
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+          );
 
-        expect(find.byType(Chip), findsOneWidget);
-        expect(find.text('Exact Dates Only'), findsOneWidget);
-      });
+          expect(find.byType(Chip), findsOneWidget);
+          expect(find.text('Exact Dates Only'), findsOneWidget);
+        },
+      );
     });
 
     group('expansion behavior', () {
-      testWidgets('should expand when header is tapped', (WidgetTester tester) async {
+      testWidgets('should expand when header is tapped', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         final header = find.text('Release Date Type');
@@ -112,7 +125,9 @@ void main() {
         expect(find.byIcon(Icons.expand_more), findsWidgets);
       });
 
-      testWidgets('should show simplified filter options when expanded', (WidgetTester tester) async {
+      testWidgets('should show simplified filter options when expanded', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
@@ -129,7 +144,9 @@ void main() {
         expect(find.text('To Be Determined'), findsNothing);
       });
 
-      testWidgets('should collapse when header is tapped again', (WidgetTester tester) async {
+      testWidgets('should collapse when header is tapped again', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
@@ -144,7 +161,9 @@ void main() {
     });
 
     group('filter selection', () {
-      testWidgets('should select "Exact Dates Only" when tapped', (WidgetTester tester) async {
+      testWidgets('should select "Exact Dates Only" when tapped', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
@@ -153,15 +172,18 @@ void main() {
         await tester.tap(find.text('Exact Dates Only'));
         await tester.pumpAndSettle();
         final exactDateChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'Exact Dates Only'
-          )
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is ChoiceChip &&
+                (widget.label as Text).data == 'Exact Dates Only',
+          ),
         );
         expect(exactDateChip.selected, isTrue);
       });
 
-      testWidgets('should select "All (incl. TBD periods)" when tapped', (WidgetTester tester) async {
+      testWidgets('should select "All (incl. TBD periods)" when tapped', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
@@ -170,15 +192,18 @@ void main() {
         await tester.tap(find.text('All (incl. TBD periods)'));
         await tester.pumpAndSettle();
         final allChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'All (incl. TBD periods)'
-          )
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is ChoiceChip &&
+                (widget.label as Text).data == 'All (incl. TBD periods)',
+          ),
         );
         expect(allChip.selected, isTrue);
       });
 
-      testWidgets('should show selected filter as chip when collapsed', (WidgetTester tester) async {
+      testWidgets('should show selected filter as chip when collapsed', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
@@ -192,7 +217,9 @@ void main() {
         expect(find.text('Exact Dates Only'), findsOneWidget);
       });
 
-      testWidgets('should not show chip for "All" selection', (WidgetTester tester) async {
+      testWidgets('should not show chip for "All" selection', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
@@ -205,72 +232,97 @@ void main() {
         expect(find.byType(Chip), findsNothing);
       });
 
-      testWidgets('should allow deselecting a filter', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
+      testWidgets('should allow deselecting a filter', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(
+          buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+        );
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
         final exactDateChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'Exact Dates Only'
-          )
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is ChoiceChip &&
+                (widget.label as Text).data == 'Exact Dates Only',
+          ),
         );
         expect(exactDateChip.selected, isTrue);
 
         await tester.tap(find.text('Exact Dates Only'));
         await tester.pumpAndSettle();
         final exactDateChipAfter = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'Exact Dates Only'
-          )
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is ChoiceChip &&
+                (widget.label as Text).data == 'Exact Dates Only',
+          ),
         );
         expect(exactDateChipAfter.selected, isFalse);
       });
     });
 
     group('visual styling', () {
-      testWidgets('selected chip should have primary color', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
+      testWidgets('selected chip should have primary color', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(
+          buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+        );
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
         final exactDateChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'Exact Dates Only'
-          )
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is ChoiceChip &&
+                (widget.label as Text).data == 'Exact Dates Only',
+          ),
         );
 
         expect(exactDateChip.selected, isTrue);
       });
 
-      testWidgets('unselected chips should not be selected', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
+      testWidgets('unselected chips should not be selected', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(
+          buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+        );
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
         final allChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'All (incl. TBD periods)'
-          )
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is ChoiceChip &&
+                (widget.label as Text).data == 'All (incl. TBD periods)',
+          ),
         );
         expect(allChip.selected, isFalse);
       });
 
-      testWidgets('should show compact chip when collapsed and selected', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate));
+      testWidgets('should show compact chip when collapsed and selected', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(
+          buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+        );
 
         final chip = tester.widget<Chip>(find.byType(Chip));
         expect(chip.visualDensity, equals(VisualDensity.compact));
-        expect(chip.materialTapTargetSize, equals(MaterialTapTargetSize.shrinkWrap));
+        expect(
+          chip.materialTapTargetSize,
+          equals(MaterialTapTargetSize.shrinkWrap),
+        );
       });
     });
 
     group('integration with filter bottom sheet', () {
-      testWidgets('should be part of filter bottom sheet layout', (WidgetTester tester) async {
+      testWidgets('should be part of filter bottom sheet layout', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         expect(find.byType(FilterBottomSheet), findsOneWidget);
@@ -278,30 +330,36 @@ void main() {
         expect(find.byType(SingleChildScrollView), findsOneWidget);
       });
 
-      testWidgets('should maintain state through filter bottom sheet interactions', (WidgetTester tester) async {
-        await tester.pumpWidget(buildTestWidget());
+      testWidgets(
+        'should maintain state through filter bottom sheet interactions',
+        (WidgetTester tester) async {
+          await tester.pumpWidget(buildTestWidget());
 
-        await tester.tap(find.text('Release Date Type'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('Exact Dates Only'));
-        await tester.pumpAndSettle();
+          await tester.tap(find.text('Release Date Type'));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('Exact Dates Only'));
+          await tester.pumpAndSettle();
 
-        await tester.tap(find.text('Release Date Type'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('Release Date Type'));
-        await tester.pumpAndSettle();
-        final exactDateChip = tester.widget<ChoiceChip>(
-          find.byWidgetPredicate((widget) =>
-            widget is ChoiceChip &&
-            (widget.label as Text).data == 'Exact Dates Only'
-          )
-        );
-        expect(exactDateChip.selected, isTrue);
-      });
+          await tester.tap(find.text('Release Date Type'));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('Release Date Type'));
+          await tester.pumpAndSettle();
+          final exactDateChip = tester.widget<ChoiceChip>(
+            find.byWidgetPredicate(
+              (widget) =>
+                  widget is ChoiceChip &&
+                  (widget.label as Text).data == 'Exact Dates Only',
+            ),
+          );
+          expect(exactDateChip.selected, isTrue);
+        },
+      );
     });
 
     group('accessibility and usability', () {
-      testWidgets('should be accessible via tap targets', (WidgetTester tester) async {
+      testWidgets('should be accessible via tap targets', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         final precisionHeaderFinder = find.text('Release Date Type');
@@ -315,20 +373,27 @@ void main() {
         expect(find.text('Exact Dates Only'), findsOneWidget);
       });
 
-      testWidgets('should have proper spacing and layout', (WidgetTester tester) async {
+      testWidgets('should have proper spacing and layout', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();
 
         expect(find.byType(Wrap), findsWidgets);
-        expect(find.byType(ChoiceChip), findsWidgets); // Multiple ChoiceChips in filter sheet
+        expect(
+          find.byType(ChoiceChip),
+          findsWidgets,
+        ); // Multiple ChoiceChips in filter sheet
         expect(find.text('Exact Dates Only'), findsOneWidget);
         expect(find.text('All (incl. TBD periods)'), findsOneWidget);
         expect(find.byType(Padding), findsWidgets);
       });
 
-      testWidgets('should handle rapid tapping gracefully', (WidgetTester tester) async {
+      testWidgets('should handle rapid tapping gracefully', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         for (int i = 0; i < 5; i++) {
@@ -341,15 +406,21 @@ void main() {
     });
 
     group('edge cases', () {
-      testWidgets('should handle null initial selection gracefully', (WidgetTester tester) async {
+      testWidgets('should handle null initial selection gracefully', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget(initialSelection: null));
 
         expect(find.text('Release Date Type'), findsOneWidget);
         expect(find.byType(Chip), findsNothing);
       });
 
-      testWidgets('should handle filter changes from external sources', (WidgetTester tester) async {
-        mockCubit.updateMockFilters(precisionChoice: ReleasePrecisionFilter.exactDate);
+      testWidgets('should handle filter changes from external sources', (
+        WidgetTester tester,
+      ) async {
+        mockCubit.updateMockFilters(
+          precisionChoice: ReleasePrecisionFilter.exactDate,
+        );
         await tester.pumpWidget(buildTestWidget());
         expect(find.byType(Chip), findsOneWidget);
         expect(find.text('Exact Dates Only'), findsOneWidget);
@@ -357,7 +428,9 @@ void main() {
     });
 
     group('performance', () {
-      testWidgets('should not rebuild unnecessarily', (WidgetTester tester) async {
+      testWidgets('should not rebuild unnecessarily', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(buildTestWidget());
 
         await tester.pumpAndSettle();

@@ -30,10 +30,7 @@ class AnalyticsService {
     required int gameId,
     required String gameName,
   }) async {
-    await _capture('game_viewed', {
-      'game_id': gameId,
-      'game_name': gameName,
-    });
+    await _capture('game_viewed', {'game_id': gameId, 'game_name': gameName});
   }
 
   /// Track when a user adds a reminder for a game
@@ -52,12 +49,8 @@ class AnalyticsService {
   }
 
   /// Track when a user removes a reminder
-  Future<void> trackReminderRemoved({
-    required int releaseDateId,
-  }) async {
-    await _capture('reminder_removed', {
-      'release_date_id': releaseDateId,
-    });
+  Future<void> trackReminderRemoved({required int releaseDateId}) async {
+    await _capture('reminder_removed', {'release_date_id': releaseDateId});
   }
 
   // ============================================================
@@ -65,9 +58,7 @@ class AnalyticsService {
   // ============================================================
 
   /// Track when a user performs a search
-  Future<void> trackSearchPerformed({
-    required String query,
-  }) async {
+  Future<void> trackSearchPerformed({required String query}) async {
     await _capture('search_performed', {
       'query': query,
       'query_length': query.length,
@@ -97,9 +88,7 @@ class AnalyticsService {
   /// Track when a user changes the color theme.
   ///
   /// Also updates the super property so all future events include the new theme.
-  Future<void> trackThemeColorChanged({
-    required String colorName,
-  }) async {
+  Future<void> trackThemeColorChanged({required String colorName}) async {
     try {
       await _posthog.register('theme_color', colorName);
       await _posthog.capture(
@@ -150,10 +139,7 @@ class AnalyticsService {
     Map<String, Object>? properties,
   }) async {
     try {
-      await _posthog.screen(
-        screenName: screenName,
-        properties: properties,
-      );
+      await _posthog.screen(screenName: screenName, properties: properties);
       dev.log('Analytics: screen_viewed - $screenName');
     } catch (e, stackTrace) {
       dev.log(
@@ -200,13 +186,16 @@ class AnalyticsService {
   ///
   /// Errors are caught and logged rather than propagated to ensure
   /// analytics failures never disrupt the user experience.
-  Future<void> _capture(String eventName, Map<String, Object?> properties) async {
+  Future<void> _capture(
+    String eventName,
+    Map<String, Object?> properties,
+  ) async {
     try {
       // Filter out null values as PostHog expects Map<String, Object>
       final filteredProperties = Map<String, Object>.fromEntries(
-        properties.entries.where((e) => e.value != null).map(
-          (e) => MapEntry(e.key, e.value!),
-        ),
+        properties.entries
+            .where((e) => e.value != null)
+            .map((e) => MapEntry(e.key, e.value!)),
       );
 
       await _posthog.capture(

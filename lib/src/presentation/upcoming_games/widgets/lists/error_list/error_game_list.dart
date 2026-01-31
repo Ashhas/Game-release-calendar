@@ -4,11 +4,7 @@ import 'package:game_release_calendar/src/presentation/common/widgets/error_widg
 
 /// Widget displayed when there's an error loading games
 class ErrorGameList extends StatelessWidget {
-  const ErrorGameList({
-    super.key,
-    required this.error,
-    this.onRetry,
-  });
+  const ErrorGameList({super.key, required this.error, this.onRetry});
 
   final Exception error;
   final VoidCallback? onRetry;

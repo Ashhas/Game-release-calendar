@@ -4,15 +4,11 @@ import 'package:riverpod/riverpod.dart';
 class NotificationsState {
   AsyncValue<List<PendingNotificationRequest>> notifications;
 
-  NotificationsState({
-    this.notifications = const AsyncValue.data([]),
-  });
+  NotificationsState({this.notifications = const AsyncValue.data([])});
 
   NotificationsState copyWith({
     AsyncValue<List<PendingNotificationRequest>>? reminders,
   }) {
-    return NotificationsState(
-      notifications: reminders ?? this.notifications,
-    );
+    return NotificationsState(notifications: reminders ?? this.notifications);
   }
 }

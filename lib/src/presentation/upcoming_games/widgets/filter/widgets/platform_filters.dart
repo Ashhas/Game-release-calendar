@@ -2,9 +2,7 @@ part of '../filter_bottom_sheet.dart';
 
 /// Platform filter section with collapsible UI and chip-based selection.
 class _PlatformFilters extends StatefulWidget {
-  const _PlatformFilters({
-    required this.selectedPlatformFilterOptions,
-  });
+  const _PlatformFilters({required this.selectedPlatformFilterOptions});
 
   final Set<PlatformFilter> selectedPlatformFilterOptions;
 
