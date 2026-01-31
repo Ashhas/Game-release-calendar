@@ -18,8 +18,6 @@ class _ContentFiltersState extends State<_ContentFilters> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -40,26 +38,9 @@ class _ContentFiltersState extends State<_ContentFilters> {
                 ),
                 SizedBox(width: context.spacings.xs),
                 const Text(
-                  'Content',
+                  'Content Visibility',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                const Spacer(),
-                if (!_isExpanded && !widget.showEroticContent)
-                  Chip(
-                    label: Text(
-                      'Safe',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: colorScheme.onPrimary,
-                      ),
-                    ),
-                    backgroundColor: colorScheme.primary,
-                    visualDensity: VisualDensity.compact,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.spacings.xs,
-                    ),
-                  ),
               ],
             ),
           ),
@@ -67,12 +48,13 @@ class _ContentFiltersState extends State<_ContentFilters> {
         if (_isExpanded)
           Padding(
             padding: EdgeInsets.only(left: context.spacings.xxl),
-            child: SwitchListTile(
+            child: CheckboxListTile(
               title: const Text('Show adult content'),
-              subtitle: const Text('Include games with erotic themes'),
               value: widget.showEroticContent,
-              onChanged: widget.onShowEroticContentChanged,
+              onChanged: (value) =>
+                  widget.onShowEroticContentChanged(value ?? false),
               contentPadding: EdgeInsets.zero,
+              controlAffinity: ListTileControlAffinity.trailing,
             ),
           ),
       ],

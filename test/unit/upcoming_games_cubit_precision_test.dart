@@ -129,8 +129,12 @@ void main() {
     });
 
     group('initial state', () {
-      test('should have default filters with no precision filter', () {
-        expect(cubit.state.selectedFilters.releasePrecisionChoice, isNull);
+      test('should have default filters with all precision filter', () {
+        // Precision filter defaults to 'all' (null is normalized to all)
+        expect(
+          cubit.state.selectedFilters.releasePrecisionChoice,
+          equals(ReleasePrecisionFilter.all),
+        );
         expect(cubit.state.selectedFilters.platformChoices, isEmpty);
         expect(cubit.state.selectedFilters.categoryIds, isEmpty);
         expect(

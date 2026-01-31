@@ -10,7 +10,10 @@ All notable changes to GameWatch will be documented in this file.
 - Firebase Crashlytics for crash reporting (opt-in)
 - Ability to enable/disable analytics and crash logs separately
 - Adult content filter (hides erotic-themed games by default)
-- Content Preferences settings screen with default toggle
+- Content Preferences settings screen with configurable defaults
+- Configurable default for Release Date Range filter
+- Configurable default for Release Date Type (precision) filter
+- Filter button badge only shows when filters differ from user's defaults
 
 ### Changed
 - PostHog analytics now requires explicit user consent

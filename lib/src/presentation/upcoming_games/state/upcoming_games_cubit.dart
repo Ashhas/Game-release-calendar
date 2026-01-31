@@ -6,6 +6,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:game_release_calendar/src/data/services/analytics_service.dart';
 import 'package:game_release_calendar/src/data/services/igdb_service.dart';
 import 'package:game_release_calendar/src/domain/exceptions/app_exceptions.dart';
+import 'package:game_release_calendar/src/domain/models/filter/game_filter.dart';
 import 'package:game_release_calendar/src/domain/models/game.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
 import 'package:game_release_calendar/src/utils/game_date_grouper.dart';
@@ -17,9 +18,33 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
   UpcomingGamesCubit({
     required IGDBService igdbService,
     AnalyticsService? analyticsService,
+    bool initialShowEroticContent = false,
+    DateFilterChoice initialReleaseDateChoice = DateFilterChoice.allTime,
+    ReleasePrecisionFilter? initialReleasePrecisionChoice,
   }) : _igdbService = igdbService,
        _analyticsService = analyticsService,
-       super(UpcomingGamesState());
+       super(
+         UpcomingGamesState(
+           selectedFilters: GameFilter(
+             releaseDateChoice: initialReleaseDateChoice,
+             platformChoices: {},
+             categoryIds: {},
+             showEroticContent: initialShowEroticContent,
+             // Normalize null to 'all' - the filter popup uses radio buttons
+             // that require a concrete selection, and 'all' means no filtering
+             releasePrecisionChoice:
+                 initialReleasePrecisionChoice ?? ReleasePrecisionFilter.all,
+           ),
+           initialFilters: GameFilter(
+             releaseDateChoice: initialReleaseDateChoice,
+             platformChoices: {},
+             categoryIds: {},
+             showEroticContent: initialShowEroticContent,
+             releasePrecisionChoice:
+                 initialReleasePrecisionChoice ?? ReleasePrecisionFilter.all,
+           ),
+         ),
+       );
 
   final IGDBService _igdbService;
   final AnalyticsService? _analyticsService;

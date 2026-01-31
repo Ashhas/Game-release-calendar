@@ -185,7 +185,10 @@ void main() {
       testWidgets('should select "All (incl. TBD periods)" when tapped', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget());
+        // Start with exactDate selected so we can test switching to All
+        await tester.pumpWidget(
+          buildTestWidget(initialSelection: ReleasePrecisionFilter.exactDate),
+        );
 
         await tester.tap(find.text('Release Date Type'));
         await tester.pumpAndSettle();

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 
-import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
-import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/presentation/common/widgets/styled_icon_button.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_cubit.dart';
 import 'package:game_release_calendar/src/presentation/upcoming_games/state/upcoming_games_state.dart';
@@ -14,33 +12,34 @@ import '../../filter/filter_bottom_sheet.dart';
 class FilterButton extends StatelessWidget {
   const FilterButton({super.key});
 
+  /// Calculates how many filters differ from the user's configured defaults.
+  /// Platforms and categories count by length (defaults are empty sets).
+  /// Other filters only count if changed from initial SharedPrefs values.
   static int _calculateActiveFilterCount(UpcomingGamesState state) {
-    try {
-      final filters = state.selectedFilters;
-      final platformCount = filters.platformChoices.length;
-      final categoryCount = filters.categoryIds.length;
-      final dateCount = _shouldCountDateFilter(filters.releaseDateChoice)
-          ? 1
-          : 0;
-      final precisionCount =
-          _shouldCountPrecisionFilter(filters.releasePrecisionChoice) ? 1 : 0;
-      return platformCount + categoryCount + dateCount + precisionCount;
-    } catch (e) {
-      debugPrint('Error calculating filter count: $e');
-      return 0;
-    }
-  }
+    final filters = state.selectedFilters;
+    final initial = state.initialFilters;
 
-  static bool _shouldCountDateFilter(DateFilterChoice? dateChoice) {
-    return dateChoice != null && dateChoice != DateFilterChoice.allTime;
-  }
+    // Platforms/categories default to empty, so count their length directly
+    final platformCount = filters.platformChoices.length;
+    final categoryCount = filters.categoryIds.length;
 
-  static bool _shouldCountPrecisionFilter(
-    ReleasePrecisionFilter? precisionChoice,
-  ) {
-    // Count as active filter if set to something other than "all"
-    return precisionChoice != null &&
-        precisionChoice != ReleasePrecisionFilter.all;
+    // Count other filters only if different from initial default
+    final dateCount = filters.releaseDateChoice != initial.releaseDateChoice
+        ? 1
+        : 0;
+    final precisionCount =
+        filters.releasePrecisionChoice != initial.releasePrecisionChoice
+        ? 1
+        : 0;
+    final eroticCount = filters.showEroticContent != initial.showEroticContent
+        ? 1
+        : 0;
+
+    return platformCount +
+        categoryCount +
+        dateCount +
+        precisionCount +
+        eroticCount;
   }
 
   void _openFilterBottomSheet(BuildContext context) {

@@ -41,10 +41,17 @@ class App extends StatelessWidget {
             value: GetIt.instance.get<NotificationsCubit>(),
           ),
           BlocProvider<UpcomingGamesCubit>(
-            create: (_) => UpcomingGamesCubit(
-              igdbService: GetIt.instance.get<IGDBService>(),
-              analyticsService: GetIt.instance.get<AnalyticsService>(),
-            ),
+            create: (_) {
+              final prefs = GetIt.instance.get<SharedPrefsService>();
+              return UpcomingGamesCubit(
+                igdbService: GetIt.instance.get<IGDBService>(),
+                analyticsService: GetIt.instance.get<AnalyticsService>(),
+                initialShowEroticContent: prefs.getShowEroticContentDefault(),
+                initialReleaseDateChoice: prefs.getReleaseDateTypeDefault(),
+                initialReleasePrecisionChoice: prefs
+                    .getReleasePrecisionDefault(),
+              );
+            },
           ),
           BlocProvider<ThemeCubit>(
             create: (_) => ThemeCubit(

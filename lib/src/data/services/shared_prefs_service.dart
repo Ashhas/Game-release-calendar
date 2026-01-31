@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:game_release_calendar/src/domain/enums/filter/date_filter_choice.dart';
+import 'package:game_release_calendar/src/domain/enums/filter/release_precision_filter.dart';
 import 'package:game_release_calendar/src/theme/app_theme_preset.dart';
 
 class SharedPrefsService {
@@ -14,6 +16,8 @@ class SharedPrefsService {
   final _analyticsConsentAskedKey = 'analytics_consent_asked';
   final _crashLogsConsentKey = 'crash_logs_consent';
   final _showEroticContentDefaultKey = 'show_erotic_content_default';
+  final _releaseDateTypeDefaultKey = 'release_date_type_default';
+  final _releasePrecisionDefaultKey = 'release_precision_default';
 
   static SharedPreferences? _prefs;
 
@@ -230,6 +234,87 @@ class SharedPrefsService {
       if (kDebugMode) {
         debugPrint(
           'SharedPrefsService: Failed to save erotic content default - $e',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  /// Returns the default release date type filter.
+  /// Defaults to allTime.
+  DateFilterChoice getReleaseDateTypeDefault() {
+    try {
+      final value = _prefs?.getString(_releaseDateTypeDefaultKey);
+      if (value == null) return DateFilterChoice.allTime;
+      return DateFilterChoice.values.firstWhere(
+        (e) => e.name == value,
+        orElse: () => DateFilterChoice.allTime,
+      );
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint(
+          'SharedPrefsService: Failed to read release date type default - $e',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return DateFilterChoice.allTime;
+    }
+  }
+
+  Future<bool> setReleaseDateTypeDefault(DateFilterChoice choice) async {
+    try {
+      return await _prefs?.setString(_releaseDateTypeDefaultKey, choice.name) ??
+          false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint(
+          'SharedPrefsService: Failed to save release date type default - $e',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  /// Returns the default release precision filter.
+  /// Returns null if no preference has been stored (callers should treat null
+  /// as equivalent to 'all'). Falls back to 'all' if stored value is invalid.
+  ReleasePrecisionFilter? getReleasePrecisionDefault() {
+    try {
+      final value = _prefs?.getString(_releasePrecisionDefaultKey);
+      if (value == null) return null;
+      return ReleasePrecisionFilter.values.firstWhere(
+        (e) => e.name == value,
+        orElse: () => ReleasePrecisionFilter.all,
+      );
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint(
+          'SharedPrefsService: Failed to read release precision default - $e',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return null;
+    }
+  }
+
+  Future<bool> setReleasePrecisionDefault(
+    ReleasePrecisionFilter? choice,
+  ) async {
+    try {
+      if (choice == null) {
+        return await _prefs?.remove(_releasePrecisionDefaultKey) ?? false;
+      }
+      return await _prefs?.setString(
+            _releasePrecisionDefaultKey,
+            choice.name,
+          ) ??
+          false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint(
+          'SharedPrefsService: Failed to save release precision default - $e',
         );
         debugPrintStack(stackTrace: stackTrace);
       }
