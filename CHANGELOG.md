@@ -21,6 +21,8 @@ All notable changes to GameWatch will be documented in this file.
 
 ### Fixed
 - Auth token refresh now uses early return pattern for cleaner code
+- TBD section headers now use solid background like regular sections
+- Filter chip now shows for all selections in Release Date Type section
 
 ---
 

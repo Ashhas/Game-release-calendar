@@ -197,8 +197,6 @@ class _PrecisionFiltersState extends State<_PrecisionFilters> {
                 ),
                 const Spacer(),
                 if (widget.selectedPrecisionFilterOption != null &&
-                    widget.selectedPrecisionFilterOption !=
-                        ReleasePrecisionFilter.all &&
                     !_isExpanded)
                   Chip(
                     label: Text(

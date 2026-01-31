@@ -53,9 +53,7 @@ class _DayHeaderDelegate extends SliverPersistentHeaderDelegate {
     }
 
     return Container(
-      color: isTbdSection
-          ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.7)
-          : colorScheme.surface,
+      color: colorScheme.surface,
       padding: EdgeInsets.symmetric(
         horizontal: context.spacings.m,
         vertical: context.spacings.xs,
