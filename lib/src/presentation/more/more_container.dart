@@ -40,6 +40,8 @@ part 'widgets/app_theme/app_theme.dart';
 
 part 'widgets/experimental_features/experimental_features.dart';
 
+part 'widgets/content_preferences/content_preferences.dart';
+
 class MoreContainer extends StatefulWidget {
   const MoreContainer({super.key});
 

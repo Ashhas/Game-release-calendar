@@ -13,6 +13,7 @@ class SharedPrefsService {
   final _analyticsConsentKey = 'analytics_consent';
   final _analyticsConsentAskedKey = 'analytics_consent_asked';
   final _crashLogsConsentKey = 'crash_logs_consent';
+  final _showEroticContentDefaultKey = 'show_erotic_content_default';
 
   static SharedPreferences? _prefs;
 
@@ -199,6 +200,36 @@ class SharedPrefsService {
       if (kDebugMode) {
         debugPrint(
           'SharedPrefsService: Failed to save crash logs consent - $e',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  /// Returns true if erotic content should be shown by default.
+  /// Defaults to false (filter out erotic content).
+  bool getShowEroticContentDefault() {
+    try {
+      return _prefs?.getBool(_showEroticContentDefaultKey) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint(
+          'SharedPrefsService: Failed to read erotic content default - $e',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return false;
+    }
+  }
+
+  Future<bool> setShowEroticContentDefault(bool show) async {
+    try {
+      return await _prefs?.setBool(_showEroticContentDefaultKey, show) ?? false;
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        debugPrint(
+          'SharedPrefsService: Failed to save erotic content default - $e',
         );
         debugPrintStack(stackTrace: stackTrace);
       }

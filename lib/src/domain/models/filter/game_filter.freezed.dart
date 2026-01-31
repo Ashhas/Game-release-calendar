@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GameFilter {
 
- Set<PlatformFilter> get platformChoices; Set<int> get categoryIds; DateFilterChoice? get releaseDateChoice; ReleasePrecisionFilter? get releasePrecisionChoice;
+ Set<PlatformFilter> get platformChoices; Set<int> get categoryIds; DateFilterChoice? get releaseDateChoice; ReleasePrecisionFilter? get releasePrecisionChoice; bool get showEroticContent;
 /// Create a copy of GameFilter
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $GameFilterCopyWith<GameFilter> get copyWith => _$GameFilterCopyWithImpl<GameFil
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameFilter&&const DeepCollectionEquality().equals(other.platformChoices, platformChoices)&&const DeepCollectionEquality().equals(other.categoryIds, categoryIds)&&(identical(other.releaseDateChoice, releaseDateChoice) || other.releaseDateChoice == releaseDateChoice)&&(identical(other.releasePrecisionChoice, releasePrecisionChoice) || other.releasePrecisionChoice == releasePrecisionChoice));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameFilter&&const DeepCollectionEquality().equals(other.platformChoices, platformChoices)&&const DeepCollectionEquality().equals(other.categoryIds, categoryIds)&&(identical(other.releaseDateChoice, releaseDateChoice) || other.releaseDateChoice == releaseDateChoice)&&(identical(other.releasePrecisionChoice, releasePrecisionChoice) || other.releasePrecisionChoice == releasePrecisionChoice)&&(identical(other.showEroticContent, showEroticContent) || other.showEroticContent == showEroticContent));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(platformChoices),const DeepCollectionEquality().hash(categoryIds),releaseDateChoice,releasePrecisionChoice);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(platformChoices),const DeepCollectionEquality().hash(categoryIds),releaseDateChoice,releasePrecisionChoice,showEroticContent);
 
 @override
 String toString() {
-  return 'GameFilter(platformChoices: $platformChoices, categoryIds: $categoryIds, releaseDateChoice: $releaseDateChoice, releasePrecisionChoice: $releasePrecisionChoice)';
+  return 'GameFilter(platformChoices: $platformChoices, categoryIds: $categoryIds, releaseDateChoice: $releaseDateChoice, releasePrecisionChoice: $releasePrecisionChoice, showEroticContent: $showEroticContent)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $GameFilterCopyWith<$Res>  {
   factory $GameFilterCopyWith(GameFilter value, $Res Function(GameFilter) _then) = _$GameFilterCopyWithImpl;
 @useResult
 $Res call({
- Set<PlatformFilter> platformChoices, Set<int> categoryIds, DateFilterChoice? releaseDateChoice, ReleasePrecisionFilter? releasePrecisionChoice
+ Set<PlatformFilter> platformChoices, Set<int> categoryIds, DateFilterChoice? releaseDateChoice, ReleasePrecisionFilter? releasePrecisionChoice, bool showEroticContent
 });
 
 
@@ -62,13 +62,14 @@ class _$GameFilterCopyWithImpl<$Res>
 
 /// Create a copy of GameFilter
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? platformChoices = null,Object? categoryIds = null,Object? releaseDateChoice = freezed,Object? releasePrecisionChoice = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? platformChoices = null,Object? categoryIds = null,Object? releaseDateChoice = freezed,Object? releasePrecisionChoice = freezed,Object? showEroticContent = null,}) {
   return _then(_self.copyWith(
 platformChoices: null == platformChoices ? _self.platformChoices : platformChoices // ignore: cast_nullable_to_non_nullable
 as Set<PlatformFilter>,categoryIds: null == categoryIds ? _self.categoryIds : categoryIds // ignore: cast_nullable_to_non_nullable
 as Set<int>,releaseDateChoice: freezed == releaseDateChoice ? _self.releaseDateChoice : releaseDateChoice // ignore: cast_nullable_to_non_nullable
 as DateFilterChoice?,releasePrecisionChoice: freezed == releasePrecisionChoice ? _self.releasePrecisionChoice : releasePrecisionChoice // ignore: cast_nullable_to_non_nullable
-as ReleasePrecisionFilter?,
+as ReleasePrecisionFilter?,showEroticContent: null == showEroticContent ? _self.showEroticContent : showEroticContent // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Set<PlatformFilter> platformChoices,  Set<int> categoryIds,  DateFilterChoice? releaseDateChoice,  ReleasePrecisionFilter? releasePrecisionChoice)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Set<PlatformFilter> platformChoices,  Set<int> categoryIds,  DateFilterChoice? releaseDateChoice,  ReleasePrecisionFilter? releasePrecisionChoice,  bool showEroticContent)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GameFilter() when $default != null:
-return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,_that.releasePrecisionChoice);case _:
+return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,_that.releasePrecisionChoice,_that.showEroticContent);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Set<PlatformFilter> platformChoices,  Set<int> categoryIds,  DateFilterChoice? releaseDateChoice,  ReleasePrecisionFilter? releasePrecisionChoice)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Set<PlatformFilter> platformChoices,  Set<int> categoryIds,  DateFilterChoice? releaseDateChoice,  ReleasePrecisionFilter? releasePrecisionChoice,  bool showEroticContent)  $default,) {final _that = this;
 switch (_that) {
 case _GameFilter():
-return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,_that.releasePrecisionChoice);case _:
+return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,_that.releasePrecisionChoice,_that.showEroticContent);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +195,10 @@ return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Set<PlatformFilter> platformChoices,  Set<int> categoryIds,  DateFilterChoice? releaseDateChoice,  ReleasePrecisionFilter? releasePrecisionChoice)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Set<PlatformFilter> platformChoices,  Set<int> categoryIds,  DateFilterChoice? releaseDateChoice,  ReleasePrecisionFilter? releasePrecisionChoice,  bool showEroticContent)?  $default,) {final _that = this;
 switch (_that) {
 case _GameFilter() when $default != null:
-return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,_that.releasePrecisionChoice);case _:
+return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,_that.releasePrecisionChoice,_that.showEroticContent);case _:
   return null;
 
 }
@@ -209,7 +210,7 @@ return $default(_that.platformChoices,_that.categoryIds,_that.releaseDateChoice,
 
 
 class _GameFilter implements GameFilter {
-  const _GameFilter({required final  Set<PlatformFilter> platformChoices, required final  Set<int> categoryIds, this.releaseDateChoice, this.releasePrecisionChoice}): _platformChoices = platformChoices,_categoryIds = categoryIds;
+  const _GameFilter({required final  Set<PlatformFilter> platformChoices, required final  Set<int> categoryIds, this.releaseDateChoice, this.releasePrecisionChoice, this.showEroticContent = false}): _platformChoices = platformChoices,_categoryIds = categoryIds;
   
 
  final  Set<PlatformFilter> _platformChoices;
@@ -228,6 +229,7 @@ class _GameFilter implements GameFilter {
 
 @override final  DateFilterChoice? releaseDateChoice;
 @override final  ReleasePrecisionFilter? releasePrecisionChoice;
+@override@JsonKey() final  bool showEroticContent;
 
 /// Create a copy of GameFilter
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +241,16 @@ _$GameFilterCopyWith<_GameFilter> get copyWith => __$GameFilterCopyWithImpl<_Gam
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameFilter&&const DeepCollectionEquality().equals(other._platformChoices, _platformChoices)&&const DeepCollectionEquality().equals(other._categoryIds, _categoryIds)&&(identical(other.releaseDateChoice, releaseDateChoice) || other.releaseDateChoice == releaseDateChoice)&&(identical(other.releasePrecisionChoice, releasePrecisionChoice) || other.releasePrecisionChoice == releasePrecisionChoice));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameFilter&&const DeepCollectionEquality().equals(other._platformChoices, _platformChoices)&&const DeepCollectionEquality().equals(other._categoryIds, _categoryIds)&&(identical(other.releaseDateChoice, releaseDateChoice) || other.releaseDateChoice == releaseDateChoice)&&(identical(other.releasePrecisionChoice, releasePrecisionChoice) || other.releasePrecisionChoice == releasePrecisionChoice)&&(identical(other.showEroticContent, showEroticContent) || other.showEroticContent == showEroticContent));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_platformChoices),const DeepCollectionEquality().hash(_categoryIds),releaseDateChoice,releasePrecisionChoice);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_platformChoices),const DeepCollectionEquality().hash(_categoryIds),releaseDateChoice,releasePrecisionChoice,showEroticContent);
 
 @override
 String toString() {
-  return 'GameFilter(platformChoices: $platformChoices, categoryIds: $categoryIds, releaseDateChoice: $releaseDateChoice, releasePrecisionChoice: $releasePrecisionChoice)';
+  return 'GameFilter(platformChoices: $platformChoices, categoryIds: $categoryIds, releaseDateChoice: $releaseDateChoice, releasePrecisionChoice: $releasePrecisionChoice, showEroticContent: $showEroticContent)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$GameFilterCopyWith<$Res> implements $GameFilterCopyWith<$
   factory _$GameFilterCopyWith(_GameFilter value, $Res Function(_GameFilter) _then) = __$GameFilterCopyWithImpl;
 @override @useResult
 $Res call({
- Set<PlatformFilter> platformChoices, Set<int> categoryIds, DateFilterChoice? releaseDateChoice, ReleasePrecisionFilter? releasePrecisionChoice
+ Set<PlatformFilter> platformChoices, Set<int> categoryIds, DateFilterChoice? releaseDateChoice, ReleasePrecisionFilter? releasePrecisionChoice, bool showEroticContent
 });
 
 
@@ -276,13 +278,14 @@ class __$GameFilterCopyWithImpl<$Res>
 
 /// Create a copy of GameFilter
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? platformChoices = null,Object? categoryIds = null,Object? releaseDateChoice = freezed,Object? releasePrecisionChoice = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? platformChoices = null,Object? categoryIds = null,Object? releaseDateChoice = freezed,Object? releasePrecisionChoice = freezed,Object? showEroticContent = null,}) {
   return _then(_GameFilter(
 platformChoices: null == platformChoices ? _self._platformChoices : platformChoices // ignore: cast_nullable_to_non_nullable
 as Set<PlatformFilter>,categoryIds: null == categoryIds ? _self._categoryIds : categoryIds // ignore: cast_nullable_to_non_nullable
 as Set<int>,releaseDateChoice: freezed == releaseDateChoice ? _self.releaseDateChoice : releaseDateChoice // ignore: cast_nullable_to_non_nullable
 as DateFilterChoice?,releasePrecisionChoice: freezed == releasePrecisionChoice ? _self.releasePrecisionChoice : releasePrecisionChoice // ignore: cast_nullable_to_non_nullable
-as ReleasePrecisionFilter?,
+as ReleasePrecisionFilter?,showEroticContent: null == showEroticContent ? _self.showEroticContent : showEroticContent // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

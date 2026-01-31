@@ -32,6 +32,7 @@ class MockUpcomingGamesCubit extends UpcomingGamesCubit {
     required Object? setDateChoice,
     required Set<int> categoryId,
     ReleasePrecisionFilter? precisionChoice,
+    bool showEroticContent = false,
   }) async {
     updateMockFilters(precisionChoice: precisionChoice);
   }

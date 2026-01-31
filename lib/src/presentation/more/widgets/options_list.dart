@@ -32,6 +32,16 @@ class OptionsList extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.visibility_outlined),
+          title: const Text('Content Preferences'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ContentPreferences()),
+            );
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.shield_outlined),
           title: const Text('Privacy'),
           onTap: () {

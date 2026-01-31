@@ -85,6 +85,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
     required DateFilterChoice? setDateChoice,
     required Set<int> categoryId,
     ReleasePrecisionFilter? precisionChoice,
+    bool showEroticContent = false,
   }) async {
     emit(
       state.copyWith(
@@ -93,6 +94,7 @@ class UpcomingGamesCubit extends Cubit<UpcomingGamesState> {
           categoryIds: categoryId,
           releaseDateChoice: setDateChoice,
           releasePrecisionChoice: precisionChoice,
+          showEroticContent: showEroticContent,
         ),
       ),
     );

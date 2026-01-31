@@ -21,6 +21,8 @@ part 'widgets/top_bar.dart';
 
 part 'widgets/collapsible_filter_section.dart';
 
+part 'widgets/content_filters.dart';
+
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
 
@@ -33,26 +35,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   late DateFilterChoice? _selectedDateFilterOption;
   late Set<int> _selectedCategoryFilterOptions;
   late ReleasePrecisionFilter? _selectedPrecisionFilterOption;
+  late bool _showEroticContent;
 
   @override
   void initState() {
     super.initState();
-    _selectedPlatformFilterOptions = Set.of(
-      context.read<UpcomingGamesCubit>().state.selectedFilters.platformChoices,
-    );
-    _selectedCategoryFilterOptions = Set.of(
-      context.read<UpcomingGamesCubit>().state.selectedFilters.categoryIds,
-    );
-    _selectedDateFilterOption = context
-        .read<UpcomingGamesCubit>()
-        .state
-        .selectedFilters
-        .releaseDateChoice;
-    _selectedPrecisionFilterOption = context
-        .read<UpcomingGamesCubit>()
-        .state
-        .selectedFilters
-        .releasePrecisionChoice;
+    final filters = context.read<UpcomingGamesCubit>().state.selectedFilters;
+    _selectedPlatformFilterOptions = Set.of(filters.platformChoices);
+    _selectedCategoryFilterOptions = Set.of(filters.categoryIds);
+    _selectedDateFilterOption = filters.releaseDateChoice;
+    _selectedPrecisionFilterOption = filters.releasePrecisionChoice;
+    _showEroticContent = filters.showEroticContent;
   }
 
   @override
@@ -102,6 +95,15 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     selectedCategoryFilterOptions:
                         _selectedCategoryFilterOptions,
                   ),
+                  SizedBox(height: context.spacings.m),
+                  _ContentFilters(
+                    showEroticContent: _showEroticContent,
+                    onShowEroticContentChanged: (value) {
+                      setState(() {
+                        _showEroticContent = value;
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -127,17 +129,19 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       setDateChoice: _selectedDateFilterOption,
       categoryId: _selectedCategoryFilterOptions,
       precisionChoice: _selectedPrecisionFilterOption,
+      showEroticContent: _showEroticContent,
     );
     context.read<UpcomingGamesCubit>().getGames();
     Navigator.pop(context);
   }
 
-  Future<void> _resetFilters() async {
+  void _resetFilters() {
     setState(() {
       _selectedPlatformFilterOptions = {};
       _selectedCategoryFilterOptions = {};
       _selectedDateFilterOption = DateFilterChoice.allTime;
       _selectedPrecisionFilterOption = ReleasePrecisionFilter.all;
+      _showEroticContent = false;
     });
   }
 }

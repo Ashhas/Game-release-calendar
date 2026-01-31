@@ -9,6 +9,9 @@ import '../../utils/date_range_utility.dart';
 class IGDBService {
   final IGDBRepository repository;
 
+  /// IGDB Theme ID for erotic content
+  static const _eroticThemeId = 42;
+
   const IGDBService({required this.repository});
 
   Future<List<Game>> getGames({
@@ -64,6 +67,11 @@ class IGDBService {
           .map((choice) => choice.id)
           .join(', ');
       filterConditions.add('platforms = ($platformIds)');
+    }
+
+    // Filter out erotic content unless explicitly enabled
+    if (!filter.showEroticContent) {
+      filterConditions.add('themes != ($_eroticThemeId)');
     }
 
     if (filter.releaseDateChoice != null) {

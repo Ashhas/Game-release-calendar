@@ -13,5 +13,6 @@ abstract class GameFilter with _$GameFilter {
     required Set<int> categoryIds,
     DateFilterChoice? releaseDateChoice,
     ReleasePrecisionFilter? releasePrecisionChoice,
+    @Default(false) bool showEroticContent,
   }) = _GameFilter;
 }

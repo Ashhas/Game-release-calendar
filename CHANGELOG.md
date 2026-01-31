@@ -9,6 +9,8 @@ All notable changes to GameWatch will be documented in this file.
 - Privacy settings screen with individual toggles
 - Firebase Crashlytics for crash reporting (opt-in)
 - Ability to enable/disable analytics and crash logs separately
+- Adult content filter (hides erotic-themed games by default)
+- Content Preferences settings screen with default toggle
 
 ### Changed
 - PostHog analytics now requires explicit user consent
